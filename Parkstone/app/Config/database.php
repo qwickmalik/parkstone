@@ -65,7 +65,7 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'qwickfu1_parkst',
+		'login' => 'root',
 		'password' => '',
 		'database' => 'qwickfu1_parkst_inv',
 		'prefix' => '',
