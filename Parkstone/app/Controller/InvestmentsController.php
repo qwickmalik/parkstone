@@ -105,7 +105,7 @@ function newInvestorJoint() {
             } elseif ($investortype_id == 2) {
                 $this->redirect('newInvestorIndiv');
             } elseif ($investortype_id == 3) {
-                $this->redirect('newInvestorJoint');
+                $this->redirect('newInvestorIndiv');
             } elseif ($investortype_id == 4) {
                 $this->redirect('newInvestorComp');
             } else {
