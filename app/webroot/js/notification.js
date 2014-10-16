@@ -3336,6 +3336,7 @@ var investor = {
         });
     }
     };
+     
 $(document).ready(function() {
     // $("#receive_receipt").printElement();
     $("#welcome_message").hide();
@@ -3363,4 +3364,7 @@ $(document).ready(function() {
     portfolio.init();
     ucsl_investorpayment.init();
     investor.init();
+   
+   
+    
 });

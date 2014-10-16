@@ -1,8 +1,8 @@
 <?php
 
-/* CakePlugin::load('Uploader');
+ CakePlugin::load('Uploader');
   App::import('Vendor', 'Uploader.Uploader');
- */
+ 
 
 class InvestmentsController extends AppController {
 
@@ -13,13 +13,15 @@ class InvestmentsController extends AppController {
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
             'Investor' => array('limit' => 50, 'order' => array('Investor.id' => 'asc'))
     );
-
-    /*
+//    var $helpers = array('AjaxMultiUpload.Upload');
+    
       function beforeFilter() {
-      $this->__validateLoginStatus();
-      $this->Uploader = new Uploader(array('tempDir' => TMP));
-      }
+      //$this->__validateLoginStatus();
+      $this->Uploader = new Uploader(array('tempDir' => TMP,'ajaxField' => "qqfile"));
+      
 
+      }
+/*
       function __validateLoginStatus() {
       if ($this->action != 'login' && $this->action != 'logout') {
       if ($this->Session->check('userData') == false) {
@@ -160,9 +162,10 @@ function newInvestorJoint() {
         }
     }
     public function commit_indv() {
-        $this->autoRender = false;
-        if ($this->request->is('post')) {
-
+        $this->autoLayout = $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+          return $this->request;
+            
             $dob_day = $this->request->data['Investor']['dob']['day'];
             $dob_month = $this->request->data['Investor']['dob']['month'];
             $dob_year = $this->request->data['Investor']['dob']['year'];
@@ -188,7 +191,7 @@ function newInvestorJoint() {
             if ($dob == date('Y-m-d')) {
                 $message = 'Please Supply The Investor\'s Date of Birth';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
 //            $registration = $registration_year ."-". $registration_month ."-".$registration_day;
             $registration_date = date('Y-m-d');
@@ -196,89 +199,33 @@ function newInvestorJoint() {
             if ($this->request->data['Investor']['other_names'] == "" || $this->request->data['Investor']['other_names'] == null) {
                 $message = 'Please Supply The Investor\'s Other Names';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
 
             if ($this->request->data['Investor']['surname'] == "" || $this->request->data['Investor']['surname'] == null) {
                 $message = 'Please Supply The Investor\'s Surname';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
             $fullname = $this->request->data['Investor']['other_names'] . " " . $this->request->data['Investor']['surname'];
 
             if ($this->request->data['Investor']['idtype_id'] == "" || $this->request->data['Investor']['idtype_id'] == null) {
                 $message = 'Please Supply The Investor\'s ID-Type';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
 
             if ($this->request->data['Investor']['id_number'] == "" || $this->request->data['Investor']['id_number'] == null) {
                 $message = 'Please Supply The Investor\'s Number';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
 
             if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
                 $message = 'Please Supply The Investor\'s Nationality';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
-//            
-//            if ($this->request->data['Investor']['next_of_kin_name'] == "" || $this->request->data['Investor']['next_of_kin_name'] == null) {
-//                $message = 'Please Supply The Investor\'s Next of Kin\'s Name';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-//
-//            if ($this->request->data['Investor']['nk_relationship'] == "" || $this->request->data['Investor']['nk_relationship'] == null) {
-//                $message = 'Please Supply The Investor\'s NK Relationship';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-//            if ($this->request->data['Investor']['nk_postal_address'] == "" || $this->request->data['Investor']['nk_postal_address'] == null) {
-//                $message = 'Please Supply The Investor\'s NK Postal Address';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-//            if ($this->request->data['Investor']['nk_email'] == "" || $this->request->data['Investor']['nk_email'] == null) {
-//                $message = 'Please Supply The Investor\'s NK Email';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-//
-//
-//            if ($this->request->data['Investor']['nk_phone'] == "" || $this->request->data['Investor']['nk_phone'] == null) {
-//                $message = 'Please Supply The Investor\'s NK Phone Number';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-//            
-//             if ($this->request->data['Investor']['nk_phone'] == "" || $this->request->data['Investor']['nk_phone'] == null) {
-//                $message = 'Please Supply The Investor\'s NK Phone Number';
-//                $this->Session->write('emsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-//            }
-            /*             if ($this->request->data['Investor']['landmark'] == "" || $this->request->data['Investor']['landmark'] == null) {
-              $message = 'Please Supply A Landmark for Investor\'s House';
-              $this->Session->write('emsg', $message);
-              $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-              }
-              if ($this->request->data['Investor']['house_no'] == "" || $this->request->data['Investor']['house_no'] == null) {
-              $message = 'Please Supply The Investor\'s House Number';
-              $this->Session->write('emsg', $message);
-              $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-              }
-
-              if ($this->request->data['Investor']['area'] == "" || $this->request->data['Investor']['area'] == null) {
-              $message = 'Please Supply The Investor\'s Area/Locality';
-              $this->Session->write('emsg', $message);
-              $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-              }
-              if ($this->request->data['Investor']['city'] == "" || $this->request->data['Investor']['city'] == null) {
-              $message = 'Please Supply The Investor\'s City';
-              $this->Session->write('emsg', $message);
-              $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-              } */
 
             $this->request->data['Investor']['fullname'] = $fullname;
             $this->request->data['Investor']['dob'] = $dob_date;
@@ -286,44 +233,27 @@ function newInvestorJoint() {
               $this->request->data['Investor']['id_expiry'] = $expiry_date;
             $this->request->data['Investor']['registration_date'] = $registration_date;
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
-            //  $this->request->data['Investor']['customer_category_id'] = $this->request->data['Investor']['customercategory_id'];
-//                  $signature = $this->request->data['Investor']['customer_signature'];
-//                  $guarantor_sig = $this->request->data['Investor']['guarantor_signature'];
-
-            if ($data = $this->Uploader->upload('investor_photo', array('overwrite' => true, 'name' => $photo))) {
+ 
+//            if ($data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true))) {
+		$data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo	));
+                return json_encode($data);
+            if($data){
+                
                 $this->request->data['Investor']['investor_photo'] = $data['path'];
+//                header('Content-Type: application/json');
                 // Upload successful, do whatever
-            } else {
+            }else{
                 $message = 'Please Supply The Investor\'s Picture';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+                return json_encode(array('status' => 'error'));
             }
-//	if ($signature == "" || $signature == null) {
-//                    $message = 'Please Select Availability of Investor\'s Signature';
-//                   $this->Session->write('emsg', $message);
-//                   $this->redirect(array('controller' => 'Investments','action' => 'index'));
-//			// Upload successful, do whatever
-//		}
-//                
-//                if($guarantor_sig == "" || $guarantor_sig == null) {
-//                    $message = 'Please Select Availability of Guarantor\'s Signature';
-//                   $this->Session->write('emsg', $message);
-//                   $this->redirect(array('controller' => 'Investments','action' => 'index'));
-//			// Upload successful, do whatever
-//		}
+
             $userType = $this->Session->check('userDetails.usertype_id');
             if ($userType) {
                 $userType = $this->Session->read('userDetails.usertype_id');
                 $this->request->data['Investor']['user_id'] = $userType;
             }
-            /*             if ($this->request->data['Investor']['user_id'] == "" || $this->request->data['Investor']['user_id'] == null) {
-              $message = 'Please Assign a Sales Person';
-              $this->Session->write('emsg', $message);
-              $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
-              } */
-
-            // debug($data);
-            // pr($this->request->data);
+    
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
@@ -336,11 +266,11 @@ function newInvestorJoint() {
                 }
                 $message = 'Investor Details Successfully Added';
                 $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'listInvestor'));
+                return json_encode(array('status' => 'success'));
             } else {
                 $message = 'Investor Save Error';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestor'));
+               return json_encode(array('status' => 'error'));
             }
         }
     }

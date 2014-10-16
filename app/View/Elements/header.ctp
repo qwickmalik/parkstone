@@ -17,7 +17,6 @@ echo $this->Html->css('template.css');
 echo $this->Html->css('styles-less.css');
 echo $this->Html->css('style.less');
 echo $this->Html->css('style.css');
-
 //Javascript
 echo $this->Html->script('jquery.min.js');
 echo $this->Html->script('min-height.js');
