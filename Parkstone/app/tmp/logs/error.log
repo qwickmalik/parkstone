@@ -1774,3 +1774,77 @@ Request URL: /Parkstone/css/style.less.css
 Stack Trace:
 #0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+2014-10-16 22:33:45 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:33:45 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:34:01 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:35:08 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:35:08 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:35:11 Error: [MissingModelException] Investor
+Request URL: /Parkstone/reinvestments/newInvestment1
+Stack Trace:
+#0 C:\wamp\www\Parkstone\lib\Cake\Controller\Controller.php(1080): PaginatorComponent->paginate('Investor', Array, Array)
+#1 C:\wamp\www\Parkstone\app\Controller\ReinvestmentsController.php(342): Controller->paginate('Investor')
+#2 [internal function]: ReinvestmentsController->newInvestment1()
+#3 C:\wamp\www\Parkstone\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(ReinvestmentsController), Array)
+#4 C:\wamp\www\Parkstone\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#5 C:\wamp\www\Parkstone\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(ReinvestmentsController), Object(CakeRequest), Object(CakeResponse))
+#6 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#7 {main}
+2014-10-16 22:35:11 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-10-16 22:35:11 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /Parkstone/css/style.less.css
+Stack Trace:
+#0 C:\wamp\www\Parkstone\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}

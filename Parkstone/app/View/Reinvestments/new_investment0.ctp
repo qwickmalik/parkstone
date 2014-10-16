@@ -1,4 +1,4 @@
-<h3>New Investment</h3>
+<h3>New Re-Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -33,7 +33,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12" align="right">
                         <?php
                         //echo $this->Html->Link('[Individual]', 'newInvestorIndiv', array('style'=>'color: red;'))."&nbsp;";
-                        //echo $this->Html->Link('[Company]', 'newInvestorComp', array('style'=>'color: red;'));
+                        echo $this->Html->Link('[Proceed]', 'newInvestment1', array('style'=>'color: red;'));
                         //echo "Delete links after";
                         echo $this->Form->button('Proceed', array("type" => "submit", "id" => "cust_save", "class" => "btn btn-lg btn-success"));
                         ?>
