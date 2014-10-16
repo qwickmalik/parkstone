@@ -1,5 +1,5 @@
 <?php
-echo $this->element('header');
+//echo $this->element('header');
 echo $this->Html->script('notification.js');
 
 ?>
@@ -34,10 +34,10 @@ echo $this->Html->script('icheck/icheck.js');
             <div id="wizard-form" class="wizard">
               <ul class="steps">
                 <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Personal Information<span class="chevron"></span></li>
-                <!--<li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>-->
-                <li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>
-				<li data-target="#step3"><span class="badge">3</span>Bank Details<span class="chevron"></span></li>
-				<li data-target="#step4"><span class="badge">4</span>Next of Kin<span class="chevron"></span></li>
+                <!--<li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>
+                <li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>-->
+				<li data-target="#step2"><span class="badge">2</span>Bank Details<span class="chevron"></span></li>
+				<li data-target="#step3"><span class="badge">3</span>Next of Kin<span class="chevron"></span></li>
               </ul>
             </div>
 
@@ -52,7 +52,7 @@ echo $this->Html->script('icheck/icheck.js');
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'commit_indv')); ?> ">
                                                     
-					<?php 
+                                        <?php 
                                         echo $this->Form->hidden('investor_type_id', array('value' => 2));
  					echo $this->Form->input('investortype_id', array('default' => 2, 'label' => 'Investor Type', 'disabled'));
 					echo $this->Form->input('surname', array('label' => 'Surname*','value' => (isset($investor['Investor']['surname']) ? $investor['Investor']['surname'] : '' ), 'placeholder' => 'Enter surname', 'class' => 'required')); 
@@ -74,7 +74,7 @@ echo $this->Html->script('icheck/icheck.js');
 					
 				<?php
 				echo $this->Form->input('occupation', array('size' => 30,'label' => 'occupation/profession','value' => (isset($investor['Investor']['occupation']) ? $investor['Investor']['occupation'] : '' ), 'placeholder' => 'Enter occupation'));
-					echo $this->Form->input('physical_address', array('size' => 30,'value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address','class' => 'required'));
+					echo $this->Form->input('physical_address', array('size' => 30, 'label' => 'Physical Address*','value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address','class' => 'required'));
 					echo $this->Form->input('postal_address', array('size' => 30,'value' => (isset($investor['Investor']['postal_address']) ? $investor['Investor']['postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
 					
 				?>
@@ -163,52 +163,13 @@ echo $this->Html->script('icheck/icheck.js');
                 </div>
                 <!-- Step 1 Personal Information Form End -->
 
-
-                <!-- Step 2 Investment Details Start -->
+		<!-- Step 2 Bank Details Start -->
                 <div class="step-pane" id="step2">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                      <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('inv_amount', array('label' => 'Investment Amount', 'value' => (isset($investor['Investor']['inv_amount']) ? $investor['Investor']['inv_amount'] : '' ))); ?>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('currency_id',array('label' => 'Currency', 'empty' => "--Please Select a Currency--")); ?>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' ))); ?>
-                        </div>
-						  
-						<div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--")); ?>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('paymentschedule_id',array('label' => 'Payment Schedule', 'empty' => "--Please Select--")); ?>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--"));  ?>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                      <?php 
-						echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--"));  
-						echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--"));  
-						echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected"));  
-						?>
-                    </div>
-                  </div>
-                </div>
-                <!-- Step 2 Investment Details End -->
-				
-				 <!-- Step 3 Bank Details Start -->
-                <div class="step-pane" id="step3">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php
 						echo $this->Form->input('acc_name', array('label' => 'Account Name*','class' => 'required', 'placeholder' => "Enter investor name as used with the bank"));  
-						echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'placeholder' => "Enter name of bank"));  
+						echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'placeholder' => "Enter name of bank", 'class' => 'required'));  
 						?>
                     </div>
 
@@ -220,10 +181,10 @@ echo $this->Html->script('icheck/icheck.js');
                     </div>
                   </div>
                 </div>
-                <!-- Step 3 Bank Details End -->
+                <!-- Step 2 Bank Details End -->
 
-				<!-- Step 4 Next of Kin Start -->
-                <div class="step-pane" id="step4">
+				<!-- Step 3 Next of Kin Start -->
+                <div class="step-pane" id="step3">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php 
@@ -253,7 +214,7 @@ echo $this->Html->script('icheck/icheck.js');
                     </div>
                   </div>
                 </div>
-                <!-- Step 4 Next of Kin End -->
+                <!-- Step 3 Next of Kin End -->
 				
 					
               <!--</form>-->

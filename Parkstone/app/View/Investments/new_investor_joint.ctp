@@ -27,10 +27,10 @@ echo $this->Html->script('icheck/icheck.js');
             <div id="wizard-form" class="wizard">
               <ul class="steps">
                 <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Personal Information<span class="chevron"></span></li>
-                <li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>
-                <li data-target="#step3"><span class="badge">3</span>Investment Details<span class="chevron"></span></li>
-				<li data-target="#step3"><span class="badge">4</span>Bank Details<span class="chevron"></span></li>
-				<li data-target="#step3"><span class="badge">5</span>Next of Kin<span class="chevron"></span></li>
+                <!--<li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>-->
+                <li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>
+				<!--<li data-target="#step3"><span class="badge">4</span>Bank Details<span class="chevron"></span></li>
+				<li data-target="#step3"><span class="badge">5</span>Next of Kin<span class="chevron"></span></li>-->
               </ul>
             </div>
 
