@@ -71,7 +71,7 @@ echo $this->Html->script('icheck/icheck.js');
 				?>
 				<div class="row">
 					<div class="col-lg-4 col-md-4 col-sm-12">
-						<?php echo $this->Form->input('id_type', array('label' => 'ID Type','value' => (isset($investor['Investor']['id_number']) ? $investor['Investor']['id_number'] : '' ),'empty' =>'---Select---','options' => array("Drivers license"=>"Drivers license",'NHIS'=>'NHIS','National ID'=>'National ID','Passport'=>'Passport','Voter ID'=>'Voter ID'))); ?>
+						<?php echo $this->Form->input('idtype_id', array('label' => 'ID Type','value' => (isset($investor['Investor']['idtype_id']) ? $investor['Investor']['idtype_id'] : '' ),'empty' =>'---Select---','options' => array("Drivers license"=>"Drivers license",'NHIS'=>'NHIS','National ID'=>'National ID','Passport'=>'Passport','Voter ID'=>'Voter ID'))); ?>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-12">
 						<?php echo $this->Form->input('id_number', array('label' => 'ID Number', 'value' => (isset($investor['Investor']['id_number']) ? $investor['Investor']['id_number'] : '' ), 'placeholder' => 'Enter ID number')); ?>
