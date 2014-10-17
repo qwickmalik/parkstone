@@ -45,3 +45,8 @@ ADD `gross_revenue_id` INT( 3 ) NULL AFTER `institutiontype_id` ,
 ADD `contact_mode` VARCHAR( 10 ) NULL AFTER `gross_revenue_id` ;
 
 ALTER TABLE `investors` CHANGE `institutiontype_id` `institution_type_id` INT( 3 ) NULL DEFAULT NULL ;
+ALTER TABLE `instructions` CHANGE `instruction_name` `instruction_name` VARCHAR( 35 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+
+ALTER TABLE `investment_terms` ADD `period_type` ENUM( 'Days', 'Months', 'Years' ) NULL DEFAULT 'Years' AFTER `term_name` ,
+ADD `period` INT( 4 ) NULL DEFAULT '0' AFTER `period_type` ,
+ADD `interest_rate` DECIMAL( 3, 2 ) NULL DEFAULT '0.00' AFTER `period` ;
