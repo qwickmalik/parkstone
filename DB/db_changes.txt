@@ -1,0 +1,47 @@
+(Already Ran in DB)
+------------------------------------
+ALTER TABLE `investors` ADD `payment_term_id` INT( 11 ) NULL DEFAULT NULL AFTER `investor_type_id` ;
+
+ALTER TABLE `investors` ADD `payment_shedule_id` INT( 3 ) NULL DEFAULT NULL AFTER `payment_term_id` ,
+ADD `payment_mode_id` INT( 3 ) NULL DEFAULT NULL AFTER `payment_shedule_id` ;
+
+08 OCTOBER 2014(Already Ran in DB)
+----------------------------------------
+ALTER TABLE `investors` CHANGE `home_address` `physical_address` VARCHAR( 70 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+ALTER TABLE `investors` ADD `in_trust_for` VARCHAR(70) NULL DEFAULT NULL AFTER `payment_mode_id`, ADD `occupation` VARCHAR(25) NULL DEFAULT NULL AFTER `in_trust_for`, ADD `id_expiry` DATE NULL DEFAULT NULL AFTER `occupation`, ADD `id_issue` DATE NULL DEFAULT NULL AFTER `id_expiry`, ADD `gifts_inheritance` DECIMAL(11,2) NOT NULL DEFAULT '0.00' AFTER `id_issue`, ADD `nationality` VARCHAR(20) NULL DEFAULT NULL AFTER `id_number`, ADD `hometown` VARCHAR(30) NULL DEFAULT NULL AFTER `nationality`, ADD `birth_place` VARCHAR(30) NULL DEFAULT NULL AFTER `hometown`, ADD `work_place` VARCHAR(30) NULL DEFAULT NULL AFTER `birth_place`, ADD `position_held` VARCHAR(25) NULL DEFAULT NULL AFTER `work_place`, ADD `marital_status` VARCHAR(10) NOT NULL AFTER `position_held`, ADD `children` VARCHAR(15) NOT NULL AFTER `marital_status`, ADD `personal_savings` DECIMAL(11,2) NOT NULL DEFAULT '0.00' AFTER `children`, ADD `salary` DECIMAL(11,2) NOT NULL DEFAULT '0.00' AFTER `personal_savings`;
+ALTER TABLE `investors` ADD `income_other` DECIMAL( 11, 2 ) NOT NULL DEFAULT '0.00' AFTER `nk_email` ,
+ADD `investor_signature` BLOB NULL DEFAULT NULL AFTER `income_other` ;
+
+ALTER TABLE `investors` CHANGE `marital_status` `marital_status` ENUM( 'Single', 'Married', 'Widowed', 'Divorced' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Single';
+ALTER TABLE `investments` ADD `currency_id` INT( 11 ) NULL AFTER `user_id` ;
+
+
+13 OCTOBER 2014 (Already Ran in DB)
+----------------------------------------
+ALTER TABLE `investors` CHANGE `gifts_inheritance` `gifts_inheritance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `registration_date` `registration_date` DATE NULL ,
+CHANGE `dob` `dob` DATE NULL ,
+CHANGE `children` `children` VARCHAR( 15 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ,
+CHANGE `personal_savings` `personal_savings` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `salary` `salary` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `next_of_kin_name` `next_of_kin_name` VARCHAR( 50 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ,
+CHANGE `nk_phone` `nk_phone` VARCHAR( 15 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ,
+CHANGE `income_other` `income_other` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `created` `created` DATETIME NULL ,
+CHANGE `modified` `modified` DATETIME NULL ;
+-------------------------------16
+
+16 october 2014 (Already Ran in DB)
+-------------------------------
+ALTER TABLE `investors` ADD `ceo` VARCHAR( 70 ) NULL AFTER `investor_signature` ,
+ADD `comp_name` VARCHAR( 70 ) NULL AFTER `ceo` ,
+ADD `nature_biz` VARCHAR( 30 ) NULL AFTER `comp_name` ,
+ADD `reg_numb` VARCHAR( 20 ) NULL AFTER `nature_biz` ,
+ADD `date_incorp` DATE NULL AFTER `reg_numb` ,
+ADD `contact_person` VARCHAR( 70 ) NULL AFTER `date_incorp` ,
+ADD `position` VARCHAR( 25 ) NULL AFTER `contact_person` ,
+ADD `institutiontype_id` INT( 3 ) NULL AFTER `position` ,
+ADD `gross_revenue_id` INT( 3 ) NULL AFTER `institutiontype_id` ,
+ADD `contact_mode` VARCHAR( 10 ) NULL AFTER `gross_revenue_id` ;
+
+ALTER TABLE `investors` CHANGE `institutiontype_id` `institution_type_id` INT( 3 ) NULL DEFAULT NULL ;
