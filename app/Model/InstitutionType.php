@@ -13,7 +13,6 @@ class InstitutionType extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
-		)
-	);
+		));
 }
 ?>
