@@ -1,27 +1,26 @@
 <?php
 
- CakePlugin::load('Uploader');
-  App::import('Vendor', 'Uploader.Uploader');
- 
+CakePlugin::load('Uploader');
+App::import('Vendor', 'Uploader.Uploader');
 
 class InvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Investments';
-    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction');
+    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
-            'Investor' => array('limit' => 50, 'order' => array('Investor.id' => 'asc'))
+        'Investor' => array('limit' => 50, 'order' => array('Investor.id' => 'asc'))
     );
-//    var $helpers = array('AjaxMultiUpload.Upload');
-    
-      function beforeFilter() {
-      //$this->__validateLoginStatus();
-      $this->Uploader = new Uploader(array('tempDir' => TMP,'ajaxField' => "qqfile"));
-      
 
-      }
-/*
+//var $helpers = array('AjaxMultiUpload.Upload');
+
+    function beforeFilter() {
+        //$this->__validateLoginStatus();
+        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
+    }
+
+    /*
       function __validateLoginStatus() {
       if ($this->action != 'login' && $this->action != 'logout') {
       if ($this->Session->check('userData') == false) {
@@ -29,15 +28,15 @@ class InvestmentsController extends AppController {
       }
       }
       }
-
-      function __validateUserType() {
-
-      $userType = $this->Session->read('userDetails.usertype_id');
-      if ($userType != 1) {
-      $this->redirect('/Information/');
-      }
-      }
      */
+
+    function __validateUserType() {
+
+        $userType = $this->Session->read('userDetails.usertype_id');
+        if ($userType != 1) {
+            $this->redirect('/Information/');
+        }
+    }
 
     function index() {
         
@@ -49,7 +48,6 @@ class InvestmentsController extends AppController {
         // $this->set('marriages', $this->Marriage->find('list'));
         $this->set('idtypes', $this->Idtype->find('list'));
         $this->set('investortypes', $this->InvestorType->find('list'));
-        $this->set('customercategories', $this->CustomerCategory->find('list'));
         // $this->set('zones', $this->Zone->find('list'));
         $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
     }
@@ -59,34 +57,24 @@ class InvestmentsController extends AppController {
         $this->set('investortypes', $this->InvestorType->find('list'));
         $this->set('grossincomes', $this->GrossIncome->find('list'));
         $this->set('marriages', $this->Marriage->find('list'));
-        $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
-        $this->set('currencies', $this->Currency->find('list'));
-        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
-        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
-        $this->set('paymentmodes', $this->PaymentMode->find('list'));
-        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
-        $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('users', $this->User->find('list'));
     }
-function newInvestorJoint() {
+
+    function newInvestorJoint() {
         /*        $this->__validateUserType(); */
         $this->set('investortypes', $this->InvestorType->find('list'));
         $this->set('grossincomes', $this->GrossIncome->find('list'));
         $this->set('marriages', $this->Marriage->find('list'));
-        $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
-        $this->set('currencies', $this->Currency->find('list'));
-        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
-        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
-        $this->set('paymentmodes', $this->PaymentMode->find('list'));
-        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
-        $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('users', $this->User->find('list'));
     }
+
     function newInvestorComp() {
         /*        $this->__validateUserType(); */
 
-        // $this->set('marriages', $this->Marriage->find('list'));
+        $this->set('institutiontypes', $this->InstitutionType->find('list'));
         $this->set('investortypes', $this->InvestorType->find('list'));
-        $this->set('grossincomes', $this->GrossIncome->find('list'));
-        $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
+        $this->set('grossrevenues', $this->GrossRevenue->find('list'));
+        $this->set('users', $this->User->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
@@ -96,28 +84,6 @@ function newInvestorJoint() {
     }
 
     public function proceed_check1() {
-        $this->autoRender = false;
-        if ($this->request->is('post')) {
-            $investortype_id = $this->request->data['Investor']['investortype_id'];
-
-            if ($investortype_id == 1) {
-                $message = 'Please Select a Type of Investor';
-                $this->Session->write('bmsg', $message);
-                $this->redirect('newInvestor');
-            } elseif ($investortype_id == 2) {
-                $this->redirect('newInvestorIndiv');
-            } elseif ($investortype_id == 3) {
-                $this->redirect('newInvestorIndiv');
-            } elseif ($investortype_id == 4) {
-                $this->redirect('newInvestorComp');
-            } else {
-                $message = 'Please Select a Valid Investor Type';
-                $this->Session->write('bmsg', $message);
-                $this->redirect('newInvestor');
-            }
-        }
-    }
- public function proceed_check2() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $investortype_id = $this->request->data['Investor']['investortype_id'];
@@ -139,7 +105,31 @@ function newInvestorJoint() {
             }
         }
     }
-	public function proceed_check3() {
+
+    public function proceed_check2() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investortype_id = $this->request->data['Investor']['investortype_id'];
+
+            if ($investortype_id == 1) {
+                $message = 'Please Select a Type of Investor';
+                $this->Session->write('bmsg', $message);
+                $this->redirect('newInvestor');
+            } elseif ($investortype_id == 2) {
+                $this->redirect('newInvestorIndiv');
+            } elseif ($investortype_id == 3) {
+                $this->redirect('newInvestorJoint');
+            } elseif ($investortype_id == 4) {
+                $this->redirect('newInvestorComp');
+            } else {
+                $message = 'Please Select a Valid Investor Type';
+                $this->Session->write('bmsg', $message);
+                $this->redirect('newInvestor');
+            }
+        }
+    }
+
+    public function proceed_check3() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $investortype_id = $this->request->data['Investor']['investortype_id'];
@@ -161,27 +151,21 @@ function newInvestorJoint() {
             }
         }
     }
+
     public function commit_indv() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
-          return $this->request;
-            
+
+
             $dob_day = $this->request->data['Investor']['dob']['day'];
             $dob_month = $this->request->data['Investor']['dob']['month'];
             $dob_year = $this->request->data['Investor']['dob']['year'];
-            $issue_day = $this->request->data['Investor']['id_issue']['day'];
-            $issue_month = $this->request->data['Investor']['id_issue']['month'];
-            $issue_year = $this->request->data['Investor']['id_issue']['year'];
-            $expiry_day = $this->request->data['Investor']['id_expiry']['day'];
-            $expiry_month = $this->request->data['Investor']['id_expiry']['month'];
-            $expiry_year = $this->request->data['Investor']['id_expiry']['year'];
             if ($this->Session->check('investortemp') == true) {
                 $this->Session->delete('investortemp');
             }
-            $issue = $issue_year . "-" . $issue_month . "-" . $issue_day;
-            $issue_date = date('Y-m-d', strtotime($issue));
-            $expiry = $expiry_year . "-" . $expiry_month . "-" . $expiry_day;
-            $expiry_date = date('Y-m-d', strtotime($expiry));
+
+
+
             $dob = $dob_year . "-" . $dob_month . "-" . $dob_day;
             $dob_date = date('Y-m-d', strtotime($dob));
 
@@ -192,6 +176,36 @@ function newInvestorJoint() {
                 $message = 'Please Supply The Investor\'s Date of Birth';
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
+            }
+            if (is_null($this->request->data['Investor']['id_issue']['day']) || is_null($this->request->data['Investor']['id_issue']['month']) || is_null($this->request->data['Investor']['id_issue']['year'])) {
+                $message = 'Please Supply The Investor\'s ID Issue Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } elseif ($this->request->data['Investor']['id_issue']['day'] == "" || $this->request->data['Investor']['id_issue']['month'] == "" || $this->request->data['Investor']['id_issue']['year'] == "") {
+                $message = 'Please Supply The Investor\'s ID Issue Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } else {
+
+                $issue_day = $this->request->data['Investor']['id_issue']['day'];
+                $issue_month = $this->request->data['Investor']['id_issue']['month'];
+                $issue_year = $this->request->data['Investor']['id_issue']['year'];
+                $issue = $issue_year . "-" . $issue_month . "-" . $issue_day;
+                $issue_date = date('Y-m-d', strtotime($issue));
+                $this->request->data['Investor']['id_issue'] = $issue_date;
+            }
+            if ($this->request->data['Investor']['id_expiry']['day'] == "" || $this->request->data['Investor']['id_expiry']['month'] == "" || $this->request->data['Investor']['id_expiry']['year'] == "") {
+                
+            } elseif (is_null($this->request->data['Investor']['id_expiry']['day']) || is_null($this->request->data['Investor']['id_expiry']['month']) || is_null($this->request->data['Investor']['id_expiry']['year'])) {
+                
+            } else {
+                $expiry_day = $this->request->data['Investor']['id_expiry']['day'];
+                $expiry_month = $this->request->data['Investor']['id_expiry']['month'];
+                $expiry_year = $this->request->data['Investor']['id_expiry']['year'];
+                $expiry = $expiry_year . "-" . $expiry_month . "-" . $expiry_day;
+                $expiry_date = date('Y-m-d', strtotime($expiry));
+
+                $this->request->data['Investor']['id_expiry'] = $expiry_date;
             }
 //            $registration = $registration_year ."-". $registration_month ."-".$registration_day;
             $registration_date = date('Y-m-d');
@@ -226,51 +240,138 @@ function newInvestorJoint() {
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
             }
-
+            if (isset($this->request->data['Investor']['grossincome_id']) && $this->request->data['Investor']['grossincome_id'] != "" || !is_null($this->request->data['Investor']['grossincome_id'])) {
+                $this->request->data['Investor']['gross_income_id'] = $this->request->data['Investor']['grossincome_id'];
+            }
             $this->request->data['Investor']['fullname'] = $fullname;
             $this->request->data['Investor']['dob'] = $dob_date;
-             $this->request->data['Investor']['id_issue'] = $issue_date;
-              $this->request->data['Investor']['id_expiry'] = $expiry_date;
             $this->request->data['Investor']['registration_date'] = $registration_date;
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
- 
+
 //            if ($data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true))) {
-		$data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo	));
-                return json_encode($data);
-            if($data){
-                
-                $this->request->data['Investor']['investor_photo'] = $data['path'];
-//                header('Content-Type: application/json');
-                // Upload successful, do whatever
-            }else{
-                $message = 'Please Supply The Investor\'s Picture';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
+//		$data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo	));
+//                return json_encode($data);
+//            if($data){
+//                
+//                $this->request->data['Investor']['investor_photo'] = $data['path'];
+////                header('Content-Type: application/json');
+//                // Upload successful, do whatever
+//            }else{
+//                $message = 'Please Supply The Investor\'s Picture';
+//                $this->Session->write('emsg', $message);
+//                return json_encode(array('status' => 'error'));
+//            }
+
+            $check = $this->Session->check('userDetails');
+            if ($check) {
+                $user_f= $this->Session->read('userDetails.firstname');
+                $user_l= $this->Session->read('userDetails.lastname');
+                $this->request->data['Investor']['entryclerk_name'] = $user_f.' '.$user_l;
             }
 
-            $userType = $this->Session->check('userDetails.usertype_id');
-            if ($userType) {
-                $userType = $this->Session->read('userDetails.usertype_id');
-                $this->request->data['Investor']['user_id'] = $userType;
-            }
-    
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
             if ($result) {
                 $result['Investor']['full_name'] = $result['Investor']['other_names'] . ' ' . $result['Investor']['surname'];
-                $this->Session->write('investorID', $Investorid);
-                $this->Session->write('investor', $result);
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
                 $message = 'Investor Details Successfully Added';
+                $this->Session->delete('emsg');
                 $this->Session->write('smsg', $message);
                 return json_encode(array('status' => 'success'));
             } else {
                 $message = 'Investor Save Error';
                 $this->Session->write('emsg', $message);
-               return json_encode(array('status' => 'error'));
+                return json_encode(array('status' => 'error'));
+            }
+        }
+    }
+
+    public function commit_comp() {
+        $this->autoLayout = $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+
+
+            if ($this->Session->check('investortemp') == true) {
+                $this->Session->delete('investortemp');
+            }
+
+
+
+
+            $this->Session->write('investortemp', $this->request->data['Investor']);
+
+
+            if (is_null($this->request->data['Investor']['date_incorp']['day']) || is_null($this->request->data['Investor']['date_incorp']['month']) || is_null($this->request->data['Investor']['date_incorp']['year'])) {
+                $message = 'Please Supply The Company\'s Incorp Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } elseif ($this->request->data['Investor']['date_incorp']['day'] == "" || $this->request->data['Investor']['date_incorp']['month'] == "" || $this->request->data['Investor']['date_incorp']['year'] == "") {
+                $message = 'Please Supply The Company\'s Incorp Date Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } else {
+
+                $date_incorp_day = $this->request->data['Investor']['date_incorp']['day'];
+                $date_incorp_month = $this->request->data['Investor']['date_incorp']['month'];
+                $date_incorp_year = $this->request->data['Investor']['date_incorp']['year'];
+                $date_incorp = $date_incorp_year . "-" . $date_incorp_month . "-" . $date_incorp_day;
+                $date_incorp = date('Y-m-d', strtotime($date_incorp));
+                $this->request->data['Investor']['date_incorp'] = $date_incorp;
+            }
+
+//            $registration = $registration_year ."-". $registration_month ."-".$registration_day;
+            $registration_date = date('Y-m-d');
+
+
+            if (isset($this->request->data['Investor']['grossrevenue_id']) && $this->request->data['Investor']['grossrevenue_id'] != "" || !is_null($this->request->data['Investor']['grossrevenue_id'])) {
+                $this->request->data['Investor']['gross_revenue_id'] = $this->request->data['Investor']['grossrevenue_id'];
+            }
+            if (isset($this->request->data['Investor']['institutiontype_id']) && $this->request->data['Investor']['institutiontype_id'] != "" || !is_null($this->request->data['Investor']['institutiontype_id'])) {
+                $this->request->data['Investor']['institution_type_id'] = $this->request->data['Investor']['institutiontype_id'];
+            }
+
+            $this->request->data['Investor']['registration_date'] = $registration_date;
+            $photo = $this->request->data['Investor']['comp_name'] . "_" . "photo" . "_" . $date_incorp;
+
+//            if ($data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true))) {
+//		$data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo	));
+//                return json_encode($data);
+//            if($data){
+//                
+//                $this->request->data['Investor']['investor_photo'] = $data['path'];
+////                header('Content-Type: application/json');
+//                // Upload successful, do whatever
+//            }else{
+//                $message = 'Please Supply The Investor\'s Picture';
+//                $this->Session->write('emsg', $message);
+//                return json_encode(array('status' => 'error'));
+//            }
+
+            $check = $this->Session->check('userDetails');
+            if ($check) {
+                $user_f= $this->Session->read('userDetails.firstname');
+                $user_l= $this->Session->read('userDetails.lastname');
+                $this->request->data['Investor']['entryclerk_name'] = $user_f.' '.$user_l;
+            }
+
+            $result = $this->Investor->save($this->request->data);
+            $Investorid = $this->Investor->id;
+            //pr($this->request->data);
+            if ($result) {
+                if ($this->Session->check('investortemp') == true) {
+                    $this->Session->delete('investortemp');
+                }
+                $message = 'Investor Details Successfully Added';
+                $this->Session->delete('emsg');
+                $this->Session->write('smsg', $message);
+                return json_encode(array('status' => 'success'));
+            } else {
+                $message = 'Investor Save Error';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
             }
         }
     }
@@ -643,11 +744,12 @@ function newInvestorJoint() {
         $this->redirect(array('controller' => "Investments", 'action' => "deleteInvestor"));
     }
 
-	function newInvestment0(){
+    function newInvestment0() {
         $this->set('idtypes', $this->Idtype->find('list'));
         $this->set('investortypes', $this->InvestorType->find('list'));
         $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
-	}
+    }
+
     function newInvestment1() {
         /* $this->__validateUserType(); */
         $data = $this->paginate('Investor');
@@ -668,7 +770,7 @@ function newInvestorJoint() {
         }
     }
 
-	function newInvestment1Joint() {
+    function newInvestment1Joint() {
         /* $this->__validateUserType(); */
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
@@ -687,11 +789,17 @@ function newInvestorJoint() {
             $this->Session->delete('ivts');
         }
     }
-	
+
     function newInvestment2() {
         /* $this->__validateUserType(); */
         $this->set('portfolios', $this->Portfolio->find('list'));
-
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('instructions', $this->Instruction->find('list'));
+        
         $check = $this->Session->check('ivt');
         if ($check) {
             $investor = $this->Session->read('ivt');

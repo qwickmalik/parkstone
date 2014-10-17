@@ -106,14 +106,18 @@ if ($this->Session->check('shopCurrency')) {
                                         <?php echo $this->Form->input('inv_amount', array('label' => 'Investment Amount', 'value' => (isset($investor['Investor']['inv_amount']) ? $investor['Investor']['inv_amount'] : '' ))); ?>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <?php echo $this->Form->input('currency_id', array('label' => 'Currency', 'empty' => "--Please Select a Currency--")); ?>
+                                       <?php echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--")); ?>
+                                    
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <?php echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' ))); ?>
+                                        <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' ))); ?>
+                                   <?php echo $this->Form->input('custom_rate', array('label' => 'Custom Interest Rate','value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
+                      
                                     </div>
 
                                     <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <?php echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--")); ?>
+                                          <?php echo $this->Form->input('currency_id', array('label' => 'Currency', 'empty' => "--Please Select a Currency--")); ?>
+                                      
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12">
                                         <?php echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule', 'empty' => "--Please Select--")); ?>

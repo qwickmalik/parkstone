@@ -33,21 +33,47 @@ jQuery(document).ready(function($) {
 
   // Finished, submit the form!
   $('.wizard').on('finished', function(e, data) {
-    var form_data = $('#InvestorNewInvestorIndivForm').serialize();
+    var form_data = $('form').serialize();
 
-//var query = form_data;
-             //alert($('#post_url').val());
-//            $('#InvestorNewInvestorIndivForm').ajaxSumbit({
-//                type: 'POST',
-//                url: $('#post_url').val(),
-//                data: new FormData( this ),
-//      processData: false,
-//      contentType: false,
-//                success: function (data) {
-//                    
-//                    if(data['status'] == 'error'){
-//                        window.location.reload();
-//                    }else if(data['status'] == 'success'){
+var query = form_data;
+            $.ajax({
+                type: 'POST',
+                url: $('#post_url').val(),
+                dataType: 'json',
+                data: query,
+                success: function (data) {
+                    
+                    if(data['status'] == 'error'){
+                        window.location.reload();
+                    }else if(data['status'] == 'success'){
+                      
+    $('#wizard-form, .actions, .step-content').hide();
+    $('.wizard-form-success').fadeIn(800);
+                    }
+                    
+
+                },
+                error: function () {
+                }
+
+            });
+//        
+//  $('#InvestorNewInvestorIndivForm').submit(function(e){
+//      //var query = new FormData(this);
+//      var query = new window.FormData($('#InvestorNewInvestorIndivForm')[0]);
+//     
+//      $.ajax({
+//                'url': $('#post_url').val(),
+//                'type': 'POST',
+//                'data': query,
+//                'processData': false,
+//                'contentType': false,
+//                success: function (rdata) {
+//                    alert(rdata);
+//                    return false;
+//                    if(rdata['status'] == 'error'){
+//                       // window.location.reload();
+//                    }else if(rdata['status'] == 'success'){
 //                        
 //    $('#wizard-form, .actions, .step-content').hide();
 //    $('.wizard-form-success').fadeIn(800);
@@ -59,36 +85,8 @@ jQuery(document).ready(function($) {
 //                }
 //
 //            });
-        
-  $('#InvestorNewInvestorIndivForm').submit(function(e){
-      //var query = new FormData(this);
-      var query = new window.FormData($('#InvestorNewInvestorIndivForm')[0]);
-     
-      $.ajax({
-                'url': $('#post_url').val(),
-                'type': 'POST',
-                'data': query,
-                'processData': false,
-                'contentType': false,
-                success: function (rdata) {
-                    alert(rdata);
-                    return false;
-                    if(rdata['status'] == 'error'){
-                       // window.location.reload();
-                    }else if(rdata['status'] == 'success'){
-                        
-    $('#wizard-form, .actions, .step-content').hide();
-    $('.wizard-form-success').fadeIn(800);
-                    }
-                    
-
-                },
-                error: function () {
-                }
-
-            });
-  });
-   $("#InvestorNewInvestorIndivForm").submit();         
+//  });
+//   $("#InvestorNewInvestorIndivForm").submit();         
     return false;
   });
 

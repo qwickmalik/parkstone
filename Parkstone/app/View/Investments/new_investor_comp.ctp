@@ -35,17 +35,21 @@
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
                             <?php
-                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'save'), "inputDefaults" => array('div' => false)));
+                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'commit_comp'), "inputDefaults" => array('div' => false)));
                             ?>
                             <!-- Step 1 Company Information Form Start -->
                             <div class="step-pane active" id="step1">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'commit_comp')); ?> ">
+                              
                                         <?php
+                                        echo $this->Form->hidden('investor_type_id', array('value' => 4));
                                         echo $this->Form->input('investortype_id', array('default' => 4, 'label' => 'Investor Type', 'disabled'));
+                                        echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));                                      
                                         echo $this->Form->input('comp_name', array('label' => 'Company/Organisation Name*', 'value' => (isset($investor['Investor']['comp_name']) ? $investor['Investor']['comp_name'] : '' ), 'placeholder' => 'Enter company/organisation name', 'class' => 'required'));
                                         echo $this->Form->input('nature_biz', array('label' => 'Nature of Business', 'value' => (isset($investor['Investor']['nature_biz']) ? $investor['Investor']['nature_biz'] : '' ), 'placeholder' => 'Describe nature of business'));
-                                        echo $this->Form->input('reg_numb', array('value' => (isset($investor['Investor']['reg_numb']) ? $investor['Investor']['reg_numb'] : '' ), 'placeholder' => 'Enter company registration number'));
+                                        echo $this->Form->input('reg_numb', array('label' => 'Reg. Number*','value' => (isset($investor['Investor']['reg_numb']) ? $investor['Investor']['reg_numb'] : '' ), 'placeholder' => 'Enter company registration number', 'class' => 'required'));
                                         ?>
 
                                         <div class="row">
@@ -53,13 +57,13 @@
                                                 <span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px; '>Date of Incorporation*:</span>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->day('dob', array('size' => 1, 'label' => 'D.O.B', 'value' => (isset($investor['Investor']['dob']) ? date('d', strtotime($investor['Investor']['dob'])) : date('d') ), 'empty' => (isset($investor['Investor']['dob']) ? date('d', strtotime($investor['Investor']['dob'])) : date('d') ), 'class' => 'required')); ?>&nbsp;
+                                                <?php echo $this->Form->day('date_incorp', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('d', strtotime($investor['Investor']['date_incorp'])) : '--Select Day--' ), 'empty' => '--Select Day--', 'class' => 'required')); ?>&nbsp;
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->month('dob', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['dob']) ? date('m', strtotime($investor['Investor']['dob'])) : date('m') ), 'empty' => (isset($investor['Investor']['dob']) ? date('F', strtotime($investor['Investor']['dob'])) : date('F') ), 'class' => 'required')); ?>&nbsp;
+                                                <?php echo $this->Form->month('date_incorp', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('m', strtotime($investor['Investor']['date_incorp'])) : '--Select Month--'), 'empty' => '--Select Month--', 'class' => 'required')); ?>&nbsp;
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->year('dob', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['dob']) ? date('Y', strtotime($investor['Investor']['dob'])) : date('Y') ), 'empty' => (isset($investor['Investor']['dob']) ? date('Y', strtotime($investor['Investor']['dob'])) : date('Y')), 'class' => 'required')); ?>
+                                                <?php echo $this->Form->year('date_incorp', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('Y', strtotime($investor['Investor']['date_incorp'])) : '--Select Year--' ), 'empty' => '--Select Year--', 'class' => 'required')); ?>
                                             </div>
                                         </div>
 
@@ -71,14 +75,14 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('ceo', array('size' => 30, 'value' => (isset($investor['Investor']['ceo']) ? $investor['Investor']['ceo'] : '' ), 'placeholder' => 'Enter name of CEO/Director/Manager', 'label' => 'CEO/Director/Manager'));
-                                        echo $this->Form->input('contact_person', array('value' => (isset($investor['Investor']['contact_person']) ? $investor['Investor']['contact_person'] : '' ), 'placeholder' => 'Enter name of contact person for investment'));
+                                        echo $this->Form->input('ceo', array('size' => 30, 'value' => (isset($investor['Investor']['ceo']) ? $investor['Investor']['ceo'] : '' ), 'placeholder' => 'Enter name of CEO/Director/Manager', 'label' => 'CEO/Director/Manager', 'class' => 'required'));
+                                        echo $this->Form->input('contact_person', array('value' => (isset($investor['Investor']['contact_person']) ? $investor['Investor']['contact_person'] : '' ), 'placeholder' => 'Enter name of contact person for investment', 'class' => 'required'));
                                         echo $this->Form->input('position', array('value' => (isset($investor['Investor']['position']) ? $investor['Investor']['position'] : '' ), 'placeholder' => 'Enter position of contact person'));
                                         echo $this->Form->input('phone', array('label' => 'Phone Number*', 'value' => (isset($investor['Investor']['phone']) ? $investor['Investor']['phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
                                         echo $this->Form->input('email', array('label' => 'Email Address*', 'value' => (isset($investor['Investor']['email']) ? $investor['Investor']['email'] : '' ), 'placeholder' => 'Enter email address', 'class' => 'required'));
                                         echo $this->Form->input('institutiontype_id', array('label' => 'Type of Institution', 'default' => 0));
                                         echo $this->Form->input('grossrevenue_id', array('label' => 'Annual Gross Revenue', 'default' => 0));
-                                        echo "<span style='font-size: 14px;font-weight: bold; padding: 10px 0px 10px 0px;'>Preferred Mode of Contact</span>" . $this->Form->select('contact_mode', array('1' => 'Phone', '2' => 'Email'), array('empty' => '-Please select-'));
+                                        echo "<span style='font-size: 14px;font-weight: bold; padding: 10px 0px 10px 0px;'>Preferred Mode of Contact</span>" . $this->Form->select('contact_mode', array('Phone' => 'Phone', 'Email' => 'Email'), array('empty' => '-Please select-'));
                                         ?>
                                     </div>
                                 </div>
@@ -107,7 +111,8 @@
 
 
                             <!--</form>-->
-                            <?php $this->Form->end(); ?>
+                            
+            <?php $this->Form->end(); ?>
                         </div>
 
 
@@ -125,7 +130,12 @@
 
         </div>
         <!-- Row End -->
-
+<style type="text/css">
+    label.error{
+    color: #B94A48;
+    margin-top: 2px;
+}
+</style>
         <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
         <?php
         echo $this->Html->script('prettify.js');
