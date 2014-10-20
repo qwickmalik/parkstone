@@ -179,7 +179,7 @@ class ShellConsolesController extends AppController {
 //
 //                        $msgresult = $this->Message->sendSMS($msg, "233" . $cell_number);
                             
-              $msg = "Dear " . $fullname . ", please be reminded that your next payment of " . "GHC" . round($expbalance) . " for your order " . $invoice_no . " will be due in two days. Contact 0202088128 enquiries. Thanks.";
+              $msg = "Dear " . $fullname . ", please be reminded that your next payment of " . "GHC" . round($expbalance) . " for your order " . $invoice_no . " will be due in two days. Contact 0202088124 enquiries. Thanks.";
                     $msgresult = $this->Message->sendSMS($msg, $c_number);
             
                     }

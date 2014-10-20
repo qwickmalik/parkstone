@@ -827,11 +827,12 @@ class InvestmentsController extends AppController {
 //        }
     }
 
-    function process() {
+    function process_indv() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $amount = $this->request->data['Investment']['investment_amount'];
-
+            $custom_rate = $this->request->data['Investment']['custom_rate'];
+            $investor_id = $this->request->data['Investment']['investor_id'];
             $inv_day = $this->request->data['Investment']['investment_date']['day'];
             $inv_month = $this->request->data['Investment']['investment_date']['month'];
             $inv_year = $this->request->data['Investment']['investment_date']['year'];
@@ -846,42 +847,77 @@ class InvestmentsController extends AppController {
             $this->Session->write('investtemp', $this->request->data['Investment']);
 
 
-            $portfolio_id = $this->request->data['Investment']['portfolio_id'];
+            $term_id = $this->request->data['Investment']['investmentterm_id'];
 
-            if ($this->request->data['Investment']['portfolio_id'] == "" || $this->request->data['Investment']['portfolio_id'] == null) {
-                $message = 'Please Select a Portfolio';
+            if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
+                $message = 'Please Select an Investment Term';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
             }
 
 
-            if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
-                $message = 'Please Supply Investment Amount';
+            if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
+                $message = 'Please Select a Currency';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
             }
 
-            $portfolio = $this->Portfolio->find('first', array('conditions' => array('Portfolio.id' => $portfolio_id), 'recursive' => -1));
+             if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
+                $message = 'Please Select a Payment Schedule';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
+            }
+
+             if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
+                $message = 'Please Select a Payment Mode';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
+            }
+
+             if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
+                $message = 'Please Select  an Investment Product';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
+            }
+
+             if ($this->request->data['Investment']['instruction_id'] == "" || $this->request->data['Investment']['instruction_id'] == null) {
+                $message = 'Please Select an Instruction';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
+            }
+            if(($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")){
+                $message = 'Please State Instruction Details';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2',));
+            }
+            
+            
+            $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
 
             if ($portfolio) {
+                
+                 if(isset($custom_rate) && !empty($custom_rate)){
+                    $rate = $custom_rate;
+                }else{
                 $rate = $portfolio['Portfolio']['interest_rate'];
-                $months = $portfolio['Portfolio']['period_months'];
+                }
+                $year = $portfolio['InvestmentTerm']['period'];
                 $investment_amount = $this->request->data['Investment']['investment_amount'];
                 $interest_amount1 = ($rate / 100) * $investment_amount;
-                $interest_amount = $interest_amount1 * $months;
+                $interest_amount = $interest_amount1 * $year;
                 $amount_due = $interest_amount + $investment_amount;
 
                 $first_date = $inv_date;
 
                 $date = new DateTime($first_date);
-                $date->add(new DateInterval('P' . $months . 'M'));
+                $date->add(new DateInterval('P' . $year . 'Y'));
 
                 $date_statemt = new DateTime($first_date);
                 $principal = $investment_amount;
                 $statemt_array = array();
 
-                for ($n = 1; $n <= $months; $n++) {
-                    $date_statemt->add(new DateInterval('P1M'));
+                for ($n = 1; $n <= $year; $n++) {
+                    $date_statemt->add(new DateInterval('P1Y'));
 
                     $total = $interest_amount1 + $principal;
                     $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'], 'investor_id' => $this->request->data['Investment']['investor_id'], 'principal' => $principal, 'interest' => $interest_amount1, 'maturity_date' => $date_statemt->format('Y-m-d'), 'total' => $total);
