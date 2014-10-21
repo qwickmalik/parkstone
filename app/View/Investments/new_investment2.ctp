@@ -101,6 +101,17 @@ if ($this->Session->check('shopCurrency')) {
                     ?>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
+                            <?php
+                            echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investor['Investor']['id']) ? $investor['Investor']['id'] : '' )));
+
+
+                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'disabled', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['investmentproduct_id']) ? $investor['Investor']['investmentproduct_id'] : '' )));
+                            echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['instruction_id']) ? $investor['Investor']['instruction_id'] : '' )));
+                            echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected", 'value' => (isset($investor['Investor']['instruction_details']) ? $investor['Investor']['instruction_details'] : '' )));
+                            ?>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo $this->Form->input('investment_amount', array('label' => 'Investment Amount', 'class' => 'required', 'value' => (isset($investor['Investor']['investment_amount']) ? $investor['Investor']['investment_amount'] : '' ))); ?>
@@ -167,19 +178,6 @@ if ($this->Session->check('shopCurrency')) {
                                     </script>
                             </div>
                         </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <?php
-                            echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investor_id', array('value' => (isset($investor['Investor']['id']) ? $investor['Investor']['id'] : '' )));
-
-
-                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['investmentproduct_id']) ? $investor['Investor']['investmentproduct_id'] : '' )));
-                            echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['instruction_id']) ? $investor['Investor']['instruction_id'] : '' )));
-                            echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected", 'value' => (isset($investor['Investor']['instruction_details']) ? $investor['Investor']['instruction_details'] : '' )));
-                            ?>
-                        </div>
-
 
                     </div>
 
@@ -249,7 +247,7 @@ if ($this->Session->check('shopCurrency')) {
             <tr>
                 <td align="left" valign="top">&nbsp;</td>
                 <td align="right" valign="middle" colspan="2">
-                    <?php echo $this->Html->link('Back', "/Investments/newInvestment", array("class" => 'btn btn-lg btn-info')); ?>
+                    <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
                     <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success")); ?>
                     &nbsp;&nbsp;
                     <?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
