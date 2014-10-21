@@ -60,7 +60,7 @@ class InvestmentsController extends AppController {
         $this->set('users', $this->User->find('list'));
     }
 
-    function newInvestorJoint() {
+    function newInvestorIndivJoint() {
         /*        $this->__validateUserType(); */
         $this->set('investortypes', $this->InvestorType->find('list'));
         $this->set('grossincomes', $this->GrossIncome->find('list'));
@@ -93,10 +93,8 @@ class InvestmentsController extends AppController {
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestor');
             } elseif ($investortype_id == 2) {
-                $this->redirect('newInvestorIndiv');
+                $this->redirect('newInvestorIndivJoint');
             } elseif ($investortype_id == 3) {
-                $this->redirect('newInvestorJoint');
-            } elseif ($investortype_id == 4) {
                 $this->redirect('newInvestorComp');
             } else {
                 $message = 'Please Select a Valid Investor Type';
@@ -116,10 +114,8 @@ class InvestmentsController extends AppController {
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestor');
             } elseif ($investortype_id == 2) {
-                $this->redirect('newInvestorIndiv');
+                $this->redirect('newInvestorIndivJoint');
             } elseif ($investortype_id == 3) {
-                $this->redirect('newInvestorJoint');
-            } elseif ($investortype_id == 4) {
                 $this->redirect('newInvestorComp');
             } else {
                 $message = 'Please Select a Valid Investor Type';
@@ -137,13 +133,11 @@ class InvestmentsController extends AppController {
             if ($investortype_id == 1) {
                 $message = 'Please Select a Type of Investor';
                 $this->Session->write('bmsg', $message);
-                $this->redirect('newInvestor');
+                $this->redirect('newInvestment0');
             } elseif ($investortype_id == 2) {
-                $this->redirect('newInvestment1');
-            } elseif ($investortype_id == 3) {
                 $this->redirect('newInvestment1Joint');
-            } elseif ($investortype_id == 4) {
-                $this->redirect('newInvestment1');
+            } elseif ($investortype_id == 3) {
+                $this->redirect('newInvestment1Comp');
             } else {
                 $message = 'Please Select a Valid Investor Type';
                 $this->Session->write('bmsg', $message);
@@ -750,9 +744,10 @@ class InvestmentsController extends AppController {
         $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
     }
 
-    function newInvestment1() {
+    function newInvestment1Comp() {
         /* $this->__validateUserType(); */
         $data = $this->paginate('Investor');
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('investor', $data);
 
         $check = $this->Session->check('ivt');
@@ -772,6 +767,7 @@ class InvestmentsController extends AppController {
 
     function newInvestment1Joint() {
         /* $this->__validateUserType(); */
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
 
