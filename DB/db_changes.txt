@@ -50,3 +50,14 @@ ALTER TABLE `instructions` CHANGE `instruction_name` `instruction_name` VARCHAR(
 ALTER TABLE `investment_terms` ADD `period_type` ENUM( 'Days', 'Months', 'Years' ) NULL DEFAULT 'Years' AFTER `term_name` ,
 ADD `period` INT( 4 ) NULL DEFAULT '0' AFTER `period_type` ,
 ADD `interest_rate` DECIMAL( 3, 2 ) NULL DEFAULT '0.00' AFTER `period` ;
+
+
+21 OCTOBER,2014(New)
+---------------------
+ALTER TABLE `investments` ADD `payment_schedule_id` INT( 3 ) NULL AFTER `old_status` ,
+ADD `payment_mode_id` INT( 3 ) NULL AFTER `payment_schedule_id` ,
+ADD `investment_product_id` INT( 3 ) NULL AFTER `payment_mode_id` ,
+ADD `instruction_id` INT( 3 ) NULL AFTER `investment_product_id` ,
+ADD `instruction_details` VARCHAR( 50 ) NULL AFTER `instruction_id` ;
+ALTER TABLE `investments` CHANGE `portfolio_id` `investment_term_id` INT( 11 ) NULL DEFAULT NULL ;
+ALTER TABLE `investors` ADD `inv_freq` VARCHAR( 15 ) NULL AFTER `reg_numb` ;
