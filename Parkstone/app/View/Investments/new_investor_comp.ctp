@@ -44,8 +44,8 @@
                                         <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'commit_comp')); ?> ">
                               
                                         <?php
-                                        echo $this->Form->hidden('investor_type_id', array('value' => 4));
-                                        echo $this->Form->input('investortype_id', array('default' => 4, 'label' => 'Investor Type', 'disabled'));
+                                        echo $this->Form->hidden('investor_type_id', array('value' => 3));
+                                        echo $this->Form->input('investortype_id', array('default' => 3, 'label' => 'Investor Type', 'disabled'));
                                         echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));                                      
                                         echo $this->Form->input('comp_name', array('label' => 'Company/Organisation Name*', 'value' => (isset($investor['Investor']['comp_name']) ? $investor['Investor']['comp_name'] : '' ), 'placeholder' => 'Enter company/organisation name', 'class' => 'required'));
                                         echo $this->Form->input('nature_biz', array('label' => 'Nature of Business', 'value' => (isset($investor['Investor']['nature_biz']) ? $investor['Investor']['nature_biz'] : '' ), 'placeholder' => 'Describe nature of business'));

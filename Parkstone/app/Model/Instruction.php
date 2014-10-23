@@ -7,8 +7,8 @@ class Instruction extends AppModel {
     
     
     var $hasMany = array(
-        'Investor' => array(
-            'className' => 'Investor',
+        'Investment' => array(
+            'className' => 'Investment',
             'foreignKey' => 'instruction_id',
             'conditions' => '',
             'order' => '',

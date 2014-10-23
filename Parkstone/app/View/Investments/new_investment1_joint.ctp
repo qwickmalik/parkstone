@@ -12,7 +12,7 @@ echo $this->Html->script('notification.js');
         <tr>
             <td align="left" valign="top" colspan="3" style="background: #eaeaea; border: solid 1px #cccccc; border-bottom: none;"><?php 
 //echo $this->Form->create('Order', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Orders', 'action' => 'searchProduct'), "inputDefaults" => array('div' => false))); 
-				echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchInvest4Invest'), "inputDefaults" => array('div' => false)));
+				echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4investment'), "inputDefaults" => array('div' => false)));
 				?>
                 <table width="100%" align="left" cellspacing="0" cellpadding="0" border="0">
                 <tr>
@@ -27,7 +27,7 @@ echo $this->Html->script('notification.js');
                					// echo $this->Form->button('Search', array("type" => "submit", "class" => "button_blue"));
 								echo $this->Form->input('search', array('size' => 70, 'class' => 'search', 'value' => (isset($int['Investor']['fullname']) ? $int['Investor']['fullname'] : '' ), 'name' => 'investor_search', 'id' => (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ),
 						'label' => false)); ?>
-								<input type="hidden" name="hid_cust" value="<?php (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ); ?>" />
+								<input type="hidden" name="hid_investor" value="<?php (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ); ?>" />
 
 					   			<?php echo $this->Form->button('Search', array("type" => "submit", "id" => "search", "class"=>"btn btn-lg btn-success")); ?>
 						</div>
@@ -69,10 +69,10 @@ echo $this->Html->script('notification.js');
 								foreach($investor as $each_item): ?>
 							<tr>
 								<td align="left">
-									<?php echo $this->Html->link($each_item['Investor']['surname'],"/Investments/searchInvest4Invest/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])) ; ?>
+									<?php echo $this->Html->link($each_item['Investor']['surname'],"/Investments/searchinvestor4investment/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])) ; ?>
 								</td>
 								<td align="left" class="orderAnchor">
-									<?php echo $this->Html->link($each_item['Investor']['other_names'],"/Investments/searchInvest4Invest/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])); ?>
+									<?php echo $this->Html->link($each_item['Investor']['other_names'],"/Investments/searchinvestor4investment/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])); ?>
 								</td> <!-- Link to enable editing -->
 								<td width="200" align="left">
 									<?php echo $each_item['Investor']['phone']; ?>
@@ -97,9 +97,8 @@ echo $this->Html->script('notification.js');
                             <tr>
                                 <td colspan="6" align="center">
                                     
-    <?php echo $this->Form->create('Order', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Orders', 'action' => 'processOrder'), "inputDefaults" => array('div' => false))); 
-                                   
-                                   echo $this->Paginator->first($this->Html->image('first.png', array('width'=>15, 'height'=>15, 'valign'=>'middle', 'alt'=>'First', 'title'=>'First')), array('escape' => false), null, null, array('class' => 'disabled'))."&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    <?php
+                       echo $this->Paginator->first($this->Html->image('first.png', array('width'=>15, 'height'=>15, 'valign'=>'middle', 'alt'=>'First', 'title'=>'First')), array('escape' => false), null, null, array('class' => 'disabled'))."&nbsp;&nbsp;&nbsp;&nbsp;";
                                    echo $this->Paginator->prev($this->Html->image('prev.png', array('width'=>15, 'height'=>15, 'valign'=>'middle', 'alt'=>'Previous', 'title'=>'Previous')), array('escape' => false), null, null, array('class' => 'disabled'))."&nbsp;&nbsp;&nbsp;&nbsp;";
                                    echo $this->Paginator->numbers()."&nbsp;&nbsp;";
                                    echo $this->Paginator->next($this->Html->image('next.png', array('width'=>15, 'height'=>15, 'valign'=>'middle', 'alt'=>'Next', 'title'=>'Next')), array('escape' => false), null, null, array('class' => 'disabled'))."&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -137,30 +136,19 @@ echo $this->Html->script('notification.js');
                                 </td>
 							</tr>
                             
-                            <?php //if(isset($cart_items)){ foreach($cart_items as $each_item):
+                            
+<?php if(isset($selected)){ foreach($selected as $each_item):
 						?>
-                            <!--  <tr>
-                               <td align="left"><?php// if(isset($each_item['item_id'])){echo $each_item['item_id'];} ?></td>
-                                <td align="left"><?php// if(isset($each_item['serialno'])){echo $each_item['serialno'];} ?></td>
-                                <td align="left"><?php //if(isset($each_item['item_name'])){echo $each_item['item_name']; }?></td>        
-                                <td align="left"><?php //if(isset($each_item['brand'])){echo  $each_item['brand']; }?></td>
-                                <td align="left"><?php //if(isset($each_item['cash_price'])){echo  round($each_item['cash_price']); }?></td>
-                                <td align="left"><?php //if(isset($each_item['quantity'])){echo $each_item['quantity']; } ?></td>
-                                <td align="left"><?php //if(isset($each_item['payment_amount'])){echo round($each_item['payment_amount']); } ?></td>
-                                <td align="left"><?php// if(isset($each_item['installments'])){echo round($each_item['installments']);} ?></td>
-                                <td width="20" align="left"><a href="../Orders/delItem/<?php //if(isset($each_item['item_id'])){ echo $each_item['item_id']; }
-?>">Delete</a> </td>
-                            </tr>-->
 							<tr>
-								<td align="left">xxx</td>
-								<td align="left">xxx</td>
-								<td align="left">xxx</td>
-								<td align="left">xxx</td>
+								<td align="left"><?php if(isset($each_item['surname'])){echo $each_item['surname'];} ?></td>
+								<td align="left"><?php if(isset($each_item['other_names'])){echo $each_item['other_names'];} ?></td>
+								<td align="left"><?php if(isset($each_item['phone_number'])){echo $each_item['phone_number'];} ?></td>
+								<td align="left"><?php if(isset($each_item['email'])){echo $each_item['email'];} ?></td>
 								<td width="50" align="right">
-                                    <?php echo $this->Html->link('Remove', '#', array()); ?>
+                                    <?php echo $this->Html->link('Remove', "/Investments/rmInvestor/".(isset($each_item['investor_id'])?$each_item['investor_id'] : ''), array()); ?>
                                 </td>
 							</tr>
-                           <?php //endforeach; }?>
+                           <?php endforeach; }?>
                             <tr>
                                 <td colspan="5">&nbsp;</td>
                             </tr>
@@ -195,7 +183,5 @@ echo $this->Html->script('notification.js');
             </td>
         </tr>
     </table>
-<?php 
-    echo $this->Form->end();
-?>
+
 <!-- Content ends here -->

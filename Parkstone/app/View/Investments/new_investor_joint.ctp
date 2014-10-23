@@ -53,8 +53,8 @@ echo $this->Html->script('icheck/icheck.js');
                         <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'commit_indv')); ?> ">
                                                     
 					<?php 
-                                        echo $this->Form->hidden('investor_type_id', array('value' => 2));
- 					echo $this->Form->input('investortype_id', array('default' => 2, 'label' => 'Investor Type', 'disabled'));
+                                        echo $this->Form->hidden('investor_type_id', array('value' => 3));
+ 					echo $this->Form->input('investortype_id', array('default' => 3, 'label' => 'Investor Type', 'disabled'));
 					echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));
                                         echo $this->Form->input('surname', array('label' => 'Surname*','value' => (isset($investor['Investor']['surname']) ? $investor['Investor']['surname'] : '' ), 'placeholder' => 'Enter surname', 'class' => 'required')); 
 					echo $this->Form->input('other_names', array('label' => 'Other Names*','value' => (isset($investor['Investor']['other_names']) ? $investor['Investor']['other_names'] : '' ), 'placeholder' => 'Enter other (names)', 'class' => 'required'));
@@ -170,37 +170,37 @@ echo $this->Html->script('icheck/icheck.js');
 
 
                 <!-- Step 2 Investment Details Start -->
-                <div class="step-pane" id="step2">
+                <div class="step-pane" id="step4">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('inv_amount', array('label' => 'Investment Amount', 'value' => (isset($investor['Investor']['inv_amount']) ? $investor['Investor']['inv_amount'] : '' ))); ?>
+                          <?php // echo $this->Form->input('inv_amount', array('label' => 'Investment Amount', 'value' => (isset($investor['Investor']['inv_amount']) ? $investor['Investor']['inv_amount'] : '' ))); ?>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('currency_id',array('label' => 'Currency', 'empty' => "--Please Select a Currency--")); ?>
+                          <?php // echo $this->Form->input('currency_id',array('label' => 'Currency', 'empty' => "--Please Select a Currency--")); ?>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' ))); ?>
+                          <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' ))); ?>
                         </div>
 						  
 						<div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--")); ?>
+                          <?php // echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--")); ?>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('paymentschedule_id',array('label' => 'Payment Schedule', 'empty' => "--Please Select--")); ?>
+                          <?php // echo $this->Form->input('paymentschedule_id',array('label' => 'Payment Schedule', 'empty' => "--Please Select--")); ?>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                          <?php echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--"));  ?>
+                          <?php // echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--"));  ?>
                         </div>
                       </div>
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php 
-						echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--"));  
-						echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--"));  
-						echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected"));  
+//						echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--"));  
+//						echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--"));  
+//						echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected"));  
 						?>
                     </div>
                   </div>
@@ -208,7 +208,7 @@ echo $this->Html->script('icheck/icheck.js');
                 <!-- Step 2 Investment Details End -->
 				
 				 <!-- Step 3 Bank Details Start -->
-                <div class="step-pane" id="step3">
+                <div class="step-pane" id="step2">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php
@@ -228,7 +228,7 @@ echo $this->Html->script('icheck/icheck.js');
                 <!-- Step 3 Bank Details End -->
 
 				<!-- Step 4 Next of Kin Start -->
-                <div class="step-pane" id="step4">
+                <div class="step-pane" id="step3">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php 

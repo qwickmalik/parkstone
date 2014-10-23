@@ -40,31 +40,7 @@ class Investor extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ),
-		'PaymentTerm' => array(
-            'className' => 'PaymentTerm',
-            'foreignKey' => 'payment_term_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-        ),
-		'PaymentSchedule' => array(
-            'className' => 'PaymentSchedule',
-            'foreignKey' => 'payment_shedule_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-        ),
-		'PaymentMode' => array(
-            'className' => 'PaymentMode',
-            'foreignKey' => 'payment_mode_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-        ),
+        )
 	);
     
     
