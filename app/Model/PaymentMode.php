@@ -7,8 +7,8 @@ class PaymentMode extends AppModel {
     
     
     var $hasMany = array(
-        'Investor' => array(
-            'className' => 'Investor',
+        'Investment' => array(
+            'className' => 'Investment',
             'foreignKey' => 'payment_mode_id',
             'conditions' => '',
             'order' => '',

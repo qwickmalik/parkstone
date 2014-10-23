@@ -39,11 +39,13 @@ if ($this->Session->check('shopCurrency')) {
                                 <b>Email</b>
                             </td>
                         </tr>
+                        <?php if(isset($investors)){ foreach($investors as $investor):
+						?>
                         <tr>
                             <td align="left">
                                 <?php
-                                if (isset($investor['Investor']['id'])) {
-                                    echo $investor['Investor']['id'];
+                                if (isset($investor['id'])) {
+                                    echo $investor['id'];
                                 } else {
                                     echo '';
                                 }
@@ -51,8 +53,8 @@ if ($this->Session->check('shopCurrency')) {
                             </td>
                             <td align="left">
                                 <?php
-                                if (isset($investor['Investor']['surname'])) {
-                                    echo $investor['Investor']['surname'];
+                                if (isset($investor['surname'])) {
+                                    echo $investor['surname'];
                                 } else {
                                     echo '';
                                 }
@@ -60,8 +62,8 @@ if ($this->Session->check('shopCurrency')) {
                             </td>
                             <td align="left">
                                 <?php
-                                if (isset($investor['Investor']['other_names'])) {
-                                    echo $investor['Investor']['other_names'];
+                                if (isset($investor['other_names'])) {
+                                    echo $investor['other_names'];
                                 } else {
                                     echo '';
                                 }
@@ -69,8 +71,8 @@ if ($this->Session->check('shopCurrency')) {
                             </td>
                             <td align="left">
                                 <?php
-                                if (isset($investor['Investor']['phone'])) {
-                                    echo $investor['Investor']['phone'];
+                                if (isset($investor['phone'])) {
+                                    echo $investor['phone'];
                                 } else {
                                     echo '';
                                 }
@@ -78,14 +80,15 @@ if ($this->Session->check('shopCurrency')) {
                             </td>
                             <td align="left">
                                 <?php
-                                if (isset($investor['Investor']['email'])) {
-                                    echo $investor['Investor']['email'];
+                                if (isset($investor['email'])) {
+                                    echo $investor['email'];
                                 } else {
                                     echo '';
                                 }
                                 ?>
                             </td>
                         </tr>
+                         <?php endforeach; }?>
                     </table>
                 </td>
             </tr>

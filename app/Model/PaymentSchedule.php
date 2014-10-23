@@ -7,8 +7,8 @@ class PaymentSchedule extends AppModel {
     
     
     var $hasMany = array(
-        'Investor' => array(
-            'className' => 'Investor',
+        'Investment' => array(
+            'className' => 'Investment',
             'foreignKey' => 'payment_schedule_id',
             'conditions' => '',
             'order' => '',
