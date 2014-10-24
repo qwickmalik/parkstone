@@ -27,16 +27,16 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <b>ID</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                                <b>Surname</b>
+                                <b>Reg. No.</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
-                                <b>Other Names</b>
+                                <b>Comp Name</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
-                                <b>Phone Number</b>
+                                <b>CEO</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
-                                <b>Email</b>
+                                <b>Contact Person</b>
                             </td>
                         </tr>
                         <?php if (isset($investors)) {
@@ -54,8 +54,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if(isset($investor['surname'])) {
-                                            echo $investor['surname'];
+                                        if(isset($investor['reg_numb'])) {
+                                            echo $investor['reg_numb'];
                                         } else {
                                             echo '';
                                         }
@@ -63,8 +63,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['other_names'])) {
-                                            echo $investor['other_names'];
+                                        if (isset($investor['comp_name'])) {
+                                            echo $investor['comp_name'];
                                         } else {
                                             echo '';
                                         }
@@ -72,8 +72,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['phone'])) {
-                                            echo $investor['phone'];
+                                        if (isset($investor['ceo'])) {
+                                            echo $investor['ceo'];
                                         } else {
                                             echo '';
                                         }
@@ -81,8 +81,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['email'])) {
-                                            echo $investor['email'];
+                                        if (isset($investor['contact_person'])) {
+                                            echo $investor['contact_person'];
                                         } else {
                                             echo '';
                                         }
@@ -102,7 +102,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                     <!-- Step Investment Details Start -->
                     <?php
-                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'process_indv'), "inputDefaults" => array('div' => false)));
+                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'process_comp'), "inputDefaults" => array('div' => false)));
                     ?>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -261,7 +261,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
                     <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success")); ?>
                     &nbsp;&nbsp;
-<?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
+<?php echo $this->Html->link('Next', "/Investments/newInvestmentCert_comp", array("class" => 'btn btn-lg btn-primary')); ?>
                 </td>
             </tr>
         </table>

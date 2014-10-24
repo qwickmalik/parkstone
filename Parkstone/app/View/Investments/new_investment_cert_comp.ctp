@@ -68,14 +68,10 @@ echo $this->Html->script('notification.js');
             <b style="font-size: 18px;"> <?php if (isset($investors)) {
                             foreach ($investors as $investor):
                                 ?><br /><i style="color: Navy;"><?php  if(isset($investor['surname'])) {
-                                            echo $investor['surname'].' ';
+                                            echo $investor['comp_name'].' ';
                                         }else{
                                             echo '';
-                                        } if(isset($investor['other_names'])) {
-                                            echo $investor['other_names'];
-                                        }else{
-                                            echo '';
-                                        } ?></i></b>
+                                        }  ?></i></b>
                                 <?php endforeach;
 } ?>
         	<br />

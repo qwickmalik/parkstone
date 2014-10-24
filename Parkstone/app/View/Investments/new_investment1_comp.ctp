@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchInvest4Invest'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4compinvestment'), "inputDefaults" => array('div' => false))); ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
@@ -17,19 +17,19 @@ echo $this->Html->script('notification.js');
             <tr>
                 <td align="center" valign="middle" colspan="3">
                     <div class="col-lg-4 col-md-6 col-sm-12" style="align: center; float: none;">
-                        <?php echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['investmentproduct_id']) ? $investor['Investor']['investmentproduct_id'] : '' )));
+                        <?php //echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['investmentproduct_id']) ? $investor['Investor']['investmentproduct_id'] : '' )));
                     ?>
                         
                         
                         <p style="font-size: 18px; color: gray; font-weight: bold;">Find Company</p>
                         <?php
-                        echo $this->Form->input('search', array('size' => 70, 'class' => 'search', 'value' => (isset($int['Investor']['fullname']) ? $int['Investor']['fullname'] : '' ), 'name' => 'investor_search', 'id' => (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ),
+                        echo $this->Form->input('search', array('size' => 70, 'class' => 'search', 'value' => (isset($int['Investor']['comp_name']) ? $int['Investor']['comp_name'] : '' ), 'name' => 'investor_search', 'id' => (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ),
                             'label' => false));
                         ?>
-                        <input type="hidden" name="hid_cust" value="<?php (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ); ?>" />
+                        <input type="hidden" name="hid_investor" value="<?php (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ); ?>" />
 
 <?php echo $this->Form->button('Search', array("type" => "submit", "id" => "search", "class" => "btn btn-lg btn-success")); ?> &nbsp;
-<?php echo $this->Html->link('Proceed', "/Investments/newInvestment2/" . (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
+<?php echo $this->Html->link('Proceed', "/Investments/newInvestment2_comp/" . (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
                         <span style="color: red;"></span>
                     </div>
 
@@ -47,20 +47,19 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
 
         <!--    <form id="order_list" action="#" method="post">-->
-<?php echo $this->Form->create('OrderList', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Orders', 'action' => '#'), "inputDefaults" => array('div' => false))); ?>
-        <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
+      <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
             <tr>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
+                    <b><?php echo $this->Paginator->sort('reg_numb', 'Reg. No.'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left">
-                    <b><?php echo $this->Paginator->sort('other_names', 'Other Names'); ?></b>
+                    <b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
-                    <b><?php echo $this->Paginator->sort('phone', 'Phone Number'); ?></b>
+                    <b><?php echo $this->Paginator->sort('ceo', 'CEO'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left">
-                    <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
+                    <b><?php echo $this->Paginator->sort('contact_person', 'Contact Person'); ?></b>
                 </td>
             </tr>
 
@@ -70,16 +69,16 @@ echo $this->Html->script('notification.js');
                     ?>
                     <tr>
                         <td align="left">
-                            <?php echo $this->Html->link($each_item['Investor']['surname'], "/Investments/searchInvest4Invest/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                            <?php echo $this->Html->link($each_item['Investor']['reg_numb'], "/Investments/searchinvestor4compinvestment/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                         </td>
                         <td align="left" class="orderAnchor">
-                            <?php echo $this->Html->link($each_item['Investor']['other_names'], "/Investments/searchInvest4Invest/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                            <?php echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/searchinvestor4compinvestment/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                         </td> <!-- Link to enable editing -->
                         <td width="200" align="left">
-                            <?php echo $each_item['Investor']['phone']; ?>
+                            <?php echo $each_item['Investor']['ceo']; ?>
                         </td>
                         <td width="200" align="left">
-        <?php echo $each_item['Investor']['email']; ?>
+        <?php echo $each_item['Investor']['contact_person']; ?>
                         </td>
 
                     </tr>
@@ -106,9 +105,6 @@ echo $this->Html->script('notification.js');
                 </td>
             </tr>
         </table>
-<?php
-echo $this->Form->end();
-?>
 
     </div>
     <!-- Content ends here -->
