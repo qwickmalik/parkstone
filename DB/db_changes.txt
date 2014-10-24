@@ -77,3 +77,7 @@ CREATE TABLE IF NOT EXISTS `investment_investors` (
 24 October,2014(New)
 ------------------------
 ALTER TABLE `investments` ADD `investment_type` ENUM( 'indv_joint', 'corp' ) NULL DEFAULT NULL AFTER `investment_term_id` ;
+ALTER TABLE `investments` CHANGE `investor_id` `investor_id` INT( 11 ) NULL ,
+CHANGE `user_id` `user_id` INT( 11 ) NULL ,
+CHANGE `amount_paidout` `amount_paidout` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `balance` `balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
