@@ -131,12 +131,15 @@ class InvestmentsController extends AppController {
             $investortype_id = $this->request->data['Investor']['investortype_id'];
 
             if ($investortype_id == 1) {
+                
                 $message = 'Please Select a Type of Investor';
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestment0');
             } elseif ($investortype_id == 2) {
+                $this->Session->write('investment_type','indv_joint');
                 $this->redirect('newInvestment1Joint');
             } elseif ($investortype_id == 3) {
+                $this->Session->write('investment_type','corp');
                 $this->redirect('newInvestment1Comp');
             } else {
                 $message = 'Please Select a Valid Investor Type';
@@ -925,7 +928,11 @@ class InvestmentsController extends AppController {
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
 
-
+        $check = $this->Session->check('investment_type');
+        if($check){
+            $this->set('invest_type',$check);
+        }
+        
         $check = $this->get_investors();
 
         if (count($check) > 0) {

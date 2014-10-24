@@ -22,7 +22,6 @@ echo $this->Html->script('notification.js');
                         
                         
                         <p style="font-size: 18px; color: gray; font-weight: bold;">Find Company</p>
-                        <p><i style="color: red; font-size: 12px;">This should only list company names. What do you think?</i></p>
                         <?php
                         echo $this->Form->input('search', array('size' => 70, 'class' => 'search', 'value' => (isset($int['Investor']['fullname']) ? $int['Investor']['fullname'] : '' ), 'name' => 'investor_search', 'id' => (isset($int['Investor']['id']) ? $int['Investor']['id'] : '' ),
                             'label' => false));
