@@ -110,9 +110,9 @@ if ($this->Session->check('shopCurrency')) {
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investment_type', array('value' => 'indv_joint'));
 
-                            echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
+                            //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
                             
-                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1,'disabled'));
+                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--"));
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--", 'value' => (isset($investor['Investor']['instruction_id']) ? $investor['Investor']['instruction_id'] : '' )));
                             echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected", 'value' => (isset($investor['Investor']['instruction_details']) ? $investor['Investor']['instruction_details'] : '' )));
                             ?>
