@@ -61,3 +61,19 @@ ADD `instruction_id` INT( 3 ) NULL AFTER `investment_product_id` ,
 ADD `instruction_details` VARCHAR( 50 ) NULL AFTER `instruction_id` ;
 ALTER TABLE `investments` CHANGE `portfolio_id` `investment_term_id` INT( 11 ) NULL DEFAULT NULL ;
 ALTER TABLE `investors` ADD `inv_freq` VARCHAR( 15 ) NULL AFTER `reg_numb` ;
+
+23 OCTOBER,2014(New)
+---------------------
+CREATE TABLE IF NOT EXISTS `investment_investors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `investment_id` int(11) DEFAULT NULL,
+  `investor_id` int(11) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+24 October,2014(New)
+------------------------
+ALTER TABLE `investments` ADD `investment_type` ENUM( 'indv_joint', 'corp' ) NULL DEFAULT NULL AFTER `investment_term_id` ;
