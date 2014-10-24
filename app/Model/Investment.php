@@ -40,17 +40,9 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-		'PaymentTerm' => array(
-            'className' => 'PaymentTerm',
-            'foreignKey' => 'payment_term_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-        ),
 		'PaymentSchedule' => array(
             'className' => 'PaymentSchedule',
-            'foreignKey' => 'payment_shedule_id',
+            'foreignKey' => 'payment_schedule_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
@@ -93,6 +85,14 @@ class Investment extends AppModel{
             ),
             'InvestmentStatement' => array(
             'className' => 'InvestmentStatement',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+            'InvestmentInvestor' => array(
+            'className' => 'InvestmentInvestor',
             'foreignKey' => 'investment_id',
             'conditions' => '',
             'order' => '',
