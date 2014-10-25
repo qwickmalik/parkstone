@@ -337,10 +337,10 @@ class ReinvestmentsController extends AppController {
         //$this->set('investortypes', $this->InvestorType->find('list'));
         //$this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
 	}
-    function newInvestment1() {
-        /* $this->__validateUserType(); */
+    function newInvestment() {
+        /* $this->__validateUserType(); 
         $data = $this->paginate('Investor');
-        $this->set('investor', $data);
+        $this->set('investor', $data);*/
 
         $check = $this->Session->check('ivt');
         if ($check) {
@@ -1035,6 +1035,10 @@ class ReinvestmentsController extends AppController {
 //        $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestmentCert'));
     }
 
+    function newInvestmentCert(){
+        
+    }
+    
     public function statementActiveInv() {
         /* $this->__validateUserType(); */
         $issued = $this->Session->check('userData');
