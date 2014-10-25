@@ -49,13 +49,13 @@ echo $this->element('header');
                           <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
                       </td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left">
-                        <b><?php echo $this->Paginator->sort('first_name', 'First Name'); ?></b>
+                        <b><?php echo $this->Paginator->sort('other_names', 'Other Names'); ?></b>
                     </td>
                     <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
-                        <b><?php echo $this->Paginator->sort('mobile_no', 'Mobile Number'); ?></b>
+                        <b><?php echo $this->Paginator->sort('phone', 'Phone Number'); ?></b>
                     </td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left">
-                        <b><?php echo $this->Paginator->sort('work_place', 'Work Place'); ?></b>
+                        <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
                     </td>
                 </tr>
                 

@@ -2,7 +2,13 @@
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 echo $this->Html->script('notification.js');
+
+$shopCurrency = "GH$";
+if ($this->Session->check('shopCurrency_investment')) {
+    $shopCurrency = $this->Session->read('shopCurrency_investment');
+}
 ?>
+
 <h3>New Investment Certificate</h3>
 <div class="boxed">
 	<div class="inner">
@@ -65,9 +71,9 @@ echo $this->Html->script('notification.js');
     <tr>
         <td align="center" valign="top" colspan="2">
             <h1 style="color: Navy;">Investment Certificate</h1><br />
-            <b style="font-size: 18px;"> <?php if (isset($investors)) {
+             <?php if (isset($investors)) {
                             foreach ($investors as $investor):
-                                ?><br /><i style="color: Navy;"><?php  if(isset($investor['surname'])) {
+                                ?><b style="font-size: 18px;"><br /><i style="color: Navy;"><?php  if(isset($investor['surname'])) {
                                             echo $investor['surname'].' ';
                                         }else{
                                             echo '';
@@ -123,8 +129,8 @@ echo $this->Html->script('notification.js');
                 </tr> 
                 <tr>
                     <td><b align="right">Investment Rate:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($investment_array['InvestmentTerm']['interest_rate'])) {
-    echo $investment_array['InvestmentTerm']['interest_rate'];
+                    <td><span id="xxxxxx"><?php if (isset($investment_array['Investment']['custom_rate'])) {
+    echo $investment_array['Investment']['custom_rate'];
 } ?></span></td>
                 </tr>
             </table>
