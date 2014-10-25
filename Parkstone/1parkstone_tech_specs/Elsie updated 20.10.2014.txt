@@ -2,7 +2,24 @@ In response to your questions:
 
  
 
-1.       Equity investments are investments made in shares of companies – either listed on the stock exchange or unlisted. No interest will be calculated on equities. Instead relevant information would be: date of purchase, equity/security purchased, purchase price, no of shares purchased, total fees on purchase (this goes to external parties, not Parkstone), total amount . This information will have to be input. To calculate return,  there will be a comparison of the above, and current valuation, based on current date, market price of security on that date.  Note that market price of security can be input to get a valuation of security, but if the security is not actually sold, it will only give an indication of value.  If it has actually been sold, then we would have to input all the fields above again, but in reverse. Ie dtae of sale, security sold, sale price, no of shares sold, total fees on sale. Parkstone’s fees will be computed at 3% of market price of security/portfolio.  Note that portfolio refers to a group of securities belonging to one person.
+1.       Equity investments are investments made in shares of companies – either listed on the stock exchange or unlisted. No interest will be calculated on equities. Instead relevant information would be: 
+
+date of purchase, 
+equity/security purchased, 
+purchase price, 
+no of shares purchased, 
+total fees on purchase (this goes to external parties, not Parkstone), 
+total amount . This information will have to be input. 
+
+To calculate return,  there will be a comparison of the above, and current valuation, based on current date, market price of security on that date.  Note that market price of security can be input to get a valuation of security, but if the security is not actually sold, it will only give an indication of value.  If it has actually been sold, then we would have to input all the fields above again, but in reverse. Ie 
+dtae of sale, 
+security sold, 
+sale price, 
+no of shares sold, 
+total fees on sale. 
+Parkstone’s fees will be computed at 3% of market price of security/portfolio.  
+
+Note that portfolio refers to a group of securities belonging to one person.
 
 2.       Fixed refers to fixed income investment, in which the usual interest is calculated, based on interest rate, number of days run etc. Note that interest should be calculated on a 365 day year.  We would also want to see interest earned on a daily basis, if necessary, based on the system date, as an internal report.
 
