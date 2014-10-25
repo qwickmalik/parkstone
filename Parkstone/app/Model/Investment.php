@@ -15,6 +15,14 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
         ),
+        'InvestorType' => array(
+            'className' => 'InvestorType',
+            'foreignKey' => 'investor_type_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+        ),
         'InvestmentTerm' => array(
             'className' => 'InvestmentTerm',
             'foreignKey' => 'investment_term_id',

@@ -49,13 +49,13 @@ echo $this->element('header');
                           <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
                       </td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left">
-                        <b><?php echo $this->Paginator->sort('first_name', 'First Name'); ?></b>
+                        <b><?php echo $this->Paginator->sort('other_names', 'Other Names'); ?></b>
                     </td>
                     <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
-                        <b><?php echo $this->Paginator->sort('mobile_no', 'Mobile Number'); ?></b>
+                        <b><?php echo $this->Paginator->sort('phone', 'Phone Number'); ?></b>
                     </td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left">
-                        <b><?php echo $this->Paginator->sort('work_place', 'Work Place'); ?></b>
+                        <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
                     </td>
                 </tr>
                 
@@ -68,13 +68,13 @@ echo $this->element('header');
                         <?php echo $this->Html->link($each_item['Investor']['surname'],"/Investments/searchInvest4Invest/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])) ; ?>
                     </td>
                     <td align="left" class="orderAnchor">
-                        <?php echo $this->Html->link($each_item['Investor']['first_name'],"/Investments/searchInvest4Invest/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])); ?>
+                        <?php echo $this->Html->link($each_item['Investor']['other_names'],"/Investments/searchInvest4Invest/".$each_item['Investor']['id'],array("class" => $each_item['Investor']['id'])); ?>
                     </td> <!-- Link to enable editing -->
                     <td width="200" align="left">
-                        <?php echo $each_item['Investor']['mobile_no']; ?>
+                        <?php echo $each_item['Investor']['phone']; ?>
                     </td>
                     <td width="200" align="left">
-                        <?php echo $each_item['Investor']['work_place']; ?>
+                        <?php echo $each_item['Investor']['email']; ?>
                     </td>
 
                 </tr>

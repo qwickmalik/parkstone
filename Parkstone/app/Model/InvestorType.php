@@ -9,16 +9,8 @@ class InvestorType extends AppModel {
     
     
     var $hasMany = array(
-        'Customer' => array(
-            'className' => 'Customer',
-            'foreignKey' => 'investor_type_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-	'Investor' => array(
-            'className' => 'Investor',
+	'Investment' => array(
+            'className' => 'Investment',
             'foreignKey' => 'investor_type_id',
             'conditions' => '',
             'order' => '',

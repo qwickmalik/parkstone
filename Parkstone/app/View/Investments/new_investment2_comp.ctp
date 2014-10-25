@@ -40,13 +40,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </td>
                         </tr>
                         <?php if (isset($investors)) {
-                            foreach ($investors as $investor):
                                 ?>
                                 <tr>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['id'])) {
-                                            echo $investor['id'];
+                                        if (isset($investors['Investor']['id'])) {
+                                            echo $investors['Investor']['id'];
                                         } else {
                                             echo '';
                                         }
@@ -54,8 +53,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if(isset($investor['reg_numb'])) {
-                                            echo $investor['reg_numb'];
+                                        if(isset($investors['Investor']['reg_numb'])) {
+                                            echo $investors['Investor']['reg_numb'];
                                         } else {
                                             echo '';
                                         }
@@ -63,8 +62,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['comp_name'])) {
-                                            echo $investor['comp_name'];
+                                        if (isset($investors['Investor']['comp_name'])) {
+                                            echo $investors['Investor']['comp_name'];
                                         } else {
                                             echo '';
                                         }
@@ -72,8 +71,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['ceo'])) {
-                                            echo $investor['ceo'];
+                                        if (isset($investors['Investor']['ceo'])) {
+                                            echo $investors['Investor']['ceo'];
                                         } else {
                                             echo '';
                                         }
@@ -81,15 +80,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['contact_person'])) {
-                                            echo $investor['contact_person'];
+                                        if (isset($investors['Investor']['contact_person'])) {
+                                            echo $investors['Investor']['contact_person'];
                                         } else {
                                             echo '';
                                         }
                                         ?>
                                     </td>
                                 </tr>
-    <?php endforeach;
+    <?php 
 } ?>
                     </table>
                 </td>
@@ -108,9 +107,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investment_type', array('value' => 'indv_joint'));
+                            echo $this->Form->hidden('investor_type_id', array('value' => 3));
 
-                            //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investors['Investor']['id']) ? $investors['Investor']['id'] : '' )));
                             
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' )));
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.instruction_id') == true ? $this->Session->read('investtemp.instruction_id') : '' )));
@@ -139,7 +138,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
+                                    <?php echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.paymentschedule_id') == true ? $this->Session->read('investtemp.paymentschedule_id') : '' ))); ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
 <?php echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--",'value' => ($this->Session->check('investtemp.paymentmode_id') == true ? $this->Session->read('investtemp.paymentmode_id') : '' ))); ?>
@@ -261,7 +260,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
                     <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success")); ?>
                     &nbsp;&nbsp;
-<?php echo $this->Html->link('Next', "/Investments/newInvestmentCert_comp", array("class" => 'btn btn-lg btn-primary')); ?>
+<?php echo $this->Html->link('Next', "/Investments/newInvestmentCertComp/".(isset($investors['Investor']['id']) ? $investors['Investor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
                 </td>
             </tr>
         </table>
