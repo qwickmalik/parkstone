@@ -651,7 +651,7 @@ class ReinvestmentsController extends AppController {
     }
 
     function manageInvestments() {
-        /* $this->__validateUserType(); */
+        /* $this->__validateUserType(); 
 
         $data = $this->paginate('Investment');
 
@@ -669,7 +669,7 @@ class ReinvestmentsController extends AppController {
             $this->set('data', $cust);
 
             $this->Session->delete('mivts');
-        }
+        }*/
     }
 
     function processPayments() {
@@ -835,7 +835,7 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function manageClientInvestments($investor_id = null, $investor_name = null) {
+    function manageClientInvestments(/*$investor_id = null, $investor_name = null*/) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name) && $investor_id != '' && $investor_name != '') {
             $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));

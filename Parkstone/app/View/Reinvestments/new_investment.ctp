@@ -9,7 +9,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 }
 ?>
 <!-- Content starts here -->
-<h3>Re-investment</h3>
+<h3 style="color: red;">Re-investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
