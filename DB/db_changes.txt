@@ -81,3 +81,23 @@ ALTER TABLE `investments` CHANGE `investor_id` `investor_id` INT( 11 ) NULL ,
 CHANGE `user_id` `user_id` INT( 11 ) NULL ,
 CHANGE `amount_paidout` `amount_paidout` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
 CHANGE `balance` `balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
+
+25 October,2014(New)
+------------------------
+ALTER TABLE `investments` CHANGE `investment_type` `investor_type_id` INT( 3 ) NULL DEFAULT NULL ;
+ALTER TABLE `investments` ADD `equity` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `interest_earned` ,
+ADD `purchse_price` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `equity` ,
+ADD `numb_shares` INT( 11 ) NULL AFTER `purchse_price` ;
+
+
+27 OCTOBER,2014(NEW)
+-------------------------
+ALTER TABLE `investments` ADD `purchase_date` DATE NULL DEFAULT NULL AFTER `investment_date` ;
+ALTER TABLE `investments` CHANGE `purchse_price` `purchase_price` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
+ALTER TABLE `investments` ADD `total_fees` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `numb_shares` ;
+
+ALTER TABLE `investors` ADD `acc_name` INT( 50 ) NULL DEFAULT NULL AFTER `contact_mode` ,
+ADD `bank_name` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `acc_name` ,
+ADD `bank_branch` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `bank_name` ,
+ADD `acc_number` VARCHAR( 25 ) NULL DEFAULT NULL AFTER `bank_branch` ;
+ALTER TABLE `investments` ADD `total_amount` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_fees` 
