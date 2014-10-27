@@ -101,7 +101,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                     <!-- Step Investment Details Start -->
                     <?php
-                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'process_indv'), "inputDefaults" => array('div' => false)));
+                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'process_comp'), "inputDefaults" => array('div' => false)));
                     ?>
                     <div class="row" style="background: #99ccff;">
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -109,7 +109,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investor_type_id', array('value' => 2));
-
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investors['Investor']['id']) ? $investors['Investor']['id'] : '' )));
                             //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
@@ -119,7 +119,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                     <div class="row">
 
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12" id="fixed">
                             <p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">Fixed Investment</p>
                             <?php
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.instruction_id') == true ? $this->Session->read('investtemp.instruction_id') : '' )));
@@ -211,7 +211,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px;'>Interest:</span>";
                                     if (isset($interest)) {
-                                        echo $interest;
+                                        echo $shopCurrency. ' '.$interest;
                                     } else {
                                         echo '';
                                     }
@@ -222,7 +222,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Due:</span>";
                                     if (isset($totaldue)) {
-                                        echo $totaldue;
+                                        echo $shopCurrency. ' '.$totaldue;
                                     } else {
                                         echo '';
                                     }
@@ -234,9 +234,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
                         </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12" id="equity">
                             <p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">Equity Investment</p>
-                            
+                          <?php   echo $this->Form->input('instruction_id', array('label' => 'Instructions','name' => 'instruction_id2', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.instruction_id2') == true ? $this->Session->read('investtemp.instruction_id2') : '' )));
+                            echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details','name' => 'instruction_details2', 'placeholder' => "Complete this ONLY if 'Other' is selected", 'value' => ($this->Session->check('investtemp.instruction_details2') == true ? $this->Session->read('investtemp.instruction_details2') : '' )));
+                            ?>
                             <div class="row"> 
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php
@@ -267,19 +269,31 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <script>
                                     var day = $("#day").val();
                                     var month = $("#month").val();
-                                    var year = $("#year").val();
-                                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
-                                </script>
+                                    var year = $("#year").val();  
+                                    $("#InvestmentPurchaseDateDay option[value=" + day + "]").attr('selected', true);
+                                    $("#InvestmentPurchaseDateMonth option[value=" + month + "]").attr('selected', true);
+                                    $("#InvestmentPurchaseDateYear option[value=" + year + "]").attr('selected', true);
+                                 </script>
 
                             </div>
-                    
+                           <div class="row"> 
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php echo $this->Form->input('currency_id', array('label' => 'Currency','name' => 'currency2', 'empty' => "--Please Select a Currency--", 'value' => ($this->Session->check('investtemp.currency2') == true ? $this->Session->read('investtemp.currency2') : '' ))); ?>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule','name' => 'paymentschedule_id2', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.paymentschedule_id2') == true ? $this->Session->read('investtemp.paymentschedule_id2') : '' ))); ?>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode','name' => 'paymentmode_id2', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.paymentmode_id2') == true ? $this->Session->read('investtemp.paymentmode_id2') : '' ))); ?>
+                                </div>
+                            </div>
                             <?php
-                             echo $this->Form->input('equity', array('label' => 'Equity Purchased*', 'class' => 'required')); 
-                             echo $this->Form->input('purchse_price', array('label' => 'Purchase Price*', 'class' => 'required')); 
-                             echo $this->Form->input('numb_shares', array('label' => 'No. of Shares Purchased*', 'class' => 'required')); 
-                             echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required')); 
+                             echo $this->Form->input('equity', array('label' => 'Equity Purchased*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.equity') == true ? $this->Session->read('investtemp.equity') : '' ))); 
+                             echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
+                             echo $this->Form->input('numb_shares', array('label' => 'No. of Shares Purchased*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.numb_shares') == true ? $this->Session->read('investtemp.numb_shares') : '' ))); 
+                             echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' ))); 
+                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
                              
                              
                              
@@ -290,12 +304,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray;">
                                 <?php
-                                echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Amount:</span>";
-                                if (isset($totalamt)) {
-                                    echo $totalamt;
-                                } else {
-                                    echo '';
-                                }
+//                                echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Amount:</span>";
+//                                if (isset($totalamt)) {
+//                                    echo $shopCurrency. ' '.$totalamt;
+//                                } else {
+//                                    echo '';
+//                                }
                                 ?>
 
                             </div>
@@ -319,7 +333,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
 
                     &nbsp;&nbsp;
-                    <?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
+                    <?php echo $this->Html->link('Next', "/Investments/newInvestmentCertComp", array("class" => 'btn btn-lg btn-primary')); ?>
                 </td>
             </tr>
         </table>
@@ -330,3 +344,48 @@ if ($this->Session->check('shopCurrency_investment')) {
 
     </div>
     <!-- Content ends here -->
+    <script lang="javascript">
+        
+jQuery(document).ready(function($) {
+      var prod_val = $("#InvestmentInvestmentproductId").val();
+     if(prod_val == "1"){
+            
+    $("#fixed").show("slow");
+    $("#equity").hide("slow");
+        }
+        
+        if(prod_val == "2"){
+        
+    $("#equity").show(5000);    
+    $("#fixed").hide("slow");
+        }
+        
+        if(prod_val == ""){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
+    $("#InvestmentInvestmentproductId").change(function(){
+        
+        
+        var investmentproduct = $(this).val();
+        if(investmentproduct == "1"){
+            
+    $("#fixed").show("slow");
+    $("#equity").hide("slow");
+        }
+        
+        if(investmentproduct == "2"){
+        
+    $("#equity").show("slow");    
+    $("#fixed").hide("slow");
+        }
+        
+        if(investmentproduct == ""){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
+        
+    });
+    
+});        
+        </script>
