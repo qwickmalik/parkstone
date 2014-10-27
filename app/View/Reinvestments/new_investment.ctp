@@ -20,7 +20,7 @@ if ($this->Session->check('shopCurrency_investment')) {
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
-                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Investor: Parkstone Captical</td>
+                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Investor: Parkstone Capital</td>
             </tr>
             <tr>
                 <td align="left" valign="top" colspan="3">
