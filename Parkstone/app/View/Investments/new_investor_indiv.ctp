@@ -74,7 +74,7 @@ echo $this->Html->script('icheck/icheck.js');
 				</div>
 					
 				<?php
-				echo $this->Form->input('occupation', array('size' => 30,'label' => 'occupation/profession','value' => (isset($investor['Investor']['occupation']) ? $investor['Investor']['occupation'] : '' ), 'placeholder' => 'Enter occupation'));
+				echo $this->Form->input('occupation', array('size' => 30,'label' => 'Occupation/profession','value' => (isset($investor['Investor']['occupation']) ? $investor['Investor']['occupation'] : '' ), 'placeholder' => 'Enter occupation'));
 					echo $this->Form->input('physical_address', array('size' => 30,'label' => 'Physical Address*','value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address','class' => 'required'));
 					echo $this->Form->input('postal_address', array('size' => 30,'value' => (isset($investor['Investor']['postal_address']) ? $investor['Investor']['postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
 					
