@@ -293,8 +293,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                              echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
                              echo $this->Form->input('numb_shares', array('label' => 'No. of Shares Purchased*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.numb_shares') == true ? $this->Session->read('investtemp.numb_shares') : '' ))); 
                              echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' ))); 
-                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
-                             
+//                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
+//                             
                              
                              
                             ?>
@@ -304,12 +304,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray;">
                                 <?php
-//                                echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Amount:</span>";
-//                                if (isset($totalamt)) {
-//                                    echo $shopCurrency. ' '.$totalamt;
-//                                } else {
-//                                    echo '';
-//                                }
+                                echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Amount:</span>";
+                                if (isset($totalamt)) {
+                                    echo $shopCurrency. ' '.$totalamt;
+                                } else {
+                                    echo '';
+                                }
                                 ?>
 
                             </div>
