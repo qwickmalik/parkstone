@@ -1009,11 +1009,22 @@ class InvestmentsController extends AppController {
         }
         $check = $this->Session->check('variabless');
         if ($check) {
-            $this->set('duedate', $this->Session->read('variabless.duedate'));
-            $this->set('interest', $this->Session->read('variabless.interest'));
-            $this->set('totaldue', $this->Session->read('variabless.totaldue'));
-
-            $this->set('totalamt', $this->Session->read('variabless.totalamt'));
+             $check = $this->Session->check('variabless.duedate');
+                if($check){
+                $this->set('duedate', $this->Session->read('variabless.duedate'));
+                }
+                $check = $this->Session->check('variabless.interest');
+                if($check){
+                $this->set('interest', $this->Session->read('variabless.interest'));
+                }
+                $check = $this->Session->check('variabless.totaldue');
+                if($check){
+                $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+                }
+                $check = $this->Session->check('variabless.totalamt');
+                if($check){
+                    $this->set('totalamt',$this->Session->read('variabless.totalamt'));
+                }
         }
     }
 
@@ -1036,9 +1047,22 @@ class InvestmentsController extends AppController {
             }
             $check = $this->Session->check('variabless');
             if ($check) {
+                $check = $this->Session->check('variabless.duedate');
+                if($check){
                 $this->set('duedate', $this->Session->read('variabless.duedate'));
+                }
+                $check = $this->Session->check('variabless.interest');
+                if($check){
                 $this->set('interest', $this->Session->read('variabless.interest'));
+                }
+                $check = $this->Session->check('variabless.totaldue');
+                if($check){
                 $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+                }
+                $check = $this->Session->check('variabless.totalamt');
+                if($check){
+                    $this->set('totalamt',$this->Session->read('variabless.totalamt'));
+                }
             }
         } else {
             $message = 'No Investor Selected';
@@ -1205,14 +1229,15 @@ class InvestmentsController extends AppController {
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
                         }
-                        if (($this->request->data['Investment']['total_amount'] == "") || is_null($this->request->data['Investment']['total_amount'])) {
-                            $message = 'Please State Total Amount';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
-                        }
+                      
                         
-                        $totalamt = $this->request->data['Investment']['total_amount'];
-                        $this->request->data['Investment']['investment_amount'] = $totalamt;
+                        $numb0fshares = $this->request->data['Investment']['numb_shares'];
+                        $equity_price = $this->request->data['Investment']['purchase_price'];
+                        $total_fees = $this->request->data['Investment']['total_fees'];
+                        
+                        $totalamt = ($numb0fshares * $equity_price) + $total_fees;
+                        $this->request->data['Investment']['total_amount'] = $totalamt;
+                       // $this->request->data['Investment']['investment_amount'] = $totalamt;
                        
                         break;
                 }
@@ -1270,6 +1295,7 @@ class InvestmentsController extends AppController {
                                 'investment_amount' => $this->request->data['Investment']['investment_amount'],
                                 'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
                                 'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                                'custom_rate' => $rate,
                                 'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
                                 'currency_id' => $this->request->data['Investment']['currency_id'], 'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                                 'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
@@ -1313,8 +1339,8 @@ class InvestmentsController extends AppController {
                             $this->Session->write('variabless', $variables);
 
                             $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                                'investment_amount' => $this->request->data['Investment']['investment_amount'] ,
                                 'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                                'custom_rate' => $rate,
                                 'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
                                 'currency_id' => $this->request->data['currency2'], 'payment_mode_id' => $this->request->data['paymentmode_id2'],
                                 'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
@@ -1323,7 +1349,8 @@ class InvestmentsController extends AppController {
                                 'instruction_details' => $this->request->data['instruction_details2'] , 'purchase_date' => $pinv_date,
                                 'purchase_price' => $this->request->data['Investment']['purchase_price'],
                                 'numb_shares' => $this->request->data['Investment']['numb_shares'],
-                                'total_fees' => $this->request->data['Investment']['total_fees'], $this->request->data['Investment']['equity']
+                                'total_fees' => $this->request->data['Investment']['total_fees'],
+                                'total_amount' => $totalamt
                                 );
 
                             $check = $this->Session->check('investment_array');
@@ -1516,13 +1543,13 @@ class InvestmentsController extends AppController {
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2_comp', $investor_id));
                         }
-                        if (($this->request->data['Investment']['total_amount'] == "") || is_null($this->request->data['Investment']['total_amount'])) {
-                            $message = 'Please State Total Amount';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2_comp', $investor_id));
-                        }
-                        $totalamt = $this->request->data['Investment']['total_amount'];
-                        $this->request->data['Investment']['investment_amount'] = $totalamt;
+                      
+                        $numb0fshares = $this->request->data['Investment']['numb_shares'];
+                        $equity_price = $this->request->data['Investment']['purchase_price'];
+                        $total_fees = $this->request->data['Investment']['total_fees'];
+                        
+                        $totalamt = ($numb0fshares * $equity_price) + $total_fees;
+                        $this->request->data['Investment']['total_amount'] = $totalamt;
                         break;
                 }
             }
@@ -1625,18 +1652,21 @@ class InvestmentsController extends AppController {
 
                             $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
                                 'investor_id' => $this->request->data['Investment']['investor_id'],
-                                'investment_amount' => $this->request->data['Investment']['investment_amount'],
                                 'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
                                 'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
                                 'payment_schedule_id' => $this->request->data['paymentschedule_id2'],
                                 'purchase_date' => $pinv_date,
                                 'investment_date' => $pinv_date,
-                                'currency_id' => $this->request->data['currency2'], 'payment_mode_id' => $this->request->data['paymentmode_id2'],
+                                'currency_id' => $this->request->data['currency2'], 
+                                'payment_mode_id' => $this->request->data['paymentmode_id2'],
                                 'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
                                 'instruction_id' => $this->request->data['instruction_id2'],
                                 'instruction_details' => $this->request->data['instruction_details2'],
-                              'total_fees' => $this->request->data['Investment']['total_fees'], 'equity' => $this->request->data['Investment']['equity']
-                                ,'purchase_price' => $this->request->data['Investment']['purchase_price'],'numb_shares' => $this->request->data['Investment']['numb_shares']);
+                              'total_fees' => $this->request->data['Investment']['total_fees'], 
+                                'equity' => $this->request->data['Investment']['equity']
+                                ,'purchase_price' => $this->request->data['Investment']['purchase_price'],
+                                'numb_shares' => $this->request->data['Investment']['numb_shares'],
+                                'total_amount' => $totalamt);
 
                             $check = $this->Session->check('investment_array');
                             if ($check) {
