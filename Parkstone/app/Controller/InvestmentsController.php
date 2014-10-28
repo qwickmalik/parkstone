@@ -1317,7 +1317,7 @@ class InvestmentsController extends AppController {
                                 $this->Session->delete('variabless');
                             }
 
-                            $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due, 'totalamt' => $totalamt);
+                            $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
                             $this->Session->write('variabless', $variables);
                             } else {
                     $message = 'Investment Term settings missing.Contact Administrator';
@@ -1564,13 +1564,14 @@ class InvestmentsController extends AppController {
             if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
                 $first_date = $inv_date;
 
-                $investment_amount = $this->request->data['Investment']['investment_amount'];
                 $date = new DateTime($first_date);
-                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
-
                 
                     switch ($investmentproduct_id) {
                         case 1:
+                            $investment_amount = $this->request->data['Investment']['investment_amount'];
+                
+                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+
                             if ($portfolio) {
 
                     $year = $portfolio['InvestmentTerm']['period'];
@@ -1628,7 +1629,7 @@ class InvestmentsController extends AppController {
                                 $this->Session->delete('variabless');
                             }
 
-                            $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due, 'totalamt' => $totalamt);
+                            $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
                             $this->Session->write('variabless', $variables);
                             
                             } else {
@@ -2543,12 +2544,38 @@ function newInvestmentCertcompEquity() {
 //        $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestmentCert'));
     }
 
-    public function statementActiveInv() {
+    public function statementActiveInv($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         $issued = $this->Session->check('userData');
         if ($issued) {
             $issued = $this->Session->read('userData');
             $this->set('issued', $issued);
+        }
+        if (!is_null($investor_id)) {
+            $payment = $this->Investor->find('all', array('conditions' => array('Investor.id' => $investor_id)));
+            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'NOT' => array('Investment.status' => array('Cancelled', 'Paid', 'Deleted')))));
+            $issued = $this->Session->check('userData');
+            if ($issued) {
+                $issued = $this->Session->read('userData');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+
+                $this->set('data', $data);
+                $this->set('payment', $payment);
+                $this->set('investor_name', $investor_name);
+            } else {
+
+                $message = 'Sorry, No Active Investment Details Found for Selected Investor';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        } else {
+
+            $message = 'Sorry, Investment Details Not Found';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
 
