@@ -10,7 +10,7 @@ echo $this->Html->script('notification.js');
             <?php 
             echo $this->Form->create('Usertype', array("url" => array('controller' => 'Users', 'action' => 'userTypes'), "inputDefaults" => array('label' => false, 'div' => false))); 
             ?>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <?php 
                 
                 echo $this->Form->input('usertype', array("label" => "User Type"));
@@ -20,17 +20,20 @@ echo $this->Html->script('notification.js');
                 
                 
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <?php 
                 echo '<p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">User Permissions</p>';
                         
-                echo $this->Form->checkbox('view', array('value' => 1, 'label' => 'View' ));
-                echo $this->Form->checkbox('edit', array('value' => 1, 'label' => 'View' ));
-                echo $this->Form->checkbox('delete', array('value' => 1, 'label' => 'View' ));
+                echo $this->Form->input('view', array('value' => 1, 'type' => 'checkbox', 'label' => 'View' ));
+                echo $this->Form->input('edit', array('value' => 1, 'type' => 'checkbox', 'label' => 'Edit' ));
+                echo $this->Form->input('delete', array('value' => 1, 'type' => 'checkbox', 'label' => 'Delete' ));
+                
+                
                  
                 echo $this->Form->button('Save', array("type" => "submit", "class" => "btn btn-lg btn-success", 'style' => 'float: right;')); 
                 
                 ?>
+                
             </div>
             <?php
             echo $this->Form->end();
