@@ -1120,14 +1120,15 @@
    clear: both;
    display: block;
  }
-
+.boxed .inner input[type=radio],  input[type=checkbox]  {
+   width: 20px;
+    margin: 0 10px 0 30px;
+ }
  .boxed .inner input {
-   width: 100%;
+   /*width: 100%;*/
+   
  }
- .boxed .inner input[type=radio] {
-   width: auto;
-	margin: 0 10px 0 30px;
- }
+ 
  .boxed .inner.no-radius {
    border-top-left-radius:0px;
    border-top-right-radius:0px;

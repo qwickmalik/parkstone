@@ -970,7 +970,7 @@ body.collapsed-sidebar .menu li.active a span {
   display: block;
 }
 .boxed .inner input {
-  width: 100%;
+  /*width: 100%;*/
 }
 .boxed .inner.no-radius {
   border-top-left-radius: 0px;
