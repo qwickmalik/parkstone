@@ -221,6 +221,7 @@ echo $this->Html->script('icheck/icheck.js');
                       <?php 
                             echo $this->Form->input('bank_branch', array('label' => 'Bank Branch*','class' => 'required', 'placeholder' => "Enter bank branch/location"));  
                             echo $this->Form->input('acc_number', array('label' => 'Account Number*','class' => 'required', 'placeholder' => "Enter account number"));  
+                              echo $this->Form->input('inv_freq', array('label' => 'Investment Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));
 						?>
                     </div>
                   </div>

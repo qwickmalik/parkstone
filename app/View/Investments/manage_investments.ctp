@@ -51,6 +51,7 @@ echo $this->element('header');
     <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="90" align="left"><b><?php  echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php  echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php  echo $this->Paginator->sort('fullname', 'Investor Name'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('phone', 'Phone No.'); ?></b></td>
              <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('email', 'Email'); ?></b></td>
@@ -59,6 +60,7 @@ echo $this->element('header');
         <?php if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
                 <td align="left"><?php  echo $each_item['Investor']['id']; ?></td>
+                <td align="left"><?php echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array()); ?></td>  <!--Link to enable editing -->
                 <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array()); ?></td>  <!--Link to enable editing -->
                 <td align="left"><?php  echo $each_item['Investor']['phone']; ?></td>
                 <td align="left"><?php  echo $each_item['Investor']['email']; ?></td>
@@ -67,13 +69,13 @@ echo $this->element('header');
         <?php  }} ?>
 
         <tr>
-            <td colspan="5" align="right">
+            <td colspan="6" align="right">
                 <?php //echo $this->Form->end();
                 ?>
             </td>
         </tr>
         <tr>
-            <td colspan="5" align="center">
+            <td colspan="6" align="center">
                 <?php
                 echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";

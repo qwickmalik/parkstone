@@ -155,7 +155,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
 
                             <div class="row"> 
-                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     if ($this->Session->check('investtemp.investment_date') == true) {
 
@@ -175,10 +175,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("selected" => $day)); ?>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("selected" => $month)); ?>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
                                 </div>
                                 <script>
@@ -240,7 +240,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details','name' => 'instruction_details2', 'placeholder' => "Complete this ONLY if 'Other' is selected", 'value' => ($this->Session->check('investtemp.instruction_details2') == true ? $this->Session->read('investtemp.instruction_details2') : '' )));
                             ?>
                             <div class="row"> 
-                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     if ($this->Session->check('investtemp.purchase_date') == true) {
 
@@ -260,10 +260,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Pur. Date*:</span>" . $this->Form->day('purchase_date', array("selected" => $day)); ?>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('purchase_date', array("selected" => $month)); ?>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('purchase_date', 1950, date('Y'), array("selected" => $Year)); ?>
                                 </div>
                                 <script>

@@ -44,10 +44,10 @@
         </a>
         <ul class="child">
             <li>
-				<?php echo $this->Html->link('New Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
+				<?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
             </li>
             <li>
-				<?php echo $this->Html->link('Manage Investments', '/Reinvestments/manageInvestments', array('escape' => false)); ?>
+				<?php echo $this->Html->link('Manage Re-Investments', '/Reinvestments/manageInvestments', array('escape' => false)); ?>
             </li>
         </ul>
     </li>
@@ -59,13 +59,27 @@
                 , '/Investments/processPayments', array('escape' => false));
         ?>
     </li>
-    <li class="lightyellow">
+<!--    <li class="lightyellow">
         <?php
-        echo $this->Html->link('
-        		<span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
-            	<span class="menu-text">Company Accounts</span>'
-                , '/CompanyAccounts/', array('escape' => false));
+//        echo $this->Html->link('
+//        		<span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
+//            	<span class="menu-text">Company Accounts</span>'
+//                , '/CompanyAccounts/', array('escape' => false));
         ?>
+    </li>-->
+    <li class="parent lightyellow">
+        <a href="#">
+            <span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
+            <span class="menu-text">Company Accounts</span>
+        </a>
+        <ul class="child">
+            <li>
+                <?php echo $this->Html->link('New Investment', '/Investments/newInvestment0', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Manage Investments', '/Investments/manageInvestments', array('escape' => false)); ?>
+            </li>
+        </ul>
     </li>
     <li class="lightorange">
         <?php

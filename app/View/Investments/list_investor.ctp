@@ -38,6 +38,9 @@
     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                <b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b>
+            </td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left">
                 <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
             </td>
             <td style="border-bottom: solid 2px dodgerblue" align="left">
@@ -57,6 +60,8 @@
         if(isset($investor)){
         foreach ($investor as $each_item): ?>
             <tr>
+                <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                </td>
                 <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td>
                 <td align="left" class="investorAnchor">
