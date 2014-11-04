@@ -1,4 +1,10 @@
 DONE 04.11.14 Subsidiary company creation in settings
 DONE 04.11.14 User type permissions listing modules and whether to allow view, create/edit and delete
-List/Edit investors both individual and company
-Investor management for fixed and equity
+DONE 04.11.14 Update List Investors to show company names
+DONE 04.11.14 Remove investment details from newInvestor wizard
+DONE 04.11.14 Update Edit investors both individual and company with the new form wizard
+DONE 04.11.14 Update manageInvestments and processPayments to load company names in the list
+Integrate CompanyAccounts
+
+Update InvestorDetails to pull out all details from the db
+Investment management for fixed and equity

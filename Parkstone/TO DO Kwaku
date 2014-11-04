@@ -1,0 +1,6 @@
+New Investor Step 2 (Bank Details) has bank name as a numeric field for both individual and corporate NewInvestor
+Set editInvestor to load Investor Type, Investment Officer Fields and Investor photo. Without Investor Type, cant save edits for investors
+Bank Details not loading in editInvestor
+Next of Kin name not going to db for newInvestorIndivJoint
+statementAllInv to load investment details
+statementActiveInv to load active investments
