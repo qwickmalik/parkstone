@@ -1,4 +1,4 @@
-Subsidiary company creation in settings
+DONE 04.11.14 Subsidiary company creation in settings
 User type permissions listing modules and whether to allow view, create/edit and delete
 List/Edit investors both individual and company
 Investor management for fixed and equity
