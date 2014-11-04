@@ -19,7 +19,7 @@ echo $this->Html->script('notification.js');
 			<td><?php echo $this->Form->input('company_name',array("size" => 40,"value" => $setupResults['Setting']['company_name']));  ?></td>
 		</tr>
 		<tr>
-			<td align="right"><b>Owner name:</b></td>
+			<td align="right"><b>Director/CEO:</b></td>
 			<td><?php echo $this->Form->input('owner_name',array("class" => "large","size" => 40,"value" => $setupResults['Setting']['owner_name']));  ?></td>
 		</tr>
 		<tr>

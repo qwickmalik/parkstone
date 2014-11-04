@@ -18,7 +18,7 @@
 				<h3>Subsidiaries</h3>
 				<p>Set/edit details of subsidiary companies here</p>
 			</div>
-		</div>' ,'#' , array('escape' => false)); ?>
+		</div>' ,'/Settings/subsidiaries' , array('escape' => false)); ?>
 <!-- //'/Settings/warehouses' -->
 		<?php echo $this->Html->link('
 		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '

@@ -4,7 +4,7 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
@@ -169,7 +169,63 @@ class SettingsController extends AppController {
             }
         }
     }
+    
+    function subsidiaries() {
+       // $this->__validateUserType();
 
+        $this->set('currencies', $this->Currency->find('list'));
+
+        $setupResults = $this->Setting->getSetup();
+        foreach ($setupResults as $setupResult) {
+            $setupRes = $setupResult;
+        }
+
+        $this->set(compact('setupResults'));
+
+        if ($this->request->is('ajax')) {
+            Configure::write('debug', 0);
+            $this->autoRender = false;
+            $this->autoLayout = false;
+            if (!empty($this->request->data)) {
+                $day = $this->request->data['Subsidiary']['accounting_month']['day'];
+                $month = $this->request->data['Subsidiary']['accounting_month']['month'];
+                $year = $this->request->data['Subsidiary']['accounting_month']['year'];
+                $this->request->data['Subsidiary']['accounting_month'] = $year . '-' . $month . '-' . $day;
+
+                $count = $this->Setting->find('count');
+                if ($count < 1) {
+                    $result = $this->Setting->save($this->request->data);
+                    if ($result) {
+                        $this->request->data = null;
+
+
+                        return "Subsidiary Successfully Added";
+                    } else {
+
+                        return "Unsuccessful";
+                    }
+                } else if ($count >= 1) {
+                    $this->Setting->id = 1;
+
+                    $result = $this->Setting->save($this->request->data);
+                    if ($result) {
+                        $this->request->data = null;
+
+
+                        return "Subsidiary Update Successful";
+                    } else {
+
+                        return "Unsuccessful";
+                    }
+                }
+            }
+        }
+    }
+
+    function delSubsidiary(){
+        
+    }
+    
     function displayInfo() {
         if ($this->request->is('ajax')) {
             Configure::write('debug', 0);

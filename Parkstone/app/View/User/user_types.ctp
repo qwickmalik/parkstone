@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
         <div class="row">
             <?php 
-            echo $this->Form->create('Usertype', array("url" => array('controller' => 'Users', 'action' => 'userTypes'), "inputDefaults" => array('label' => false, 'div' => false))); 
+            echo $this->Form->create('Usertype', array("url" => array('controller' => 'Users', 'action' => 'userTypes'), "inputDefaults" => array('label' => false, 'div' => false, 'class' => 'basic-form'))); 
             ?>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <?php 
@@ -24,7 +24,7 @@ echo $this->Html->script('notification.js');
                 <?php 
                 echo '<p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">User Permissions</p>';
                         
-                echo $this->Form->input('view', array('value' => 1, 'type' => 'checkbox', 'label' => 'View' ));
+                echo $this->Form->input('view', array('value' => 1, 'type' => 'checkbox', 'label' => 'View', 'class' => 'basic-form' ));
                 echo $this->Form->input('edit', array('value' => 1, 'type' => 'checkbox', 'label' => 'Edit' ));
                 echo $this->Form->input('delete', array('value' => 1, 'type' => 'checkbox', 'label' => 'Delete' ));
                 

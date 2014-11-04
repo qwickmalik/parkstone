@@ -101,3 +101,28 @@ ADD `bank_name` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `acc_name` ,
 ADD `bank_branch` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `bank_name` ,
 ADD `acc_number` VARCHAR( 25 ) NULL DEFAULT NULL AFTER `bank_branch` ;
 ALTER TABLE `investments` ADD `total_amount` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_fees` 
+
+
+4 NOVEMBER, 2014 
+-------------------------
+CREATE TABLE IF NOT EXISTS `subsidiaries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `currency_id` int(11) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `manager_name` varchar(100) DEFAULT NULL,
+  `location` varchar(50) NOT NULL,
+  `postal_address` varchar(100) NOT NULL,
+  `postal_town_suburb` varchar(50) NOT NULL,
+  `postal_city` varchar(20) NOT NULL,
+  `postal_country` varchar(25) NOT NULL,
+  `telephone` varchar(50) NOT NULL,
+  `mobile` varchar(40) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `accounting_month` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+
+INSERT INTO `subsidiaries` (`id`, `currency_id`, `company_name`, `manager_name`, `location`, `postal_address`, `postal_town_suburb`, `postal_city`, `postal_country`, `telephone`, `mobile`, `email`, `accounting_month`) VALUES
+(1, 1, 'PARKSTONE CAPITAL LIMITED', 'Elsie', 'Accra', ' P.O. Box CS 9161', 'Adjirigano', 'Accra', 'Ghana', '0202088130', '0244327219', 'info@parkstonecapital.com', '2012-10-30');
