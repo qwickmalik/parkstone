@@ -74,10 +74,16 @@
         </a>
         <ul class="child">
             <li>
-                <?php echo $this->Html->link('New Investment', '/Investments/newInvestment0', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New Cash Entry', '/CashAccounts/', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Manage Investments', '/Investments/manageInvestments', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Find Cash Entry', '/CashAccounts/findEntry', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Delete Cash Entry', '/CashAccounts/deleteEntry', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Authorize Cash Entry', '/CashAccounts/authorizeEntry', array('escape' => false)); ?>
             </li>
         </ul>
     </li>
