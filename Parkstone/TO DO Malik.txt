@@ -8,3 +8,7 @@ Integrate CompanyAccounts
 
 Update InvestorDetails to pull out all details from the db
 Investment management for fixed and equity
+
+ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in 
+investment and reinvestment page
+
