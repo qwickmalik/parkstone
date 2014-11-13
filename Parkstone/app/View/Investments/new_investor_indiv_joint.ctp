@@ -55,7 +55,7 @@ echo $this->Html->script('icheck/icheck.js');
 					<?php 
                                         echo $this->Form->hidden('investor_type_id', array('value' => 2));
  					echo $this->Form->input('investortype_id', array('default' => 2, 'label' => 'Investor Type', 'disabled'));
-					echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));
+					echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer*: ','class' => 'required','empty' => '--Please Select--'));
                                         echo $this->Form->input('surname', array('label' => 'Surname*','value' => (isset($investor['Investor']['surname']) ? $investor['Investor']['surname'] : '' ), 'placeholder' => 'Enter surname', 'class' => 'required')); 
 					echo $this->Form->input('other_names', array('label' => 'Other Names*','value' => (isset($investor['Investor']['other_names']) ? $investor['Investor']['other_names'] : '' ), 'placeholder' => 'Enter other (names)', 'class' => 'required'));
 					echo $this->Form->input('in_trust_for', array('label' => 'In Trust For (Beneficiary)','value' => (isset($investor['Investor']['in_trust_for']) ? $investor['Investor']['in_trust_for'] : '' ), 'placeholder' => 'Enter name of person for whom investment will be made'));
@@ -81,7 +81,9 @@ echo $this->Html->script('icheck/icheck.js');
 				?>
 				<div class="row">
 					<div class="col-lg-4 col-md-4 col-sm-12">
-						<?php echo $this->Form->input('idtype_id', array('label' => 'ID Type*','class' => 'required','value' => (isset($investor['Investor']['idtype_id']) ? $investor['Investor']['idtype_id'] : '' ),'class' => 'required','empty' =>'---Select---','options' => array("Drivers license"=>"Drivers license",'NHIS'=>'NHIS','National ID'=>'National ID','Passport'=>'Passport','Voter ID'=>'Voter ID'))); ?>
+						<?php 
+                                                //,'options' => array("Drivers license"=>"Drivers license",'NHIS'=>'NHIS','National ID'=>'National ID','Passport'=>'Passport','Voter ID'=>'Voter ID') ,'empty' =>'---Select---'
+                                                echo $this->Form->input('idtype_id', array('label' => 'ID Type*','class' => 'required','value' => (isset($investor['Investor']['idtype_id']) ? $investor['Investor']['idtype_id'] : '' ),'class' => 'required')); ?>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-12">
 						<?php echo $this->Form->input('id_number', array('label' => 'ID Number*','class' => 'required' ,'value' => (isset($investor['Investor']['id_number']) ? $investor['Investor']['id_number'] : '' ), 'placeholder' => 'Enter ID number')); ?>
@@ -128,7 +130,7 @@ echo $this->Html->script('icheck/icheck.js');
                     
 					<div class="col-lg-6 col-md-6 col-sm-12">
                       <?php
-						echo $this->Form->input('nationality', array('label' => 'Nationality','value' => (isset($investor['Investor']['nationality']) ? $investor['Investor']['nationality'] : '' ), 'placeholder' => 'Enter nationality'));
+						echo $this->Form->input('nationality', array('label' => 'Nationality*','value' => (isset($investor['Investor']['nationality']) ? $investor['Investor']['nationality'] : '' ), 'class' => 'required','placeholder' => 'Enter nationality'));
 						echo $this->Form->input('hometown', array('value' => (isset($investor['Investor']['hometown']) ? $investor['Investor']['hometown'] : '' ), 'placeholder' => 'Enter hometown'));
 						echo $this->Form->input('birth_place', array('label' => 'Place of Birth', 'value' => (isset($investor['Investor']['birth_place']) ? $investor['Investor']['birth_place'] : '' ), 'placeholder' => 'Enter hometown'));
 						echo $this->Form->input('work_place', array('label' => 'Place of Work', 'value' => (isset($investor['Investor']['work_place']) ? $investor['Investor']['work_place'] : '' ), 'placeholder' => 'Enter name of workplace'));
@@ -233,8 +235,8 @@ echo $this->Html->script('icheck/icheck.js');
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php 
-						echo $this->Form->input('nk_surname', array('label' => 'Surname','value' => (isset($investor['Investor']['nk_surname']) ? $investor['Investor']['nk_surname'] : '' ), 'placeholder' => 'Enter surname')); 
-						echo $this->Form->input('nk_other_names', array('label' => 'Other Names','value' => (isset($investor['Investor']['nk_other_names']) ? $investor['Investor']['nk_other_names'] : '' ), 'placeholder' => 'Enter other name(s)'));
+						echo $this->Form->input('next_of_kin_name', array('label' => 'Next of Kin Name','value' => (isset($investor['Investor']['next_of_kin_name']) ? $investor['Investor']['next_of_kin_name'] : '' ), 'placeholder' => 'Enter Next of Kin Name')); 
+						//echo $this->Form->input('nk_other_names', array('label' => 'Other Names','value' => (isset($investor['Investor']['nk_other_names']) ? $investor['Investor']['nk_other_names'] : '' ), 'placeholder' => 'Enter other name(s)'));
 						?>
 						
 						<div class="row">

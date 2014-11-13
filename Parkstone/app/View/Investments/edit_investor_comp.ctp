@@ -35,18 +35,19 @@
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
                             <?php
-                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'commit_comp'), "inputDefaults" => array('div' => false)));
+                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'edit_comp'), "inputDefaults" => array('div' => false)));
                             ?>
                             <!-- Step 1 Company Information Form Start -->
                             <div class="step-pane active" id="step1">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'commit_comp')); ?> ">
+                                        <input class="input-xlarge focused" id="post_url"  type="hidden" value="<?php echo $this->Html->url(array('controller' => 'Investments', 'action' => 'edit_comp')); ?> ">
                               
                                         <?php
+                                         echo $this->Form->hidden('id', array('value' => (isset($investor['Investor']['id']) ? $investor['Investor']['id'] : '' )));
                                         echo $this->Form->hidden('investor_type_id', array('value' => 3));
                                         echo $this->Form->input('investortype_id', array('default' => 3, 'label' => 'Investor Type', 'disabled'));
-                                        echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));                                      
+                                        echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--', 'selected' => (isset($investor['Investor']['user_id']) ? $investor['Investor']['user_id'] : '' )));                                      
                                         echo $this->Form->input('comp_name', array('label' => 'Company/Organisation Name*', 'value' => (isset($investor['Investor']['comp_name']) ? $investor['Investor']['comp_name'] : '' ), 'placeholder' => 'Enter company/organisation name', 'class' => 'required'));
                                         echo $this->Form->input('nature_biz', array('label' => 'Nature of Business', 'value' => (isset($investor['Investor']['nature_biz']) ? $investor['Investor']['nature_biz'] : '' ), 'placeholder' => 'Describe nature of business'));
                                         echo $this->Form->input('reg_numb', array('label' => 'Reg. Number*','value' => (isset($investor['Investor']['reg_numb']) ? $investor['Investor']['reg_numb'] : '' ), 'placeholder' => 'Enter company registration number', 'class' => 'required'));
@@ -80,9 +81,9 @@
                                         echo $this->Form->input('position', array('value' => (isset($investor['Investor']['position']) ? $investor['Investor']['position'] : '' ), 'placeholder' => 'Enter position of contact person'));
                                         echo $this->Form->input('phone', array('label' => 'Phone Number*', 'value' => (isset($investor['Investor']['phone']) ? $investor['Investor']['phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
                                         echo $this->Form->input('email', array('label' => 'Email Address*', 'value' => (isset($investor['Investor']['email']) ? $investor['Investor']['email'] : '' ), 'placeholder' => 'Enter email address', 'class' => 'required'));
-                                        echo $this->Form->input('institutiontype_id', array('label' => 'Type of Institution', 'default' => 0));
-                                        echo $this->Form->input('grossrevenue_id', array('label' => 'Annual Gross Revenue', 'default' => 0));
-                                        echo "<span style='font-size: 14px;font-weight: bold; padding: 10px 0px 10px 0px;'>Preferred Mode of Contact</span>" . $this->Form->select('contact_mode', array('Phone' => 'Phone', 'Email' => 'Email'), array('empty' => '-Please select-'));
+                                        echo $this->Form->input('institutiontype_id', array('label' => 'Type of Institution', 'default' => 0, 'value' => (isset($investor['Investor']['institution_type_id']) ? $investor['Investor']['institution_type_id'] : '' )));
+                                        echo $this->Form->input('grossrevenue_id', array('label' => 'Annual Gross Revenue', 'default' => 0, 'value' => (isset($investor['Investor']['gross_revenue_id']) ? $investor['Investor']['gross_revenue_id'] : '' )));
+                                        echo "<span style='font-size: 14px;font-weight: bold; padding: 10px 0px 10px 0px;'>Preferred Mode of Contact</span>" . $this->Form->select('contact_mode', array('Phone' => 'Phone', 'Email' => 'Email'), array('empty' => '-Please select-','value' => (isset($investor['Investor']['contact_mode']) ? $investor['Investor']['contact_mode'] : '' )));
                                         ?>
                                     </div>
                                 </div>
@@ -94,16 +95,16 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('acc_name', array('label' => 'Account Name', 'placeholder' => "Enter investor name as used with the bank"));
-                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name', 'placeholder' => "Enter name of bank"));
+                                        echo $this->Form->input('acc_name', array('label' => 'Account Name*', 'placeholder' => "Enter investor name as used with the bank", 'class' => 'required', 'value' => (isset($investor['Investor']['acc_name']) ? $investor['Investor']['acc_name'] : '' )));
+                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'placeholder' => "Enter name of bank", 'class' => 'required', 'value' => (isset($investor['Investor']['bank_name']) ? $investor['Investor']['bank_name'] : '' )));
                                         ?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('bank_branch', array('label' => 'Bank Branch', 'placeholder' => "Enter bank branch/location"));
-                                        echo $this->Form->input('acc_number', array('label' => 'Account Number', 'placeholder' => "Enter account number"));
-                                       	 ?>
+                                        echo $this->Form->input('bank_branch', array('label' => 'Bank Branch*', 'placeholder' => "Enter bank branch/location", 'class' => 'required', 'value' => (isset($investor['Investor']['bank_branch']) ? $investor['Investor']['bank_branch'] : '' )));
+                                        echo $this->Form->input('acc_number', array('label' => 'Account Number*', 'placeholder' => "Enter account number", 'class' => 'required', 'value' => (isset($investor['Investor']['acc_number']) ? $investor['Investor']['acc_number'] : '' )));
+                                        ?>
                                     </div>
                                 </div>
                             </div>

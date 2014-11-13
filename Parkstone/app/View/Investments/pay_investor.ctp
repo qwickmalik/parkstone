@@ -49,10 +49,10 @@ echo $this->Html->script('notification.js');
                                     } ?>" name="hid_investid" /></td>
                         </tr>
                         <tr>
-                            <td width="30%"><b align="right">Investment Portfolio:</b></td>
+                            <td width="30%"><b align="right">Investment Term:</b></td>
                             <td><span align="left" id="xxxxxx"><?php
-                                    if (isset($data['Portfolio']['payment_name'])) {
-                                        echo $data['Portfolio']['payment_name'];
+                                    if (isset($data['InvestmentTerm']['term_name'])) {
+                                        echo $data['InvestmentTerm']['term_name'];
                                     }
         ?></span></td>
                         </tr>
@@ -91,8 +91,8 @@ echo $this->Html->script('notification.js');
                         <tr>
                             <td><b align="right">Rate(%):</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['Portfolio']['interest_rate'])) {
-                                        echo $data['Portfolio']['interest_rate'];
+                                    if (isset($data['Investment']['custom_rate'])) {
+                                        echo $data['Investment']['custom_rate'];
                                     }
                                     ?></span></td>
                         </tr>
@@ -133,32 +133,19 @@ echo $this->Html->script('notification.js');
 ?> 
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
-<?php
-if ($this->Session->check('investortemp.dob') == true) {
-    $dob_string = join("-", $this->Session->read('investortemp.dob'));
-    $month = date('m', strtotime($dob_string));
-    $day = date('d', strtotime($dob_string));
-    $Year = date('Y', strtotime($dob_string));
-} else {
+<!--                         <input type="hidden" id="month" value="<?php // echo $month; ?>"/>
+                            <input type="hidden" id="day" value="<?php // echo $day; ?>"/>
+                            <input type="hidden" id="year" value="<?php // echo $Year; ?>"/>-->
 
-    $month = date('m');
-    $day = date('d');
-    $Year = date('Y');
-}
-?>
-                            <input type="hidden" id="month" value="<?php echo $month; ?>"/>
-                            <input type="hidden" id="day" value="<?php echo $day; ?>"/>
-                            <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-
-                            <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>Payment Date:</span>" . $this->Form->day('dob', array("selected" => $day, "class" => "large")); ?>&nbsp;
+                            <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>Payment Date:</span>" . $this->Form->day('payment_date', array("class" => "large")); ?>&nbsp;
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('dob', array("selected" => $month, "class" => "large")); ?>&nbsp;
+                            <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('payment_date', array("class" => "large")); ?>&nbsp;
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-<?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('dob', 1950, date('Y'), array("selected" => $Year, "class" => "large")); ?>
+<?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('payment_date', 1950, date('Y'), array( "class" => "large")); ?>
                         </div>
-
+<!--
                         <script>
                             var day = $("#day").val();
                             var month = $("#month").val();
@@ -166,7 +153,7 @@ if ($this->Session->check('investortemp.dob') == true) {
                             $("#InvestorDobDay option[value=" + day + "]").attr('selected', true);
                             $("#InvestorDobMonth option[value=" + month + "]").attr('selected', true);
                             $("#InvestorDobYear option[value=" + year + "]").attr('selected', true);
-                        </script>
+                        </script>-->
                     </div>
 <?php echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;" . $this->Form->input('payment_mode', array('options' => array("Cash" => "Cash", "Cheque" => "Cheque", "Post-dated chq" => "Post-dated chq", "Standing order" => "Standing order", "Visa" => "Visa"), 'empty' => '--Please Select--', 'label' => false)); ?>
                 </td>

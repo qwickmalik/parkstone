@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
 	<div class="inner">
             <div id="clearer"></div>
 		
-			<?php echo $this->Html->link('Company Accounts',"/CompanyAccounts/", array("class" => 'btn btn-info')); ?>
+			<?php echo $this->Html->link('Go To Cash Accounts',"/CashAccounts/", array("class" => 'btn btn-info')); ?>
 			
 			<?php echo $this->Form->create('Expense',array("url" => array('controller' => 'Settings', 'action' => 'createExpense'),"inputDefaults" => array('label' => false,'div' => false)));?>
 			
@@ -47,7 +47,8 @@ echo $this->Html->script('notification.js');
 							<?php echo $this->Html->link($each_item['Expense']['payment_name'],"#",array("class" => $each_item['Expense']['id'])); ?>
 						</td> <!-- Link to enable editing -->
 						<td width="20" align="left">
-							<input type="button" name="<?php echo $each_item['Expense']['id']; ?>" id="expense_del" class="expense_del"/>
+							<?php echo $this->Html->link("Delete", "/Settings/delPaymentName/" . $each_item['Expense']['id'], array("class" => $each_item['Expense']['id']));
+    ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

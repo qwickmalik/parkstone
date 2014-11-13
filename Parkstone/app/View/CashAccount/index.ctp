@@ -12,15 +12,15 @@ if ($this->Session->check('userData')) {
 }
 $options = array("Expense");
 $expense_options = array("Petty Cash");
-if ($this->Session->read('userDetails.usertype_id')) {
+//if ($this->Session->read('userDetails.usertype_id')) {
 
-    $userType = $this->Session->read('userDetails.usertype_id');
-
+    //$userType = $this->Session->read('userDetails.usertype_id');
+    $userType = 1;
     if ($userType == 1 || $userType == 7) {
         $options = array("Expense", "New_Loans", "Owner_Injections", "Owner_Withdrawal", "Loan_Repayment", "Tax Payments", "Deposits", "Dispense Petty Cash");
         $expense_options = array("Petty Cash", "Bank", "Other");
     }
-}
+//}
 ?>
 
 <!-- Content starts here -->

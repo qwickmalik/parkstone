@@ -24,6 +24,14 @@ class Idtype extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'Investor' => array(
+            'className' => 'Investor',
+            'foreignKey' => 'idtype_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
 }
 

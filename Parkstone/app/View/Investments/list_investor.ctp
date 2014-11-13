@@ -9,7 +9,7 @@
 
         <tr>
 			<td align="center" valign="top">&nbsp;</td>
-            <td align="center" width="400" style="color: red; font-weight: bold;">Please enter surname or first name</td>
+            <td align="center" width="400" style="color: red; font-weight: bold;">Please enter surname, first name or company name</td>
 			<td align="center" valign="top">&nbsp;</td>
         </tr>
         <tr>

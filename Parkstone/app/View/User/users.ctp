@@ -60,7 +60,11 @@ echo $this->Html->script('notification.js');
                     <td align="left"><?php echo $each_item['User']['lastname']; ?></td>
                     <td align="left"><?php echo $each_item['Usertype']['usertype']; ?></td>
                     <td style="padding-left: 17px;padding-right: 17px;" align="center"><?php echo $each_item['User']['email']; ?></td>
-                    <td align="left"><?php echo $this->Form->input('', array("class" => "user_del", "id" => $each_item['User']['id'], "type" => "button")); ?></td>
+                    <td align="left"><?php 
+
+echo $this->Html->link("Delete", "/Users/delUser/" . $each_item['User']['id'], array("class" => $each_item['User']['id']));
+
+//echo $this->Form->input('', array("class" => "user_del", "id" => $each_item['User']['id'], "type" => "button")); ?></td>
                 </tr>
             <?php endforeach; ?>
             <tr>

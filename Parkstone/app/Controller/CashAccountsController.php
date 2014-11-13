@@ -1092,7 +1092,7 @@ class CashAccountsController extends AppController {
 
     public function findEntry() {
 
-        $this->__validateUserType();
+       // $this->__validateUserType();
         $data = $this->paginate('CashAccount');
         if ($this->request->is('post')) {
 
@@ -1135,7 +1135,7 @@ class CashAccountsController extends AppController {
 
    
     public function authoriseEntry() {
-        $this->__validateUserType();
+       // $this->__validateUserType();
         $data = $this->paginate('TempcashAccount');
         $this->set('zones', $this->Zone->find('list'));
 
@@ -1440,7 +1440,7 @@ class CashAccountsController extends AppController {
 
     public function deleteEntry() {
 
-        $this->__validateUserType();
+      //  $this->__validateUserType();
         $data = $this->paginate('CashAccount');
         if ($this->request->is('post')) {
 

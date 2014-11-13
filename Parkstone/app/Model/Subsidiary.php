@@ -22,12 +22,12 @@ class Subsidiary extends AppModel {
     
     function getSetup(){
         $this->id = 1;
-        $result = $this->find('first',array('conditions' => array('Setting.id' => 1)));
+        $result = $this->find('first',array('conditions' => array('Subsidiary.id' => 1)));
         return $result;
     }
     
     function getSettings(){
-        $result = $this->find('first',array('conditions' => array('Setting.id' => 1)));
+        $result = $this->find('first',array('conditions' => array('Subsidiary.id' => 1)));
         return $result;
     }
      

@@ -16,8 +16,8 @@ class SettingsController extends AppController {
         'Expense' => array('limit' => 25, 'order' => array('Expense.expense_date' => 'desc')),
         'Zone' => array('limit' => 25, 'order' => array('Zone.zone' => 'asc')),
         'Warehouse' => array('limit' => 25, 'order' => array('Warehouse.warehouse' => 'asc')),
-        
-        'Portfolio' => array('limit' => 25, 'order' => array('Portfolio.id' => 'asc'))
+        'Portfolio' => array('limit' => 25, 'order' => array('Portfolio.id' => 'asc')),
+        'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc'))
     );
 /*
     function beforeFilter() {
@@ -52,27 +52,29 @@ class SettingsController extends AppController {
         $this->set('data', $data);
     }
 
-    function delPaymentName() {
-
-        if ($this->request->is('ajax')) {
-            Configure::write('debug', 0);
-            $this->autoRender = false;
-            $this->autoLayout = false;
-            if (!empty($this->request->data)) {
+     function delPaymentName($expenseID = null) {
+        $this->autoRender =  $this->autoLayout = false;
+           
+       
+            if (!is_null($expenseID)) {
 
 
-                $expenseID = $_POST['paymentnameId'];
+               // $expenseID = $_POST['paymentnameId'];
                 $result = $this->Expense->delete($expenseID,false);
 
 
 
                 if ($result) {
-                    return "success";
+                      $message = 'Payment Name Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'createExpenses'));
                 } else {
-                    return "unsuccessful";
+                     $message = 'Could not Delete Payment Name';
+                   $this->Session->write('bmsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'createExpenses'));
                 }
             }
-        }
+        
     }
 
     function createExpense() {
@@ -172,10 +174,11 @@ class SettingsController extends AppController {
     
     function subsidiaries() {
        // $this->__validateUserType();
-
+        $data = $this->paginate('Subsidiary');
+        $this->set('data', $data);
         $this->set('currencies', $this->Currency->find('list'));
 
-        $setupResults = $this->Setting->getSetup();
+        $setupResults = $this->Subsidiary->getSetup();
         foreach ($setupResults as $setupResult) {
             $setupRes = $setupResult;
         }
@@ -192,9 +195,9 @@ class SettingsController extends AppController {
                 $year = $this->request->data['Subsidiary']['accounting_month']['year'];
                 $this->request->data['Subsidiary']['accounting_month'] = $year . '-' . $month . '-' . $day;
 
-                $count = $this->Setting->find('count');
+                $count = $this->Subsidiary->find('count');
                 if ($count < 1) {
-                    $result = $this->Setting->save($this->request->data);
+                    $result = $this->Subsidiary->save($this->request->data);
                     if ($result) {
                         $this->request->data = null;
 
@@ -204,26 +207,39 @@ class SettingsController extends AppController {
 
                         return "Unsuccessful";
                     }
-                } else if ($count >= 1) {
-                    $this->Setting->id = 1;
-
-                    $result = $this->Setting->save($this->request->data);
-                    if ($result) {
-                        $this->request->data = null;
-
-
-                        return "Subsidiary Update Successful";
-                    } else {
-
-                        return "Unsuccessful";
-                    }
-                }
+                } 
+//                else if ($count >= 1) {
+//                    $this->Subsidiary->id = 1;
+//
+//                    $result = $this->Setting->save($this->request->data);
+//                    if ($result) {
+//                        $this->request->data = null;
+//
+//
+//                        return "Subsidiary Update Successful";
+//                    } else {
+//
+//                        return "Unsuccessful";
+//                    }
+//                }
             }
         }
     }
 
-    function delSubsidiary(){
-        
+    function delSubsidiary($sub_id = Null){
+        $this->autoRender = false;
+
+        $result = $this->Subsidiary->delete($sub_id,false);
+        if($result){
+            
+            $message = 'Subsidiary Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
+        }else{
+                    $message = 'Could Not Delete Category';
+                   $this->Session->write('bmsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
+                }
     }
     
     function displayInfo() {

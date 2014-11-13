@@ -10,56 +10,57 @@ echo $this->Html->script('notification.js');
 
         <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
             <div class="boxed">
-                <?php echo $this->Form->create('Setting', array("url" => array('controller' => 'Setting', 'action' => 'subsidiaries'), "inputDefaults" => array('label' => false, 'div' => false)));
+                <?php echo $this->Form->create('Subsidiary', array("url" => array('controller' => 'Setting', 'action' => 'subsidiaries'), "inputDefaults" => array('label' => false, 'div' => false)));
                 ?>
 
                 <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
                     <tr>
                         <td align="right"><b>Subsidiary Name:</b></td>
-                        <td><?php echo $this->Form->input('company_name', array("size" => 40, "value" => $setupResults['Subsidiary']['company_name'])); ?></td>
+                        <td><?php echo $this->Form->input('company_name', array("size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Manager:</b></td>
-                        <td><?php echo $this->Form->input('manager_name', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['manager_name'])); ?></td>
+                        <td><?php echo $this->Form->input('manager_name', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Location:</b></td>
-                        <td><?php echo $this->Form->input('location', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['location'])); ?></td>
+                        <td><?php echo $this->Form->input('location', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Postal Address:</b></td>
-                        <td><?php echo $this->Form->input('postal_address', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['postal_address'])); ?></td>
+                        <td><?php echo $this->Form->input('postal_address', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Postal Town/Suburb:</b></td>
-                        <td><?php echo $this->Form->input('postal_town_suburb', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['postal_town_suburb'])); ?></td>
+                        <td><?php echo $this->Form->input('postal_town_suburb', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Postal City:</b></td>
-                        <td><?php echo $this->Form->input('postal_city', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['postal_city'])); ?></td>
+                        <td><?php echo $this->Form->input('postal_city', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Country:</b></td>
-                        <td><?php echo $this->Form->input('postal_country', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['postal_country'])); ?></td>
+                        <td><?php echo $this->Form->input('postal_country', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Telephone:</b></td>
-                        <td><?php echo $this->Form->input('telephone', array("class" => "large", "size" => 20, "value" => $setupResults['Subsidiary']['telephone'])); ?></td>
+                        <td><?php echo $this->Form->input('telephone', array("class" => "large", "size" => 20)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Mobile Phone:</b></td>
-                        <td><?php echo $this->Form->input('mobile', array("class" => "large", 'maxlength' => 40, "size" => 40, "value" => $setupResults['Subsidiary']['mobile'])); ?></td>
+                        <td><?php echo $this->Form->input('mobile', array("class" => "large", 'maxlength' => 40, "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Email Address:</b></td>
-                        <td><?php echo $this->Form->input('email', array("class" => "large", "size" => 40, "value" => $setupResults['Subsidiary']['email'])); ?></td>
+                        <td><?php echo $this->Form->input('email', array("class" => "large", "size" => 40)); ?></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Currency:</b></td>
                         <td>
                             <?php
-                            $curr = $setupResults['Setting']['currency_id'];
-                            if (!empty($curr)) {
+                           $curr = 1;
+                            if (isset($setupResults['Subsidiary']['currency_id']) && !empty($setupResults['Subsidiary']['currency_id'])) {
+                                $curr = $setupResults['Subsidiary']['currency_id'];
                                 $emtpy = 1;
                                 switch ($curr) {
                                     case 1:
@@ -80,9 +81,15 @@ echo $this->Html->script('notification.js');
                     </tr>
                     <tr>
                         <?php
+                        if(isset($setupResults['Subsidiary']['accounting_month'])){
                         $month = date('m', strtotime($setupResults['Subsidiary']['accounting_month']));
                         $day = date('d', strtotime($setupResults['Subsidiary']['accounting_month']));
                         $Year = date('Y', strtotime($setupResults['Subsidiary']['accounting_month']));
+                        }else{
+                             $month = date('m');
+                        $day = date('d');
+                        $Year = date('Y');
+                        }
                         ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
@@ -119,7 +126,7 @@ echo $this->Form->end();
             </div>
         </div>
 <?php
-echo $this->Form->create('', array("url" => array('controller' => 'Setting', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
+echo $this->Form->create('', array("url" => array('controller' => 'Subsidiary', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
 ?>
 
         <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
@@ -131,8 +138,8 @@ echo $this->Form->create('', array("url" => array('controller' => 'Setting', 'ac
 <?php foreach ($data as $each_item): ?>
                 <tr>
                     <td width="50" align="left"><?php echo $each_item['Subsidiary']['id']; ?></td>
-                    <td align="left" class="userTypeAnchor"><?php echo $this->Html->link($each_item['Subsidiary']['usertype'], "#", array("class" => $each_item['Subsidiary']['id'])); ?></td> 
-                    <td align="left"><?php echo $this->Html->link("Delete","/Setting/delsubsidiary/".$each_item['Subsidiary']['id']);   ?></td>
+                    <td align="left" class="userTypeAnchor"><?php echo $this->Html->link($each_item['Subsidiary']['company_name'], "#", array("class" => $each_item['Subsidiary']['id'])); ?></td> 
+                    <td align="left"><?php echo $this->Html->link("Delete","/Settings/delSubsidiary/".$each_item['Subsidiary']['id']);   ?></td>
                 </tr>
 <?php endforeach; ?>
             <tr>

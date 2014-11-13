@@ -258,27 +258,37 @@ class UsersController extends AppController {
         }
     }
 
-    function delUser() {
-
-        if ($this->request->is('ajax')) {
+    function delUser($userID = null) {
+        $this->autoRender = $this->autoLayout = false;
+            
+      
             Configure::write('debug', 0);
-            $this->autoRender = false;
-            $this->autoLayout = false;
-            if (!empty($this->request->data)) {
+            
+            if (!is_null($userID)) {
 
 
-                $userID = $_POST['userId'];
+               // $userID = $_POST['userId'];
                 $result = $this->User->delete($userID,false);
 
 
 
                 if ($result) {
-                    return "success";
+                    
+                    $message = 'User Deleted';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Users', 'action' => 'users'));
                 } else {
-                    return "unsuccessful";
+                    
+                    $message = 'Could not Delete User';
+                    $this->Session->write('bmsg', $message);
+                  $this->redirect(array('controller' => 'Users', 'action' => 'users'));
                 }
+            }else{
+                    $message = 'Invalid Selection';
+                    $this->Session->write('emsg', $message);
+                  $this->redirect(array('controller' => 'Users', 'action' => 'users'));
             }
-        }
+        
     }
 
     public function userTypes() {

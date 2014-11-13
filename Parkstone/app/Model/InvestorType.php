@@ -16,6 +16,14 @@ class InvestorType extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'Investor' => array(
+            'className' => 'Investor',
+            'foreignKey' => 'investor_type_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
 }
 
