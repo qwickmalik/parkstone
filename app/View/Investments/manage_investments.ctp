@@ -64,7 +64,7 @@ echo $this->element('header');
                 <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array()); ?></td>  <!--Link to enable editing -->
                 <td align="left"><?php  echo $each_item['Investor']['phone']; ?></td>
                 <td align="left"><?php  echo $each_item['Investor']['email']; ?></td>
-<td align="left"><?php echo $this->Html->Link('Active Investments', '/Investments/statementActiveInv',array('escape'=>false));?> | <?php echo $this->Html->Link('All Investments', '/Investments/statementAllInv',array('escape'=>false));?></td>
+<td align="left"><?php echo $this->Html->Link('Active Investments', '/Investments/statementActiveInv'."/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ),array('escape'=>false));?> | <?php echo $this->Html->Link('All Investments', '/Investments/statementAllInv'."/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ),array('escape'=>false));?></td>
             </tr>
         <?php  }} ?>
 

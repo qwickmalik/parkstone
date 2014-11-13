@@ -69,7 +69,7 @@ echo $this->Html->script('notification.js');
                             <b>ID Type:</b>
                         </td>
                         <td align="left" valign="top">
-                            <?php if(isset($investor['Investor']['idtype_id'])){echo $investor['Investor']['idtype_id'];} ?>
+                            <?php if(isset($investor['Investor']['idtype_id'])){echo $investor['Idtype']['id_type'];} ?>
                         </td>
                     </tr>
                    
@@ -83,7 +83,7 @@ echo $this->Html->script('notification.js');
                             <b>Investor Category:</b>
                         </td>
                         <td align="left" valign="top" width="65%">
-                         <?php if(isset($investor['Investor']['customer_category_id'])){echo $investor['CustomerCategory']['customer_category'];} ?>
+                         <?php if(isset($investor['Investor']['investor_type_id'])){echo $investor['InvestorType']['investor_type'];} ?>
                         </td>
                     </tr>
 					<tr>
@@ -197,9 +197,18 @@ echo $this->Html->script('notification.js');
         <tr>
             <td align="right" valign="top" colspan="2">
                 <?php
+                $page = 'editInvestor';
+                if(isset($investor['Investor']['investor_type_id'])){
+                $investortype = $investor['Investor']['investor_type_id'];
+                if($investortype == 2){
+                    $page = 'editInvestor';
+                }elseif($investortype == 3){
+                   $page = 'editInvestorComp';
+                }
+                }
                 echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-warning', "id" => "print_report"));?>
                 &nbsp;&nbsp;
-                <?php echo $this->Html->link('Edit Investor Details',"/Investments/editInvestor/".(isset($investor['Investor']['id']) ? $investor['Investor']['id'] : '' ),array("class" => 'btn btn-success')); ?>
+                <?php echo $this->Html->link('Edit Investor Details',"/Investments/".$page."/".(isset($investor['Investor']['id']) ? $investor['Investor']['id'] : '' ),array("class" => 'btn btn-success')); ?>
             </td>
         </tr>
     </table>

@@ -113,7 +113,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
                 <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
             </tr>
-<?php if (isset($investment_array['Investment']['investment_product_id']) && $investment_array['Investment']['investment_product_id'] == 1) { ?>
+<?php if(isset($investment_array['Investment']['investment_product_id']) && $investment_array['Investment']['investment_product_id'] == 1) { ?>
 
                 <tr>
                     <td align="left" valign="top" width="50%">
@@ -190,8 +190,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         ?>   </span></td>
                             </tr> 
                             <tr> 
-                                ?>
-                                <td><b align="right">Equity Purchased:</b></td>
+                                
+                                <td><b align="right">Purchase Price:</b></td>
                                 <td><span id="xxxxxx"><?php
                                         if (isset($investment_array['Investment']['purchase_price'])) {
                                             echo $shopCurrency . ' ' . $investment_array['Investment']['purchase_price'];
