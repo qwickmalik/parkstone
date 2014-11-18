@@ -4,3 +4,5 @@ Bank Details not loading in editInvestor
 Next of Kin name not going to db for newInvestorIndivJoint
 statementAllInv to load investment details
 statementActiveInv to load active investments
+
+Create equities_list table to populate equitiesList in Settings

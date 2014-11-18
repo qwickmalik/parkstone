@@ -45,7 +45,13 @@ class SettingsController extends AppController {
     function index() {
        /*  $this->__validateUserType();*/
     }
-
+    
+    function equitiesList(){
+        //  $this->__validateUserType();
+        $data = $this->paginate('Expense');
+        $this->set('data', $data);
+    }
+    
     function createExpenses() {
       //  $this->__validateUserType();
         $data = $this->paginate('Expense');
