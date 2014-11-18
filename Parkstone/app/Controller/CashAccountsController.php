@@ -1438,6 +1438,10 @@ class CashAccountsController extends AppController {
         }
     }
 
+    public function authorizeEntry(){
+        
+    }
+    
     public function deleteEntry() {
 
       //  $this->__validateUserType();
