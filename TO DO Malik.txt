@@ -5,10 +5,12 @@ DONE 04.11.14 Remove investment details from newInvestor wizard
 DONE 04.11.14 Update Edit investors both individual and company with the new form wizard
 DONE 04.11.14 Update manageInvestments and processPayments to load company names in the list
 DONE 17.11.14 Integrate CompanyAccounts
+DONE 17.11.14 ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in 
+investment and reinvestment page
+
 
 Update InvestorDetails to pull out all details from the db
 Investment management for fixed and equity
 
-ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in 
-investment and reinvestment page
+
 
