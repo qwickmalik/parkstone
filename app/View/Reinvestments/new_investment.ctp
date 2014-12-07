@@ -15,19 +15,19 @@ if ($this->Session->check('shopCurrency_investment')) {
         <div id="clearer"></div>
 <!-- Step Investment Details Start -->
                     <?php
-                    echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'process_indv'), "inputDefaults" => array('div' => false)));
+                    echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'newInvestment'), "inputDefaults" => array('div' => false)));
                     ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
-                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Investor: Parkstone Capital</td>
+                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Reinvestor</td>
             </tr>
             <tr>
                 <td align="left" valign="top" colspan="3">
                      <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <?php
-                        echo $this->Form->input('company_id', array('default' => 1, 'label' => 'Company/Subsidiary'));
+                        echo $this->Form->input('company_id', array('default' => 1, 'label' => 'Company'));
 //,'selected' => ($this->Session->check('investortemp.investor_type_id') == true ? $this->Session->read('investortemp.investor_type_id') : 1 )
                         ?>  
                     </div>
