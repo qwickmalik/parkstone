@@ -7,7 +7,7 @@ class InvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Investments';
-    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType');
+    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType','Bank');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -69,8 +69,26 @@ class InvestmentsController extends AppController {
         $this->set('grossincomes', $this->GrossIncome->find('list'));
         $this->set('marriages', $this->Marriage->find('list'));
         $this->set('users', $this->User->find('list'));
+        $this->set('banks', $this->Bank->find('list'));
     }
-
+function newInvestorJoint() {
+        /*        $this->__validateUserType(); */
+        $this->set('idtypes', $this->Idtype->find('list'));
+        $this->set('investortypes', $this->InvestorType->find('list'));
+        $this->set('grossincomes', $this->GrossIncome->find('list'));
+        $this->set('marriages', $this->Marriage->find('list'));
+        $this->set('users', $this->User->find('list'));
+        $this->set('banks', $this->Bank->find('list'));
+    }
+    function newInvestorGroup() {
+        /*        $this->__validateUserType(); */
+        $this->set('idtypes', $this->Idtype->find('list'));
+        $this->set('investortypes', $this->InvestorType->find('list'));
+        $this->set('grossincomes', $this->GrossIncome->find('list'));
+        $this->set('marriages', $this->Marriage->find('list'));
+        $this->set('users', $this->User->find('list'));
+        $this->set('banks', $this->Bank->find('list'));
+    }
     function newInvestorComp() {
         /*        $this->__validateUserType(); */
         $this->set('idtypes', $this->Idtype->find('list'));
@@ -99,7 +117,11 @@ class InvestmentsController extends AppController {
                 $this->redirect('newInvestorIndivJoint');
             } elseif ($investortype_id == 3) {
                 $this->redirect('newInvestorComp');
-            } else {
+            }elseif ($investortype_id == 4) {
+                $this->redirect('newInvestorJoint');
+            }elseif ($investortype_id == 5) {
+                $this->redirect('newInvestorGroup');
+            }  else {
                 $message = 'Please Select a Valid Investor Type';
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestor');

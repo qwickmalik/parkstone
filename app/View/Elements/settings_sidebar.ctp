@@ -13,7 +13,7 @@
 //                         $this->Html->link($this->Html->image('notifications.png').'Notifications','../Settings/notifications', array('escape' => false)),
                          $this->Html->link($this->Html->image('clients.png').'Add Clients','/Settings/clientsList', array('escape' => false)),
                          $this->Html->link($this->Html->image('clients.png').'Customer Categories','/Settings/customerCategories', array('escape' => false)),
-                         $this->Html->link($this->Html->image('users.png').'Users','/Users/users', array('escape' => false)),
+                         $this->Html->link($this->Html->image('users.png').'User Setup','/Users/users', array('escape' => false)),
                          $this->Html->link($this->Html->image('users.png').'User Types','/Users/userTypes', array('escape' => false)),
                          $this->Html->link($this->Html->image('users.png').'User Departments','/Users/userDepartments', array('escape' => false)),
                          );

@@ -14,6 +14,14 @@ class Usertype extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+         'UserPrivilege' => array(
+            'className' => 'UserPrivilege',
+            'foreignKey' => 'usertype_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
 
     
