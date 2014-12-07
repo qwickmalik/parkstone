@@ -8,8 +8,11 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestments');
-    var $paginate = array();
+    var $uses = array('Reinvestments', 'Reinvestor', 'Investee', 'Currency');
+    var $paginate = array(
+        'Investee' => array('limit' => 25, 'order' => array('Investee.company_name' => 'asc')),
+        'Reinvestor' => array('limit' => 25, 'order' => array('Reinvestor.company_name' => 'asc'))
+    );
 //    var $helpers = array('AjaxMultiUpload.Upload');
     
       function beforeFilter() {
@@ -332,7 +335,147 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-	function newInvestment0(){
+    function newReinvestor() {
+       // $this->__validateUserType();
+        $data = $this->paginate('Reinvestor');
+        $this->set('data', $data);
+//        $this->set('currencies', $this->Currency->find('list'));
+
+        $setupResults = $this->Reinvestor->getSetup();
+        foreach ($setupResults as $setupResult) {
+            $setupRes = $setupResult;
+        }
+
+        $this->set(compact('setupResults'));
+
+        if ($this->request->is('ajax')) {
+            Configure::write('debug', 0);
+            $this->autoRender = false;
+            $this->autoLayout = false;
+            if (!empty($this->request->data)) {
+//                $day = $this->request->data['Reinvestor']['accounting_month']['day'];
+//                $month = $this->request->data['Reinvestor']['accounting_month']['month'];
+//                $year = $this->request->data['Reinvestor']['accounting_month']['year'];
+//                $this->request->data['Reinvestor']['accounting_month'] = $year . '-' . $month . '-' . $day;
+
+                $count = $this->Reinvestor->find('count');
+                if ($count < 1) {
+                    $result = $this->Reinvestor->save($this->request->data);
+                    if ($result) {
+                        $this->request->data = null;
+
+
+                        return "Reinvestor Company Successfully Added";
+                    } else {
+
+                        return "Unsuccessful";
+                    }
+                } 
+//                else if ($count >= 1) {
+//                    $this->Subsidiary->id = 1;
+//
+//                    $result = $this->Setting->save($this->request->data);
+//                    if ($result) {
+//                        $this->request->data = null;
+//
+//
+//                        return "Subsidiary Update Successful";
+//                    } else {
+//
+//                        return "Unsuccessful";
+//                    }
+//                }
+            }
+        }
+    }
+    
+    function delReinvestor($sub_id = Null){
+        $this->autoRender = false;
+
+        $result = $this->Reinvestor->delete($sub_id,false);
+        if($result){
+            
+            $message = 'Reinvestor Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Reinvestments','action' => 'newReinvestor'));
+        }else{
+                    $message = 'Could Not Delete Reinvestor';
+                   $this->Session->write('bmsg', $message);
+                   $this->redirect(array('controller' => 'Reivestments','action' => 'newReinvestor'));
+                }
+    }
+    
+    function newInvestee() {
+       // $this->__validateUserType();
+        $data = $this->paginate('Investee');
+        $this->set('data', $data);
+//        $this->set('currencies', $this->Currency->find('list'));
+
+        $setupResults = $this->Investee->getSetup();
+        foreach ($setupResults as $setupResult) {
+            $setupRes = $setupResult;
+        }
+
+        $this->set(compact('setupResults'));
+
+        if ($this->request->is('ajax')) {
+            Configure::write('debug', 0);
+            $this->autoRender = false;
+            $this->autoLayout = false;
+            if (!empty($this->request->data)) {
+//                $day = $this->request->data['Investee']['accounting_month']['day'];
+//                $month = $this->request->data['Investee']['accounting_month']['month'];
+//                $year = $this->request->data['Investee']['accounting_month']['year'];
+//                $this->request->data['Investee']['accounting_month'] = $year . '-' . $month . '-' . $day;
+
+                $count = $this->Investee->find('count');
+                if ($count < 1) {
+                    $result = $this->Investee->save($this->request->data);
+                    if ($result) {
+                        $this->request->data = null;
+
+
+                        return "Investee Company Successfully Added";
+                    } else {
+
+                        return "Unsuccessful";
+                    }
+                } 
+//                else if ($count >= 1) {
+//                    $this->Subsidiary->id = 1;
+//
+//                    $result = $this->Setting->save($this->request->data);
+//                    if ($result) {
+//                        $this->request->data = null;
+//
+//
+//                        return "Subsidiary Update Successful";
+//                    } else {
+//
+//                        return "Unsuccessful";
+//                    }
+//                }
+            }
+        }
+    }
+    
+    function delInvestee($sub_id = Null){
+        $this->autoRender = false;
+
+        $result = $this->Investee->delete($sub_id,false);
+        if($result){
+            
+            $message = 'Investee Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Reinvestments','action' => 'newInvestee'));
+        }else{
+                    $message = 'Could Not Delete Investee';
+                   $this->Session->write('bmsg', $message);
+                   $this->redirect(array('controller' => 'Reivestments','action' => 'newInvestee'));
+                }
+    }
+    
+    function newInvestment0(){
         //$this->set('idtypes', $this->Idtype->find('list'));
         //$this->set('investortypes', $this->InvestorType->find('list'));
         //$this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));

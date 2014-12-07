@@ -126,3 +126,60 @@ CREATE TABLE IF NOT EXISTS `subsidiaries` (
 
 INSERT INTO `subsidiaries` (`id`, `currency_id`, `company_name`, `manager_name`, `location`, `postal_address`, `postal_town_suburb`, `postal_city`, `postal_country`, `telephone`, `mobile`, `email`, `accounting_month`) VALUES
 (1, 1, 'PARKSTONE CAPITAL LIMITED', 'Elsie', 'Accra', ' P.O. Box CS 9161', 'Adjirigano', 'Accra', 'Ghana', '0202088130', '0244327219', 'info@parkstonecapital.com', '2012-10-30');
+
+
+6 DECEMBER, 2014
+-----------------------
+
+CREATE TABLE IF NOT EXISTS `investees` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `currency_id` int(11) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `manager_name` varchar(100) DEFAULT NULL,
+  `location` varchar(50) NOT NULL,
+  `postal_address` varchar(100) NOT NULL,
+  `postal_town_suburb` varchar(50) NOT NULL,
+  `postal_city` varchar(20) NOT NULL,
+  `postal_country` varchar(25) NOT NULL,
+  `telephone` varchar(50) NOT NULL,
+  `mobile` varchar(40) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `product1` varchar(40) DEFAULT NULL,
+  `product2` varchar(40) DEFAULT NULL,
+  `product3` varchar(40) DEFAULT NULL,
+  `product4` varchar(40) DEFAULT NULL,
+  `product5` varchar(40) DEFAULT NULL,
+  `product6` varchar(40) DEFAULT NULL,
+  `product7` varchar(40) DEFAULT NULL,
+  `product8` varchar(40) DEFAULT NULL,
+  `product9` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+INSERT INTO `investees` (`id`, `currency_id`, `company_name`, `manager_name`, `location`, `postal_address`, `postal_town_suburb`, `postal_city`, `postal_country`, `telephone`, `mobile`, `email`, `product1`, `product2`, `product3`, `product4`, `product5`, `product6`, `product7`, `product8`, `product9`) VALUES
+(1, 1, 'Databank Financial Services Ltd.', 'Kojo Addae-Mensah', 'Accra', 'Private Mail Bag', ' Ministries Post Office', 'Accra', 'Ghana', '(233)(302) 610610', '', ' info@databankgroup.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+
+
+
+CREATE TABLE IF NOT EXISTS `reinvestors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `currency_id` int(11) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `manager_name` varchar(100) DEFAULT NULL,
+  `location` varchar(50) NOT NULL,
+  `postal_address` varchar(100) NOT NULL,
+  `postal_town_suburb` varchar(50) NOT NULL,
+  `postal_city` varchar(20) NOT NULL,
+  `postal_country` varchar(25) NOT NULL,
+  `telephone` varchar(50) NOT NULL,
+  `mobile` varchar(40) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `accounting_month` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+INSERT INTO `reinvestors` (`id`, `currency_id`, `company_name`, `manager_name`, `location`, `postal_address`, `postal_town_suburb`, `postal_city`, `postal_country`, `telephone`, `mobile`, `email`, `accounting_month`) VALUES
+(1, 1, 'Parkstone Capital Limited', 'Elsie', 'Accra', ' P.O. Box CS 9161', 'Adjirigano', 'Accra', 'Ghana', '0202088130', '0244327219', 'info@parkstonecapital.com', '2012-10-30');

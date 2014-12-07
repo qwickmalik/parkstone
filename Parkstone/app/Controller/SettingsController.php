@@ -242,7 +242,7 @@ class SettingsController extends AppController {
                    $this->Session->write('smsg', $message);
                    $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
         }else{
-                    $message = 'Could Not Delete Category';
+                    $message = 'Could Not Delete Subsidiary';
                    $this->Session->write('bmsg', $message);
                    $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
                 }

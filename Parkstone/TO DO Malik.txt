@@ -9,6 +9,13 @@ DONE 17.11.14 ADD page in settings to add stocks on exchange market with input f
 investment and reinvestment page
 
 
+
+
+16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
+17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
+18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 
+19. Information on investment date and term should be added to investment certificates.
+
 Update InvestorDetails to pull out all details from the db
 Investment management for fixed and equity
 

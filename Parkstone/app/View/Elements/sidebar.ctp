@@ -44,6 +44,12 @@
         </a>
         <ul class="child">
             <li>
+				<?php echo $this->Html->link('New Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
+            </li>
+            <li>
+				<?php echo $this->Html->link('New Investee Company', '/Reinvestments/newInvestee', array('escape' => false)); ?>
+            </li>
+            <li>
 				<?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
             </li>
             <li>
