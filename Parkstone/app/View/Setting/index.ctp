@@ -86,7 +86,7 @@
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('users.png', array()) . '
 					<div id="innertext">
-						<h3>Users Setup</h3>
+						<h3>User Setup</h3>
 						<p>Add/edit users and privileges here</p>
 					</div>
 				</div>', '/Users/users', array('escape' => false)); ?>

@@ -95,8 +95,8 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
                                         echo $this->Form->input('acc_name', array('label' => 'Account Name', 'placeholder' => "Enter investor name as used with the bank"));
-                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name', 'placeholder' => "Enter name of bank"));
-                                        ?>
+                                       echo $this->Form->input('bank_id', array('label' => 'Bank Name*', 'class' => 'required','empty' => "--Select bank--"));  
+						 ?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">

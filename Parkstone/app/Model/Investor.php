@@ -24,6 +24,14 @@ class Investor extends AppModel{
             'limit' => '',
             'dependent' => true
           ),
+        'Bank' => array(
+            'className' => 'Bank',
+            'foreignKey' => 'bank_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+          ),
       
         'CustomerCategory' => array(
             'className' => 'CustomerCategory',

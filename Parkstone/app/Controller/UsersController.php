@@ -4,7 +4,7 @@ class UsersController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'User';
-    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'Zone', 'DailyDefault', 'Order', 'ClosingBalance');
+    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'Zone', 'DailyDefault', 'Order', 'ClosingBalance','Usertype','Module','UserPrivilege');
     var $paginate = array(
         'User' => array('limit' => 100, 'order' => array('User.id' => 'asc')),
         'Usertype' => array('limit' => 25, 'order' => array('Usertype.id' => 'asc')),
@@ -293,19 +293,61 @@ class UsersController extends AppController {
 
     public function userTypes() {
        // $this->__validateUserType();
-        $data = $this->paginate('Usertype');
-        $this->set('data', $data);
+//        $data = $this->paginate('Usertype');
+//         $data = $this->Paginator->settings = array(
+        $this->UserPrivilege->recursive = 0;
+        $this->set('modules',$this->Module->find('all'));
+        $this->set('userprivi',$this->UserPrivilege->find('all',array('recursive' => -1)));
+       $this->paginate = array('UserPrivilege'=>array('group' => array('UserPrivilege.usertype_id'),'order' => array('UserPrivilege.usertype_id' => 'ASC')));
+ 
+        // Getting paginated result based on page #
+        $this->set('data', $this->paginate('UserPrivilege'));
+        
+       
         if ($this->request->is('post')) {
             // Configure::write('debug', 0);
             $this->autoRender = false;
             if (!empty($this->request->data)) {
-
-
+                $username = '';
+                $check = $this->Session->check('userDetails');
+                if($check){
+                   $firstname = $this->Session->check('userDetails.firstname');
+                   $lastname = $this->Session->check('userDetails.lastname');
+                   
+                   $username = $firstname.' '.$lastname;
+                   if(empty($this->request->data['Usertype']['id'])){
+                       $this->request->data['Usertype']['created_by'] = $username;
+                   }else{
+                       $this->request->data['Usertype']['modified_by'] = $username;
+                   }
+                   
+                }
+//                print_r($this->request->data);
+//                exit;
+                
+                
                 $result = $this->Usertype->save($this->request->data);
 
-                if ($result) {
-                    $this->request->data = null;
+                if($result){
+                    $usertype_id = $this->Usertype->id;
+                    
+                    $modules = $this->Module->find('all');
+                if ($modules) {
+                    
+                    foreach ($modules as $mod) {
+                        $this->request->data['UserPrivilege']['usertype_id'] = $usertype_id;
+                        $this->request->data['UserPrivilege']['module_id'] = $mod['Module']['id'];
+                        $this->request->data['UserPrivilege']['created_by'] = $username;
+                        $this->request->data['UserPrivilege']['mod_view'] = $this->request->data['Usertype']['mod_view'.$mod['Module']['id']];
+                        $this->request->data['UserPrivilege']['mod_create'] = $this->request->data['Usertype']['mod_create'.$mod['Module']['id']];
+                        $this->request->data['UserPrivilege']['mod_edit'] = $this->request->data['Usertype']['mod_edit'.$mod['Module']['id']];
+                        $this->request->data['UserPrivilege']['mod_delete'] = $this->request->data['Usertype']['mod_delete'.$mod['Module']['id']];
+                        $this->UserPrivilege->create();
+                         $this->UserPrivilege->save($this->request->data);
+                        }
+                        $this->request->data = null;
 
+                }
                     $message = 'UserType Added';
                     $this->Session->write('smsg', $message);
                     $this->redirect(array('controller' => 'Users', 'action' => 'userTypes'));
