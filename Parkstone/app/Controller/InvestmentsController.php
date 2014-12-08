@@ -171,7 +171,132 @@ function newInvestorJoint() {
             }
         }
     }
+public function commit_group(){
+     $this->autoLayout = $this->autoRender = false;
+        if ($this->request->is('ajax')) {
 
+            if ($this->Session->check('investortemp') == true) {
+                $this->Session->delete('investortemp');
+            }
+
+
+
+            
+
+            $this->Session->write('investortemp', $this->request->data['Investor']);
+            $this->request->data['Investor']['dob'] = $dob_date;
+
+            if ($this->request->data['Investor']['user_id'] == "" || $this->request->data['Investor']['user_id'] == null) {
+                $message = 'Please Supply The Investment Officer\'s Name';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+              if ($this->request->data['Investor']['group_name'] == "" || $this->request->data['Investor']['group_name'] == null) {
+                $message = 'Please Supply The Group\'s Name';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+
+           
+            if ($this->request->data['Investor']['idtype_id'] == "" || $this->request->data['Investor']['idtype_id'] == null) {
+                $message = 'Please Supply The Contact Person\'s ID-Type';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+
+            if ($this->request->data['Investor']['id_number'] == "" || $this->request->data['Investor']['id_number'] == null) {
+                $message = 'Please Supply The Contact Person\'s ID Number';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+          if (is_null($this->request->data['Investor']['date_incorp']['day']) || is_null($this->request->data['Investor']['date_incorp']['month']) || is_null($this->request->data['Investor']['date_incorp']['year'])) {
+                $message = 'Please Supply The Group\'s Commencement Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } elseif ($this->request->data['Investor']['date_incorp']['day'] == "" || $this->request->data['Investor']['date_incorp']['month'] == "" || $this->request->data['Investor']['date_incorp']['year'] == "") {
+                $message = 'Please Supply The Group\'s Commencement Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } else {
+
+                $date_incorp_day = $this->request->data['Investor']['date_incorp']['day'];
+                $date_incorp_month = $this->request->data['Investor']['date_incorp']['month'];
+                $date_incorp_year = $this->request->data['Investor']['date_incorp']['year'];
+                $date_incorp = $date_incorp_year . "-" . $date_incorp_month . "-" . $date_incorp_day;
+                $date_incorp = date('Y-m-d', strtotime($date_incorp));
+                $this->request->data['Investor']['date_incorp'] = $date_incorp;
+            }
+
+//            $registration = $registration_year ."-". $registration_month ."-".$registration_day;
+            $registration_date = date('Y-m-d');
+            if (is_null($this->request->data['Investor']['id_issue']['day']) || is_null($this->request->data['Investor']['id_issue']['month']) || is_null($this->request->data['Investor']['id_issue']['year'])) {
+                $message = 'Please Supply The Contact Perso\'s ID Issue Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } elseif ($this->request->data['Investor']['id_issue']['day'] == "" || $this->request->data['Investor']['id_issue']['month'] == "" || $this->request->data['Investor']['id_issue']['year'] == "") {
+                $message = 'Please Supply The Contact Person\'s ID Issue Date';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            } else {
+
+                $issue_day = $this->request->data['Investor']['id_issue']['day'];
+                $issue_month = $this->request->data['Investor']['id_issue']['month'];
+                $issue_year = $this->request->data['Investor']['id_issue']['year'];
+                $issue = $issue_year . "-" . $issue_month . "-" . $issue_day;
+                $issue_date = date('Y-m-d', strtotime($issue));
+                $this->request->data['Investor']['id_issue'] = $issue_date;
+            }
+            if ($this->request->data['Investor']['id_expiry']['day'] == "" || $this->request->data['Investor']['id_expiry']['month'] == "" || $this->request->data['Investor']['id_expiry']['year'] == "") {
+                
+            } elseif (is_null($this->request->data['Investor']['id_expiry']['day']) || is_null($this->request->data['Investor']['id_expiry']['month']) || is_null($this->request->data['Investor']['id_expiry']['year'])) {
+                
+            } else {
+                $expiry_day = $this->request->data['Investor']['id_expiry']['day'];
+                $expiry_month = $this->request->data['Investor']['id_expiry']['month'];
+                $expiry_year = $this->request->data['Investor']['id_expiry']['year'];
+                $expiry = $expiry_year . "-" . $expiry_month . "-" . $expiry_day;
+                $expiry_date = date('Y-m-d', strtotime($expiry));
+
+                $this->request->data['Investor']['id_expiry'] = $expiry_date;
+            }
+
+          
+
+            if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
+                $message = 'Please Supply The Contact Person\'s Nationality';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+            if (isset($this->request->data['Investor']['grossincome_id']) && $this->request->data['Investor']['grossincome_id'] != "" || !is_null($this->request->data['Investor']['grossincome_id'])) {
+                $this->request->data['Investor']['gross_income_id'] = $this->request->data['Investor']['grossincome_id'];
+            }
+            $this->request->data['Investor']['registration_date'] = $registration_date;
+
+            $check = $this->Session->check('userDetails');
+            if ($check) {
+                $user_f = $this->Session->read('userDetails.firstname');
+                $user_l = $this->Session->read('userDetails.lastname');
+                $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
+            }
+
+            $result = $this->Investor->save($this->request->data);
+            $Investorid = $this->Investor->id;
+            //pr($this->request->data);
+            if ($result) {
+                if ($this->Session->check('investortemp') == true) {
+                    $this->Session->delete('investortemp');
+                }
+                $message = 'Investor Details Successfully Added';
+                $this->Session->delete('emsg');
+                $this->Session->write('smsg', $message);
+                return json_encode(array('status' => 'success'));
+            } else {
+                $message = 'Investor Save Error';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+        }
+}
     public function commit_indv() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
@@ -193,10 +318,35 @@ function newInvestorJoint() {
             $this->request->data['Investor']['dob'] = $dob_date;
 
             if ($this->request->data['Investor']['user_id'] == "" || $this->request->data['Investor']['user_id'] == null) {
-                $message = 'Please Supply The Investment Office\'s Name';
+                $message = 'Please Supply The Investment Officer\'s Name';
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
             }
+             if ($this->request->data['Investor']['other_names'] == "" || $this->request->data['Investor']['other_names'] == null) {
+                $message = 'Please Supply The Investor\'s Other Names';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+
+            if ($this->request->data['Investor']['surname'] == "" || $this->request->data['Investor']['surname'] == null) {
+                $message = 'Please Supply The Investor\'s Surname';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+            $fullname = $this->request->data['Investor']['other_names'] . " " . $this->request->data['Investor']['surname'];
+
+            if ($this->request->data['Investor']['idtype_id'] == "" || $this->request->data['Investor']['idtype_id'] == null) {
+                $message = 'Please Supply The Investor\'s ID-Type';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+
+            if ($this->request->data['Investor']['id_number'] == "" || $this->request->data['Investor']['id_number'] == null) {
+                $message = 'Please Supply The Investor\'s ID Number';
+                $this->Session->write('emsg', $message);
+                return json_encode(array('status' => 'error'));
+            }
+
             if ($dob == date('Y-m-d')) {
                 $message = 'Please Supply The Investor\'s Date of Birth';
                 $this->Session->write('emsg', $message);
@@ -235,31 +385,7 @@ function newInvestorJoint() {
 //            $registration = $registration_year ."-". $registration_month ."-".$registration_day;
             $registration_date = date('Y-m-d');
 
-            if ($this->request->data['Investor']['other_names'] == "" || $this->request->data['Investor']['other_names'] == null) {
-                $message = 'Please Supply The Investor\'s Other Names';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
-
-            if ($this->request->data['Investor']['surname'] == "" || $this->request->data['Investor']['surname'] == null) {
-                $message = 'Please Supply The Investor\'s Surname';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
-            $fullname = $this->request->data['Investor']['other_names'] . " " . $this->request->data['Investor']['surname'];
-
-            if ($this->request->data['Investor']['idtype_id'] == "" || $this->request->data['Investor']['idtype_id'] == null) {
-                $message = 'Please Supply The Investor\'s ID-Type';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
-
-            if ($this->request->data['Investor']['id_number'] == "" || $this->request->data['Investor']['id_number'] == null) {
-                $message = 'Please Supply The Investor\'s Number';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
-
+           
             if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
                 $message = 'Please Supply The Investor\'s Nationality';
                 $this->Session->write('emsg', $message);
@@ -334,7 +460,7 @@ function newInvestorJoint() {
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
             } elseif ($this->request->data['Investor']['date_incorp']['day'] == "" || $this->request->data['Investor']['date_incorp']['month'] == "" || $this->request->data['Investor']['date_incorp']['year'] == "") {
-                $message = 'Please Supply The Company\'s Incorp Date Date';
+                $message = 'Please Supply The Company\'s Incorp Date';
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
             } else {
