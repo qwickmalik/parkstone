@@ -1,10 +1,13 @@
 DONE - New Investor Step 2 (Bank Details) has bank name as a numeric field for both individual and corporate NewInvestor
 DONE -Set editInvestor to load Investor Type, Investment Officer Fields and Investor photo. Without Investor Type, cant save edits for investors
---Still yet to implement saveing picture thru ajax
+--Still yet to implement saving picture thru ajax
 DONE - Bank Details not loading in editInvestor
 DONE - Next of Kin name not going to db for newInvestorIndivJoint
 DONE - statementAllInv to load investment details
 DONE - statementActiveInv to load active investments
 
-
-If investment product type is equity, the roleover has to be different.also cross check current roleover function
+Show ITF in investment choosing and selecting page
+Add group and Joint investor details
+If investment product type is equity, the rollover has to be different.also cross check current rollover function
+Instructions in Equity will be different
+Schedule

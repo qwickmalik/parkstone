@@ -133,55 +133,6 @@ INSERT INTO `subsidiaries` (`id`, `currency_id`, `company_name`, `manager_name`,
 ALTER TABLE `investors` CHANGE `acc_name` `acc_name` VARCHAR( 50 ) NULL DEFAULT NULL ;
 
 
-12 DEC 2014 very new
--------------------
-ALTER TABLE `investors` CHANGE `gifts_inheritance` `source_of_income` VARCHAR( 20 ) NULL ;
-DROP TABLE IF EXISTS `idtypes`;
-CREATE TABLE IF NOT EXISTS `idtypes` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
-  `id_type` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
-
---
--- Dumping data for table `idtypes`
---
-
-REPLACE INTO `idtypes` (`id`, `id_type`) VALUES
-(1, '-Select-'),
-(2, 'National ID'),
-(3, 'NHIS ID'),
-(4, 'Drivers License'),
-(5, 'Passport'),
-(7, 'Voters ID');
-
-CREATE TABLE IF NOT EXISTS `banks` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
-  `bank_name` varchar(75) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `banks`
---
-
-INSERT INTO `banks` (`id`, `bank_name`, `created`) VALUES
-(1, 'Access Bank', NULL),
-(2, 'Agricultural Development Bank(ADB)', NULL);
-
-INSERT INTO `qwickfu1_parkst_inv`.`investor_types` (
-`id` ,
-`investor_type`
-)
-VALUES (
-NULL , 'Joint'
-)(
-NULL , 'Group'
-);
-REPLACE INTO `investor_types` (`id`, `investor_type`) VALUES
-(2, 'Individual');
-
 6 DECEMBER, 2014
 -----------------------
 
@@ -237,3 +188,76 @@ CREATE TABLE IF NOT EXISTS `reinvestors` (
 
 INSERT INTO `reinvestors` (`id`, `currency_id`, `company_name`, `manager_name`, `location`, `postal_address`, `postal_town_suburb`, `postal_city`, `postal_country`, `telephone`, `mobile`, `email`, `accounting_month`) VALUES
 (1, 1, 'Parkstone Capital Limited', 'Elsie', 'Accra', ' P.O. Box CS 9161', 'Adjirigano', 'Accra', 'Ghana', '0202088130', '0244327219', 'info@parkstonecapital.com', '2012-10-30');
+
+
+12 DEC 2014 very new
+-------------------
+ALTER TABLE `investors` CHANGE `gifts_inheritance` `source_of_income` VARCHAR( 20 ) NULL ;
+DROP TABLE IF EXISTS `idtypes`;
+CREATE TABLE IF NOT EXISTS `idtypes` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `id_type` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `idtypes`
+--
+
+REPLACE INTO `idtypes` (`id`, `id_type`) VALUES
+(1, '-Select-'),
+(2, 'National ID'),
+(3, 'NHIS ID'),
+(4, 'Drivers License'),
+(5, 'Passport'),
+(7, 'Voters ID');
+
+CREATE TABLE IF NOT EXISTS `banks` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `bank_name` varchar(75) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `banks`
+--
+
+INSERT INTO `banks` (`id`, `bank_name`, `created`) VALUES
+(1, 'Access Bank', NULL),
+(2, 'Agricultural Development Bank(ADB)', NULL);
+
+INSERT INTO `qwickfu1_parkst_inv`.`investor_types` (
+`id` ,
+`investor_type`
+)
+VALUES (
+NULL , 'Joint'
+)(
+NULL , 'Group'
+);
+REPLACE INTO `investor_types` (`id`, `investor_type`) VALUES
+(2, 'Individual');
+
+December 8, 2014
+-------------------
+ALTER TABLE `investors` CHANGE `surname` `surname` VARCHAR( 30 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+
+ALTER TABLE `investors` ADD `joint_surname` VARCHAR( 30 ) NULL AFTER `id_issue` ,
+ADD `joint_other_names` VARCHAR( 35 ) NULL AFTER `joint_surname` ,
+ADD `joint_dob` DATE NULL AFTER `joint_other_names` ,
+ADD `joint_idtype_id` INT( 3 ) NULL AFTER `joint_dob` ,
+ADD `joint_id_number` INT( 25 ) NULL AFTER `joint_idtype_id` ,
+ADD `joint_id_issue` DATE NULL AFTER `joint_id_number` ,
+ADD `joint_id_expiry` DATE NULL AFTER `joint_id_issue` ,
+ADD `joint_phone` VARCHAR( 15 ) NULL AFTER `joint_id_expiry` ,
+ADD `joint_email` VARCHAR( 35 ) NULL AFTER `joint_phone` ,
+ADD `joint_postal_address` VARCHAR( 50 ) NULL AFTER `joint_email` ;
+
+INSERT INTO `qwickfu1_parkst_inv`.`investment_products` (
+`id` ,
+`product_name`
+)
+VALUES (
+NULL , 'Fixed Income & Equity'
+);
