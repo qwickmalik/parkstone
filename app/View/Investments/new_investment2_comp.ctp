@@ -137,7 +137,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));   ?>
-                                    <?php echo $this->Form->input('custom_rate', array('label' => 'Custom Interest Rate', 'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
+                                    <?php echo $this->Form->input('custom_rate', array('label' => 'Expected Interest Rate', 'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
 
                                 </div>
                             </div>
@@ -220,7 +220,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Due:</span>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
                                     if (isset($totaldue)) {
                                         echo $shopCurrency. ' '.$totaldue;
                                     } else {
@@ -359,11 +359,15 @@ jQuery(document).ready(function($) {
     $("#equity").show(5000);    
     $("#fixed").hide("slow");
         }
-        
+           if(prod_val == 3){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
         if(prod_val == ""){
             $("#fixed").show("slow");
     $("#equity").show("slow");
         }
+     
     $("#InvestmentInvestmentproductId").change(function(){
         
         
@@ -379,7 +383,10 @@ jQuery(document).ready(function($) {
     $("#equity").show("slow");    
     $("#fixed").hide("slow");
         }
-        
+           if(prod_val == 3){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
         if(investmentproduct == ""){
             $("#fixed").show("slow");
     $("#equity").show("slow");

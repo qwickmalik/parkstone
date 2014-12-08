@@ -40,11 +40,15 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="left">
                 <b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b>
             </td>
+           
             <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
+                <b><?php echo $this->Paginator->sort('surname', 'Name'); ?></b>
             </td>
             <td style="border-bottom: solid 2px dodgerblue" align="left">
-                <b><?php echo $this->Paginator->sort('other_names', 'Other Names'); ?></b>
+                <b><?php echo $this->Paginator->sort('joint_surname', 'Joint Acc Name'); ?></b>
+            </td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                <b><?php echo $this->Paginator->sort('in_trust_for', 'ITF'); ?></b>
             </td>
             <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
                 <b><?php echo $this->Paginator->sort('phone', 'Phone Number'); ?></b>
@@ -62,11 +66,14 @@
             <tr>
                 <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td>
-                <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td>
                 <td align="left" class="investorAnchor">
-                    <?php echo $this->Html->link($each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                    <?php echo $this->Html->link($each_item['Investor']['joint_surname'].' '.$each_item['Investor']['joint_other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td> <!-- Link to enable editing -->
+                <td align="left">
+                    <?php echo $each_item['Investor']['in_trust_for']; ?>
+                </td>
                 <td width="200" align="left">
                     <?php echo $each_item['Investor']['phone']; ?>
                 </td>
