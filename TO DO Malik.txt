@@ -15,7 +15,9 @@ investment and reinvestment page
 17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
 18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 
 19. Information on investment date and term should be added to investment certificates.
-
+20.Kwaku already created model and table for adding banks. need to add page in settings for adding banks in Ghana
+21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
+   and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
 Update InvestorDetails to pull out all details from the db
 Investment management for fixed and equity
 
