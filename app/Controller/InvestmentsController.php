@@ -161,10 +161,14 @@ function newInvestorJoint() {
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestment0');
             } elseif ($investortype_id == 2) {
-                $this->redirect('newInvestment1Joint');
+                $this->redirect('newInvestment1Indv');
             } elseif ($investortype_id == 3) {
                 $this->redirect('newInvestment1Comp');
-            } else {
+            } elseif ($investortype_id == 4) {
+                $this->redirect('newInvestment1Joint');
+            }elseif ($investortype_id == 5) {
+                $this->redirect('newInvestment1Group');
+            }else {
                 $message = 'Please Select a Valid Investor Type';
                 $this->Session->write('bmsg', $message);
                 $this->redirect('newInvestor');
@@ -179,19 +183,15 @@ public function commit_group(){
                 $this->Session->delete('investortemp');
             }
 
-
-
-            
-
             $this->Session->write('investortemp', $this->request->data['Investor']);
-            $this->request->data['Investor']['dob'] = $dob_date;
+           
 
             if ($this->request->data['Investor']['user_id'] == "" || $this->request->data['Investor']['user_id'] == null) {
                 $message = 'Please Supply The Investment Officer\'s Name';
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
             }
-              if ($this->request->data['Investor']['group_name'] == "" || $this->request->data['Investor']['group_name'] == null) {
+              if ($this->request->data['Investor']['comp_name'] == "" || $this->request->data['Investor']['comp_name'] == null) {
                 $message = 'Please Supply The Group\'s Name';
                 $this->Session->write('emsg', $message);
                 return json_encode(array('status' => 'error'));
@@ -1079,7 +1079,30 @@ public function commit_group(){
             $this->Session->delete('ivts');
         }
     }
+ function newInvestment1Group() {
+        /* $this->__validateUserType(); */
+        $this->paginate = array(
+            'conditions' => array('Investor.investor_type_id' => 5),
+            'limit' => 50, 'order' => array('Investor.id' => 'asc'));
 
+        $data = $this->paginate('Investor');
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('investor', $data);
+
+        $check = $this->Session->check('ivt');
+        if ($check) {
+            $cust = $this->Session->read('ivt');
+//            pr($cust);
+            $this->set('int', $cust);
+            $this->Session->delete('ivt');
+        }
+        $check = $this->Session->check('ivts');
+        if ($check) {
+            $cust = $this->Session->read('ivts');
+            $this->set('investor', $cust);
+            $this->Session->delete('ivts');
+        }
+    }
     function get_investors() {
         if (!$this->Session->read('investmt_investors')) {
             $this->set_investors(array());
@@ -1097,6 +1120,11 @@ public function commit_group(){
     function add($investor_id = null) {
         $this->autoRender = false;
         $investors = $this->get_investors();
+        if(!empty($investors)){
+            $message = 'Investor queue full';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
+        }
         $investor_array = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
         if ($investor_array) {
             $investor = array($investor_id =>
@@ -1185,7 +1213,51 @@ public function commit_group(){
             }
         }
     }
+function searchinvestor4groupinvestment($investorid = null) {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investname = $this->request->data['investor_search'];
+            $investor = $this->Investor->find('all', array('conditions' => array('OR' => array(array('Investor.comp_name LIKE' => "%$investname%"), array('Investor.phone LIKE' => "%$investname%"), array('Investor.contact_person LIKE' => "%$investname%")))));
 
+            if ($investor) {
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $cust = $this->Session->write('ivts', $investor);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
+            } else {
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
+            }
+        } else {
+
+            $investors = $this->Investor->find('all', array('conditions' => array('Investor.id' => $investorid)));
+            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid)));
+            if ($investors) {
+
+
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $check = $this->Session->check('ivt');
+                if ($check) {
+                    $this->Session->delete('ivt');
+                }
+                $cust = $this->Session->write('ivts', $investors);
+                $this->Session->write('ivt', $investor);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
+            } else {
+
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
+            }
+        }
+    }
+    
     function searchinvestor4compinvestment($investorid = null) {
         $this->autoRender = false;
         if ($this->request->is('post')) {
@@ -1231,7 +1303,7 @@ public function commit_group(){
         }
     }
 
-    function newInvestment1Joint() {
+    function newInvestment1Indv() {
         /* $this->__validateUserType(); */
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->paginate = array(
@@ -1261,8 +1333,83 @@ public function commit_group(){
             //  $this->Session->delete('payments');
         }
     }
+ function newInvestment1Joint() {
+        /* $this->__validateUserType(); */
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->paginate = array(
+            'conditions' => array('Investor.investor_type_id' => 4),
+            'limit' => 50, 'order' => array('Investor.id' => 'asc'));
+        $data = $this->paginate('Investor');
+        $this->set('investor', $data);
 
+        $check = $this->Session->check('ivt');
+        if ($check) {
+            $cust = $this->Session->read('ivt');
+//            pr($cust);
+            $this->set('int', $cust);
+            //$this->Session->delete('ivt');
+        }
+        $check = $this->Session->check('ivts');
+        if ($check) {
+            $cust = $this->Session->read('ivts');
+            $this->set('investor', $cust);
+            $this->Session->delete('ivts');
+        }
+
+        $investors = $this->get_investors();
+
+        if ($investors) {
+            $this->set('selected', $investors);
+            //  $this->Session->delete('payments');
+        }
+    }
     function newInvestment2() {
+        /* $this->__validateUserType(); */
+        $this->set('portfolios', $this->Portfolio->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('instructions', $this->Instruction->find('list'));
+
+        $check = $this->Session->check('investment_type');
+        if ($check) {
+            $this->set('invest_type', $check);
+        }
+
+        $check = $this->get_investors();
+
+        if (count($check) > 0) {
+
+
+            $this->set('investors', $check);
+        } else {
+            $message = 'No Investor Selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+        }
+        $check = $this->Session->check('variabless');
+        if ($check) {
+            $check = $this->Session->check('variabless.duedate');
+            if ($check) {
+                $this->set('duedate', $this->Session->read('variabless.duedate'));
+            }
+            $check = $this->Session->check('variabless.interest');
+            if ($check) {
+                $this->set('interest', $this->Session->read('variabless.interest'));
+            }
+            $check = $this->Session->check('variabless.totaldue');
+            if ($check) {
+                $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+            }
+            $check = $this->Session->check('variabless.totalamt');
+            if ($check) {
+                $this->set('totalamt', $this->Session->read('variabless.totalamt'));
+            }
+        }
+    }
+function newInvestment2_joint() {
         /* $this->__validateUserType(); */
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -1308,7 +1455,6 @@ public function commit_group(){
             }
         }
     }
-
     function newInvestment2_comp($investorid = null) {
         /* $this->__validateUserType(); */
 
@@ -1351,7 +1497,48 @@ public function commit_group(){
             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
         }
     }
+function newInvestment2Group($investorid = null) {
+        /* $this->__validateUserType(); */
 
+        if (!is_null($investorid)) {
+            $this->set('portfolios', $this->Portfolio->find('list'));
+            $this->set('currencies', $this->Currency->find('list'));
+            $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+            $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+            $this->set('paymentmodes', $this->PaymentMode->find('list'));
+            $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+            $this->set('instructions', $this->Instruction->find('list'));
+
+
+            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), 'recursive' => -1));
+            if ($investor) {
+                $this->set('investors', $investor);
+            }
+            $check = $this->Session->check('variabless');
+            if ($check) {
+                $check = $this->Session->check('variabless.duedate');
+                if ($check) {
+                    $this->set('duedate', $this->Session->read('variabless.duedate'));
+                }
+                $check = $this->Session->check('variabless.interest');
+                if ($check) {
+                    $this->set('interest', $this->Session->read('variabless.interest'));
+                }
+                $check = $this->Session->check('variabless.totaldue');
+                if ($check) {
+                    $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+                }
+                $check = $this->Session->check('variabless.totalamt');
+                if ($check) {
+                    $this->set('totalamt', $this->Session->read('variabless.totalamt'));
+                }
+            }
+        } else {
+            $message = 'No Investor Selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
+        }
+    }
     function process_indv() {
         $this->autoRender = false;
         if ($this->request->is('post')) {

@@ -37,18 +37,21 @@
     <?php echo $this->Form->create('InvestorList', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => '#'), "inputDefaults" => array('div' => false))); ?>
     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
         <tr>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+            <td style="border-bottom: solid 2px dodgerblue;" align="left" width="300">
                 <b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b>
             </td>
            
-            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+            <td style="border-bottom: solid 2px dodgerblue;" width="300" align="center">
                 <b><?php echo $this->Paginator->sort('surname', 'Name'); ?></b>
             </td>
-            <td style="border-bottom: solid 2px dodgerblue" align="left">
+            <td style="border-bottom: solid 2px dodgerblue" width="300" align="left">
                 <b><?php echo $this->Paginator->sort('joint_surname', 'Joint Acc Name'); ?></b>
             </td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+            <td style="border-bottom: solid 2px dodgerblue;" width="300" align="left">
                 <b><?php echo $this->Paginator->sort('in_trust_for', 'ITF'); ?></b>
+            </td>
+            <td style="border-bottom: solid 2px dodgerblue;" width="100" align="left">
+                <b><?php echo $this->Paginator->sort('investor_type', 'Investor Type'); ?></b>
             </td>
             <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
                 <b><?php echo $this->Paginator->sort('phone', 'Phone Number'); ?></b>
@@ -56,7 +59,7 @@
             <td style="border-bottom: solid 2px dodgerblue" align="left">
                 <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
             </td>
-            <td style="border-bottom: solid 2px dodgerblue" align="left">
+            <td style="border-bottom: solid 2px dodgerblue" width="300" align="left">
                 <b><?php echo $this->Paginator->sort('postal_address', 'Postal Address'); ?></b>
             </td>
         </tr>
@@ -64,15 +67,19 @@
         if(isset($investor)){
         foreach ($investor as $each_item): ?>
             <tr>
-                <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                <td align="left" width="300">   <?php  echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td>
-                <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                <td align="left" width="300" >  
+ <?php  echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td>
-                <td align="left" class="investorAnchor">
+                <td align="left" width="300" class="investorAnchor">
                     <?php echo $this->Html->link($each_item['Investor']['joint_surname'].' '.$each_item['Investor']['joint_other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                 </td> <!-- Link to enable editing -->
                 <td align="left">
                     <?php echo $each_item['Investor']['in_trust_for']; ?>
+                </td>
+                <td align="left">
+                    <?php echo $each_item['InvestorType']['investor_type']; ?>
                 </td>
                 <td width="200" align="left">
                     <?php echo $each_item['Investor']['phone']; ?>
