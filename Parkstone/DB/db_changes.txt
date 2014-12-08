@@ -261,3 +261,16 @@ INSERT INTO `qwickfu1_parkst_inv`.`investment_products` (
 VALUES (
 NULL , 'Fixed Income & Equity'
 );
+
+ALTER TABLE `investors` CHANGE `joint_id_number` `joint_id_number` VARCHAR( 25 ) NULL DEFAULT NULL ;
+
+INSERT INTO `qwickfu1_parkst_inv`.`banks` (`id`, `bank_name`, `created`) VALUES 
+(NULL, 'Barclays Bank of Ghana Ltd.', NULL), (NULL, 'Banque Sahélo-Saharienne pour I’Investissement et le Commerce (BSIC Ghana Limited)', NULL),
+ (NULL, 'Bank of Africa (Gh) Ltd', NULL), (NULL, 'Bank of Baroda (Ghana) Limited', NULL), (NULL, 'CAL Bank Limited', NULL), 
+ (NULL, 'Energy Bank (Ghana) Ltd', NULL), (NULL, 'Ecobank Ghana Limited', NULL), (NULL, 'First Capital Plus Bank Limited', NULL), 
+ (NULL, 'First Atlantic Bank Ltd', NULL), (NULL, 'Fidelity Bank Ghana Limited', NULL), (NULL, 'Guaranty Trust Bank (Ghana) Limited', NULL), 
+ (NULL, 'Ghana Commercial Bank Limited', NULL), (NULL, 'HFC Bank Ltd', NULL), (NULL, 'International Commercial Bank Limited', NULL), 
+ (NULL, 'Merchant Bank (Ghana) Limited', NULL), (NULL, 'National Investment Bank Ltd', NULL), (NULL, 'Prudential Bank Ltd', NULL),
+ (NULL, 'Stanbic Bank Ghana Ltd', NULL), (NULL, 'SG Bank', NULL), (NULL, 'Standard Chartered Bank Ghana Limited', NULL), 
+ (NULL, 'The Royal Bank Ltd', NULL), (NULL, 'UT Bank Limited', NULL), (NULL, 'uniBank Ghana Ltd', NULL), (NULL, 'United Bank for Africa (Ghana) Ltd.', NULL), 
+ (NULL, 'Zenith Bank (Ghana) Limited', NULL);
