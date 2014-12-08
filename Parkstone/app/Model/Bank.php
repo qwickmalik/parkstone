@@ -15,7 +15,7 @@ class Bank extends AppModel {
 
     var $name = "Bank";
     var $usesTable = "banks";
-    
+     var $displayField = "bank_name";
        var $hasMany = array(
             'Investor' => array(
             'className' => 'Investor',

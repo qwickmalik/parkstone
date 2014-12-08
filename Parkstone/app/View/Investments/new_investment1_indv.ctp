@@ -52,7 +52,7 @@ echo $this->Html->script('notification.js');
                                 <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
-                                <b><?php echo $this->Paginator->sort('joint_surname', 'Joint Acc Name'); ?></b>
+                                <b><?php echo $this->Paginator->sort('other_names', 'Other Names'); ?></b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue;" align="left">
                                 <b><?php echo $this->Paginator->sort('in_trust_for', 'ITF'); ?></b>
@@ -73,10 +73,10 @@ echo $this->Html->script('notification.js');
                             foreach ($investor as $each_item):
                                 ?>
                                 <tr>
-                                      <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                                      <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                                 </td>
                                 <td align="left" class="investorAnchor">
-                                    <?php echo $this->Html->link($each_item['Investor']['joint_surname'].' '.$each_item['Investor']['joint_other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                                    <?php echo $this->Html->link($each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
                                 </td> <!-- Link to enable editing -->
                                 <td align="left">
                                     <?php echo $each_item['Investor']['in_trust_for']; ?>
@@ -196,7 +196,7 @@ echo $this->Html->script('notification.js');
                 <td align="right" valign="middle" width="300">
 <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
 <?php //echo $this->Form->button('Process Order', array("type" => "submit",  "class" => "btn btn-lg btn-success")); ?>
-<?php echo $this->Html->link('Next', "/Investments/newInvestment2_joint", array("class" => 'btn btn-lg btn-success')); ?>
+<?php echo $this->Html->link('Next', "/Investments/newInvestment2", array("class" => 'btn btn-lg btn-success')); ?>
 
                 </td>
             </tr>

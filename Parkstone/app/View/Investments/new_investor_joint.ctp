@@ -194,7 +194,7 @@ echo $this->Html->script('icheck/icheck.js');
 				</div>
                           <?php 
                       
-                      echo $this->Form->input('joint_postal_address', array('size' => 30,'value' => (isset($investor['Investor']['joint_postal_address']) ? $investor['Investor']['joint_postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
+                      echo $this->Form->input('joint_postal_address', array('label' => 'Postal Address','size' => 30,'value' => (isset($investor['Investor']['joint_postal_address']) ? $investor['Investor']['joint_postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
 				
                       
                       ?>
@@ -236,8 +236,8 @@ echo $this->Html->script('icheck/icheck.js');
 <!--                     <div class="row"> 
 -->                    <div class="col-lg-5 col-md-5 col-sm-12">
                     <?php
-					echo $this->Form->input('phone', array('label' => 'Phone Number*','value' => (isset($investor['Investor']['joint_phone']) ? $investor['Investor']['joint_phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
-					echo $this->Form->input('email', array('label' => 'Email Address','value' => (isset($investor['Investor']['joint_email']) ? $investor['Investor']['joint_email'] : '' ), 'placeholder' => 'Enter email address'));
+					echo $this->Form->input('joint_phone', array('label' => 'Phone Number*','value' => (isset($investor['Investor']['joint_phone']) ? $investor['Investor']['joint_phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
+					echo $this->Form->input('joint_email', array('label' => 'Email Address','value' => (isset($investor['Investor']['joint_email']) ? $investor['Investor']['joint_email'] : '' ), 'placeholder' => 'Enter email address'));
 					
                                         ?>
                     </div><!--
