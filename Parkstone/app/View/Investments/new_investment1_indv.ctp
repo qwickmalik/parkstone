@@ -3,7 +3,7 @@
 //echo $this->Html->script('notification.js');
 ?>
 
-<h3>New Joint Investment - Step 1</h3>
+<h3>New Investment - Step 1</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
