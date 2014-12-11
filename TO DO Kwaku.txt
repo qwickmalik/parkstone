@@ -11,3 +11,8 @@ Add group and Joint investor details
 If investment product type is equity, the rollover has to be different.also cross check current rollover function
 Instructions in Equity will be different
 Schedule
+
+COMMENTS: 11.12.14
+---------------------
+Investment Product dropdown not working when Fixed investment & Equity is selected.
+function process_indv() in InvestmentsController not calculating returns for fixed investment
