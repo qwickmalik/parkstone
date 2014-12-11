@@ -1,7 +1,7 @@
 <?php
-echo $this->Html->script('jquery.js');
+//echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-echo $this->Html->script('notification.js');
+//echo $this->Html->script('notification.js');
 ?>
 <!-- Content starts here -->
 <h3>New Investment - Step 2</h3>

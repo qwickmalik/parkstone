@@ -111,7 +111,7 @@ function newInvestorJoint() {
 
             if ($investortype_id == 1) {
                 $message = 'Please Select a Type of Investor';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('emsg', $message);
                 $this->redirect('newInvestor');
             } elseif ($investortype_id == 2) {
                 $this->redirect('newInvestorIndivJoint');

@@ -1,6 +1,6 @@
 <?php
-echo $this->Html->script('notification.js');
-echo $this->element('header');
+//echo $this->Html->script('notification.js');
+
 ?>
 
 <!-- Content starts here -->
