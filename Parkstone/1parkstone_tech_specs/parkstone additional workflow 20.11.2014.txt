@@ -1,27 +1,28 @@
 PARKSTONE SOFTWARE.
-1. Kindly replace names in Investment Officers column with the following names
-•	List of Investment Officers
-a.	Grace Opoku Onyinah
-b.	Samuel Essien
-c.	Charles Denu
+DONE    1. Kindly replace names in Investment Officers column with the following names
+        ï¿½	List of Investment Officers
+        a.	Grace Opoku Onyinah
+        b.	Samuel Essien
+        c.	Charles Denu
 
-•	Other Officers
-a.	Elsie Enninful-Adu
-b.	Doris Ohene-Djan
-2. Please create a drop box for Salary, Gifts/Inheritance, Personal Savings and others. Clients are supposed to tick which one of these represents source of funding for investment.
-3. Omit SSNIT ID type, not an official identification card.
-4. Options for Issue year should go beyond 2014, expiry date should start from 2014.
-5. Birth year should go beyond 2014.
-6. Investor Photo shouldn’t be checked as a compulsory item.
-7. Under Bank details, we are unable to type a name at the space allotted for Account Name, Space approves only numbers which shouldn’t be so.
-8. Please list all banks in Ghana and keep it in a drop box at Bank Name.
-9. System does not cater for Joint accounts, please let Joint accounts, individual, and group accounts be separate items in ‘Investor  Type” drop box. Provide extra space for 2nd person (holding a Joint account  with someone ). Details have been provided on our form. Details could be the forth item on the current individual/Grp/Joint accounts.
-10. Group account can take format of an individual account. However ‘In Trust For’ (ITF) box should be eliminated.
-11. On the list of investors, the ITF’s name must show. Same applies to joint account holders.
+        ï¿½	Other Officers
+        a.	Elsie Enninful-Adu
+        b.	Doris Ohene-Djan
+DONE    2. Please create a drop box for Salary, Gifts/Inheritance, Personal Savings and others. Clients are supposed to tick which one of these represents source of funding for investment.
+DONE    3. Omit SSNIT ID type, not an official identification card.
+DONE    4. Options for Issue year should go beyond 2014, expiry date should start from 2014.
+DONE    5. Birth year should go beyond 2014.
+DONE    6. Investor Photo shouldnï¿½t be checked as a compulsory item.
+DONE    7. Under Bank details, we are unable to type a name at the space allotted for Account Name, Space approves only numbers which shouldnï¿½t be so.
+DONE    8. Please list all banks in Ghana and keep it in a drop box at Bank Name.
+DONE    9. System does not cater for Joint accounts, please let Joint accounts, individual, and group accounts be separate items in ï¿½Investor  Typeï¿½ drop box. Provide extra space for 2nd person (holding a Joint account  with someone ). Details have been provided on our form. Details could be the forth item on the current individual/Grp/Joint accounts.
+
+DONE    10. Group account can take format of an individual account. However ï¿½In Trust Forï¿½ (ITF) box should be eliminated.
+DONE    11. On the list of investors, the ITFï¿½s name must show. Same applies to joint account holders.
 12. Change Custom Interest rate to Expected Interest rate, and amount due to Expected amount due. Our regulators require that we do not guarantee rates, hence amounts and rates given to clients are all expected returns and amounts respectively.
 13. Investment product should provide a column for clients who want to do both Fixed Income and Equity.
 14. There should be a sum of Principal amounts, Interest and Total underneath each column on the Statement: Investment Details
-15. Please take ‘total fees’ out of Statement of Active Investment. In setting up an account there should be a box to check ‘fee paying’ so that, that particular column will reflect in statement of investments, Otherwise please omit it.
+15. Please take ï¿½total feesï¿½ out of Statement of Active Investment. In setting up an account there should be a box to check ï¿½fee payingï¿½ so that, that particular column will reflect in statement of investments, Otherwise please omit it.
 16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
 17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
 18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 

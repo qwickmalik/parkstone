@@ -1,5 +1,5 @@
 <?php
-echo $this->Html->script('notification.js');
+//echo $this->Html->script('notification.js');
 ?>
 
 <h3>New Corporate Investment - Step 1</h3>

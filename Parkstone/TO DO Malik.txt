@@ -7,7 +7,9 @@ DONE 04.11.14 Update manageInvestments and processPayments to load company names
 DONE 17.11.14 Integrate CompanyAccounts
 DONE 17.11.14 ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in 
 investment and reinvestment page
-
+DONE 11.12.14   Removed Marital Status and Number of children from group investment registration
+                Fixed problem with notifications not having coloured backgrounds
+                Options for Issue year should go beyond 2014, expiry date should start from 2014
 
 
 
@@ -19,6 +21,7 @@ investment and reinvestment page
 21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
    and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
 Update InvestorDetails to pull out all details from the db
+
 Investment management for fixed and equity
 
 

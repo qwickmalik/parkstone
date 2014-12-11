@@ -1,5 +1,5 @@
 <?php
-echo $this->element('header');
+//echo $this->element('header');
 echo $this->Html->script('notification.js');
 ?>
 

@@ -1,7 +1,5 @@
 <?php
-echo $this->element('header');
 echo $this->Html->script('notification.js');
-
 ?>
 <!-- Content starts here -->
 <div id="content">
@@ -103,7 +101,7 @@ echo $this->Html->script('icheck/icheck.js');
 					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->month('id_issue', array('size' => 1, 'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('m',strtotime($investor['Investor']['id_issue'])) : '--Select ID Issue Month--' ),'empty' => '--Select ID Issue Month--', 'class' => 'required')); ?>&nbsp;
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-12">
-					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('id_issue', 1970, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('Y',strtotime($investor['Investor']['id_issue'])) : '--Select ID Issue Year--' ),'empty' => '--Select ID Issue Year--', 'class' => 'required')); ?>
+					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('id_issue', 2004, date('Y')+20, array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('Y',strtotime($investor['Investor']['id_issue'])) : '--Select ID Issue Year--' ),'empty' => '--Select ID Issue Year--', 'class' => 'required')); ?>
                 	</div>
 				</div>
 				
@@ -115,7 +113,7 @@ echo $this->Html->script('icheck/icheck.js');
 					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->month('id_expiry', array('size' => 1, 'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('m',strtotime($investor['Investor']['id_expiry'])) : '--Select ID Expiry Month--' ),'empty' => '--Select ID Expiry Month--', 'class' => 'required')); ?>&nbsp;
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-12">
-					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('id_expiry', 2000, date('Y')+10, array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_expiry']) ? date('Y',strtotime($investor['Investor']['id_expiry'])) : '--Select ID Expiry Year--' ),'empty' => '--Select ID Expiry Year--', 'class' => 'required')); ?>
+					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('id_expiry', date('Y')+20, array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_expiry']) ? date('Y',strtotime($investor['Investor']['id_expiry'])) : '--Select ID Expiry Year--' ),'empty' => '--Select ID Expiry Year--', 'class' => 'required')); ?>
                 	</div>
 				</div>
 				

@@ -1,7 +1,7 @@
 <?php
-echo $this->Html->script('jquery.js');
+//echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-echo $this->Html->script('notification.js');
+//echo $this->Html->script('notification.js');
 
 ?>
 <h3>Statement of Active Investments</h3>
