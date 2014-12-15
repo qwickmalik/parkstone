@@ -60,6 +60,7 @@ class InvestmentsController extends AppController {
         $this->set('grossincomes', $this->GrossIncome->find('list'));
         $this->set('marriages', $this->Marriage->find('list'));
         $this->set('users', $this->User->find('list'));
+        $this->set('banks', $this->Bank->find('list'));
     }
 
     function newInvestorIndivJoint() {
@@ -102,6 +103,7 @@ function newInvestorJoint() {
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('banks', $this->Bank->find('list'));
     }
 
     public function proceed_check1() {
@@ -1117,7 +1119,7 @@ public function commit_group(){
         $this->Session->write('investmt_investors', $investor_data);
     }
 
-    function add($investor_id = null) {
+    function add($investor_id = null,$url = null) {
         $this->autoRender = false;
         $investors = $this->get_investors();
         if(!empty($investors)){
@@ -1133,6 +1135,9 @@ public function commit_group(){
                     'surname' => $investor_array['Investor']['surname'],
                     'other_names' => $investor_array['Investor']['other_names'],
                     'phone_number' => $investor_array['Investor']['phone'],
+                    'joint_surname' => $investor_array['Investor']['joint_surname'],
+                    'joint_other_names' => $investor_array['Investor']['joint_other_names'],
+                    'in_trust_for' => $investor_array['Investor']['in_trust_for'],
                     'email' => $investor_array['Investor']['email']
                 )
             );
@@ -1147,7 +1152,7 @@ public function commit_group(){
 
             $this->set_investors($investors);
         }
-        $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
+        $this->redirect(array('controller' => 'Investments', 'action' => $url));
     }
 
     function rmInvestor($ID = null) {
@@ -1772,7 +1777,7 @@ function newInvestment2Group($investorid = null) {
                                 'interest_earned' => $interest_amount, 'investment_date' => $inv_date, 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                             );
 
-
+ 
                             $check = $this->Session->check('investment_array');
                             if ($check) {
                                 $this->Session->delete('investment_array');
