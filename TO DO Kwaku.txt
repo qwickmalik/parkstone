@@ -22,5 +22,6 @@ COMMENTS 14.12.2014
 --------------------
 Please check error under payment date on edit_payment.ctp
 Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
+PRINT button for investment certificates not working
 
 
