@@ -134,7 +134,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
 if ($this->Session->check('bmsg')) {
     $errorMessage = $this->Session->read('bmsg');
     ?>
-    <div class="alert alert-success">
+    <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4>Notice!</h4>
     <?php echo $errorMessage; ?>
@@ -146,7 +146,7 @@ if ($this->Session->check('bmsg')) {
         ?>
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4>Warning!</h4>
+        <h4>Warning/Error!</h4>
     <?php echo $errorMessage; ?>
     </div>
     <?php
@@ -154,9 +154,9 @@ if ($this->Session->check('bmsg')) {
 } else if ($this->Session->check('smsg')) {
     $Message = $this->Session->read('smsg');
     ?>
-    <div class="alert alert-info">
+    <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4>Info</h4>
+        <h4>Success!</h4>
     <?php echo $Message; ?>
     </div>
     <?php
@@ -164,9 +164,9 @@ if ($this->Session->check('bmsg')) {
 } else if ($this->Session->check('imsg')) {
     $Message = $this->Session->read('imsg');
     ?>
-    <div class="alert alert-warning">
+    <div class="alert alert-info">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4>Warning!</h4>
+        <h4>Info!</h4>
     <?php echo $Message; ?>
     </div>
     <!-- Notifications end here -->

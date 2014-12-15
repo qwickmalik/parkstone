@@ -85,15 +85,34 @@ echo $this->Html->script('notification.js');
 		
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row"> 
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <b style="font-size: 16px;">Payment Date*</b>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                  <?php echo $this->Form->day('payment_date', array('size' => 1, 'label'=>'D.O.B','value' => (isset($investor['InvestmentPayment']['payment_date']) ? date('d',strtotime($investor['InvestmentPayment']['payment_date'])) :  date('d') ),'empty' => '---Select Day---', 'class' => 'required'));  ?>&nbsp;
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                  <?php echo $this->Form->month('payment_date', array('size' => 1, 'label'=>false,'value' => (isset($investor['InvestmentPayment']['payment_date']) ? date('m',strtotime($investor['InvestmentPayment']['payment_date'])) :  date('m')),'empty' => '---Select Month---',  'class' => 'required')); ?>&nbsp;
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                  <?php echo $this->Form->year('payment_date', 2013, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['InvestmentPayment']['payment_date']) ? date('Y',strtotime($investor['InvestmentPayment']['payment_date'])) :  date('Y')),'empty' => '---Select Year---', 'class' =>'required')); ?>
+                        </div>
+                    </div>
+                                
+
+                 </div>
             <?php
-				echo "<b style='font-size: 16px;'>Payment Date:</b>&nbsp;".$this->Form->input('payment_date', array('type' => 'date', 'dateFormat' => 'DMY', 'label' => false));
+//				echo "<b style='font-size: 16px;'>Payment Date:</b>&nbsp;".$this->Form->input('payment_date', array('type' => 'date', 'dateFormat' => 'DMY', 'label' => false));
                 
-				echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;".$this->Form->input('payment_mode',array('options' => array("Cash"=>"Cash", "Cheque"=>"Cheque", "Post-dated chq"=>"Post-dated chq", "Standing order"=>"Standing order", "Visa"=>"Visa"),'selected' => $pay_mode,'empty' => '--Please Select--', 'label'=>false)); 
+				echo "<b style='font-size: 16px;'>Payment Mode</b>&nbsp;".$this->Form->input('payment_mode',array('options' => array("Cash"=>"Cash", "Cheque"=>"Cheque", "Post-dated chq"=>"Post-dated chq", "Standing order"=>"Standing order", "Visa"=>"Visa"),'selected' => $pay_mode,'empty' => '--Please Select--', 'label'=>false)); 
 				?>
 			</div>
 		
 			<div class="col-lg-6 col-md-6 col-sm-12">
-                <?php echo "<b style='font-size: 16px;'>Amount being Paid:</b>&nbsp;".$this->Form->input('amount', array('size'=> 17, 'class'=>'input1', 'label'=>false)); ?>
+                <?php echo "<b style='font-size: 16px;'>Amount being Paid</b>&nbsp;".$this->Form->input('amount', array('size'=> 17, 'class'=>'input1', 'label'=>false)); ?>
 			</div>
 		</div>
 		
@@ -122,7 +141,7 @@ echo $this->Html->script('notification.js');
                             <table>  <tr>
                             
                             <td align="left">
-                               <?php  echo "<b style='font-size: 16px;'>Post-Dated Chq Nos.:</b>&nbsp;".$this->Form->radio('used_chequenos',$nos, array('type' => 'radio','label' => false,'separator' => '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','legend' => false)); ?>
+                               <?php  echo "<b style='font-size: 16px;'>Post-Dated Chq Nos.</b>&nbsp;".$this->Form->radio('used_chequenos',$nos, array('type' => 'radio','label' => false,'separator' => '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','legend' => false)); ?>
                             </td>
                             
                         </tr></table>
@@ -132,7 +151,7 @@ echo $this->Html->script('notification.js');
                             </div>
                         </td>
                         <td align="right" valign="middle" width="30%">
-                            <?php  echo "<b style='font-size: 16px;'>Cheque Nos.:</b>&nbsp;". $this->Form->input('cheque_nos', array('size'=> 5,'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;','label' => false)); ?>
+                            <?php  echo "<b style='font-size: 16px;'>Cheque Nos.</b>&nbsp;". $this->Form->input('cheque_nos', array('size'=> 5,'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;','label' => false)); ?>
                         </td>
                         
                     </tr>

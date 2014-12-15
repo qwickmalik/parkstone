@@ -377,6 +377,11 @@ if ($this->Session->check('shopCurrency_investment')) {
     $("#fixed").hide("slow");
         }
         
+        if(prod_val == "3"){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
+        
         if(prod_val == ""){
             $("#fixed").show("slow");
     $("#equity").show("slow");
@@ -396,6 +401,11 @@ if ($this->Session->check('shopCurrency_investment')) {
         
     $("#equity").show(5000);    
     $("#fixed").hide("slow");
+        }
+        
+        if(investmentproduct == "3"){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
         }
         
         if(investmentproduct == ""){

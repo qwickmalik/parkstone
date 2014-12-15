@@ -321,46 +321,46 @@ public function commit_group(){
 
             if ($this->request->data['Investor']['user_id'] == "" || $this->request->data['Investor']['user_id'] == null) {
                 $message = 'Please Supply The Investment Officer\'s Name';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
              if ($this->request->data['Investor']['other_names'] == "" || $this->request->data['Investor']['other_names'] == null) {
                 $message = 'Please Supply The Investor\'s Other Names';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
 
             if ($this->request->data['Investor']['surname'] == "" || $this->request->data['Investor']['surname'] == null) {
                 $message = 'Please Supply The Investor\'s Surname';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
             $fullname = $this->request->data['Investor']['other_names'] . " " . $this->request->data['Investor']['surname'];
 
             if ($this->request->data['Investor']['idtype_id'] == "" || $this->request->data['Investor']['idtype_id'] == null) {
                 $message = 'Please Supply The Investor\'s ID-Type';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
 
             if ($this->request->data['Investor']['id_number'] == "" || $this->request->data['Investor']['id_number'] == null) {
                 $message = 'Please Supply The Investor\'s ID Number';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
 
             if ($dob == date('Y-m-d')) {
                 $message = 'Please Supply The Investor\'s Date of Birth';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
             if (is_null($this->request->data['Investor']['id_issue']['day']) || is_null($this->request->data['Investor']['id_issue']['month']) || is_null($this->request->data['Investor']['id_issue']['year'])) {
                 $message = 'Please Supply The Investor\'s ID Issue Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } elseif ($this->request->data['Investor']['id_issue']['day'] == "" || $this->request->data['Investor']['id_issue']['month'] == "" || $this->request->data['Investor']['id_issue']['year'] == "") {
                 $message = 'Please Supply The Investor\'s ID Issue Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } else {
 
@@ -390,7 +390,7 @@ public function commit_group(){
            
             if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
                 $message = 'Please Supply The Investor\'s Nationality';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             }
             if (isset($this->request->data['Investor']['grossincome_id']) && $this->request->data['Investor']['grossincome_id'] != "" || !is_null($this->request->data['Investor']['grossincome_id'])) {
@@ -459,11 +459,11 @@ public function commit_group(){
 
             if (is_null($this->request->data['Investor']['date_incorp']['day']) || is_null($this->request->data['Investor']['date_incorp']['month']) || is_null($this->request->data['Investor']['date_incorp']['year'])) {
                 $message = 'Please Supply The Company\'s Incorp Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } elseif ($this->request->data['Investor']['date_incorp']['day'] == "" || $this->request->data['Investor']['date_incorp']['month'] == "" || $this->request->data['Investor']['date_incorp']['year'] == "") {
                 $message = 'Please Supply The Company\'s Incorp Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } else {
 
@@ -581,7 +581,7 @@ public function commit_group(){
                 $this->redirect(array('controller' => 'Investments', 'action' => 'deleteInvestor'));
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'deleteInvestor'));
             }
         } else {
@@ -608,7 +608,7 @@ public function commit_group(){
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'deleteInvestor'));
             }
         }
@@ -658,7 +658,7 @@ public function commit_group(){
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'listInvestor'));
             }
         }
@@ -673,7 +673,7 @@ public function commit_group(){
         } else {
 
             $message = 'Sorry, Investor Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => "Investments", 'action' => "clearSessions"));
         }
     }
@@ -688,7 +688,7 @@ public function commit_group(){
         } else {
 
             $message = 'Sorry, Investor Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => "Investments", 'action' => "listInvestor"));
         }
         $this->set('investor', $data);
@@ -717,7 +717,7 @@ public function commit_group(){
         } else {
 
             $message = 'Sorry, Investor Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => "Investments", 'action' => "listInvestor"));
         }
         $this->set('investor', $data);
@@ -749,11 +749,11 @@ public function commit_group(){
 
             if (is_null($this->request->data['Investor']['date_incorp']['day']) || is_null($this->request->data['Investor']['date_incorp']['month']) || is_null($this->request->data['Investor']['date_incorp']['year'])) {
                 $message = 'Please Supply The Company\'s Incorp Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } elseif ($this->request->data['Investor']['date_incorp']['day'] == "" || $this->request->data['Investor']['date_incorp']['month'] == "" || $this->request->data['Investor']['date_incorp']['year'] == "") {
                 $message = 'Please Supply The Company\'s Incorp Date Date';
-                $this->Session->write('emsg', $message);
+                $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
             } else {
 
@@ -1017,7 +1017,7 @@ public function commit_group(){
             }
         } else {
             $message = 'Unable to Delete Investor Details';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('emsg', $message);
         }
         $this->redirect(array('controller' => "Investments", 'action' => "deleteInvestor"));
     }
@@ -1171,7 +1171,7 @@ public function commit_group(){
         } else {
 
             $message = 'Unable to remove Investor, try again';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('emsg', $message);
         }
         $this->redirect(array('controller' => "Investments", 'action' => "newInvestment1Joint"));
     }
@@ -1191,7 +1191,7 @@ public function commit_group(){
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
             }
         } else {
@@ -1213,7 +1213,7 @@ public function commit_group(){
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
             }
         }
@@ -1233,7 +1233,7 @@ function searchinvestor4groupinvestment($investorid = null) {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
             }
         } else {
@@ -1257,7 +1257,7 @@ function searchinvestor4groupinvestment($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
             }
         }
@@ -1278,7 +1278,7 @@ function searchinvestor4groupinvestment($investorid = null) {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
             }
         } else {
@@ -1302,7 +1302,7 @@ function searchinvestor4groupinvestment($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
             }
         }
@@ -1610,7 +1610,7 @@ function newInvestment2Group($investorid = null) {
 
                         if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
                             $message = 'Please Select a Currency';
-                            $this->Session->write('emsg', $message);
+                            $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
                         }
 
@@ -1665,7 +1665,7 @@ function newInvestment2Group($investorid = null) {
 
                         if ($this->request->data['currency2'] == "" || $this->request->data['currency2'] == null) {
                             $message = 'Please Select a Currency';
-                            $this->Session->write('emsg', $message);
+                            $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
                         }
 
@@ -1755,7 +1755,9 @@ function newInvestment2Group($investorid = null) {
                                 $total = $interest_amount1 + $principal;
                                 $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
                                     'principal' => $principal,
-                                    'interest' => $interest_amount1, 'maturity_date' => $date_statemt->format('Y-m-d'), 'total' => $total);
+                                    'interest' => $interest_amount1, 
+                                    'maturity_date' => $date_statemt->format('Y-m-d'), 
+                                    'total' => $total);
                                 $principal = $total;
                             }
                             $check = $this->Session->check('statemt_array');
@@ -1793,7 +1795,7 @@ function newInvestment2Group($investorid = null) {
                             $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
                             $this->Session->write('variabless', $variables);
                         } else {
-                            $message = 'Investment Term settings missing.Contact Administrator';
+                            $message = 'Investment Term settings missing. Contact Administrator';
                             $this->Session->write('emsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2'));
                         }
@@ -2105,7 +2107,7 @@ function newInvestment2Group($investorid = null) {
                             $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
                             $this->Session->write('variabless', $variables);
                         } else {
-                            $message = 'Investment Term settings missing.Contact Administrator';
+                            $message = 'Investment Term settings missing. Contact Administrator';
                             $this->Session->write('emsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment2_comp', $investor_id));
                         }
@@ -2330,12 +2332,12 @@ function newInvestment2Group($investorid = null) {
                 $this->Session->delete('variabless');
             } else {
                 $message = "Sorry No Investment To Display";
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect('/Investments/');
             }
         } else {
             $message = "Sorry No Investment To Display";
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect('/Investments/');
         }
     }
@@ -2421,7 +2423,7 @@ function newInvestment2Group($investorid = null) {
             }
         } else {
             $message = "Sorry No Investment To Display";
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect('/Investments/newInvestment1Comp');
         }
     }
@@ -2506,7 +2508,7 @@ function newInvestment2Group($investorid = null) {
             }
         } else {
             $message = "Sorry No Investment To Display";
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect('/Investments/newInvestment1Comp');
         }
     }
@@ -2526,7 +2528,7 @@ function newInvestment2Group($investorid = null) {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
             }
         } else {
@@ -2548,7 +2550,7 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
             }
         }
@@ -2579,7 +2581,7 @@ function newInvestment2Group($investorid = null) {
                 }
             } else {
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 switch ($condition) {
                     case "manage":
                         $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
@@ -2621,7 +2623,7 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investor Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 switch ($condition) {
                     case "manage":
                         $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
@@ -2708,26 +2710,26 @@ function newInvestment2Group($investorid = null) {
 
             if ($this->request->data['InvestmentPayment']['payment_mode'] == "" || $this->request->data['InvestmentPayment']['payment_mode'] == null) {
                 $message = 'Please Select A Mode of Payment.';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
             }
 
             if ($this->request->data['InvestmentPayment']['payment_mode'] == "Post-dated chq" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
                 $message = 'Please Supply a Cheque No.';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
             }
 
 
             if ($this->request->data['InvestmentPayment']['payment_mode'] == "Cheque" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
                 $message = 'Please Supply a Cheque No.';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
             }
 
             if ($this->request->data['InvestmentPayment']['amount'] == "" || $this->request->data['InvestmentPayment']['amount'] == null || $this->request->data['InvestmentPayment']['amount'] == 0) {
                 $message = 'Amount Not Entered.';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
             }
 
@@ -2844,7 +2846,7 @@ function newInvestment2Group($investorid = null) {
         } else {
 
             $message = 'Sorry, Investor Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
@@ -2866,13 +2868,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investment Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
         }
     }
@@ -2894,13 +2896,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investment Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
         }
     }
@@ -2914,7 +2916,7 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investment Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
         }
@@ -3027,13 +3029,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investment Details Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
         }
 //        $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestmentCert'));
@@ -3063,13 +3065,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, No Active Investment Details Found for Selected Investor';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
         } else {
 
             $message = 'Sorry, Investment Details Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
@@ -3099,13 +3101,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, No Active Investment Details Found for Selected Investor';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
         } else {
 
             $message = 'Sorry, Investment Details Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
@@ -3133,13 +3135,13 @@ function newInvestment2Group($investorid = null) {
             } else {
 
                 $message = 'Sorry, Investment Details Not Found';
-                $this->Session->write('bmsg', $message);
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Details Not Found';
-            $this->Session->write('bmsg', $message);
+            $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
         }
     }

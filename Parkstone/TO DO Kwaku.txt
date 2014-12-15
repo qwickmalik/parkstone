@@ -16,3 +16,11 @@ COMMENTS: 11.12.14
 ---------------------
 Investment Product dropdown not working when Fixed investment & Equity is selected.
 function process_indv() in InvestmentsController not calculating returns for fixed investment
+Work on functionality of Reinvestments. Views are complete
+
+COMMENTS 14.12.2014
+--------------------
+Please check error under payment date on edit_payment.ctp
+Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
+
+
