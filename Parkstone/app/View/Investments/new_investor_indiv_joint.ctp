@@ -140,7 +140,7 @@ echo $this->Html->script('icheck/icheck.js');
 
 
 //						echo '<b><u>SOURCES OF INCOME</u></b> ';
-						echo $this->Form->input('source_of_income', array('options' => array('Personal Savings' => 'Personal Savings','Salary' => 'Salary','Gifts/Inheritance' => 'Gifts/Inheritance','Other' => 'Other'),'value' => (isset($investor['Investor']['source_of_income']) ? $investor['Investor']['source_of_income'] : '' ), 'placeholder' => 'Select source of income'));
+						echo $this->Form->input('source_of_income', array('options' => array('Personal Savings' => 'Personal Savings','Salary' => 'Salary','Gifts/Inheritance' => 'Gifts/Inheritance','Other' => 'Other'),'value' => (isset($investor['Investor']['source_of_income']) ? $investor['Investor']['source_of_income'] : '--Please Select--' ),'empty' => '--Please Select--','placeholder' => 'Select source of income'));
 					
 //                        echo $this->Form->input('salary', array('value' => (isset($investor['Investor']['salary']) ? $investor['Investor']['salary'] : '' ), 'placeholder' => 'Enter salary amount'));
 //						echo $this->Form->input('gifts_inheritance', array('label' => 'Gifts/Inheritance', 'value' => (isset($investor['Investor']['gifts_inheritance']) ? $investor['Investor']['gifts_inheritance'] : '' ), 'placeholder' => 'Enter amount of money received in gifts/inheritance'));

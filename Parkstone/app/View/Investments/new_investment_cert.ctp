@@ -86,7 +86,40 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 echo '';
                             }
                             ?></i></b>
+                    
                         <?php
+                        if(!isset($investor['joint_surname']) && !empty($investor['joint_surname'])){
+                           ?>
+                    <b style="font-size: 18px;"><br /><i style="color: Navy;">
+                    <?php
+                            if (isset($investor['joint_surname'])) {
+                                echo $investor['joint_surname'] . ' ';
+                            } else {
+                                echo '';
+                            } if (isset($investor['joint_other_names'])) {
+                                echo $investor['joint_other_names'];
+                            } else {
+                                echo '';
+                            }
+                            ?>
+                            
+                            </i></b>
+                    <?php
+                        if(!isset($investor['in_trust_for']) && !empty($investor['in_trust_for'])){
+                           ?>
+                    <br /><b style="font-size: 18px;">In Trust For: <i style="color: Navy;">
+                    <?php
+                            if (isset($investor['in_trust_for'])) {
+                                echo $investor['in_trust_for'] . ' ';
+                            } else {
+                                echo '';
+                            } 
+                            ?>
+                            
+                            </i></b>
+                    <?php
+                        }
+                        }
                         endforeach;
                     }
                     ?>

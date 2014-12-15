@@ -50,7 +50,7 @@
                     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
                         <tr>
                             <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                                <b><?php echo $this->Paginator->sort('surname', 'Surname'); ?></b>
+                                <b><?php echo $this->Paginator->sort('surname', 'Name'); ?></b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
                                 <b><?php echo $this->Paginator->sort('joint_surname', 'Joint Acc Name'); ?></b>
@@ -89,7 +89,7 @@
                                         <?php echo $each_item['Investor']['email']; ?>
                                     </td>
                                     <td align="right">
-                                <?php echo $this->Html->link('Add', "/Investments/add/" . $each_item['Investor']['id'] . "/", array()); ?>
+                                <?php echo $this->Html->link('Add', "/Investments/add/" . $each_item['Investor']['id'] . "/newInvestment1Joint", array()); ?>
                                     </td>
                                 </tr>
     <?php endforeach;
@@ -129,10 +129,13 @@
                         </tr>
                         <tr>
                             <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                                <b>Surname</b>
+                                <b>Name</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
-                                <b>Other Names</b>
+                                <b>Joint Acct. Name</b>
+                            </td>
+                            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                                <b>ITF</b>
                             </td>
                             <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
                                 <b>Phone Number</b>
@@ -151,10 +154,13 @@
         ?>
                                 <tr>
                                     <td align="left"><?php if (isset($each_item['surname'])) {
-            echo $each_item['surname'];
+            echo $each_item['surname'].' '.$each_item['other_names'];
         } ?></td>
-                                    <td align="left"><?php if (isset($each_item['other_names'])) {
-            echo $each_item['other_names'];
+                                    <td align="left"><?php if (isset($each_item['joint_surname'])) {
+            echo $each_item['joint_surname'].' '.$each_item['joint_other_names'];
+        } ?></td>
+                                                    <td align="left"><?php if (isset($each_item['in_trust_for'])) {
+            echo $each_item['in_trust_for'];
         } ?></td>
                                     <td align="left"><?php if (isset($each_item['phone_number'])) {
             echo $each_item['phone_number'];

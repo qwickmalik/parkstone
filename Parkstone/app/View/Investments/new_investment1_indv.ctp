@@ -89,7 +89,7 @@
                                         <?php echo $each_item['Investor']['email']; ?>
                                     </td>
                                     <td align="right">
-                                <?php echo $this->Html->link('Add', "/Investments/add/" . $each_item['Investor']['id'] . "/", array()); ?>
+                                <?php echo $this->Html->link('Add', "/Investments/add/" . $each_item['Investor']['id'] . "/newInvestment1Indv", array()); ?>
                                     </td>
                                 </tr>
     <?php endforeach;
