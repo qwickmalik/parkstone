@@ -25,6 +25,6 @@ class Bank extends AppModel {
             'limit' => '',
             'dependent' => true
             )
-);
+        );
     
 }

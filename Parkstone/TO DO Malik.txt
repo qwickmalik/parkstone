@@ -1,18 +1,20 @@
-DONE 04.11.14 Subsidiary company creation in settings
-DONE 04.11.14 User type permissions listing modules and whether to allow view, create/edit and delete
-DONE 04.11.14 Update List Investors to show company names
-DONE 04.11.14 Remove investment details from newInvestor wizard
-DONE 04.11.14 Update Edit investors both individual and company with the new form wizard
-DONE 04.11.14 Update manageInvestments and processPayments to load company names in the list
-DONE 17.11.14 Integrate CompanyAccounts
-DONE 17.11.14 ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in 
-investment and reinvestment page
+DONE 04.11.14   Subsidiary company creation in settings
+DONE 04.11.14   User type permissions listing modules and whether to allow view, create/edit and delete
+DONE 04.11.14   Update List Investors to show company names
+DONE 04.11.14   Remove investment details from newInvestor wizard
+DONE 04.11.14   Update Edit investors both individual and company with the new form wizard
+DONE 04.11.14   Update manageInvestments and processPayments to load company names in the list
+DONE 17.11.14   Integrate CompanyAccounts
+DONE            Reinvestments views
+DONE 17.11.14   ADD page in settings to add stocks on exchange market with input for prices so it can be a dropdown in investment and reinvestment page
 DONE 11.12.14   Removed Marital Status and Number of children from group investment registration
                 Fixed problem with notifications not having coloured backgrounds
                 Options for Issue year should go beyond 2014, expiry date should start from 2014
+DONE 14.12.14   Investment certificates to reflect both fixed income and equity investments
+                
+DONE 16.12.14
 
-
-
+Update Edit Investors to pick bank details etc.
 16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
 17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
 18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 
@@ -22,7 +24,7 @@ DONE 11.12.14   Removed Marital Status and Number of children from group investm
    and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
 Update InvestorDetails to pull out all details from the db
 
-Investment management for fixed and equity
+
 
 
 

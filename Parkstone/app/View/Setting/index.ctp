@@ -12,14 +12,24 @@
 				<p>Set company details here</p>
 			</div>
 		</div>', '/Settings/setup', array('escape' => false)); ?>
+        <?php 
+//        echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('subsidiaries.png', array()) . '
+//			<div id="innertext">
+//				<h3>Subsidiaries</h3>
+//				<p>Set/edit details of subsidiary companies here</p>
+//			</div>
+//		</div>', '/Settings/subsidiaries', array('escape' => false)); 
+        ?>
+        
         <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('subsidiaries.png', array()) . '
-			<div id="innertext">
-				<h3>Subsidiaries</h3>
-				<p>Set/edit details of subsidiary companies here</p>
-			</div>
-		</div>', '/Settings/subsidiaries', array('escape' => false)); ?>
-        <!-- //'/Settings/warehouses' -->
+				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
+					<div id="innertext">
+						<h3>Bank Accounts</h3>
+						<p>Add/edit company bank accounts</p>
+					</div>
+				</div>', '/Settings/bankAccounts', array('escape' => false)); ?>
+        
         <?php echo $this->Html->link('
 		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
 			<div id="innertext">
@@ -83,6 +93,14 @@
 			</div>', '/Settings/equitiesList', array('escape' => false)); ?>
 
 
+        <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
+					<div id="innertext">
+						<h3>Banks</h3>
+						<p>Add/edit banks</p>
+					</div>
+				</div>', '/Settings/banks', array('escape' => false)); ?>
+        
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('users.png', array()) . '
 					<div id="innertext">
