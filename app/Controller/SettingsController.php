@@ -4,7 +4,7 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio', 'Bank', 'BankAccount');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
@@ -17,7 +17,9 @@ class SettingsController extends AppController {
         'Zone' => array('limit' => 25, 'order' => array('Zone.zone' => 'asc')),
         'Warehouse' => array('limit' => 25, 'order' => array('Warehouse.warehouse' => 'asc')),
         'Portfolio' => array('limit' => 25, 'order' => array('Portfolio.id' => 'asc')),
-        'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc'))
+        'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc')),
+        'Bank' => array('limit' => 20, 'order' => array('Bank.bank_name' => 'asc')),
+        'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
     );
 /*
     function beforeFilter() {
@@ -873,7 +875,173 @@ class SettingsController extends AppController {
                 }
     }
     
+    public function banks() {
+        //$this->__validateUserType();
+        $data = $this->paginate('Bank');
+        $this->set('data', $data);
+        
+
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+            if (!empty($this->request->data)) {
+
+
+                if (isset($this->request->data['Bank']['id']) && ($this->request->data['Bank']['id'] == "" || $this->request->data['Bank']['id'] == null)) {
+                   $bankname = $this->request->data['Bank']['bank_name'];
+                    $user = $this->Bank->find('count', array('conditions' => array('Bank.bank_name LIKE' => "$bankname")));
+
+                    if ($user > 0) {
+                        return "Bank exists";
+                    }
+                }
+                
+            
+
+
+                $result = $this->Bank->save($this->request->data);
+
+                if ($result) {
+                    $this->request->data = null;
+
+                    return "success";
+                } else {
+                    return "unsuccessful";
+                }
+            }
+        }
+    }
     
+    function delBank($bankID = null) {
+        $this->autoRender = $this->autoLayout = false;
+            
+      
+            Configure::write('debug', 0);
+            
+            if (!is_null($bankID)) {
+
+
+               // $userID = $_POST['userId'];
+                $result = $this->Bank->delete($bankID,false);
+
+
+
+                if ($result) {
+                    
+                    $message = 'Bank Deleted';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                } else {
+                    
+                    $message = 'Could not Delete Bank';
+                    $this->Session->write('bmsg', $message);
+                  $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                }
+            }else{
+                    $message = 'Invalid Selection';
+                    $this->Session->write('emsg', $message);
+                  $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+            }
+        
+    }
+
+    function bankAccounts() {
+        //$this->__validateUserType();
+        
+        if ($this->request->is('post')){
+            if(!empty($this->request->data)){
+                if($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null){
+                    $message = 'Please Enter Account Number';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                }
+                 if($this->request->data['BankAccount']['bank_name'] == "" || $this->request->data['BankAccount']['bank_name'] == null){
+                    $message = 'Please Enter Bank Name';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                }
+                 if($this->request->data['BankAccount']['branch'] == "" || $this->request->data['BankAccount']['branch'] == null){
+                    $message = 'Please Enter Branch';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                }
+                
+                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'account_no' => $this->request->data['BankAccount']['account_no'],'bank_name' => $this->request->data['BankAccount']['bank_name'],'branch' => $this->request->data['BankAccount']['branch']);
+                
+                $result = $this->BankAccount->save($term);
+                        //$this->request->data);
+                if($result){
+                    $this->request->data = null;
+                    $message = 'Bank Account Details Save Successfully';
+                   $this->Session->write('smsg', $message);
+                 $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }else{
+                    $message = 'Please Check All Fields';
+                   $this->Session->write('emsg', $message);
+                  $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+            }else{
+                    $message = 'Some Fields Missing Data';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+        }
+        $data = $this->paginate('BankAccount');
+        $this->set('data', $data);
+    }
+    
+    function accountInfo() {
+
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+
+            if (!empty($_POST['baccountId'])) {
+                $baccountId = $_POST['baccountId'];
+                $baccountLst = $this->BankAccount->find('first', array('conditions' => array('BankAccount.id' => $baccountId)));
+
+                $baccountLsts = json_encode($baccountLst);
+                return $baccountLsts;
+            }
+        }
+    }
+    
+    function saveAccount(){
+        $this->autoRender = false;
+        if ($this->request->is('post')){
+            if(!empty($this->request->data)){
+                $result = $this->BankAccount->save($this->request->data);
+                if($result){
+                    $this->request->data = null;
+                    $message = 'Bank Account Details Saved Successfully';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }else{
+                    $message = 'Please Check All Fields';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+            }else{
+                    $message = 'Some Fields Missing Data';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+        }
+    }
+    public function delBankAcc($bank_account = Null) {
+        $this->autoRender = false;
+
+        $result = $this->BankAccount->delete($bank_account, false);
+        if($result){
+            
+                   $message = 'Bank Account Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+        }else{
+                    $message = 'Could Not Delete Bank Account';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+        
+    }
     
 
 }

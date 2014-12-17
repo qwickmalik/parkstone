@@ -5,7 +5,6 @@
  * and open the template in the editor.
  */
 
-
 class Setting extends AppModel {
 
     var $name = "Setting";
@@ -18,7 +17,16 @@ class Setting extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+         'BankAccount' => array(
+            'className' => 'BankAccount',
+            'foreignKey' => 'setting_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
+         );
     
     function getSetup(){
         $this->id = 1;

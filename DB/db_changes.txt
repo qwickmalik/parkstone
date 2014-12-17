@@ -274,3 +274,19 @@ INSERT INTO `qwickfu1_parkst_inv`.`banks` (`id`, `bank_name`, `created`) VALUES
  (NULL, 'Stanbic Bank Ghana Ltd', NULL), (NULL, 'SG Bank', NULL), (NULL, 'Standard Chartered Bank Ghana Limited', NULL), 
  (NULL, 'The Royal Bank Ltd', NULL), (NULL, 'UT Bank Limited', NULL), (NULL, 'uniBank Ghana Ltd', NULL), (NULL, 'United Bank for Africa (Ghana) Ltd.', NULL), 
  (NULL, 'Zenith Bank (Ghana) Limited', NULL);
+
+
+December 16, 2014
+-------------------
+CREATE TABLE IF NOT EXISTS `bank_accounts` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `account_name` varchar(40) NOT NULL,
+  `account_no` varchar(25) NOT NULL,
+  `bank_name` varchar(40) NOT NULL,
+  `branch` varchar(35) NOT NULL,
+  `setting_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+INSERT INTO `bank_accounts` (`id`, `account_name`, `account_no`, `bank_name`, `branch`, `setting_id`) VALUES
+(1, 'Parkstone Capital Limited', '123456789', 'Barclays Bank Ghana Limited', 'High Street, Accra', 1);
