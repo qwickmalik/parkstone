@@ -80,6 +80,12 @@
         </a>
         <ul class="child">
             <li>
+                <?php echo $this->Html->link('Dashboard', '/CompanyAccounts/', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Bank Transactions', '/CompanyAccounts/bankTransactions', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('New Cash Entry', '/CashAccounts/', array('escape' => false)); ?>
             </li>
             <li>

@@ -115,3 +115,18 @@ a #settingsbox img:hover{
     -moz-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;*/
 }
+
+.subtitle-green{
+    
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: solid 1px #eaeaea;
+    color: gray;
+}
+
+.subtitle-red{
+    
+    font-weight: bold;
+    font-size: 18px;
+    color: red;
+}
