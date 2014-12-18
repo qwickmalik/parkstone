@@ -3336,6 +3336,47 @@ var investor = {
         });
     }
     };
+    
+    var bank_account = {
+
+    save_url: '../Settings/bankAccounts',
+
+    init: function() {
+        
+      
+        
+        //callback function to handle supplier detail listing for editing
+        $(".baccountAnchor a").click(function(event){
+            var baccountID = $(this).attr("class");
+            bank_account.accountInfo(baccountID);
+            event.preventDefault();
+            return false;
+        });
+      
+       
+       
+    },
+    
+    accountInfo: function(item){
+           
+        var url = '../Settings/accountInfo';
+        var query = "action=accountInfo&" + "baccountId=" + item;
+        $.post(url, query, function(data){
+                 
+            $("#BankAccountAccountName").val(data['BankAccount']['account_name']);
+            $("#BankAccountAccountNo").val(data['BankAccount']['account_no']);
+            $("#BankAccountBankName").val(data['BankAccount']['bank_name']);
+            $("#BankAccountBranch").val(data['BankAccount']['branch']);
+            $("#BankAccountId").val(data['BankAccount']['id']);
+                   
+                  
+                   
+        }, "json");
+        return false;
+    },
+    
+    
+};
      
 $(document).ready(function() {
     // $("#receive_receipt").printElement();
