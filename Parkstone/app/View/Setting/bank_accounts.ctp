@@ -14,7 +14,8 @@ echo $this->Html->script('notification.js');
                 <?php 
                 echo $this->Form->input('account_name', array('value' => 'Parkstone Capital Limited'));
                 echo $this->Form->hidden('id');
-                echo $this->Form->input('account_no', array());
+                
+                echo $this->Form->input('currency_id', array('label' => 'Currency*','empty' => "--Select bank--", 'class' => 'required'));
                 ?>
             </div>
             
@@ -22,7 +23,8 @@ echo $this->Html->script('notification.js');
                 <?php 
 //                echo $this->Form->input('bank_name', array()); 
                 echo $this->Form->input('bank_id', array('label' => 'Bank Name*','empty' => "--Select bank--"));  
-                echo $this->Form->input('branch', array()); 
+                echo $this->Form->input('account_no', array('label' => 'Account Number*'));
+                echo $this->Form->input('branch', array('label' => 'Branch*')); 
                 echo $this->Form->button('Save', array("type" => "submit", "class" => "btn btn-lg btn-success", 'style' => 'float: right;')); 
                 ?>
             </div>
@@ -38,8 +40,9 @@ echo $this->Html->script('notification.js');
             <tr>
                 <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('account_name', 'Account Name'); ?></b></td>
-                <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('account_no', 'Account Number'); ?></b></td>
+                <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('currency_name', 'Currency'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('bank_name', 'Bank Name'); ?></b></td>
+                <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('account_no', 'Account Number'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('branch', 'Branch'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue;" width="20" align="left"><b>Del</b></td>
             </tr>
@@ -47,8 +50,9 @@ echo $this->Html->script('notification.js');
                 <tr>
                     <td width="50" align="left"><?php echo $each_item['BankAccount']['id']; ?></td>
                     <td align="left"><?php echo $each_item['BankAccount']['account_name']; ?></td>
-                    <td align="left" class="baccountAnchor"><?php echo $this->Html->link($each_item['BankAccount']['account_no'], "#", array("class" => $each_item['BankAccount']['id'])); ?></td> <!-- Link to enable editing -->
+                    <td align="left"><?php echo $each_item['Currency']['currency_name']; ?></td>
                     <td align="left"><?php echo $each_item['Bank']['bank_name']; ?></td>
+                    <td align="left" class="baccountAnchor"><?php echo $this->Html->link($each_item['BankAccount']['account_no'], "#", array("class" => $each_item['BankAccount']['id'])); ?></td> <!-- Link to enable editing -->
                     <td align="left"><?php echo $each_item['BankAccount']['branch']; ?></td>
                     <td width="20" align="left"><?php echo $this->Html->link("Delete", "/Settings/delBankAcc/" . $each_item['BankAccount']['id'], array("class" => $each_item['BankAccount']['id'])); ?></td>
                 </tr>

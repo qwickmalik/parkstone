@@ -948,26 +948,28 @@ class SettingsController extends AppController {
     function bankAccounts() {
         //$this->__validateUserType();
         $this->set('banks', $this->Bank->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
         
         if ($this->request->is('post')){
             if(!empty($this->request->data)){
-                if($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null){
-                    $message = 'Please Enter Account Number';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
-                }
+                
                  if($this->request->data['BankAccount']['bank_id'] == "" || $this->request->data['BankAccount']['bank_id'] == null){
                     $message = 'Please Enter Bank Name';
                    $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                }
+                if($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null){
+                    $message = 'Please Enter Account Number';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
                 }
                  if($this->request->data['BankAccount']['branch'] == "" || $this->request->data['BankAccount']['branch'] == null){
                     $message = 'Please Enter Branch';
                    $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
                 }
                 
-                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'account_no' => $this->request->data['BankAccount']['account_no'],'bank_id' => $this->request->data['BankAccount']['bank_id'],'branch' => $this->request->data['BankAccount']['branch']);
+                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'currency_id' => $this->request->data['BankAccount']['currency_id'],'bank_id' => $this->request->data['BankAccount']['bank_id'],'account_no' => $this->request->data['BankAccount']['account_no'],'branch' => $this->request->data['BankAccount']['branch']);
                 
                 $result = $this->BankAccount->save($term);
                         //$this->request->data);
