@@ -6,7 +6,7 @@
 class CompanyAccountsController extends AppController {
 
     public $name = 'CompanyAccounts';
-    public $uses = array();
+    public $uses = array('BankAccount', 'Bank', 'Currency');
 
 //    function beforeFilter() {
 //        $this->__validateLoginStatus();
@@ -39,7 +39,7 @@ class CompanyAccountsController extends AppController {
     
     function bankDeposits() {
         //$this->__validateUserType();
-        
+        $this->set('bank_accounts', $this->BankAccount->find('list'));
     }
 
 }
