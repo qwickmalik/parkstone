@@ -18,7 +18,7 @@ class SettingsController extends AppController {
         'Warehouse' => array('limit' => 25, 'order' => array('Warehouse.warehouse' => 'asc')),
         'Portfolio' => array('limit' => 25, 'order' => array('Portfolio.id' => 'asc')),
         'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc')),
-        'Bank' => array('limit' => 20, 'order' => array('Bank.bank_name' => 'asc')),
+        'Bank' => array('limit' => 20, 'order' => array('Bank.id' => 'asc')),
         'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
     );
 /*
@@ -877,38 +877,39 @@ class SettingsController extends AppController {
     
     public function banks() {
         //$this->__validateUserType();
-        $data = $this->paginate('Bank');
-        $this->set('data', $data);
         
-
-        if ($this->request->is('ajax')) {
-            $this->autoRender = false;
-            if (!empty($this->request->data)) {
-
-
-                if (isset($this->request->data['Bank']['id']) && ($this->request->data['Bank']['id'] == "" || $this->request->data['Bank']['id'] == null)) {
-                   $bankname = $this->request->data['Bank']['bank_name'];
-                    $user = $this->Bank->find('count', array('conditions' => array('Bank.bank_name LIKE' => "$bankname")));
-
-                    if ($user > 0) {
-                        return "Bank exists";
-                    }
+        if ($this->request->is('post')){
+            if(!empty($this->request->data)){
+                if($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null){
+                    $message = 'Please Enter Bank Name';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
                 }
                 
-            
-
-
-                $result = $this->Bank->save($this->request->data);
-
-                if ($result) {
+                $qry = array('bank_name' => $this->request->data['Bank']['bank_name']);
+                
+                $result = $this->Bank->save($qry);
+                        //$this->request->data);
+                if($result){
                     $this->request->data = null;
-
-                    return "success";
-                } else {
-                    return "unsuccessful";
+                    $message = 'Bank Successfully Added';
+                   $this->Session->write('smsg', $message);
+                 $this->redirect(array('controller' => 'Settings','action' => 'banks'));
+                }else{
+                    $message = 'Please Check All Fields';
+                   $this->Session->write('emsg', $message);
+                  $this->redirect(array('controller' => 'Settings','action' => 'banks'));
                 }
-            }
+            }else{
+                    $message = 'Some Fields Missing Data';
+                   $this->Session->write('emsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'banks'));
+                }
         }
+        
+        $data = $this->paginate('Bank');
+        $this->set('data', $data);
+
     }
     
     function delBank($bankID = null) {
@@ -1005,28 +1006,29 @@ class SettingsController extends AppController {
         }
     }
     
-    function saveAccount(){
-        $this->autoRender = false;
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
-                $result = $this->BankAccount->save($this->request->data);
-                if($result){
-                    $this->request->data = null;
-                    $message = 'Bank Account Details Saved Successfully';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }else{
-                    $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }
-        }
-    }
+//    function saveAccount(){
+//        $this->autoRender = false;
+//        if ($this->request->is('post')){
+//            if(!empty($this->request->data)){
+//                $result = $this->BankAccount->save($this->request->data);
+//                if($result){
+//                    $this->request->data = null;
+//                    $message = 'Bank Account Details Saved Successfully';
+//                   $this->Session->write('smsg', $message);
+//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                }else{
+//                    $message = 'Please Check All Fields';
+//                   $this->Session->write('emsg', $message);
+//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                }
+//            }else{
+//                    $message = 'Some Fields Missing Data';
+//                   $this->Session->write('emsg', $message);
+//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                }
+//        }
+//    }
+    
     public function delBankAcc($bank_account = Null) {
         $this->autoRender = false;
 
