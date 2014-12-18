@@ -20,7 +20,8 @@ echo $this->Html->script('notification.js');
             
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php 
-                echo $this->Form->input('bank_name', array()); 
+//                echo $this->Form->input('bank_name', array()); 
+                echo $this->Form->input('bank_id', array('label' => 'Bank Name*','empty' => "--Select bank--"));  
                 echo $this->Form->input('branch', array()); 
                 echo $this->Form->button('Save', array("type" => "submit", "class" => "btn btn-lg btn-success", 'style' => 'float: right;')); 
                 ?>
@@ -47,7 +48,7 @@ echo $this->Html->script('notification.js');
                     <td width="50" align="left"><?php echo $each_item['BankAccount']['id']; ?></td>
                     <td align="left"><?php echo $each_item['BankAccount']['account_name']; ?></td>
                     <td align="left" class="baccountAnchor"><?php echo $this->Html->link($each_item['BankAccount']['account_no'], "#", array("class" => $each_item['BankAccount']['id'])); ?></td> <!-- Link to enable editing -->
-                    <td align="left"><?php echo $each_item['BankAccount']['bank_name']; ?></td>
+                    <td align="left"><?php echo $each_item['Bank']['bank_name']; ?></td>
                     <td align="left"><?php echo $each_item['BankAccount']['branch']; ?></td>
                     <td width="20" align="left"><?php echo $this->Html->link("Delete", "/Settings/delBankAcc/" . $each_item['BankAccount']['id'], array("class" => $each_item['BankAccount']['id'])); ?></td>
                 </tr>

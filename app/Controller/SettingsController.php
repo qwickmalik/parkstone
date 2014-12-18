@@ -946,6 +946,7 @@ class SettingsController extends AppController {
 
     function bankAccounts() {
         //$this->__validateUserType();
+        $this->set('banks', $this->Bank->find('list'));
         
         if ($this->request->is('post')){
             if(!empty($this->request->data)){
@@ -954,7 +955,7 @@ class SettingsController extends AppController {
                    $this->Session->write('emsg', $message);
                    $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
                 }
-                 if($this->request->data['BankAccount']['bank_name'] == "" || $this->request->data['BankAccount']['bank_name'] == null){
+                 if($this->request->data['BankAccount']['bank_id'] == "" || $this->request->data['BankAccount']['bank_id'] == null){
                     $message = 'Please Enter Bank Name';
                    $this->Session->write('emsg', $message);
                    $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
@@ -965,7 +966,7 @@ class SettingsController extends AppController {
                    $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
                 }
                 
-                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'account_no' => $this->request->data['BankAccount']['account_no'],'bank_name' => $this->request->data['BankAccount']['bank_name'],'branch' => $this->request->data['BankAccount']['branch']);
+                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'account_no' => $this->request->data['BankAccount']['account_no'],'bank_id' => $this->request->data['BankAccount']['bank_id'],'branch' => $this->request->data['BankAccount']['branch']);
                 
                 $result = $this->BankAccount->save($term);
                         //$this->request->data);
