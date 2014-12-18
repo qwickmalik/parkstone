@@ -18,14 +18,6 @@ class Setting extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-         'BankAccount' => array(
-            'className' => 'BankAccount',
-            'foreignKey' => 'setting_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )
          );
     
     function getSetup(){

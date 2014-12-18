@@ -30,7 +30,16 @@ var $hasMany = array(
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+    'BankAccount' => array(
+            'className' => 'BankAccount',
+            'foreignKey' => 'currency_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+    );
 
 function getCurrency($currency_id = null){
         $result = $this->find('first',array('conditions' => array('Currency.id' => $currency_id)));

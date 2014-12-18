@@ -17,13 +17,7 @@ class BankAccount extends AppModel {
     var $usesTable = "bank_accounts";
      var $displayField = "account_no";
        var $belongsTo = array(
-        'Setting' => array(
-            'className' => 'Setting',
-            'foreignKey' => 'setting_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true),
+
         'Bank' => array(
             'className' => 'Bank',
             'foreignKey' => 'bank_id',
@@ -31,6 +25,14 @@ class BankAccount extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true),
+        'Currency' => array(
+            'className' => 'Currency',
+            'foreignKey' => 'currency_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true),
+           
            );
     
 }

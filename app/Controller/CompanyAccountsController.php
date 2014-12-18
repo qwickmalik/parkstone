@@ -36,5 +36,10 @@ class CompanyAccountsController extends AppController {
         //$this->__validateUserType();
         
     }
+    
+    function bankDeposits() {
+        //$this->__validateUserType();
+        
+    }
 
 }
