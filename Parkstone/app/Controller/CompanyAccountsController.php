@@ -41,5 +41,10 @@ class CompanyAccountsController extends AppController {
         //$this->__validateUserType();
         $this->set('bank_accounts', $this->BankAccount->find('list'));
     }
+    
+    function bankWithdrawals() {
+        //$this->__validateUserType();
+        $this->set('bank_accounts', $this->BankAccount->find('list'));
+    }
 
 }
