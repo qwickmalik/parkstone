@@ -86,6 +86,18 @@
                 <?php echo $this->Html->link('Bank Transactions', '/CompanyAccounts/bankTransactions', array('escape' => false)); ?>
             </li>
             <li>
+                <?php echo $this->Html->link('Asset Management', '/CashAccounts/listAssets', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Petty Cash Expenses', '/CashAccounts/pettyCash', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Receivales', '/CashAccounts/receivables', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Expenses', '/CashAccounts/expenses', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('New Cash Entry', '/CashAccounts/', array('escape' => false)); ?>
             </li>
             <li>
