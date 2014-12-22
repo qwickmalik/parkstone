@@ -17,7 +17,7 @@ DONE 16.12.14   Bank submodule in settings
 DONE 18.12.14	Company Accounts dashboard
 DONE 19.12.14	CSS work
 DONE 20.12.14	Bank Deposits and Bank Withdrawals views, CSS work
-DONE 21.12.14	3 Reports, CSS work
+DONE 21.12.14	Reports dashboard, 3 Reports, CSS work
 
 Update Edit Investors to pick bank details etc.
 16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
