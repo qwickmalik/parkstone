@@ -27,8 +27,8 @@ class Reinvestor extends AppModel {
         return $result;
     }
     
-    function getSettings(){
-        $result = $this->find('first',array('conditions' => array('Reinvestor.id' => 1)));
+    function getCompanies(){
+        $result = $this->find('all');
         return $result;
     }
      

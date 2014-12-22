@@ -10,7 +10,7 @@ echo $this->Html->script('notification.js');
 
         <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
             <div class="boxed">
-                <?php echo $this->Form->create('Reinvestor', array("url" => array('controller' => 'Reinvestments', 'action' => 'newReinvestor'), "inputDefaults" => array('label' => false, 'div' => false)));
+                <?php echo $this->Form->create('Reinvestor', array("url" => array('controller' => 'Reinvestments', 'action' => 'addReinvestor'), "inputDefaults" => array('label' => false, 'div' => false)));
                 ?>
 
                 <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">

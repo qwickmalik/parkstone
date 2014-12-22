@@ -27,7 +27,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                      <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <?php
-                        echo $this->Form->input('company_id', array('default' => 1, 'label' => 'Company'));
+                        echo $this->Form->input('reinvestor_id', array('label' => 'Company','empty' => '--Select Company--'));
 //,'selected' => ($this->Session->check('investortemp.investor_type_id') == true ? $this->Session->read('investortemp.investor_type_id') : 1 )
                         ?>  
                     </div>
@@ -52,7 +52,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
                             
-                            echo $this->Form->input('company_fund', array('default' => '--Please Select--', 'label' => 'Company/Fund',  'selected' => '--Please Select--'));
+                            echo $this->Form->input('company_fund', array('empty' => '--Please Select--', 'label' => 'Company/Fund',  'selected' => '--Please Select--'));
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' )));
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.instruction_id') == true ? $this->Session->read('investtemp.instruction_id') : '' )));
                             echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected",'value' => ($this->Session->check('investtemp.instruction_details') == true ? $this->Session->read('investtemp.instruction_details') : '' )));
