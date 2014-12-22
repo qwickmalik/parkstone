@@ -2331,7 +2331,35 @@ public function convert2PdfnEmail(){
         $this->redirect('/Reports/summByHeading/');
     }
 
-
+    function jvReceiptVoucher(){
+//        $this->__validateUserType3();
+        
+    }
+    
+    function investorContract(){
+//        $this->__validateUserType3();
+        
+    }
+    
+    function maturityList(){
+//        $this->__validateUserType3();
+        
+    }
+    
+    function discountInvestment(){
+//        $this->__validateUserType3();
+        
+    }
+    
+    function jvPaymentVoucher(){
+//        $this->__validateUserType3();
+        
+    }
+    
+    function clientLedger(){
+//        $this->__validateUserType3();
+        
+    }
 }
 
 ?>
