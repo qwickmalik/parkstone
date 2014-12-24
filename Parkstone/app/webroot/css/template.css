@@ -144,3 +144,12 @@ ul.square{
     list-style: square;
     margin-left: 15px;
 }
+
+#logo_reports{
+    
+    width: 99px;
+    height: 99px;
+    margin: 15px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    
+}

@@ -11,7 +11,8 @@
                 <?php
                 echo $this->Form->input('bank_name', array("label" => "Bank Name*", "class" => "required"));
                 echo $this->Form->hidden('id');
-
+                echo $this->Form->hidden('create_date');
+                
                 echo $this->Form->button('Save', array("type" => "submit", "id" => "bankBtn", "class" => "btn btn-lg btn-success", 'style' => 'float: right;')); 
                 ?>
             </div>
