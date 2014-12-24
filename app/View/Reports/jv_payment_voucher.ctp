@@ -1,4 +1,4 @@
-<h3>Reports: Journal Voucher - Receipt Voucher</h3>
+<h3>Reports: Journal Voucher - Payment Voucher</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -6,7 +6,7 @@
         <!-- Content start here -->
         <div class="row">
             <?php
-            echo $this->Form->create('ReceiptVoucher', array('url' => array('controller' => 'Reports', 'action' => 'receiptVoucher')));
+            echo $this->Form->create('PaymentVoucher', array('url' => array('controller' => 'Reports', 'action' => 'paymentVoucher')));
             ?>
             
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -56,7 +56,7 @@
                     echo $this->Element('logo_reports');
                     echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>"; 
                     echo "<p><b>General Ledger: Journal Ledger</b></p>";  
-                    echo "<p><b>RECEIPT VOUCHER</b></p>";  
+                    echo "<p><b>PAYMENT VOUCHER</b></p>";  
                 ?>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -89,19 +89,11 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">Internal Code</td>
-                        <td align="left" valign="top">STB 000222</td>
-                        <td align="left" valign="top">Parkstone Account</td>
-                        <td align="left" valign="top">Payment of investment proceeds</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top"></td>
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">Internal Code</td>
                         <td align="left" valign="top"></td>
                         <td align="left" valign="top">Spark Clients</td>
                         <td align="left" valign="top">Payment of investment proceeds</td>
-                        <td align="right" valign="top"></td>
                         <td align="right" valign="top">2,000.00</td>
+                        <td align="right" valign="top"></td>
                     </tr>
                     <tr>
                         <td align="left" valign="top">2100</td>
@@ -110,6 +102,14 @@
                         <td align="left" valign="top"></td>
                         <td align="right" valign="top"></td>
                         <td align="right" valign="top"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Internal Code</td>
+                        <td align="left" valign="top">STB 000222</td>
+                        <td align="left" valign="top">Parkstone Account</td>
+                        <td align="left" valign="top">Payment of investment proceeds</td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top">2,000.00</td>
                     </tr>
                 </table>
             </div>

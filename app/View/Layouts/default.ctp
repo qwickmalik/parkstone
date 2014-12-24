@@ -40,7 +40,10 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                 <div class="sidebar-profile">
                     <div class="user-avatar">
                         <!-- <img src="img/parkstone_logo.png" width="60" height="60" alt="Parkstone Capital" /> -->
-						<?php echo $this->Html->image('parkstone_logo.png', array('align'=>'center')); ?>
+			<?php 
+                        //echo $this->Html->image('parkstone_logo.png', array('align'=>'center')); 
+                        echo $this->Element('logo');
+                        ?>
                     </div>
                     <div class="user-info">
                         <span style="font-size: 11px; color: #eaeaea;"><i>Investing your money wisely</i></span>

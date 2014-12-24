@@ -14,6 +14,7 @@ echo $this->Html->script('notification.js');
                 <?php 
                 echo $this->Form->input('account_name', array('value' => 'Parkstone Capital Limited'));
                 echo $this->Form->hidden('id');
+                echo $this->Form->hidden('create_date');
                 
                 echo $this->Form->input('currency_id', array('label' => 'Currency*','empty' => "--Select bank--", 'class' => 'required'));
                 ?>
