@@ -433,47 +433,64 @@ class ReinvestmentsController extends AppController {
 
         $this->set(compact('setupResults'));
 
-        if ($this->request->is('ajax')) {
-            Configure::write('debug', 0);
-            $this->autoRender = false;
-            $this->autoLayout = false;
-            if (!empty($this->request->data)) {
-//                $day = $this->request->data['Investee']['accounting_month']['day'];
-//                $month = $this->request->data['Investee']['accounting_month']['month'];
-//                $year = $this->request->data['Investee']['accounting_month']['year'];
-//                $this->request->data['Investee']['accounting_month'] = $year . '-' . $month . '-' . $day;
-
-                $count = $this->Investee->find('count');
-                if ($count < 1) {
-                    $result = $this->Investee->save($this->request->data);
-                    if ($result) {
-                        $this->request->data = null;
-
-
-                        return "Investee Company Successfully Added";
-                    } else {
-
-                        return "Unsuccessful";
-                    }
-                }
-//                else if ($count >= 1) {
-//                    $this->Subsidiary->id = 1;
-//
-//                    $result = $this->Setting->save($this->request->data);
-//                    if ($result) {
-//                        $this->request->data = null;
-//
-//
-//                        return "Subsidiary Update Successful";
-//                    } else {
-//
-//                        return "Unsuccessful";
-//                    }
-//                }
-            }
-        }
     }
 
+    function addInvestee() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            //Configure::write('debug', 0);
+
+            if (!empty($this->request->data)) {
+
+                    if ($org_search_record = $this->Investee->find('first', array(
+                    'conditions' => array('Investee.company_name' => $this->request->data['Investee']['company_name']),
+                    'recursive' => -1
+                        ))) {
+                     $message = 'This Company is already registered in the system. Please check the Name of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+                } elseif ($org_search_record = $this->Investee->find('first', array(
+                    'conditions' => array('Investee.email' => $this->request->data['Investee']['email']),
+                    'recursive' => -1
+                        ))) {
+                     $message = 'This Email is already registered in the system. Please check the Email of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+                } elseif($org_search_record = $this->Investee->find('first', array(
+                    'conditions' => array('Investee.mobile' => $this->request->data['Investee']['mobile']),
+                    'recursive' => -1
+                        ))) {
+                     $message = 'This Mobile Number is already registered in the system. Please check the Mobile Number of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+                }
+                $result = $this->Investee->save($this->request->data);
+                if ($result) {
+                    $this->request->data = null;
+
+
+                    $message = 'Investment Company Successfully Added';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+                } else {
+                    $message = 'Company details saving unsuccessful';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+                }
+            } else {
+
+
+                $message = 'No data available to save';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+            }
+        } else {
+            $message = 'Wrong command issued.';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+        }
+    }
+    
     function delInvestee($sub_id = Null) {
         $this->autoRender = false;
 
@@ -501,12 +518,13 @@ class ReinvestmentsController extends AppController {
           $data = $this->paginate('Investor');
           $this->set('investor', $data); */
         $this->set('reinvestors', $this->Reinvestor->find('list'));
+        $this->set('investees', $this->Investee->find('list'));
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
-//            pr($cust);
+
             $this->set('int', $cust);
-            //$this->Session->delete('ivt');
+            
         }
         $check = $this->Session->check('ivts');
         if ($check) {
@@ -516,6 +534,18 @@ class ReinvestmentsController extends AppController {
         }
     }
 
+    function getfunds(){
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $investee_id = $_POST['investee_id'];
+            $result = $this->Investee->find('first', array('conditions' => array('Investee.id' => $investee_id)));
+                  if($result){  
+                      return json_encode(array('status' => 'ok','data' => $result['Investee']));
+                  }else{
+                      return json_encode(array('status' => 'failed'));
+                  }
+        }
+    }
     function newInvestment1Joint() {
         /* $this->__validateUserType(); */
         $data = $this->paginate('Investor');

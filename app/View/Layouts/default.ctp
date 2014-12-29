@@ -12,15 +12,13 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
             <?php echo $cakeDescription ?>:
             <?php echo $title_for_layout; ?>
         </title>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+        <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>-->
         <?php
         echo $this->element('header');
-
 
         echo $this->fetch('meta');
         echo $this->fetch('css');
         echo $this->fetch('script');
-        echo $this->Html->script('jquery.js'); 
         ?>
     </head>
     <body>
@@ -207,10 +205,11 @@ if ($this->Session->check('bmsg')) {
                     </div>
                     <?php echo $this->element('footer'); ?>
                 </div>
+                
+<div class="modal_custom"><!-- Place at bottom of page --></div>
             </div>
 
         </section>
-
 
     </body>
 </html>

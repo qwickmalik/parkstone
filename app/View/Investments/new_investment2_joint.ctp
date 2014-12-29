@@ -125,7 +125,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investor_type_id', array('value' => 2));
-
+                            echo $this->Form->hidden('investor_page', array('value' => 'newInvestment2_joint'));
                             //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
@@ -208,7 +208,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success")); ?>
+                                <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success",'name' => "fixed_process")); ?>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray;">
 
@@ -317,7 +317,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                              
                             ?>
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success")); ?>
+                                <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success",'name' => "equity_process")); ?>
                             </div>
                                 
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray;">
@@ -377,6 +377,11 @@ if ($this->Session->check('shopCurrency_investment')) {
     $("#fixed").hide("slow");
         }
         
+        if(prod_val == "3"){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
+        
         if(prod_val == ""){
             $("#fixed").show("slow");
     $("#equity").show("slow");
@@ -398,6 +403,11 @@ if ($this->Session->check('shopCurrency_investment')) {
     $("#fixed").hide("slow");
         }
         
+        if(investmentproduct == "3"){
+            $("#fixed").show("slow");
+    $("#equity").show("slow");
+        }
+        
         if(investmentproduct == ""){
             $("#fixed").show("slow");
     $("#equity").show("slow");
@@ -405,5 +415,5 @@ if ($this->Session->check('shopCurrency_investment')) {
         
     });
     
-});          
+});
         </script>

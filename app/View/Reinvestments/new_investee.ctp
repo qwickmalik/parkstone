@@ -3,14 +3,14 @@ echo $this->Html->script('notification.js');
 ?>
 
 <!-- Content starts here -->
-<h3 style="color: red;">Investee Companies</h3>
+<h3 style="color: red;">Investment Companies</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
         
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="boxed">
-                <?php echo $this->Form->create('Reinvestor', array("url" => array('controller' => 'Reinvestments', 'action' => 'newReinvestor'), "inputDefaults" => array()));
+                <?php echo $this->Form->create('Investee', array("url" => array('controller' => 'Reinvestments', 'action' => 'addInvestee'), "inputDefaults" => array()));
                 ?>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

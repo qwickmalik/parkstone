@@ -52,7 +52,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             //echo $this->Form->hidden('investment_product_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'value' => 1));
                             
-                            echo $this->Form->input('company_fund', array('empty' => '--Please Select--', 'label' => 'Company/Fund',  'selected' => '--Please Select--'));
+                            echo $this->Form->input('investee_id', array('empty' => '--Please Select--', 'label' => 'Company/Fund',  'selected' => '--Please Select--'));
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' )));
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions', 'empty' => "--Please Select--",'selected' => ($this->Session->check('investtemp.instruction_id') == true ? $this->Session->read('investtemp.instruction_id') : '' )));
                             echo $this->Form->input('instruction_details', array('label' => 'Other Instruction Details', 'placeholder' => "Complete this ONLY if 'Other' is selected",'value' => ($this->Session->check('investtemp.instruction_details') == true ? $this->Session->read('investtemp.instruction_details') : '' )));
@@ -215,3 +215,80 @@ if ($this->Session->check('shopCurrency_investment')) {
 
     </div>
     <!-- Content ends here -->
+<script type="text/javascript" language="javascript">
+$(document).ready(function()
+{
+   $("#ReinvestmentInvesteeId").change(function(){
+       var url = 'getfunds';
+       var id = $(this).val();
+       if(id != ""){
+        var query = "action=getfunds&"+"investee_id=" + id ;
+      
+        $("#error_msg").hide();
+        $.ajax({
+            url: url,
+            data: query,
+            dataType: 'json',
+            type: 'POST',
+            success:function(data) {
+           
+                if( data['status'] == "ok" ) {
+                    var prod1 = data['data']['product1'];
+                    var prod2 = data['data']['product2'];
+                    var prod3 = data['data']['product3'];
+                    var prod4 = data['data']['product4'];
+                    var prod5 = data['data']['product5'];
+                    var prod6 = data['data']['product6'];
+                    var prod7 = data['data']['product7'];
+                    var prod8 = data['data']['product8'];
+                    var prod9 = data['data']['product9'];
+                    var selectHTML = '<option value="">-- Please Select --</option>';
+                    if(prod1 != "" || prod1 != null){
+                       selectHTML += "<option value=" + prod1 + ">"+ prod1 +"</option>";
+                    }
+                     if(prod2 != "" && prod2 != null){
+                       selectHTML += "<option value=" + prod2 + ">"+ prod2 +"</option>";
+                    }
+                    if(prod3 != "" && prod3 != null){
+                       selectHTML += "<option value=" + prod3 + ">"+ prod3 +"</option>";
+                    }
+                    if(prod4 != "" && prod4 != null){
+                       selectHTML += "<option value=" + prod4 + ">"+ prod4 +"</option>";
+                    }
+                    if(prod5 != "" && prod5 != null){
+                       selectHTML += "<option value=" + prod5 + ">"+ prod5 +"</option>";
+                    }
+                    if(prod6 != "" && prod6 != null){
+                       selectHTML += "<option value=" + prod6 + ">"+ prod6 +"</option>";
+                    }
+                    if(prod7 != "" && prod7 != null){
+                       selectHTML += "<option value=" + prod7 + ">"+ prod7 +"</option>";
+                    }
+                    if(prod8 != "" && prod8 != null){
+                       selectHTML += "<option value=" + prod8 + ">"+ prod8 +"</option>";
+                    }
+                    if(prod9 != "" && prod9 != null){
+                       selectHTML += "<option value=" + prod9 + ">"+ prod9 +"</option>";
+                    }
+                    $("#ReinvestmentInvestmentproductId").html(selectHTML);
+                    return false;
+                } else if(data['status'] == "failed"){
+
+                 
+                  
+                    return false;
+                }
+            
+            },
+            error: function() {
+                $("#progress_msg").hide();
+                $("#welcome_message").show();
+                $("#error_msg").html("Server Error. Check Server and Database Configurations").show('slow');
+                $("#welcome_message").hide(5000);
+            }
+        });
+    }
+   });
+    
+});
+</script>
