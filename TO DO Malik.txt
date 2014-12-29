@@ -30,6 +30,12 @@ Update Edit Investors to pick bank details etc.
 Update InvestorDetails to pull out all details from the db
 
 
++Equities/stocks list under equity investment
++Equity Purchased* should be a dropdown of all stocks on GSE. Equity Listing page to capture that information including the share price, etc.
++Reinvestment module for stating investment destination in fixed reinvestment. Change investee to investment destination. Desination listing page with just the destination company name and product.
++Under re-investment we will have two different views for reinvesting fixed investments and equities
++Re-investor company stays. Money is handled separately from Parkstone pool
+
 
 
 
