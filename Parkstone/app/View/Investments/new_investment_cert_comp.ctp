@@ -16,7 +16,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
 <?php 
     //FIXED INCOME CERTIFICATE STARTS HERE
-    if(isset($investment_array['Investment']['investment_product_id']) && $investment_array['Investment']['investment_product_id'] == 1 || $investment_array['Investment']['investment_product_id'] == 3) { ?>
+    if(isset($investment_array_fixed['Investment']['investment_product_id']) && $investment_array_fixed['Investment']['investment_product_id'] == 1 || $investment_array_fixed['Investment']['investment_product_id'] == 3) { ?>
         <table id="payment_receipt1" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
             <?php
             $shopCurrency = "";
@@ -74,10 +74,10 @@ if ($this->Session->check('shopCurrency_investment')) {
             <tr>
                 <td align="center" valign="top" colspan="2">
                     <h1 style="color: Navy;">Fixed Investment Certificate</h1><br />
-                    <?php if (isset($investment_array['Investor']['comp_name'])) {
+                    <?php if (isset($investment_array_fixed['Investor']['comp_name'])) {
                         ?><b style="font-size: 18px;"> <br /><i style="color: Navy;"><?php
-                        if (isset($investment_array['Investor']['comp_name'])) {
-                            echo $investment_array['Investor']['comp_name'];
+                        if (isset($investment_array_fixed['Investor']['comp_name'])) {
+                            echo $investment_array_fixed['Investor']['comp_name'];
                         } else {
                             echo '';
                         }
@@ -90,12 +90,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $investment_number;
                         }
                         ?></b><br />
-                    <?php if (isset($investment_array['Investment']['investment_date'])) { ?> <b>Date: </b>
-                        <?php echo $investment_array['Investment']['investment_date']; ?>
-                    <?php } elseif (isset($investment_array['Investment']['purchase_date'])) { ?>
+                    <?php if (isset($investment_array_fixed['Investment']['investment_date'])) { ?> <b>Date: </b>
+                        <?php echo $investment_array_fixed['Investment']['investment_date']; ?>
+                    <?php } elseif (isset($investment_array_fixed['Investment']['purchase_date'])) { ?>
                     <b>Purchase Date: </b>
                         <?php
-                        echo $investment_array['Investment']['purchase_date'];
+                        echo $investment_array_fixed['Investment']['purchase_date'];
                     }
                     ?>
                 </td>
@@ -125,8 +125,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <td><b align="right">Investment Term:</b></td>
                             <td><span id="xxxxxx">
                                         <?php
-                                        if (isset($investment_array['InvestmentTerm']['term_name'])) {
-                                            echo $investment_array['InvestmentTerm']['term_name'];
+                                        if (isset($investment_array_fixed['InvestmentTerm']['term_name'])) {
+                                            echo $investment_array_fixed['InvestmentTerm']['term_name'];
                                         }
                                         ?>
                                 </span></td>   
@@ -134,8 +134,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <tr>
                             <td><b align="right"> Investment Rate:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['custom_rate'])) {
-                                            echo $investment_array['Investment']['custom_rate'] . '%';
+                                        if (isset($investment_array_fixed['Investment']['custom_rate'])) {
+                                            echo $investment_array_fixed['Investment']['custom_rate'] . '%';
                                         }
                                         ?></span></td> 
                         </tr>
@@ -146,12 +146,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <tr>
                             <td><b align="right">Amount Invested:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['investment_amount'])) {
-                                            if ($investment_array['Investment']['status'] == 'Rollover') {
+                                        if (isset($investment_array_fixed['Investment']['investment_amount'])) {
+                                            if ($investment_array_fixed['Investment']['status'] == 'Rollover') {
                                                 echo $shopCurrency . ' ' . $rollover_details['amount'];
                                             } else {
 
-                                                echo $shopCurrency . ' ' . $investment_array['Investment']['investment_amount'];
+                                                echo $shopCurrency . ' ' . $investment_array_fixed['Investment']['investment_amount'];
                                             }
                                         }
                                         ?></span></td>
@@ -168,8 +168,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <tr>
                             <td><b align="right">Amount Due:</b></td>
                             <td><span id="xxxxxx"><b><?php
-                                            if (isset($investment_array['Investment']['amount_due'])) {
-                                                echo $shopCurrency . ' ' . $investment_array['Investment']['amount_due'];
+                                            if (isset($investment_array_fixed['Investment']['amount_due'])) {
+                                                echo $shopCurrency . ' ' . $investment_array_fixed['Investment']['amount_due'];
                                             }
                                             ?></b></span></td>
                         </tr>
@@ -221,7 +221,11 @@ if ($this->Session->check('shopCurrency_investment')) {
         <?php
         
         //EQUITY CERTIFICATE STARTS HERE 
-        ?>
+         if (isset($investment_array_equity['Investment']['investment_product_id']) && $investment_array_equity['Investment']['investment_product_id'] == 2 || $investment_array_equity['Investment']['investment_product_id'] == 3) { 
+             
+             ?>
+   
+      
         <table id="payment_receipt2" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
             <?php
             $shopCurrency = "";
@@ -279,10 +283,10 @@ if ($this->Session->check('shopCurrency_investment')) {
             <tr>
                 <td align="center" valign="top" colspan="2">
                     <h1 style="color: Navy;">Equity Investment Certificate</h1><br />
-                    <?php if (isset($investment_array['Investor']['comp_name'])) {
+                    <?php if (isset($investment_array_equity['Investor']['comp_name'])) {
                         ?><b style="font-size: 18px;"> <br /><i style="color: Navy;"><?php
-                        if (isset($investment_array['Investor']['comp_name'])) {
-                            echo $investment_array['Investor']['comp_name'];
+                        if (isset($investment_array_equity['Investor']['comp_name'])) {
+                            echo $investment_array_equity['Investor']['comp_name'];
                         } else {
                             echo '';
                         }
@@ -295,12 +299,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $investment_number;
                         }
                         ?></b><br />
-                    <?php if (isset($investment_array['Investment']['investment_date'])) { ?> <b>Date: </b>
-                        <?php echo $investment_array['Investment']['investment_date']; ?>
-                    <?php } elseif (isset($investment_array['Investment']['purchase_date'])) { ?>
+                    <?php if (isset($investment_array_equity['Investment']['investment_date'])) { ?> <b>Date: </b>
+                        <?php echo $investment_array_equity['Investment']['investment_date']; ?>
+                    <?php } elseif (isset($investment_array_equity['Investment']['purchase_date'])) { ?>
                     <b>Purchase Date: </b>
                         <?php
-                        echo $investment_array['Investment']['purchase_date'];
+                        echo $investment_array_equity['Investment']['purchase_date'];
                     }
                     ?>
                 </td>
@@ -322,8 +326,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
             </tr>
 
-<?php if (isset($investment_array['Investment']['investment_product_id']) && $investment_array['Investment']['investment_product_id'] == 2 || $investment_array['Investment']['investment_product_id'] == 3) { ?>
-            <tr>
+         <tr>
                 <td align="left" valign="top" width="50%">
                     <table width="100%" cellspacing="10" cellpadding="0" border="0">
 
@@ -332,8 +335,8 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             <td><b align="right">Equity Purchased:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['equity'])) {
-                                            echo $investment_array['Investment']['equity'];
+                                        if (isset($investment_array_equity['Investment']['equity'])) {
+                                            echo $investment_array_equity['Investment']['equity'];
                                         }
                                         ?>   </span></td>
                         </tr> 
@@ -341,16 +344,16 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             <td><b align="right">Purchase Price:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['purchase_price'])) {
-                                            echo $shopCurrency . ' ' . $investment_array['Investment']['purchase_price'];
+                                        if (isset($investment_array_equity['Investment']['purchase_price'])) {
+                                            echo $shopCurrency . ' ' . $investment_array_equity['Investment']['purchase_price'];
                                         }
                                         ?>   </span></td>
                         </tr>
                         <tr>
                             <td><b align="right">No. of Shares Purchased:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['numb_shares'])) {
-                                            echo $investment_array['Investment']['numb_shares'];
+                                        if (isset($investment_array_equity['Investment']['numb_shares'])) {
+                                            echo $investment_array_equity['Investment']['numb_shares'];
                                             ?></span></td>
                         </tr> <?php } ?> 
                     </table>
@@ -360,8 +363,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <tr>
                             <td><b align="right">Total Fees:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array['Investment']['total_fees'])) {
-                                            echo $shopCurrency . ' ' . $investment_array['Investment']['total_fees'];
+                                        if (isset($investment_array_equity['Investment']['total_fees'])) {
+                                            echo $shopCurrency . ' ' . $investment_array_equity['Investment']['total_fees'];
                                         }
                                         ?></span></td>
                         </tr>
@@ -370,9 +373,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <td><b align="right">Total Amount:</b></td>
                             <td><span id="xxxxxx"><b>
                                             <?php
-                                            if (isset($investment_array['Investment']['total_amount'])) {
+                                            if (isset($investment_array_equity['Investment']['total_amount'])) {
 
-                                                echo $shopCurrency . ' ' . $investment_array['Investment']['total_amount'];
+                                                echo $shopCurrency . ' ' . $investment_array_equity['Investment']['total_amount'];
                                             }
                                             ?></b></span></td> 
                         </tr>

@@ -2456,7 +2456,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                 $this->redirect('/Investments/');
             }
         } 
-        else {
+         if(!($this->Session->check('investment_array_fixed')) && !($this->Session->check('investment_array_equity'))) {
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/');
@@ -2466,9 +2466,9 @@ if(isset($this->request->data['Investment']['fixed_process'])){
     function newInvestmentCertComp() {
         /* $this->__validateUserType(); */
 
-        $investment_array = $this->Session->check('investment_array');
+        $investment_array = $this->Session->check('investment_array_fixed');
         if ($investment_array) {
-            $investment_array = $this->Session->read('investment_array');
+            $investment_array = $this->Session->read('investment_array_fixed');
 
 
             $result = $this->Investment->save($investment_array);
@@ -2482,10 +2482,14 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                 $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
 
                 $this->InvestmentInvestor->save($investor_data);
-
-                $investment_number = 'PARKST-INV-00' . $investment_id;
+               if(isset($investment_number) && !empty($investment_number)){
+                $investment_number = $investment_number;
+                }else{
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
                 $this->set('investment_number', $investment_number);
                 $date = date('Y-m-d H:i:s');
+
 
 
 
@@ -2497,17 +2501,17 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     $this->set('rollover_details', $rollover_details);
                     $this->Session->delete('rollover_details');
 
-                    $statemt_array = $this->Session->check('statemt_array');
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
                     if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array');
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
 
                         $this->InvestmentStatement->saveAll($statemt_array);
-                        $this->Session->delete('statemt_array');
+                        $this->Session->delete('statemt_array_fixed');
                     }
                 } else {
-                    $statemt_array = $this->Session->check('statemt_array');
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
                     if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array');
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
 
 
                         foreach ($statemt_array as $key => $val) {
@@ -2516,7 +2520,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                             $this->InvestmentStatement->create();
                             $this->InvestmentStatement->save($val);
                         }
-                        $this->Session->delete('statemt_array');
+                        $this->Session->delete('statemt_array_fixed');
                     }
 
                     $this->request->data = null;
@@ -2525,7 +2529,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                 }
                 $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
                 if ($data) {
-                    $this->set('investment_array', $data);
+                    $this->set('investment_array_fixed', $data);
                     $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
 
                     $issued = $this->Session->check('userData');
@@ -2535,14 +2539,106 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     }
                 }
 
-                $this->Session->delete('investment_array');
-                $this->Session->delete('variabless');
-            } else {
+                $this->Session->delete('investment_array_fixed');
+                $this->Session->delete('variabless_fixed');
+            } 
+            
+            
+            else {
                 $message = 'Sorry,try again';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
             }
-        } else {
+        } 
+        
+        $investment_array = $this->Session->check('investment_array_equity');
+        if ($investment_array) {
+            $investment_array = $this->Session->read('investment_array_equity');
+
+
+            $result = $this->Investment->save($investment_array);
+            $investment_id = $this->Investment->id;
+            $investor_id = $result['Investment']['investor_id'];
+
+            if ($result) {
+
+
+
+                $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
+
+                $this->InvestmentInvestor->save($investor_data);
+               if(isset($investment_number) && !empty($investment_number)){
+                $investment_number = $investment_number;
+                }else{
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
+                $this->set('investment_number', $investment_number);
+                $date = date('Y-m-d H:i:s');
+
+
+
+
+
+                $rollover_details = $this->Session->check('rollover_details');
+                if ($rollover_details) {
+                    $rollover_details = $this->Session->read('rollover_details');
+                    $this->Rollover->save($rollover_details);
+                    $this->set('rollover_details', $rollover_details);
+                    $this->Session->delete('rollover_details');
+
+                    $statemt_array = $this->Session->check('statemt_array_equity');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_equity');
+
+                        $this->InvestmentStatement->saveAll($statemt_array);
+                        $this->Session->delete('statemt_array_equity');
+                    }
+                } else {
+                    $statemt_array = $this->Session->check('statemt_array_equity');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_equity');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array_equity');
+                    }
+
+                    $this->request->data = null;
+                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                    $this->Investment->save($investment_updates);
+                }
+                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                if ($data) {
+                    $this->set('investment_array_equity', $data);
+                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+
+                    $issued = $this->Session->check('userData');
+                    if ($issued) {
+                        $issued = $this->Session->read('userData');
+                        $this->set('issued', $issued);
+                    }
+                }
+
+                $this->Session->delete('investment_array_equity');
+                $this->Session->delete('variabless_equity');
+            } 
+            
+            
+            else {
+                $message = 'Sorry,try again';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
+            }
+        }
+        
+        
+        
+        if(!($this->Session->check('investment_array_fixed')) && !($this->Session->check('investment_array_equity'))) {
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/newInvestment1Comp');
