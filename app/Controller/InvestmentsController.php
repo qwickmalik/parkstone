@@ -1600,7 +1600,7 @@ function newInvestment2Group($investorid = null) {
                     $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
                 }
             }
-            if(isset($this->request->data['Investment']['equity_process'])){
+            if(isset($this->request->data['equity_process'])){
 //                case 2:
                     $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
                     $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
@@ -1616,7 +1616,7 @@ function newInvestment2Group($investorid = null) {
             $term_id = $this->request->data['Investment']['investmentterm_id'];
 
 //            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
-            if(isset($this->request->data['Investment']['equity_process'])){
+            if(isset($this->request->data['fixed_process'])){
 //                switch ($investmentproduct_id) {
 //                    case 1:
                         if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
@@ -1665,7 +1665,7 @@ function newInvestment2Group($investorid = null) {
                         $first_date = $inv_date;
 //                        break;
             }
-            if(isset($this->request->data['Investment']['fixed_process'])){
+            if(isset($this->request->data['equity_process'])){
 //                    case 2:
                         $first_date = $pinv_date;
 
@@ -1752,7 +1752,7 @@ function newInvestment2Group($investorid = null) {
 
 //                switch ($investmentproduct_id) {
 //                    case 1:
- if(isset($this->request->data['Investment']['fixed_process'])){
+ if(isset($this->request->data['fixed_process'])){
                         $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
 
                         if ($portfolio) {
@@ -1822,7 +1822,7 @@ function newInvestment2Group($investorid = null) {
                         }
 //                        break;
  }
-  if(isset($this->request->data['Investment']['equity_process'])){
+  if(isset($this->request->data['equity_process'])){
 //                    case 2:
                         $rate = '0.00';
                         $amount_due = '0.00';
@@ -1873,6 +1873,7 @@ function newInvestment2Group($investorid = null) {
 
 
                 $this->Session->delete('investtemp');
+                $this->Session->write('investtemp.investmentproduct_id',$investmentproduct_id); 
                 $message = 'Investment Successfully Processed,Click Next to Save and Print Certificate';
                 $this->Session->write('smsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => $page));
@@ -1926,7 +1927,7 @@ function newInvestment2Group($investorid = null) {
                     $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
                 }
             }
-                if(isset($this->request->data['Investment']['equity_process'])){
+                if(isset($this->request->data['equity_process'])){
 //                case 2:
                     $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
                     $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
@@ -1942,7 +1943,7 @@ function newInvestment2Group($investorid = null) {
 //            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
 //                switch ($investmentproduct_id) {
 //                    case 1:
-if(isset($this->request->data['Investment']['equity_process'])){
+if(isset($this->request->data['fixed_process'])){
                         $term_id = $this->request->data['Investment']['investmentterm_id'];
 
                         if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
@@ -1992,7 +1993,7 @@ if(isset($this->request->data['Investment']['equity_process'])){
 //                        break;
 }
 //                    case 2:
-if(isset($this->request->data['Investment']['fixed_process'])){
+if(isset($this->request->data['equity_process'])){
                         $first_date = $pinv_date;
 
                         $this->request->data['Investment']['investment_date'] = $pinv_date;
@@ -2070,7 +2071,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
 
 //                switch ($investmentproduct_id) {
 //                    case 1:
-                if(isset($this->request->data['Investment']['fixed_process'])){
+                if(isset($this->request->data['fixed_process'])){
                         $investment_amount = $this->request->data['Investment']['investment_amount'];
 
                         $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
@@ -2142,7 +2143,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
 //                        break;
                 }
 //                    case 2:
-                if(isset($this->request->data['Investment']['equity_process'])){
+                if(isset($this->request->data['equity_process'])){
                         $rate = '0.00';
                         $amount_due = '0.00';
                         $interest_amount = '0.00';
@@ -2194,6 +2195,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
 
 
                 $this->Session->delete('investtemp');
+                 $this->Session->write('investtemp.investmentproduct_id',$investmentproduct_id);
                 $message = 'Investment Successfully Processed,Click Next to Save and Print Certificate';
                 $this->Session->write('smsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' =>  $page, $investor_id));
@@ -2362,7 +2364,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     }
                 }
 
-                $this->Session->delete('investment_array_fixed');
+                
                 $this->Session->delete('variabless_fixed');
             } else {
                 $message = "Sorry No Investment To Display";
@@ -2448,7 +2450,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     }
                 }
 
-                $this->Session->delete('investment_array_equity');
+                
                 $this->Session->delete('variabless_equity');
             } else {
                 $message = "Sorry No Investment To Display";
@@ -2456,10 +2458,18 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                 $this->redirect('/Investments/');
             }
         } 
+        
          if(!($this->Session->check('investment_array_fixed')) && !($this->Session->check('investment_array_equity'))) {
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/');
+        }elseif($this->Session->check('investment_array_fixed')){
+            $this->Session->delete('investment_array_fixed');
+        }elseif($this->Session->check('investment_array_equity')){
+            $this->Session->delete('investment_array_equity');
+        }
+        if($this->Session->check('investtemp.investmentproduct_id')){
+            $this->Session->delete('investtemp.investmentproduct_id');
         }
     }
 
@@ -2539,7 +2549,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     }
                 }
 
-                $this->Session->delete('investment_array_fixed');
+               
                 $this->Session->delete('variabless_fixed');
             } 
             
@@ -2624,7 +2634,7 @@ if(isset($this->request->data['Investment']['fixed_process'])){
                     }
                 }
 
-                $this->Session->delete('investment_array_equity');
+               
                 $this->Session->delete('variabless_equity');
             } 
             
@@ -2642,6 +2652,13 @@ if(isset($this->request->data['Investment']['fixed_process'])){
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/newInvestment1Comp');
+        }elseif($this->Session->check('investment_array_fixed')){
+            $this->Session->delete('investment_array_fixed');
+        }elseif($this->Session->check('investment_array_equity')){
+            $this->Session->delete('investment_array_equity');
+        }
+        if($this->Session->check('investtemp.investmentproduct_id')){
+            $this->Session->delete('investtemp.investmentproduct_id');
         }
     }
 
