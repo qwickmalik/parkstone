@@ -20,6 +20,7 @@ DONE 20.12.14	Bank Deposits and Bank Withdrawals views, CSS work
 DONE 21.12.14	Reports dashboard, 3 Reports, CSS work
 
 Update Edit Investors to pick bank details etc.
+
 16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
 17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
 18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 
@@ -28,6 +29,7 @@ Update Edit Investors to pick bank details etc.
 21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
    and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
 Update InvestorDetails to pull out all details from the db
+22. Under reinvestments, we need to have a sub module for equity and then for fixed invesments
 
 
 +Equities/stocks list under equity investment
