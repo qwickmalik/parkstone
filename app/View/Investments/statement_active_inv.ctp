@@ -101,7 +101,7 @@ if ($this->Session->check('shopCurrency')) {
                         <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Product<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price');  ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Date<?php // echo $this->Paginator->sort('date', 'Supply Date');  ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Amount/Total Amount<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price');  ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Total Fees<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price');  ?></b></td>
+                        <!--<td style="border-bottom: solid 2px dodgerblue" align="right"><b>Total Fees<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price');  ?></b></td>-->
                         <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Rate (%)</b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Due Date<?php //echo $this->Paginator->sort('balance', 'Balance');  ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Amount Due<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
@@ -124,18 +124,18 @@ if ($this->Session->check('shopCurrency')) {
                             echo $each_item['Investment']['investment_date'];//.",".date('y',$each_item['InvestmentStatement']['maturity_date']);
                         }
                         ?></td>
-                        <td align="right"><?php 
+                        <td align="center"><?php 
                         if(isset($each_item['Investment']['investment_amount']) && !empty($each_item['Investment']['investment_amount']) && $each_item['Investment']['investment_amount'] > 0){
                             echo number_format($each_item['Investment']['investment_amount'], 2, '.', ',');
                         }elseif(isset($each_item['Investment']['total_amount']) &&!empty($each_item['Investment']['total_amount'])){
                             echo number_format($each_item['Investment']['total_amount'], 2, '.', ',');
                         }
                         ?></td>
-                        <td align="right"><?php 
-                        if(isset($each_item['Investment']['total_fees'])){
-                            echo number_format($each_item['Investment']['total_fees'], 2, '.', ',');
-                        }
-                        ?></td>
+<!--                        <td align="right"><?php 
+//                        if(isset($each_item['Investment']['total_fees'])){
+//                            echo number_format($each_item['Investment']['total_fees'], 2, '.', ',');
+//                        }
+                        ?></td>-->
                         <td align="center"><?php if (isset($each_item['Investment']['custom_rate'])) {
                         echo $each_item['Investment']['custom_rate'].'%';
                     }

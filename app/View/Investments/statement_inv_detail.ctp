@@ -131,7 +131,34 @@ echo $this->Html->script('jquery.printElement.js');
                         ?></td>
                     </tr>
                    
-            <?php      } }  ?>  
+            <?php      } }  
+            
+             if (isset($data_total)) {
+                            
+            foreach ($data_total as $each_item):
+                
+                ?>
+                <tr>
+                   <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total</td>
+                   <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
+                if (isset($each_item[0]['total_principal'])) {
+                    echo $shopCurrency . ' ' . number_format($each_item[0]['total_principal'], 2, '.', ',');
+                }
+                ?></td>
+                   <td align="center" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
+                if (isset($each_item[0]['total_interest'])) {
+                    echo $shopCurrency . ' ' . number_format($each_item[0]['total_interest'], 2, '.', ',');
+                }
+                ?></td>
+                   <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
+                if (isset($each_item[0]['sum_total'])) {
+                    echo $shopCurrency . ' ' . number_format($each_item[0]['sum_total'], 2, '.', ',');
+                }
+                ?></td>
+                </tr>
+                    <?php endforeach;
+                }
+                ?>
                 </table>
             </td>
         </tr>
@@ -151,7 +178,7 @@ echo $this->Html->script('jquery.printElement.js');
                     ?></td>
                     </tr>
                     <tr>
-                        <td><b align="right">Portfolio Type:</b></td>
+                        <td><b align="right">Investment Term:</b></td>
                         <td><span id="xxxxxx"><?php
                                 if (isset($data2['Portfolio']['payment_name'])) {
                                     echo $data2['Portfolio']['payment_name'];
