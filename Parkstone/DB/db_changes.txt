@@ -316,3 +316,20 @@ CREATE TABLE IF NOT EXISTS `investment_cash` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `investment_cash` ADD `investment_type` ENUM( 'fixed', 'equity' ) NULL DEFAULT NULL AFTER `amount` ;
+
+
+JANUARY 19,2015
+----------------------
+--
+-- Truncate table before insert `payment_schedules`
+--
+
+TRUNCATE TABLE `payment_schedules`;
+--
+-- Dumping data for table `payment_schedules`
+--
+
+INSERT INTO `payment_schedules` (`id`, `payment_schedule_name`) VALUES
+(1, 'Monthly'),
+(2, 'Quarterly'),
+(3, 'Yearly');
