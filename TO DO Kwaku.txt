@@ -5,23 +5,23 @@ DONE - Bank Details not loading in editInvestor
 DONE - Next of Kin name not going to db for newInvestorIndivJoint
 DONE - statementAllInv to load investment details
 DONE - statementActiveInv to load active investments
+DONE - Investment Product dropdown not working when Fixed investment & Equity is selected.
+DONE - function process_indv() in InvestmentsController not calculating returns for fixed investment
+DONE - Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
+DONE - Show ITF in investment choosing and selecting page
 
-Show ITF in investment choosing and selecting page
-Add group and Joint investor details
-If investment product type is equity, the rollover has to be different.also cross check current rollover function
-Instructions in Equity will be different
+TO DO
+----------
+
+
+- Add group and Joint investor details
+- If investment product type is equity, the rollover has to be different.also cross check current rollover function
+- Instructions in Equity will be different
 Schedule
-
-COMMENTS: 11.12.14
----------------------
-Investment Product dropdown not working when Fixed investment & Equity is selected.
-function process_indv() in InvestmentsController not calculating returns for fixed investment
-Work on functionality of Reinvestments. Views are complete
 
 COMMENTS 14.12.2014
 --------------------
 Please check error under payment date on edit_payment.ctp
-Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
 PRINT button for investment certificates not working
 
 
