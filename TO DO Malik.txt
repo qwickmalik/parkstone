@@ -21,23 +21,91 @@ DONE 21.12.14	Reports dashboard, 3 Reports, CSS work
 
 Update Edit Investors to pick bank details etc.
 
-16. Under the reinvestment option, we should have a choice of Parkstone Capital or any other Company that we may be managing funds for. Remove the subsidiary for now.
-17. Payment Schedule should reflect monthly, quarterly and yearly options. There should be a column for the exact person we are sending money to. 
-18. Limit payment of funds to only what is due clients or amounts in their accounts. We should not be able to pay out more than they have in their account. 
 19. Information on investment date and term should be added to investment certificates.
-20.Kwaku already created model and table for adding banks. need to add page in settings for adding banks in Ghana
 21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
    and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
-Update InvestorDetails to pull out all details from the db
-22. Under reinvestments, we need to have a sub module for equity and then for fixed invesments
+22. Update InvestorDetails to pull out all details from the db
 
 
+
+ 
 +Equities/stocks list under equity investment
+#view addition to new investment pages for group,joint,individual & corporate
+-dropdown listing different equity 
+#functions
+-find/set statement in view function
+
 +Equity Purchased* should be a dropdown of all stocks on GSE. Equity Listing page to capture that information including the share price, etc.
-+Reinvestment module for stating investment destination in fixed reinvestment. Change investee to investment destination. Desination listing page with just the destination company name and product.
+#views
+ -Equity setup page with share price,etc (create,edit,list,delete)
+#functions
+ -Create
+ -edit
+ -delete
++Review investment management page for Equity investments
+ #Views
+ - Cancel equity investment page
+ - Cancel fixed investment page
+ - pay/cashin equity investments 
+ 
++Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
+ #View
+ -Re-investor cash receipt page
+ #Functions
+  - to be decided
+
+
++Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 
+ with just the destination company name and product.
+#View
+ -New Investee view(rename to investment destination)(create,list,edit)
+ -Sub menu view for adding products(add,list,edit)
+#functions
+ -create destination
+ -edit destination
+ -create product
+ -update product
+ 
+ 
 +Under re-investment we will have two different views for reinvesting fixed investments and equities
-+Re-investor company stays. Money is handled separately from Parkstone pool
+  +Re-investor company stays. Money is handled separately from Parkstone pool
+  +Table to store all monies coming in and for which kind of investment=pool
+    -investment_cash table
+#View
+ -Choose company page & and fixed/equity reinvestmnt input
+ -Fixed reinvestment page (page divided horizontally into 2; 20:80; upper 20% shows information about cash pool last reinvestment etc.;2nd half shows reinvestment options)
+ -Equity reinvestment page (page divided upper listing investors and investment info;proportion will be up to malik;lower bottom for making investment)
+ -Reinvestment summary page if successful commit
+#function
+ -Route decision function after company n investment type choice
+ -Fixed reinvestment page function which uses company id and investment type to select cash options for reinvestments
+ -Function to calculate/process reinvestment and store in session for review b
+ -Function to complete and save reinvestment 
+ -function to display reinvestment summary
 
 
 
-
++Reinvestment Management Submodule
+ +Create Page for managing payments to re-investor company New sub menu
+#View
+ - Page for listing companies choosing b/n fixed n equity investments. 
+ - page listing of investments based on choice.(quick link actions against investment.if different company option/button to pay back re-investor company)
+ -page to handle repayment to re-investor company
+ - Page for detailing investment and actions to take (Cancel,pay[cash_in/end])
+ - Cancel equity investment page
+ - Cancel fixed investment page
+ - pay/cash_in equity investments
+ - Receive/cash_in fixed investment page
+#Function
+ - Rollover fixed investment function
+ - cash_in/receive fixed investment cash function
+ - cancel  equity function
+ - cancel fixed  investment
+ - pay reinvestor company
+ 
+ Extras
++KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
++Kwaku:Payment terms to be calculated in days
++Kwaku: Cron Job to process daily rates of fixed investments
++Malik: Report to list such additions by cron job in investment management 
++Malik:Report to list such additions in general reports module
