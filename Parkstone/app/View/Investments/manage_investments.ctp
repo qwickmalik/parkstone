@@ -53,6 +53,9 @@ echo $this->element('header');
             <td style="border-bottom: solid 2px dodgerblue;" width="90" align="left"><b><?php  echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php  echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php  echo $this->Paginator->sort('fullname', 'Investor Name'); ?></b></td>
+             <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php  echo $this->Paginator->sort('in_trust_for', 'In Trust For'); ?></b></td>
+             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('investor_type', 'Investor Type'); ?></b>
+            </td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('phone', 'Phone No.'); ?></b></td>
              <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('email', 'Email'); ?></b></td>
               <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Statements</b></td>
@@ -60,8 +63,12 @@ echo $this->element('header');
         <?php if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
                 <td align="left"><?php  echo $each_item['Investor']['id']; ?></td>
-                <td align="left"><?php echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array()); ?></td>  <!--Link to enable editing -->
-                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array()); ?></td>  <!--Link to enable editing -->
+                <td align="left"><?php if(!empty($each_item['Investor']['comp_name'])){echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array());;}else{echo 'N/A';} ?></td>  <!--Link to enable editing -->
+                <td align="left"><?php if(!empty($each_item['Investor']['fullname'])){echo $this->Html->link($each_item['Investor']['fullname'], "/Investments/searchInvest4mInvest/". $each_item['Investor']['id']."/manage", array());}else{echo 'N/A';} ?></td>  <!--Link to enable editing -->
+                <td align="left"><?php  if(!empty($each_item['Investor']['in_trust_for'])){echo $each_item['Investor']['in_trust_for'];}else{echo 'N/A';} ?></td>
+                <td align="left">
+                    <?php echo $each_item['InvestorType']['investor_type']; ?>
+                </td>
                 <td align="left"><?php  echo $each_item['Investor']['phone']; ?></td>
                 <td align="left"><?php  echo $each_item['Investor']['email']; ?></td>
 <td align="left"><?php echo $this->Html->Link('Active Investments', '/Investments/statementActiveInv'."/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ),array('escape'=>false));?> | <?php echo $this->Html->Link('All Investments', '/Investments/statementAllInv'."/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ),array('escape'=>false));?></td>

@@ -3027,7 +3027,7 @@ if(isset($this->request->data['equity_process'])){
                     $payment_status = "Invested";
                 }
 
-                $new_investmentdetails = array('id' => $investment_id, 'balance' => $balance, 'amount_paidout' => $total_paid, 'status' => $payment_status, 'lastpaidout_date' => $payment_date);
+                $new_investmentdetails = array('id' => $investment_id, 'balance' => $balance,$amount_due =>$balance  ,'amount_paidout' => $total_paid, 'status' => $payment_status, 'lastpaidout_date' => $payment_date);
 
                 $result = $this->Investment->save($new_investmentdetails);
                 if ($result) {
@@ -3227,9 +3227,9 @@ if(isset($this->request->data['equity_process'])){
                         $principal = $total;
                     }
 
-                    $investment_array = array('id' => $data['Investment']['id'], 'interest_earned' => $interest_amount, 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
+                   $investment_array = array('id' => $data['Investment']['id'],'balance' => $amount_due,'interest_earned' => $interest_amount, 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
 
-                    $rollover_details = array('user_id' => $data['Investment']['user_id'], 'id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
+                    $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
                     $check = $this->Session->check('variabless');
                     if ($check) {
                         $this->Session->delete('variabless');
@@ -3349,7 +3349,8 @@ if(isset($this->request->data['equity_process'])){
     public function statementInvDetail($invesmentID = null, $investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($invesmentID)) {
-            $data = $this->InvestmentStatement->find('all', array('conditions' => array('InvestmentStatement.investment_id' => $invesmentID)));
+            $data = $this->InvestmentStatement->find('all', array('conditions' =>
+                array('InvestmentStatement.investment_id' => $invesmentID)));
             $issued = $this->Session->check('userData');
             if ($issued) {
                 $issued = $this->Session->read('userData');
@@ -3358,9 +3359,16 @@ if(isset($this->request->data['equity_process'])){
 
             if ($data) {
                 $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
-
+                $data_total = $this->InvestmentStatement->find('all', array('fields' => 
+                    array("SUM(InvestmentStatement.principal) as 'total_principal',"
+                    . "SUM(InvestmentStatement.interest) as 'total_interest',SUM(InvestmentStatement.total) as 'sum_total'"),
+                    'conditions' => array('InvestmentStatement.investment_id' => $invesmentID)));
+            
                 if ($data2) {
                     $this->set('data2', $data2);
+                }
+                if($data_total){
+                    $this->set('data_total', $data_total); 
                 }
                 $this->set('data', $data);
                 $this->set('investor_id', $investor_id);

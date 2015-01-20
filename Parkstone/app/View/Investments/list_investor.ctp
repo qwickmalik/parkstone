@@ -41,7 +41,7 @@
                 <b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b>
             </td>
            
-            <td style="border-bottom: solid 2px dodgerblue;" width="300" align="center">
+            <td style="border-bottom: solid 2px dodgerblue;" width="300" align="left">
                 <b><?php echo $this->Paginator->sort('surname', 'Name'); ?></b>
             </td>
             <td style="border-bottom: solid 2px dodgerblue" width="300" align="left">
@@ -59,24 +59,24 @@
             <td style="border-bottom: solid 2px dodgerblue" align="left">
                 <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
             </td>
-            <td style="border-bottom: solid 2px dodgerblue" width="300" align="left">
-                <b><?php echo $this->Paginator->sort('postal_address', 'Postal Address'); ?></b>
-            </td>
+<!--            <td style="border-bottom: solid 2px dodgerblue" width="300" align="left">
+                <b><?php // echo $this->Paginator->sort('postal_address', 'Postal Address'); ?></b>
+            </td>-->
         </tr>
         <?php  
         if(isset($investor)){
         foreach ($investor as $each_item): ?>
             <tr>
-                <td align="left" width="300">   <?php  echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                <td align="left" width="300">   <?php if(!empty($each_item['Investor']['comp_name'])){ echo $this->Html->link($each_item['Investor']['comp_name'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id']));;}else{echo 'N/A';}  ?>
                 </td>
                 <td align="left" width="300" >  
- <?php  echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+ <?php  if(!empty($each_item['Investor']['surname']) || !empty($each_item['Investor']['other_names'])){echo $this->Html->link($each_item['Investor']['surname'].' '.$each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id']));}else{echo 'N/A';} ?>
                 </td>
                 <td align="left" width="300" class="investorAnchor">
-                    <?php echo $this->Html->link($each_item['Investor']['joint_surname'].' '.$each_item['Investor']['joint_other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                    <?php if(!empty($each_item['Investor']['joint_other_names'])|| !empty($each_item['Investor']['joint_surname'])){echo $this->Html->link($each_item['Investor']['joint_surname'].' '.$each_item['Investor']['joint_other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id']));}else{echo 'N/A';}  ?>
                 </td> <!-- Link to enable editing -->
                 <td align="left">
-                    <?php echo $each_item['Investor']['in_trust_for']; ?>
+                    <?php if(!empty($each_item['Investor']['in_trust_for'])){echo $each_item['Investor']['in_trust_for'];}else{echo 'N/A';} ?>
                 </td>
                 <td align="left">
                     <?php echo $each_item['InvestorType']['investor_type']; ?>
@@ -87,9 +87,9 @@
                 <td width="200" align="left">
                     <?php echo $each_item['Investor']['email']; ?>
                 </td>
-                <td width="200" align="left">
-                    <?php echo $each_item['Investor']['postal_address']; ?>
-                </td>
+<!--                <td width="200" align="left">
+                    <?php // echo $each_item['Investor']['postal_address']; ?>
+                </td>-->
             </tr>
         <?php endforeach; }
         ?>
