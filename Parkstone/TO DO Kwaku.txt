@@ -25,3 +25,14 @@ Please check error under payment date on edit_payment.ctp
 PRINT button for investment certificates not working
 
 
+
+
+EQUITIES MANAGEMENT
+=======================
++ Monies received from clients for equity investments, yet those monies have not been used to buy stocks on the stock exchange should show up in some sort of paginated list together with comments on which equities are to be bought with those monies plus a few client details
+
++ Select an entry from that list to open a new view where details such as stock name, stock price, quantity to be purchased, commission (usually a % of sale value), etc will be captured.
+
++ The only problem i see with this approach is that it means all the money that a person intends for equity investment will have to be used to buy only one type of stock. This means in a case where the client leaves the decision as to which stocks to buy to Parkstone, they are constrained to buy only one type of stock. Otherwise, they will have to divide the money up into bits during the new_investment process so that the money will show up in bits during the equity management/re-investment process.
+
++ When time is due for the shares to be sold, the new share price will be entered and this should automatically calculate how much money is due to the client minus commission amount based on % entered earlier (see 2nd bullet above)
