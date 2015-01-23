@@ -39,7 +39,16 @@ class Reinvestment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+//        'EquitiesList' => array(
+//            'className' => 'EquitiesList',
+//            'foreignKey' => 'equity_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            )
+        );
     
     
     /* var $hasMany = array(

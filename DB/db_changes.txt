@@ -333,3 +333,23 @@ INSERT INTO `payment_schedules` (`id`, `payment_schedule_name`) VALUES
 (1, 'Monthly'),
 (2, 'Quarterly'),
 (3, 'Yearly');
+
+
+
+JANUARY 23, 2015
+-------------------
+CREATE TABLE IF NOT EXISTS `equities_lists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `equity_name` varchar(50) DEFAULT NULL,
+  `equity_abbrev` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+
+INSERT INTO `equities_lists` (`id`, `equity_name`, `equity_abbrev`) VALUES
+(23, 'Cocoa Processing Company Limited', 'CPC'),
+(24, 'Ghana Oild Company Limited', 'GOIL'),
+(25, 'Fan Milk Limited - Ghana', 'FML'),
+(26, 'Ghana Commercial Bank Limited', 'GCB');
+
+
+ALTER TABLE `investments` CHANGE `equity` `equity_id` INT(11) NULL DEFAULT NULL;
