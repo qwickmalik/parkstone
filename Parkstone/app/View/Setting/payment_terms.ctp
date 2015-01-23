@@ -1,14 +1,13 @@
 <?php
-//echo $this->element('header');
 echo $this->Html->script('notification.js');
-
 ?>
 
 <!-- Content starts here -->
-<div id="content">
-    <h2>Settings: Payment Terms</h2>
-
-    <div id="clearer"></div>
+<h3>SETTINGS: Payment Terms</h3>
+<div class="boxed">
+    <div class="inner">
+        <div id="clearer"></div>
+        
     <?php echo $this->Form->create('Rate', array("url" => array('controller' => 'Settings', 'action' => 'paymentTerms'), "inputDefaults" => array('label' => false, 'div' => false))); ?>
     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
 
@@ -79,15 +78,3 @@ echo $this->Html->script('notification.js');
     </form>
 </div>
 <!-- Content ends here -->
-
-<!-- Sidebar starts here -->
-<!-- <div id="sidebar">
-    <?php
-   // echo $this->element('logo');
-   // echo $this->element('settings_sidebar'); //Settings menu
-    ?>
-</div> -->
-<!-- Sidebar starts here -->
-<!-- Footer starts here -->
-<?php// echo $this->element('footer'); ?>
-<!-- Footer starts here -->

@@ -31,6 +31,14 @@
 				</div>', '/Settings/bankAccounts', array('escape' => false)); ?>
         
         <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
+					<div id="innertext">
+						<h3>Banks</h3>
+						<p>Add/edit banks</p>
+					</div>
+				</div>', '/Settings/banks', array('escape' => false)); ?>
+        
+        <?php echo $this->Html->link('
 		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
 			<div id="innertext">
 				<h3>Payment Terms</h3>
@@ -91,15 +99,6 @@
 					<p>Create/edit names of equities here</p>
 				</div>
 			</div>', '/Settings/equitiesList', array('escape' => false)); ?>
-
-
-        <?php echo $this->Html->link('
-				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
-					<div id="innertext">
-						<h3>Banks</h3>
-						<p>Add/edit banks</p>
-					</div>
-				</div>', '/Settings/banks', array('escape' => false)); ?>
         
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('users.png', array()) . '

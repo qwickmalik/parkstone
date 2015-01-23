@@ -39,7 +39,6 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-        
         'Currency' => array(
             'className' => 'Currency',
             'foreignKey' => 'Currency_id',
@@ -48,38 +47,47 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-		'PaymentSchedule' => array(
+        'EquitiesList' => array(
+            'className' => 'EquitiesList',
+            'foreignKey' => 'equity_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+	'PaymentSchedule' => array(
             'className' => 'PaymentSchedule',
             'foreignKey' => 'payment_schedule_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ),
-		'PaymentMode' => array(
+            ),
+	'PaymentMode' => array(
             'className' => 'PaymentMode',
             'foreignKey' => 'payment_mode_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ),
-		'Instruction' => array(
+            ),
+	'Instruction' => array(
             'className' => 'Instruction',
             'foreignKey' => 'instruction_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ),
-		'InvestmentProduct' => array(
+            ),
+	'InvestmentProduct' => array(
             'className' => 'InvestmentProduct',
             'foreignKey' => 'investment_product_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ));
+            )
+        );
     
     
      var $hasMany = array(

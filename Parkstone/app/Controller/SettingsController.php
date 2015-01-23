@@ -4,7 +4,7 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio', 'Bank', 'BankAccount');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio', 'Bank', 'BankAccount', 'EquitiesList');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
@@ -19,6 +19,7 @@ class SettingsController extends AppController {
         'Portfolio' => array('limit' => 25, 'order' => array('Portfolio.id' => 'asc')),
         'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc')),
         'Bank' => array('limit' => 20, 'order' => array('Bank.id' => 'asc')),
+        'EquitiesList' => array('limit' => 20, 'order' => array('EquitiesList.equity' => 'asc')),
         'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
     );
 /*
@@ -50,7 +51,7 @@ class SettingsController extends AppController {
     
     function equitiesList(){
         //  $this->__validateUserType();
-        $data = $this->paginate('Expense');
+        $data = $this->paginate('EquitiesList');
         $this->set('data', $data);
     }
     
