@@ -7,7 +7,7 @@ class InvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Investments';
-    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType','Bank');
+    var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment', 'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover', 'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule', 'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType','Bank', 'EquitiesList');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -1377,6 +1377,7 @@ function searchinvestor4groupinvestment($investorid = null) {
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
 
         $check = $this->Session->check('investment_type');
         if ($check) {
@@ -1427,6 +1428,7 @@ function newInvestment2_joint() {
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
 
         $check = $this->Session->check('investment_type');
         if ($check) {
@@ -1479,6 +1481,7 @@ function newInvestment2_joint() {
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
             $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
             $this->set('instructions', $this->Instruction->find('list'));
+            $this->set('equitieslists', $this->EquitiesList->find('list'));
 
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), 'recursive' => -1));
@@ -1525,6 +1528,7 @@ function newInvestment2Group($investorid = null) {
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
             $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
             $this->set('instructions', $this->Instruction->find('list'));
+            $this->set('equitieslists', $this->EquitiesList->find('list'));
 
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), 'recursive' => -1));

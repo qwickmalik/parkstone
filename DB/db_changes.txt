@@ -351,5 +351,5 @@ INSERT INTO `equities_lists` (`id`, `equity_name`, `equity_abbrev`) VALUES
 (25, 'Fan Milk Limited - Ghana', 'FML'),
 (26, 'Ghana Commercial Bank Limited', 'GCB');
 
-
+ALTER TABLE `equities_lists` ADD `share_price` DECIMAL(6) NULL ;
 ALTER TABLE `investments` CHANGE `equity` `equity_id` INT(11) NULL DEFAULT NULL;

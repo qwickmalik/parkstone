@@ -30,12 +30,12 @@ Update Edit Investors to pick bank details etc.
 
  
 +Equities/stocks list under equity investment
-#view addition to new investment pages for group,joint,individual & corporate
--dropdown listing different equity 
+DONE 23.01.15 #view addition to new investment pages for group,joint,individual & corporate
+DONE 23.01.15 -dropdown listing different equity 
 #functions
 -find/set statement in view function
 
-+Equity Purchased* should be a dropdown of all stocks on GSE. Equity Listing page to capture that information including the share price, etc.
+DONE 23.01.15 +Equity Purchased* should be a dropdown of all stocks on GSE. Equity Listing page to capture that information including the share price, etc.
 #views
  -Equity setup page with share price,etc (create,edit,list,delete)
 #functions
