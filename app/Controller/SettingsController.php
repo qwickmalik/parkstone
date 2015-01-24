@@ -4,7 +4,7 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory','Portfolio', 'Bank', 'BankAccount', 'EquitiesList');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory', 'Portfolio', 'Bank', 'BankAccount', 'EquitiesList');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
@@ -22,75 +22,100 @@ class SettingsController extends AppController {
         'EquitiesList' => array('limit' => 20, 'order' => array('EquitiesList.equity' => 'asc')),
         'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
     );
-/*
-    function beforeFilter() {
-        $this->__validateLoginStatus();
+
+    /*
+      function beforeFilter() {
+      $this->__validateLoginStatus();
+      }
+
+      function __validateLoginStatus() {
+      if ($this->action != 'login' && $this->action != 'logout') {
+      if ($this->Session->check('userData') == false) {
+      $this->redirect('/');
+      }
+      }
+      }
+
+      function __validateUserType() {
+
+      $userType = $this->Session->read('userDetails.usertype_id');
+      if ($userType != 1) {
+      $message = 'You Don\'t Have The Priviledges To View The Chosen Resource';
+      $this->Session->write('bmsg', $message);
+      $this->redirect('/Dashboard/');
+      }
+      }
+     */
+
+    function index() {
+        /*  $this->__validateUserType(); */
     }
 
-    function __validateLoginStatus() {
-        if ($this->action != 'login' && $this->action != 'logout') {
-            if ($this->Session->check('userData') == false) {
-                $this->redirect('/');
+    function equitiesList() {
+        //  $this->__validateUserType();
+        if (!empty($this->request->data)) {
+            $result = $this->EquitiesList->save($this->request->data);
+            if ($result) {
+                $this->request->data = null;
+                $message = 'Equity/Stock successfully saved';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+            } else {
+                $message = 'Unable to save';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+            }
+        } else {
+            $data = $this->paginate('EquitiesList');
+            $this->set('data', $data);
+        }
+    }
+
+    function delEquityName($equity_id) {
+        if (!is_null($equity_id)) {
+
+            $result = $this->EquitiesList->delete($equity_id, false);
+
+            if ($result) {
+                $message = 'Equity/Stock successfully deleted';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+            } else {
+                $message = 'Could not delete Equity/Stock';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
             }
         }
     }
 
-    function __validateUserType() {
-
-        $userType = $this->Session->read('userDetails.usertype_id');
-        if ($userType != 1) {
-             $message = 'You Don\'t Have The Priviledges To View The Chosen Resource';
-                   $this->Session->write('bmsg', $message);
-            $this->redirect('/Dashboard/');
-        }
-    }
-*/
-    function index() {
-       /*  $this->__validateUserType();*/
-    }
-    
-    function equitiesList($equity_id = null){
-        //  $this->__validateUserType();
-        if (!is_null($equity_id))  {
-
-        
-
-        }
-        
-        
-        $data = $this->paginate('EquitiesList');
-        $this->set('data', $data);
-    }
-    
     function createExpenses() {
-      //  $this->__validateUserType();
+        //  $this->__validateUserType();
         $data = $this->paginate('Expense');
         $this->set('data', $data);
     }
 
-     function delPaymentName($expenseID = null) {
-        $this->autoRender =  $this->autoLayout = false;
-           
-       
-            if (!is_null($expenseID)) {
+    function delPaymentName($expenseID = null) {
+        $this->autoRender = $this->autoLayout = false;
 
 
-               // $expenseID = $_POST['paymentnameId'];
-                $result = $this->Expense->delete($expenseID,false);
+        if (!is_null($expenseID)) {
+
+
+            // $expenseID = $_POST['paymentnameId'];
+            $result = $this->Expense->delete($expenseID, false);
 
 
 
-                if ($result) {
-                      $message = 'Payment Name Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'createExpenses'));
-                } else {
-                     $message = 'Could not Delete Payment Name';
-                   $this->Session->write('bmsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'createExpenses'));
-                }
+            if ($result) {
+                $message = 'Payment Name Deleted';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'createExpenses'));
+            } else {
+                $message = 'Could not Delete Payment Name';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'createExpenses'));
             }
-        
+        }
     }
 
     function createExpense() {
@@ -137,7 +162,7 @@ class SettingsController extends AppController {
     }
 
     function setup() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
 
         $this->set('currencies', $this->Currency->find('list'));
 
@@ -187,9 +212,9 @@ class SettingsController extends AppController {
             }
         }
     }
-    
+
     function subsidiaries() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
         $data = $this->paginate('Subsidiary');
         $this->set('data', $data);
         $this->set('currencies', $this->Currency->find('list'));
@@ -223,7 +248,7 @@ class SettingsController extends AppController {
 
                         return "Unsuccessful";
                     }
-                } 
+                }
 //                else if ($count >= 1) {
 //                    $this->Subsidiary->id = 1;
 //
@@ -242,22 +267,22 @@ class SettingsController extends AppController {
         }
     }
 
-    function delSubsidiary($sub_id = Null){
+    function delSubsidiary($sub_id = Null) {
         $this->autoRender = false;
 
-        $result = $this->Subsidiary->delete($sub_id,false);
-        if($result){
-            
+        $result = $this->Subsidiary->delete($sub_id, false);
+        if ($result) {
+
             $message = 'Subsidiary Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
-        }else{
-                    $message = 'Could Not Delete Subsidiary';
-                   $this->Session->write('bmsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'subsidiaries'));
-                }
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'subsidiaries'));
+        } else {
+            $message = 'Could Not Delete Subsidiary';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'subsidiaries'));
+        }
     }
-    
+
     function displayInfo() {
         if ($this->request->is('ajax')) {
             Configure::write('debug', 0);
@@ -275,7 +300,7 @@ class SettingsController extends AppController {
     }
 
     function itemsList() {
-      //  $this->__validateUserType();
+        //  $this->__validateUserType();
         $data = $this->paginate('Item');
         $this->set('data', $data);
 
@@ -307,7 +332,7 @@ class SettingsController extends AppController {
 
 
                 $itemid = $_POST['itemId'];
-                $result = $this->Item->delete($itemid,false);
+                $result = $this->Item->delete($itemid, false);
 
 
 
@@ -330,7 +355,7 @@ class SettingsController extends AppController {
 
 
                 $clientID = $_POST['clientId'];
-                $result = $this->Client->delete($clientID,false);
+                $result = $this->Client->delete($clientID, false);
 
 
 
@@ -364,13 +389,13 @@ class SettingsController extends AppController {
         //$this->__validateUserType();
         $data = $this->paginate('Client');
         $this->set('data', $data);
-        
-          $this->set('zones', $this->Zone->find('list'));
-          
+
+        $this->set('zones', $this->Zone->find('list'));
+
         if ($this->request->is('ajax')) {
             Configure::write('debug', 0);
             $this->autoRender = false;
-           
+
             if (!empty($this->request->data)) {
                 $result = $this->Client->save($this->request->data);
                 if ($result) {
@@ -383,9 +408,9 @@ class SettingsController extends AppController {
             }
         }
     }
-    
+
     public function customerCategories() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
         $data = $this->paginate('CustomerCategory');
         $this->set('data', $data);
 
@@ -396,19 +421,17 @@ class SettingsController extends AppController {
                 if ($result) {
                     $this->request->data = null;
 
-                   $message = 'Customer Category Added';
+                    $message = 'Customer Category Added';
                     $this->Session->write('smsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
-                   
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
                 } else {
-                      $message = 'Could not add new Customer Category';
+                    $message = 'Could not add new Customer Category';
                     $this->Session->write('emsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
                 }
             }
         }
     }
-    
 
 //    public function suppliers() {
 //        $this->__validateUserType();
@@ -475,7 +498,7 @@ class SettingsController extends AppController {
 //    }
 
     public function taxesList() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
         $data = $this->paginate('Tax');
         $this->set('data', $data);
 
@@ -525,7 +548,7 @@ class SettingsController extends AppController {
 
 
                 $taxid = $_POST['taxId'];
-                $result = $this->Tax->delete($taxid,del);
+                $result = $this->Tax->delete($taxid, del);
 
                 if ($result) {
                     return "success";
@@ -538,99 +561,97 @@ class SettingsController extends AppController {
 
     function paymentTerms() {
         //$this->__validateUserType();
-        
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
-                if($this->request->data['Rate']['payment_name'] == "" || $this->request->data['Rate']['payment_name'] == null){
+
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+                if ($this->request->data['Rate']['payment_name'] == "" || $this->request->data['Rate']['payment_name'] == null) {
                     $message = 'Please Enter Term Payment Name';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
                 }
-                 if($this->request->data['Rate']['period_months'] == "" || $this->request->data['Rate']['period_months'] == null){
+                if ($this->request->data['Rate']['period_months'] == "" || $this->request->data['Rate']['period_months'] == null) {
                     $message = 'Please Enter Period (Months)';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
                 }
-                 if($this->request->data['Rate']['interest_rate'] == "" || $this->request->data['Rate']['interest_rate'] == null){
+                if ($this->request->data['Rate']['interest_rate'] == "" || $this->request->data['Rate']['interest_rate'] == null) {
                     $message = 'Please Enter Interest Rate';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
                 }
-                
+
 //                $this->request->data['Rate']['interest_rate'] = floatval($this->request->data['Rate']['interest_rate2']);
-                $term = array('interest_rate' => $this->request->data['Rate']['interest_rate'],'period_months' => $this->request->data['Rate']['period_months'],'payment_name' => $this->request->data['Rate']['payment_name']);
+                $term = array('interest_rate' => $this->request->data['Rate']['interest_rate'], 'period_months' => $this->request->data['Rate']['period_months'], 'payment_name' => $this->request->data['Rate']['payment_name']);
                 $result = $this->Rate->save($term);
-                        //$this->request->data);
-                if($result){
+                //$this->request->data);
+                if ($result) {
                     $this->request->data = null;
                     $message = 'Payment Term Details Save Successfully';
-                   $this->Session->write('smsg', $message);
-                 $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-                }else{
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+                } else {
                     $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                  $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
                 }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-                }
+            } else {
+                $message = 'Some Fields Missing Data';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+            }
         }
         $data = $this->paginate('Rate');
         $this->set('data', $data);
     }
-    
+
     function investmentPortfolios() {//please work on this. i just copied the whole function for payment terms
-       // $this->__validateUserType();
-        
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
-                if($this->request->data['Portfolio']['payment_name'] == "" || $this->request->data['Portfolio']['payment_name'] == null){
+        // $this->__validateUserType();
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+                if ($this->request->data['Portfolio']['payment_name'] == "" || $this->request->data['Portfolio']['payment_name'] == null) {
                     $message = 'Please Enter Term Payment Name';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
                 }
-                 if($this->request->data['Portfolio']['period_months'] == "" || $this->request->data['Portfolio']['period_months'] == null){
+                if ($this->request->data['Portfolio']['period_months'] == "" || $this->request->data['Portfolio']['period_months'] == null) {
                     $message = 'Please Enter Period (Months)';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
                 }
-                 if($this->request->data['Portfolio']['interest_rate'] == "" || $this->request->data['Portfolio']['interest_rate'] == null){
+                if ($this->request->data['Portfolio']['interest_rate'] == "" || $this->request->data['Portfolio']['interest_rate'] == null) {
                     $message = 'Please Enter Interest Rate';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
                 }
-                
+
 //                $this->request->data['Rate']['interest_rate'] = floatval($this->request->data['Rate']['interest_rate2']);
-                if(isset($this->request->data['Portfolio']['id'])){
-                                 $term = array('id' =>$this->request->data['Portfolio']['id'],'interest_rate' => $this->request->data['Portfolio']['interest_rate'],'period_months' => $this->request->data['Portfolio']['period_months'],'payment_name' => $this->request->data['Portfolio']['payment_name']);
-                }else{
-                $term = array('interest_rate' => $this->request->data['Portfolio']['interest_rate'],'period_months' => $this->request->data['Portfolio']['period_months'],'payment_name' => $this->request->data['Portfolio']['payment_name']);
-            }
+                if (isset($this->request->data['Portfolio']['id'])) {
+                    $term = array('id' => $this->request->data['Portfolio']['id'], 'interest_rate' => $this->request->data['Portfolio']['interest_rate'], 'period_months' => $this->request->data['Portfolio']['period_months'], 'payment_name' => $this->request->data['Portfolio']['payment_name']);
+                } else {
+                    $term = array('interest_rate' => $this->request->data['Portfolio']['interest_rate'], 'period_months' => $this->request->data['Portfolio']['period_months'], 'payment_name' => $this->request->data['Portfolio']['payment_name']);
+                }
                 $result = $this->Portfolio->save($term);
-                        //$this->request->data);
-                if($result){
+                //$this->request->data);
+                if ($result) {
                     $this->request->data = null;
                     $message = 'Payment Term Details Save Successfully';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
-                }else{
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
+                } else {
                     $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
                 }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
-                }
+            } else {
+                $message = 'Some Fields Missing Data';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
+            }
         }
         $data = $this->paginate('Portfolio');
         $this->set('data', $data);
     }
 
-    
     function portfolioInfo() {
 
         if ($this->request->is('ajax')) {
@@ -645,24 +666,23 @@ class SettingsController extends AppController {
             }
         }
     }
-    
+
     public function delPortterm($payment_term = Null) {
         $this->autoRender = false;
 
-        $result = $this->Portfolio->delete($payment_term,false);
-        if($result){
-            
+        $result = $this->Portfolio->delete($payment_term, false);
+        if ($result) {
+
             $message = 'Payment Term Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
-        }else{
-                    $message = 'Could Not Delete Payment Term';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'investmentPortfolios'));
-                }
-        
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
+        } else {
+            $message = 'Could Not Delete Payment Term';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'investmentPortfolios'));
+        }
     }
-    
+
     function paymentInfo() {
 
         if ($this->request->is('ajax')) {
@@ -677,73 +697,73 @@ class SettingsController extends AppController {
             }
         }
     }
-    
-    function savePayment(){
+
+    function savePayment() {
         $this->autoRender = false;
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
                 $result = $this->Rate->save($this->request->data);
-                if($result){
+                if ($result) {
                     $this->request->data = null;
                     $message = 'Payment Term Details Save Successfully';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-                }else{
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+                } else {
                     $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
                 }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-                }
+            } else {
+                $message = 'Some Fields Missing Data';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+            }
         }
     }
+
     public function delPterm($payment_term = Null) {
         $this->autoRender = false;
 
-        $result = $this->Rate->delete($payment_term,false);
-        if($result){
-            
-                   $message = 'Payment Term Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-        }else{
-                    $message = 'Could Not Delete Payment Term';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'paymentTerms'));
-                }
-        
-    }
-    
-    public function delcategory($cat_id = Null){
-          $this->autoRender = false;
+        $result = $this->Rate->delete($payment_term, false);
+        if ($result) {
 
-        $result = $this->CustomerCategory->delete($cat_id,false);
-        if($result){
-            
+            $message = 'Payment Term Deleted';
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+        } else {
+            $message = 'Could Not Delete Payment Term';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'paymentTerms'));
+        }
+    }
+
+    public function delcategory($cat_id = Null) {
+        $this->autoRender = false;
+
+        $result = $this->CustomerCategory->delete($cat_id, false);
+        if ($result) {
+
             $message = 'Category Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'customerCategories'));
-        }else{
-                    $message = 'Could Not Delete Category';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'customerCategories'));
-                }
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
+        } else {
+            $message = 'Could Not Delete Category';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'customerCategories'));
+        }
     }
 
     function hirePurchaseRates() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
     }
 
     function notifications() {
-     //   $this->__validateUserType();
+        //   $this->__validateUserType();
     }
-    
+
     function defaultingRates() {
-     //   $this->__validateUserType();
-   //     
+        //   $this->__validateUserType();
+        //     
         $data = $this->paginate('DefaultingRate');
         $this->set('data', $data);
         $rateResults = $this->DefaultingRate->getDefaultingRate();
@@ -751,11 +771,11 @@ class SettingsController extends AppController {
 //            $rateRes = $rateResult;
 //        }
 
-        $this->set('$rateResults',$rateResults);
-           if ($this->request->is('post')) {
-           
+        $this->set('$rateResults', $rateResults);
+        if ($this->request->is('post')) {
+
             if (!empty($this->request->data)) {
-              
+
 
                 $count = $this->DefaultingRate->find('count');
                 if ($count < 1) {
@@ -764,15 +784,15 @@ class SettingsController extends AppController {
                         $this->request->data = null;
 
 
-                        
+
                         $message = 'Defaulting Rates Added';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
                     } else {
 
                         $message = 'Could not Add Defaulting Rates';
-                    $this->Session->write('emsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
                     }
                 } elseif ($count >= 1) {
                     $this->request->data['DefaultingRate']['id'] = 1;
@@ -783,22 +803,21 @@ class SettingsController extends AppController {
 
 
                         $message = 'Defaulting Rates Added';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
                     } else {
 
                         $message = 'Could not Add Defaulting Rates';
-                    $this->Session->write('emsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
                     }
                 }
             }
         }
-
     }
-    
+
     public function warehouses() {
-     //   $this->__validateUserType();
+        //   $this->__validateUserType();
         $data = $this->paginate('Warehouse');
         $this->set('data', $data);
 
@@ -809,40 +828,36 @@ class SettingsController extends AppController {
                 if ($result) {
                     $this->request->data = null;
 
-                   $message = 'Warehouse Details Added';
+                    $message = 'Warehouse Details Added';
                     $this->Session->write('smsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
-                   
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
                 } else {
-                      $message = 'Could not Add Warehouse Details';
+                    $message = 'Could not Add Warehouse Details';
                     $this->Session->write('emsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
                 }
             }
         }
     }
-    
-    
-    
-    public function delwarehouse($warehouse = null){
-         $this->autoRender = false;
 
-        $result = $this->Warehouse->delete($warehouse,false);
-        if($result){
-            
+    public function delwarehouse($warehouse = null) {
+        $this->autoRender = false;
+
+        $result = $this->Warehouse->delete($warehouse, false);
+        if ($result) {
+
             $message = 'Warehouse Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'warehouses'));
-        }else{
-                    $message = 'Issue Deleting Warehouse ';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'warehouses'));
-                }
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
+        } else {
+            $message = 'Issue Deleting Warehouse ';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'warehouses'));
+        }
     }
-    
-    
+
     function zones() {
-       // $this->__validateUserType();
+        // $this->__validateUserType();
         $data = $this->paginate('Zone');
         $this->set('data', $data);
         if ($this->request->is('post')) {
@@ -852,155 +867,150 @@ class SettingsController extends AppController {
                 if ($result) {
                     $this->request->data = null;
 
-                   $message = 'Zone Details Added';
+                    $message = 'Zone Details Added';
                     $this->Session->write('smsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
-                   
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
                 } else {
-                      $message = 'Could not Add Zone Details';
+                    $message = 'Could not Add Zone Details';
                     $this->Session->write('emsg', $message);
-                     $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
                 }
             }
         }
-        
     }
-    
-    
-    public function delzone($zone = null){
-         $this->autoRender = false;
 
-        $result = $this->Zone->delete($zone,false);
-        if($result){
-            
+    public function delzone($zone = null) {
+        $this->autoRender = false;
+
+        $result = $this->Zone->delete($zone, false);
+        if ($result) {
+
             $message = 'Zone Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'zones'));
-        }else{
-                    $message = 'Issue Deleting Zone Details';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'zones'));
-                }
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
+        } else {
+            $message = 'Issue Deleting Zone Details';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'zones'));
+        }
     }
-    
+
     public function banks() {
         //$this->__validateUserType();
-        
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
-                if($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null){
+
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+                if ($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null) {
                     $message = 'Please Enter Bank Name';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccount'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccount'));
                 }
-                
+
                 $qry = array('bank_name' => $this->request->data['Bank']['bank_name']);
-                
+
                 $result = $this->Bank->save($qry);
-                        //$this->request->data);
-                if($result){
+                //$this->request->data);
+                if ($result) {
                     $this->request->data = null;
                     $message = 'Bank Successfully Added';
-                   $this->Session->write('smsg', $message);
-                 $this->redirect(array('controller' => 'Settings','action' => 'banks'));
-                }else{
-                    $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                  $this->redirect(array('controller' => 'Settings','action' => 'banks'));
-                }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'banks'));
-                }
-        }
-        
-        $data = $this->paginate('Bank');
-        $this->set('data', $data);
-
-    }
-    
-    function delBank($bankID = null) {
-        $this->autoRender = $this->autoLayout = false;
-            
-      
-            Configure::write('debug', 0);
-            
-            if (!is_null($bankID)) {
-
-
-               // $userID = $_POST['userId'];
-                $result = $this->Bank->delete($bankID,false);
-
-
-
-                if ($result) {
-                    
-                    $message = 'Bank Deleted';
                     $this->Session->write('smsg', $message);
                     $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
                 } else {
-                    
-                    $message = 'Could not Delete Bank';
-                    $this->Session->write('bmsg', $message);
-                  $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-                }
-            }else{
-                    $message = 'Invalid Selection';
+                    $message = 'Please Check All Fields';
                     $this->Session->write('emsg', $message);
-                  $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                }
+            } else {
+                $message = 'Some Fields Missing Data';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
             }
-        
+        }
+
+        $data = $this->paginate('Bank');
+        $this->set('data', $data);
+    }
+
+    function delBank($bankID = null) {
+        $this->autoRender = $this->autoLayout = false;
+
+
+        Configure::write('debug', 0);
+
+        if (!is_null($bankID)) {
+
+
+            // $userID = $_POST['userId'];
+            $result = $this->Bank->delete($bankID, false);
+
+
+
+            if ($result) {
+
+                $message = 'Bank Deleted';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+            } else {
+
+                $message = 'Could not Delete Bank';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+            }
+        } else {
+            $message = 'Invalid Selection';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+        }
     }
 
     function bankAccounts() {
         //$this->__validateUserType();
         $this->set('banks', $this->Bank->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
-        
-        if ($this->request->is('post')){
-            if(!empty($this->request->data)){
-                
-                 if($this->request->data['BankAccount']['bank_id'] == "" || $this->request->data['BankAccount']['bank_id'] == null){
+
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+
+                if ($this->request->data['BankAccount']['bank_id'] == "" || $this->request->data['BankAccount']['bank_id'] == null) {
                     $message = 'Please Enter Bank Name';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
                 }
-                if($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null){
+                if ($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null) {
                     $message = 'Please Enter Account Number';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
                 }
-                 if($this->request->data['BankAccount']['branch'] == "" || $this->request->data['BankAccount']['branch'] == null){
+                if ($this->request->data['BankAccount']['branch'] == "" || $this->request->data['BankAccount']['branch'] == null) {
                     $message = 'Please Enter Branch';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
                 }
-                
-                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'currency_id' => $this->request->data['BankAccount']['currency_id'],'bank_id' => $this->request->data['BankAccount']['bank_id'],'account_no' => $this->request->data['BankAccount']['account_no'],'branch' => $this->request->data['BankAccount']['branch']);
-                
+
+                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'currency_id' => $this->request->data['BankAccount']['currency_id'], 'bank_id' => $this->request->data['BankAccount']['bank_id'], 'account_no' => $this->request->data['BankAccount']['account_no'], 'branch' => $this->request->data['BankAccount']['branch']);
+
                 $result = $this->BankAccount->save($term);
-                        //$this->request->data);
-                if($result){
+                //$this->request->data);
+                if ($result) {
                     $this->request->data = null;
                     $message = 'Bank Account Details Save Successfully';
-                   $this->Session->write('smsg', $message);
-                 $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }else{
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                } else {
                     $message = 'Please Check All Fields';
-                   $this->Session->write('emsg', $message);
-                  $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
                 }
-            }else{
-                    $message = 'Some Fields Missing Data';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }
+            } else {
+                $message = 'Some Fields Missing Data';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+            }
         }
         $data = $this->paginate('BankAccount');
         $this->set('data', $data);
     }
-    
+
     function accountInfo() {
 
         if ($this->request->is('ajax')) {
@@ -1015,7 +1025,7 @@ class SettingsController extends AppController {
             }
         }
     }
-    
+
 //    function saveAccount(){
 //        $this->autoRender = false;
 //        if ($this->request->is('post')){
@@ -1038,24 +1048,22 @@ class SettingsController extends AppController {
 //                }
 //        }
 //    }
-    
+
     public function delBankAcc($bank_account = Null) {
         $this->autoRender = false;
 
         $result = $this->BankAccount->delete($bank_account, false);
-        if($result){
-            
-                   $message = 'Bank Account Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-        }else{
-                    $message = 'Could Not Delete Bank Account';
-                   $this->Session->write('emsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
-                }
-        
+        if ($result) {
+
+            $message = 'Bank Account Deleted';
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+        } else {
+            $message = 'Could Not Delete Bank Account';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+        }
     }
-    
 
 }
 
