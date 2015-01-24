@@ -3,7 +3,7 @@ echo $this->Html->script('notification.js');
 ?>
 
 <!-- Content starts here -->
-<h3>Manage Client Investments</h3>
+<h3>Manage Equity Investments</h3>
 <div class="boxed">
 	<div class="inner">
 		<div id="clearer"></div>
@@ -41,12 +41,12 @@ echo $this->Html->script('notification.js');
         </tr>
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b>ID<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Details<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Inv. Date<?php // echo $this->Paginator->sort('date', 'Supply Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Amount<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Rate (%)</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Due Date<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Amount Due<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Equity Name</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Equity Abbrev<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Buying Price<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b>Status<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
@@ -60,12 +60,7 @@ echo $this->Html->script('notification.js');
                         }
                         
                         ?></td>
-                <td align="left"><?php
-                        if(isset($each_item['Portfolio']['payment_name'])){
-                            echo $each_item['Portfolio']['payment_name'];
-                        }
-                        
-                        ?></td>
+                
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_date'])){
                             echo $each_item['Investment']['investment_date'];
@@ -79,20 +74,20 @@ echo $this->Html->script('notification.js');
                         
                         ?></td>
                 <td align="center"><?php
-                        if(isset($each_item['Portfolio']['interest_rate'])){
-                            echo $each_item['Portfolio']['interest_rate'];
+                        if(isset($each_item['EquitiesList']['equity_name'])){
+                            echo $each_item['EquitiesList']['equity_name'];
                         }
                         
                         ?></td>
                 <td align="right"><?php
-                        if(isset($each_item['Investment']['due_date'])){
-                            echo $each_item['Investment']['due_date'];
+                        if(isset($each_item['EquitiesList']['equity_abbrev'])){
+                            echo $each_item['EquitiesList']['equity_abbrev'];
                         }
                         
                         ?></td>
                 <td align="right"><?php
-                        if(isset($each_item['Investment']['amount_due'])){
-                            echo $each_item['Investment']['amount_due'];
+                        if(isset($each_item['EquitiesList']['share_price'])){
+                            echo $each_item['EquitiesList']['share_price'];
                         }
                         ?></td>
                 <td align="center">

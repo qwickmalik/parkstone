@@ -40,8 +40,8 @@ DONE 23.01.15 #views
 DONE 23.01.15  -Equity setup page with share price,etc (create,edit,list,delete)
 DONE 23.01.15#functions
 DONE 23.01.15 -Create
--edit
 DONE 23.01.15 -delete
+-edit
 
 
 +Review investment management page for Equity investments
