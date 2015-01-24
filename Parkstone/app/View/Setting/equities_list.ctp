@@ -28,7 +28,7 @@ echo $this->Html->script('notification.js');
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <?php 
                 echo $this->Form->input('share_price', ['default' => 0.00]); 
-                echo $this->Form->button('Save', ["type" => "submit", "id" => "expenseBtn", "class" => "btn btn-lg btn-success", "style" => "float: right;"]);
+                echo $this->Form->button('Save', ["type" => "submit", "id" => "equityBtn", "class" => "btn btn-lg btn-success", "style" => "float: right;"]);
                 ?>
             </div>
         <?php
@@ -42,6 +42,7 @@ echo $this->Html->script('notification.js');
                     <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('equity_name', 'Equity Name'); ?></b></td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('equity_abbrev', 'Equity Abbreviation'); ?></b></td>
+                    <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('share_price', 'Share Price'); ?></b></td>
                     <td style="border-bottom: solid 2px dodgerblue;" width="20" align="left"><b>Delete</b></td>
                 </tr>
                 <?php foreach ($data as $each_item): ?>
@@ -58,6 +59,9 @@ echo $this->Html->script('notification.js');
                         <td align="left" class="clientAnchor">
                             <?php echo $each_item['EquitiesList']['equity_abbrev']; ?>
                         </td> 
+                        <td align="left" class="clientAnchor">
+                            <?php echo $each_item['EquitiesList']['share_price']; ?>
+                        </td> 
                         <td width="20" align="left">
                             <?php echo $this->Html->link("Delete", "/Settings/delEquityName/" . $each_item['EquitiesList']['id'], array("class" => $each_item['EquitiesList']['id']));
                             ?>
@@ -65,14 +69,14 @@ echo $this->Html->script('notification.js');
                     </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td colspan="4" align="right">
+                    <td colspan="5" align="right">
                         <?php
                         //echo $this->Form->button('Delete',array("type" => "#","class" => "button_red"));           //check the parameters here
                         ?>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="7" align="center">
+                    <td colspan="5" align="center">
                         <?php
                         echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
                         echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
