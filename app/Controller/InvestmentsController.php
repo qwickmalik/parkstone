@@ -3054,24 +3054,24 @@ if(isset($this->request->data['equity_process'])){
                         $this->Session->write('smsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => 'paymentReceipt', $investment_id, $payment));
 
-                        //$this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments',$investor,$investor_name));
+                        //$this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor,$investor_name));
                     } else {
 
                         $message = 'Investment Payout Saved With Errors';
                         $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
                     }
                 } else {
 
                     $message = 'Investment Payout Unsuccessful';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
                 }
             }
         }
     }
 
-    function manageClientInvestments($investor_id = null, $investor_name = null) {
+    function manageFixedInvestments($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
             $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));
@@ -3101,22 +3101,40 @@ if(isset($this->request->data['equity_process'])){
                 if ($result) {
                     $message = 'Investment Cancelled Successfully';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
                 }
             } else {
 
                 $message = 'Sorry, Investment Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
         }
     }
 
+    function manageEquityInvestments($investor_id = null, $investor_name = null) {
+        /* $this->__validateUserType(); */
+        if (!is_null($investor_id) && !is_null($investor_name)) {
+            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));
+            $this->set('investor_id', $investor_id);
+            $this->set('investor_name', $investor_name);
+
+            if ($data) {
+                $this->set('data', $data);
+            }
+        } else {
+
+            $message = 'Sorry, Investor Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
+    }
+    
     function ReinstateInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
@@ -3129,19 +3147,19 @@ if(isset($this->request->data['equity_process'])){
                 if ($result) {
                     $message = 'Investment Re-instated Successfully';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
                 }
             } else {
 
                 $message = 'Sorry, Investment Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
         }
     }
 

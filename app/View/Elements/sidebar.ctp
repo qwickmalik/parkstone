@@ -35,6 +35,7 @@
             <li>
                 <?php echo $this->Html->link('Manage Investments', '/Investments/clearManageSessions', array('escape' => false)); ?>
             </li>
+            
         </ul>
     </li>
     <li class="parent cream">

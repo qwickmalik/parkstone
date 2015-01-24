@@ -65,10 +65,14 @@ class SettingsController extends AppController {
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
             }
-        } else {
+        }
+        
+        else {
             $data = $this->paginate('EquitiesList');
             $this->set('data', $data);
         }
+        
+            
     }
 
     function delEquityName($equity_id) {
