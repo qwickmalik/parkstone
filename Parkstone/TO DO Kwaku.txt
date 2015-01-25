@@ -33,6 +33,7 @@ EQUITIES MANAGEMENT
 
 ##########    BUGS    ##########
 ================================
-+ Please check newInvestment2.ctp lines 404-431. Not displaying summaries for Equity
++ URGENT!!! Please check manage_equity_investment.ctp. Investment list not showing so can't proceed with further details of equity investment management
++ Please check new_investment2.ctp lines 404-431. Not displaying summaries for Equity
 + Please check error under payment date on edit_payment.ctp
 + PRINT button for investment certificates not working
