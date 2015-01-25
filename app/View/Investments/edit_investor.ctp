@@ -135,14 +135,17 @@ echo $this->Html->script('notification.js');
                                         echo $this->Form->input('children', array('label' => 'Number of Children', 'value' => (isset($investor['Investor']['children']) ? $investor['Investor']['children'] : '' ), 'placeholder' => 'Enter number of children'));
 
 
-                                        echo '<b><u>SOURCES OF INCOME</u></b> ';
-                                        echo $this->Form->input('personal_savings', array('value' => (isset($investor['Investor']['personal_savings']) ? $investor['Investor']['personal_savings'] : '' ), 'placeholder' => 'Enter amount of money in savings'));
-
-                                        echo $this->Form->input('salary', array('value' => (isset($investor['Investor']['salary']) ? $investor['Investor']['salary'] : '' ), 'placeholder' => 'Enter salary amount'));
-                                        echo $this->Form->input('gifts_inheritance', array('label' => 'Gifts/Inheritance', 'value' => (isset($investor['Investor']['gifts_inheritance']) ? $investor['Investor']['gifts_inheritance'] : '' ), 'placeholder' => 'Enter amount of money received in gifts/inheritance'));
-                                        echo $this->Form->input('income_other', array('label' => 'Other', 'value' => (isset($investor['Investor']['income_other']) ? $investor['Investor']['income_other'] : '' ), 'placeholder' => 'Enter amount of money received from all other sources`'));
+//                                        echo '<b><u>SOURCES OF INCOME</u></b> ';
+                                        echo $this->Form->input('source_of_income', array('options' => array('Personal Savings' => 'Personal Savings', 'Salary' => 'Salary', 'Gifts/Inheritance' => 'Gifts/Inheritance', 'Other' => 'Other'), 'value' => (isset($investor['Investor']['source_of_income']) ? $investor['Investor']['source_of_income'] : '--Please Select--' ), 'empty' => '--Please Select--', 'placeholder' => 'Select source of income'));
+//                                        
+//                                        echo $this->Form->input('personal_savings', array('value' => (isset($investor['Investor']['personal_savings']) ? $investor['Investor']['personal_savings'] : '' ), 'placeholder' => 'Enter amount of money in savings'));
+//
+//                                        echo $this->Form->input('salary', array('value' => (isset($investor['Investor']['salary']) ? $investor['Investor']['salary'] : '' ), 'placeholder' => 'Enter salary amount'));
+//                                        echo $this->Form->input('gifts_inheritance', array('label' => 'Gifts/Inheritance', 'value' => (isset($investor['Investor']['gifts_inheritance']) ? $investor['Investor']['gifts_inheritance'] : '' ), 'placeholder' => 'Enter amount of money received in gifts/inheritance'));
+//                                        echo $this->Form->input('income_other', array('label' => 'Other', 'value' => (isset($investor['Investor']['income_other']) ? $investor['Investor']['income_other'] : '' ), 'placeholder' => 'Enter amount of money received from all other sources`'));
 //echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>Gross Income:</span>".$this->Form->select('gross_income', array('1' => 'Below GHC5,000', '2' => 'GHC5,000 - GHC100,000', '3' => 'Above GHC100,000'));
-                                        echo $this->Form->input('grossincome_id', array('label' => 'Gross Income', 'default' => 0));
+//                                        echo $this->Form->input('gross_income_id', array('label' => 'Gross Income', 'default' => 0, 'value' => (isset($investor['Investor']['gross_income_id']) ? $investor['Investor']['gross_income_id'] : '--Please Select--' )));
+                                        echo $this->Form->input('grossincome_id', array('label' => 'Bank Name*', 'empty' => "--Select gross income--", 'value' => (isset($investor['Investor']['gross_income_id']) ? $investor['Investor']['gross_income_id'] : '' )));
                                         ?>
 
 
@@ -212,7 +215,8 @@ echo $this->Html->script('notification.js');
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
                                         echo $this->Form->input('acc_name', array('label' => 'Account Name*', 'class' => 'required', 'placeholder' => "Enter investor name as used with the bank", 'value' => (isset($investor['Investor']['acc_name']) ? $investor['Investor']['acc_name'] : '' )));
-                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'class' => 'required', 'placeholder' => "Enter name of bank", 'value' => (isset($investor['Investor']['bank_name']) ? $investor['Investor']['bank_name'] : '' )));
+//                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'class' => 'required', 'placeholder' => "Enter name of bank", 'value' => (isset($investor['Investor']['bank_name']) ? $investor['Investor']['bank_name'] : '' )));
+                                        echo $this->Form->input('bank_id', array('label' => 'Bank Name*', 'class' => 'required', 'empty' => "--Select bank--", 'value' => (isset($investor['Investor']['bank_id']) ? $investor['Investor']['bank_id'] : '' )));
                                         ?>
                                     </div>
 
@@ -247,6 +251,9 @@ echo $this->Html->script('notification.js');
                                                 <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('nk_dob', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['nk_dob']) ? date('Y', strtotime($investor['Investor']['nk_dob'])) : date('Y') ), 'empty' => (isset($investor['Investor']['nk_dob']) ? date('Y', strtotime($investor['Investor']['nk_dob'])) : date('Y')))); ?>
                                             </div>
                                         </div>
+                                        <?php
+                                        echo $this->Form->input('nk_relationship', array('label' => 'Relationship', 'value' => (isset($investor['Investor']['nk_relationship']) ? $investor['Investor']['nk_relationship'] : '' ), 'placeholder' => 'He/She is your ...'));
+                                        ?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">

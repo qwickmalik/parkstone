@@ -40,16 +40,15 @@ echo $this->Html->script('notification.js');
             </td>
         </tr>
         <tr>
-            <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b>ID<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Inv. Date<?php // echo $this->Paginator->sort('date', 'Supply Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Amount<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Equity Name</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Equity Abbrev<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Buying Price<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b>Status<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('date', 'Inv. Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('total_amount', 'Inv. Amount'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('equity_id', 'Equity'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('purchase_price', 'Purchase Price'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
             
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
@@ -57,6 +56,7 @@ echo $this->Html->script('notification.js');
                 <td align="left"><?php
                         if(isset($each_item['Investment']['id'])){
                             echo $each_item['Investment']['id'];
+                            echo $this->Html->link($each_item['Investment']['id'], '/Investments/editEquityInvestment/');
                         }
                         
                         ?></td>
@@ -68,8 +68,8 @@ echo $this->Html->script('notification.js');
                         
                         ?></td>
                 <td align="right"><?php
-                        if(isset($each_item['Investment']['investment_amount'])){
-                            echo $each_item['Investment']['investment_amount'];
+                        if(isset($each_item['Investment']['total_amount'])){
+                            echo $each_item['Investment']['total_amount'];
                         }
                         
                         ?></td>
@@ -86,8 +86,8 @@ echo $this->Html->script('notification.js');
                         
                         ?></td>
                 <td align="right"><?php
-                        if(isset($each_item['EquitiesList']['share_price'])){
-                            echo $each_item['EquitiesList']['share_price'];
+                        if(isset($each_item['Investment']['purchase_price'])){
+                            echo $each_item['Investment']['purchase_price'];
                         }
                         ?></td>
                 <td align="center">
@@ -95,12 +95,12 @@ echo $this->Html->script('notification.js');
                     <?php 
                     
                     if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Cancelled'){
-                         echo $this->Html->Link('Re-instate', '/Investments/ReinstateInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
+                         echo $this->Html->Link('Re-instate', '/Investments/ReinstateInvestment/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
                     }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid'){
                    echo "No-Action Necessary";
                     
                     }else{
-                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> | <a <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
+                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
                     
                     }
                     
@@ -111,7 +111,7 @@ echo $this->Html->script('notification.js');
                             echo $each_item['Investment']['status'];
                         }
                         ?></td>
-                <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementInvDetail'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+                <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementInvDetail/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
                 
         <?php  }} ?>
@@ -154,13 +154,13 @@ echo $this->Html->script('notification.js');
         <tr>
             <td colspan="10" align="center">
                 <?php
-//                echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
-//                echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                //prints X of Y, where X is current page and Y is number of pages
-//                echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
+                echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
+                echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                //prints X of Y, where X is current page and Y is number of pages
+                echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
                 ?>
             </td>
         </tr>

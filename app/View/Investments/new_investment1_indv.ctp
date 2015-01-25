@@ -89,7 +89,7 @@
                                         <?php echo $each_item['Investor']['email']; ?>
                                     </td>
                                     <td align="right">
-                                <?php echo $this->Html->link('Add', "/Investments/add/" . $each_item['Investor']['id'] . "/newInvestment1Indv", array()); ?>
+                                <?php echo $this->Html->link('Select', "/Investments/add/" . $each_item['Investor']['id'] . "/newInvestment1Indv", array()); ?>
                                     </td>
                                 </tr>
     <?php endforeach;
@@ -163,7 +163,7 @@
             echo $each_item['email'];
         } ?></td>
                                     <td width="50" align="right">
-        <?php echo $this->Html->link('Remove', "/Investments/rmInvestor/" . (isset($each_item['investor_id']) ? $each_item['investor_id'] : ''), array()); ?>
+        <?php echo $this->Html->link('Remove', "/Investments/rmInvestorIndiv/" . (isset($each_item['investor_id']) ? $each_item['investor_id'] : ''), array()); ?>
                                     </td>
                                 </tr>
     <?php endforeach;
