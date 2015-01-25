@@ -37,11 +37,11 @@ echo $this->Html->script('notification.js');
                         ?></p></td>
                     </tr>
                 </table>
+                
             </td>
         </tr>
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('total_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('equity_id', 'Equity'); ?></b></td>
@@ -52,14 +52,20 @@ echo $this->Html->script('notification.js');
             
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
+       
+ 
             <tr>
                 <td align="left"><?php
                         if(isset($each_item['Investment']['id'])){
-                            echo $each_item['Investment']['id'];
+//                            echo $each_item['Investment']['id'];
                             echo $this->Html->link($each_item['Investment']['id'], '/Investments/editEquityInvestment/');
                         }
-                        
-                        ?></td>
+                        else{
+                            echo "Each_iten not set";
+                        }
+                        ?>
+                 
+                </td>
                 
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_date'])){
