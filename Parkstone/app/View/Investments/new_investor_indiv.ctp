@@ -263,6 +263,9 @@ echo $this->Html->script('icheck/icheck.js');
 							  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('nk_dob', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y') ),'empty' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y')))); ?>
                                                 </div>
                                             </div>
+                                            <?php
+                                        echo $this->Form->input('nk_relationship', array('label' => 'Relationship', 'value' => (isset($investor['Investor']['nk_relationship']) ? $investor['Investor']['nk_relationship'] : '' ), 'placeholder' => 'He/She is your ...'));
+                                        ?>
                                         </div>
 
                                         <div class="col-lg-6 col-md-6 col-sm-12">

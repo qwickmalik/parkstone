@@ -43,6 +43,10 @@ DONE 23.01.15 -Create
 DONE 23.01.15 -delete
 -edit
 
+DONE 24.01.15 Fixed bugs with newInvestor, editInvestor (individual) to enable testing of investment module. 
+-Similar to be done with corporate, joint and group investors later
+DONE 25.01.15 Reorganized newInvestment module and fixed bugs with equity processing. Everythingworking fine now for individual investor. 
+-Similar to be done with corporate, joint and group investors later
 
 +Review investment management page for Equity investments
  #Views

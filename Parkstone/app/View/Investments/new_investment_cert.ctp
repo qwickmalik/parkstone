@@ -80,12 +80,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                     if (isset($investors)) {
                         foreach ($investors as $investor):
                             ?><b style="font-size: 18px;"><br /><i style="color: Navy;"><?php
-                            if (isset($investor['surname'])) {
-                                echo $investor['surname'] . ' ';
+                            if (isset($investor['other_names'])) {
+                                echo $investor['other_names'] . ' ';
                             } else {
                                 echo '';
-                            } if (isset($investor['other_names'])) {
-                                echo $investor['other_names'];
+                            } if (isset($investor['surname'])) {
+                                echo $investor['surname'];
                             } else {
                                 echo '';
                             }
@@ -96,12 +96,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                            ?>
                     <b style="font-size: 18px;"><br /><i style="color: Navy;">
                     <?php
-                            if (isset($investor['joint_surname'])) {
-                                echo $investor['joint_surname'] . ' ';
+                            if (isset($investor['joint_other_names'])) {
+                                echo $investor['joint_other_names'] . ' ';
                             } else {
                                 echo '';
-                            } if (isset($investor['joint_other_names'])) {
-                                echo $investor['joint_other_names'];
+                            } if (isset($investor['joint_surname'])) {
+                                echo $investor['joint_surname'];
                             } else {
                                 echo '';
                             }
@@ -247,7 +247,7 @@ if (isset($issued)) {
         //FIXED INCOME ENDS HERE
         ?>
 
-
+        <p>&nbsp;</p>
 
 
         <?php

@@ -12,17 +12,10 @@ DONE - Show ITF in investment choosing and selecting page
 
 TO DO
 ----------
-
-
 - Add group and Joint investor details
 - If investment product type is equity, the rollover has to be different.also cross check current rollover function
 - Instructions in Equity will be different
 Schedule
-
-COMMENTS 14.12.2014
---------------------
-Please check error under payment date on edit_payment.ctp
-PRINT button for investment certificates not working
 
 
 
@@ -36,3 +29,10 @@ EQUITIES MANAGEMENT
 + The only problem i see with this approach is that it means all the money that a person intends for equity investment will have to be used to buy only one type of stock. This means in a case where the client leaves the decision as to which stocks to buy to Parkstone, they are constrained to buy only one type of stock. Otherwise, they will have to divide the money up into bits during the new_investment process so that the money will show up in bits during the equity management/re-investment process.
 
 + When time is due for the shares to be sold, the new share price will be entered and this should automatically calculate how much money is due to the client minus commission amount based on % entered earlier (see 2nd bullet above)
+
+
+##########    BUGS    ##########
+================================
++ Please check newInvestment2.ctp lines 404-431. Not displaying summaries for Equity
++ Please check error under payment date on edit_payment.ctp
++ PRINT button for investment certificates not working
