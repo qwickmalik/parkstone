@@ -289,9 +289,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                             </div>
                             <?php
-                            echo $this->Form->input('equity_id', ['type' => 'select','options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                            echo $this->Form->input('equities_list_id', ['type' => 'select','options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                             echo "<p><i>Desired equity not listed here?".$this->Html->link('Add to the list', '/Settings/equitiesList') ."</i></p>";
-                             echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
+                             echo $this->Form->input('share_price', array('disabled','label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' ))); 
+                              echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
                              echo $this->Form->input('numb_shares', array('label' => 'No. of Shares Purchased*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.numb_shares') == true ? $this->Session->read('investtemp.numb_shares') : '' ))); 
                              echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' ))); 
 //                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
@@ -394,6 +395,43 @@ jQuery(document).ready(function($) {
         }
         
     });
-    
+    jQuery("#InvestmentEquitiesListId").change(function(){
+
+    var equity_id = jQuery(this).val();
+     if (equity_id == ""){
+         
+                    jQuery('#InvestmentSharePrice').val("");
+                     jQuery('#InvestmentPurchasePrice').val(""); 
+     }
+            if (equity_id != ""){
+    var query = "action=getPurchasePrice&ID=" + equity_id;
+            jQuery.ajax({
+                    url: "../Investments/getPurchasePrice",
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    if (data && data.error) {
+                        
+                    jQuery(".errormsg").show();
+                            jQuery(".errormsg").html(data.error).show('slow');
+                            jQuery(".errormsg").hide();
+                    } else {
+                    //jquery("midleveltype").
+                    jQuery('#InvestmentSharePrice').val(data['EquitiesList']['share_price']);
+                     jQuery('#InvestmentPurchasePrice').val(data['EquitiesList']['share_price']);     
+                            
+                            return false;
+                    }
+                    },
+                    error: function () {
+                        jQuery(".errormsg").show();
+                            jQuery(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            jQuery(".errormsg").hide();
+                  }
+            });
+    }
+    });
 });        
         </script>
