@@ -361,14 +361,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equity_id', ['type' => 'select','options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id', ['type' => 'select','options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     echo "<p><i>Desired equity not listed here?".$this->Html->link('Add to the list', '/Settings/equitiesList') ."</i></p>";
                                     ?>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
-                                    ?>
+                                    echo $this->Form->input('share_price', array('disabled','label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' ))); 
+                              echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' ))); 
+                             ?>
                                 </div>
                             </div>
                             <div class="row">
@@ -402,8 +403,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Equity:</span><br>";
-                                    if (isset($equity_id)) {
-                                        echo $equity_id;
+                                    if (isset($equity)) {
+                                        echo $equity;
                                     } else {
                                         echo '';
                                     }
@@ -413,8 +414,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
-                                    if (isset($equity_price)) {
-                                        echo $shopCurrency.' '.$equity_price;
+                                    if (isset($share_price)) {
+                                        echo $shopCurrency.' '.$share_price;
                                     } else {
                                         echo '';
                                     }
@@ -423,7 +424,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Fees:</span><br>";
                                     if (isset($total_fees)) {
                                         echo $shopCurrency.' '.$total_fees;
                                     } else {
@@ -434,7 +435,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span><br>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
                                     if (isset($totalamt)) {
                                         echo $shopCurrency.' '.$totalamt;
                                     } else {
@@ -527,6 +528,43 @@ if ($this->Session->check('shopCurrency_investment')) {
         }
         
     });
-    
+    jQuery("#InvestmentEquitiesListId").change(function(){
+
+    var equity_id = jQuery(this).val();
+     if (equity_id == ""){
+         
+                    jQuery('#InvestmentSharePrice').val("");
+                     jQuery('#InvestmentPurchasePrice').val(""); 
+     }
+            if (equity_id != ""){
+    var query = "action=getPurchasePrice&ID=" + equity_id;
+            jQuery.ajax({
+                    url: "../Investments/getPurchasePrice",
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    if (data && data.error) {
+                        
+                    jQuery(".errormsg").show();
+                            jQuery(".errormsg").html(data.error).show('slow');
+                            jQuery(".errormsg").hide();
+                    } else {
+                    //jquery("midleveltype").
+                    jQuery('#InvestmentSharePrice').val(data['EquitiesList']['share_price']);
+                     jQuery('#InvestmentPurchasePrice').val(data['EquitiesList']['share_price']);     
+                            
+                            return false;
+                    }
+                    },
+                    error: function () {
+                        jQuery(".errormsg").show();
+                            jQuery(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            jQuery(".errormsg").hide();
+                  }
+            });
+    }
+    });
 });          
         </script>

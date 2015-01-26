@@ -49,7 +49,7 @@ class Investment extends AppModel{
             ),
         'EquitiesList' => array(
             'className' => 'EquitiesList',
-            'foreignKey' => 'equity_id',
+            'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

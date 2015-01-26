@@ -7,13 +7,13 @@
 class EquitiesList extends AppModel {
 
     var $name = "EquitiesList";
-    var $usesTable = "equities_list";
+    var $usesTable = "equities_lists";
      var $displayField = "equity_abbrev";
      
     var $hasMany = array(
         'Investment' => array(
             'className' => 'Investment',
-            'foreignKey' => 'equity_id',
+            'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

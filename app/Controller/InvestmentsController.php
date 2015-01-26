@@ -1429,7 +1429,9 @@ function searchinvestor4groupinvestment($investorid = null) {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
+            $this->Session->delete('variabless_fixed');
         }
+                   
         $check = $this->Session->check('variabless_equity');
         if ($check) {
             $check = $this->Session->check('variabless_equity.totalamt');
@@ -1437,6 +1439,22 @@ function searchinvestor4groupinvestment($investorid = null) {
                 $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
                
             }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            $this->Session->delete('variabless_equity');
         }
     }
 function newInvestment2_joint() {
@@ -1480,14 +1498,32 @@ function newInvestment2_joint() {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
+            $this->Session->delete('variabless_fixed');
         }
+                   
         $check = $this->Session->check('variabless_equity');
-        if ($check) {
+         if ($check) {
             $check = $this->Session->check('variabless_equity.totalamt');
             if ($check) {
                 $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
                
             }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            $this->Session->delete('variabless_equity');
         }
     }
     function newInvestment2_comp($investorid = null) {
@@ -1508,7 +1544,7 @@ function newInvestment2_joint() {
             if ($investor) {
                 $this->set('investors', $investor);
             }
-             $check = $this->Session->check('variabless_fixed');
+            $check = $this->Session->check('variabless_fixed');
         if ($check) {
             $check = $this->Session->check('variabless_fixed.duedate');
             if ($check) {
@@ -1522,14 +1558,32 @@ function newInvestment2_joint() {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
+            $this->Session->delete('variabless_fixed');
         }
+                   
         $check = $this->Session->check('variabless_equity');
-        if ($check) {
+         if ($check) {
             $check = $this->Session->check('variabless_equity.totalamt');
             if ($check) {
                 $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
                
             }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            $this->Session->delete('variabless_equity');
         }
         } else {
             $message = 'No Investor Selected';
@@ -1555,7 +1609,7 @@ function newInvestment2Group($investorid = null) {
             if ($investor) {
                 $this->set('investors', $investor);
             }
-             $check = $this->Session->check('variabless_fixed');
+         $check = $this->Session->check('variabless_fixed');
         if ($check) {
             $check = $this->Session->check('variabless_fixed.duedate');
             if ($check) {
@@ -1569,7 +1623,9 @@ function newInvestment2Group($investorid = null) {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
+            $this->Session->delete('variabless_fixed');
         }
+                   
         $check = $this->Session->check('variabless_equity');
         if ($check) {
             $check = $this->Session->check('variabless_equity.totalamt');
@@ -1577,6 +1633,22 @@ function newInvestment2Group($investorid = null) {
                 $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
                
             }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            $this->Session->delete('variabless_equity');
         }
         } else {
             $message = 'No Investor Selected';
@@ -1732,8 +1804,8 @@ function newInvestment2Group($investorid = null) {
                             $this->redirect(array('controller' => 'Investments', 'action' => $page));
                         }
                         
-                        if ($this->request->data['Investment']['equity_id'] == "" || $this->request->data['Investment']['equity_id'] == null) {
-                            $message = 'Please State Equity Purchased';
+                        if ($this->request->data['Investment']['equities_list_id'] == "" || $this->request->data['Investment']['equities_list_id'] == null) {
+                            $message = 'Please Select Equity Purchased';
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => $page));
                         }
@@ -1858,17 +1930,18 @@ function newInvestment2Group($investorid = null) {
 //                        break;
  }
   if(isset($this->request->data['equity_process'])){
-//                    case 2:
-//                        $rate = '0.00';
-//                        $amount_due = '0.00';
-//                        $interest_amount = '0.00';
-
+                        $equity_name = '';
+                        $equities_list_id = $this->request->data['Investment']['equities_list_id'];
+                        $equity = $this->EquitiesList->find('first',array('conditions' => array('EquitiesList.id' =>$equities_list_id )));
+                        if($equity){
+                            $equity_name  = $equity['EquitiesList']['equity_abbrev'];
+                        }
                         $check = $this->Session->check('variabless_equity');
                         if ($check) {
                             $this->Session->delete('variabless_equity');
                         }
 
-                        $variables = array('totalamt' => $totalamt);
+                        $variables = array('totalamt' => $totalamt,'share_price' => $this->request->data['Investment']['purchase_price'],'total_fees' => $this->request->data['Investment']['total_fees'],'equity' => $equity_name);
                         $this->Session->write('variabless_equity', $variables);
 
                         $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
@@ -1881,7 +1954,7 @@ function newInvestment2Group($investorid = null) {
 //                            'instruction_id' => $this->request->data['instruction_id'],
 //                            'instruction_details' => $this->request->data['instruction_details'], 
                             'investment_date' => $pinv_date, 
-                            'equity_id' => $this->request->data['Investment']['equity_id'],
+                            'equities_list_id' => $equities_list_id,
 //                            'purchase_date' => $pinv_date,
                             'purchase_date' => $inv_date,
                             'purchase_price' => $this->request->data['Investment']['purchase_price'],
@@ -2063,8 +2136,8 @@ if(isset($this->request->data['equity_process'])){
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' =>  $page, $investor_id));
                         }
-                        if ($this->request->data['Investment']['equity'] == "" || $this->request->data['Investment']['equity'] == null) {
-                            $message = 'Please State Equity Purchased';
+                        if ($this->request->data['Investment']['equities_list_id'] == "" || $this->request->data['Investment']['equities_list_id'] == null) {
+                            $message = 'Please Select Equity Purchased';
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' =>  $page, $investor_id));
                         }
@@ -2187,12 +2260,19 @@ if(isset($this->request->data['equity_process'])){
                         $amount_due = '0.00';
                         $interest_amount = '0.00';
 
+                             $equity_name = '';
+                        $equities_list_id = $this->request->data['Investment']['equities_list_id'];
+                        $equity = $this->EquitiesList->find('first',array('conditions' => array('EquitiesList.id' =>$equities_list_id )));
+                        if($equity){
+                            $equity_name  = $equity['EquitiesList']['equity_abbrev'];
+                        }
                         $check = $this->Session->check('variabless_equity');
                         if ($check) {
                             $this->Session->delete('variabless_equity');
                         }
 
-                        $variables = array('totalamt' => $totalamt);
+                        $variables = array('totalamt' => $totalamt,'share_price' => $this->request->data['Investment']['purchase_price'],'total_fees' => $this->request->data['Investment']['total_fees'],'equity' => $equity_name);
+                        
                         $this->Session->write('variabless_equity', $variables);
 
                         $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
@@ -2208,7 +2288,7 @@ if(isset($this->request->data['equity_process'])){
                             'instruction_id' => $this->request->data['instruction_id2'],
                             'instruction_details' => $this->request->data['instruction_details2'],
                             'total_fees' => $this->request->data['Investment']['total_fees'],
-                            'equity' => $this->request->data['Investment']['equity']
+                            'equities_list_id' => $equities_list_id
                             , 'purchase_price' => $this->request->data['Investment']['purchase_price'],
                             'numb_shares' => $this->request->data['Investment']['numb_shares'],
                             'total_amount' => $totalamt);
@@ -3109,13 +3189,18 @@ if(isset($this->request->data['equity_process'])){
     function manageFixedInvestments($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
-            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));
+            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id,'Investment.investment_product_id' => array(1,3)), 'order' => array('Investment.id')));
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
 
             if ($data) {
                 $this->set('data', $data);
-            }
+            }else {
+
+            $message = 'Sorry, No Fixed Investments Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
         } else {
 
             $message = 'Sorry, Investor Not Found';
@@ -3155,13 +3240,18 @@ if(isset($this->request->data['equity_process'])){
     function manageEquityInvestments($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
-            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));
+            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id,'Investment.investment_product_id' => array(2,3)), 'order' => array('Investment.id')));
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
 
             if ($data) {
                 $this->set('data', $data);
-            }
+            }else {
+
+            $message = 'Sorry, No Equity Investments Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
         } else {
 
             $message = 'Sorry, Investor Not Found';
@@ -3449,7 +3539,29 @@ if(isset($this->request->data['equity_process'])){
     public function payments() {
         /* $this->__validateUserType(); */
     }
+ public function getPurchasePrice() {
+        $this->autoRender = false;
+        $this->autoLayout = false;
 
+        if ($this->request->is('ajax')) {
+
+
+            if (!empty($_POST['ID'])) {
+                $ID = $_POST['ID'];
+                $catLst = $this->EquitiesList->find('first', array('fields' => array('EquitiesList.ID', 'EquitiesList.share_price'), 'conditions' => array('EquitiesList.id' => $ID), 'recursive' => -1));
+                if ($catLst) {
+                    $itemLsts = json_encode($catLst);
+                    return $itemLsts;
+                } else {
+                    $error = json_encode(array("error" => "No Data For Sub-Type"));
+                    return $error;
+                }
+            } else {
+                $error = json_encode(array("error" => "INVALID SELECTION"));
+                return $error;
+            }
+        }
+    }
 }
 
 ?>
