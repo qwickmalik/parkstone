@@ -9,6 +9,8 @@ DONE - Investment Product dropdown not working when Fixed investment & Equity is
 DONE - function process_indv() in InvestmentsController not calculating returns for fixed investment
 DONE - Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
 DONE - Show ITF in investment choosing and selecting page
+DONE - URGENT!!! Please check manage_equity_investment.ctp. Investment list not showing so can't proceed with further details of equity investment management
+DONE - Please check new_investment2.ctp lines 404-431. Not displaying summaries for Equity
 
 TO DO
 ----------
@@ -33,7 +35,6 @@ EQUITIES MANAGEMENT
 
 ##########    BUGS    ##########
 ================================
-+ URGENT!!! Please check manage_equity_investment.ctp. Investment list not showing so can't proceed with further details of equity investment management
-+ Please check new_investment2.ctp lines 404-431. Not displaying summaries for Equity
+
 + Please check error under payment date on edit_payment.ctp
 + PRINT button for investment certificates not working
