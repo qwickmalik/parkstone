@@ -353,9 +353,16 @@ CREATE TABLE IF NOT EXISTS `equities_lists` (
 
 REPLACE INTO `equities_lists` (`id`, `equity_name`, `equity_abbrev`, `share_price`, `created`, `modified`, `created_by`, `modified_by`) VALUES
 (1, 'Cocoa Processing Company Limited', 'CPC', NULL, NULL, NULL, NULL, NULL),
-(2, 'Ghana Oild Company Limited', 'GOIL', NULL, NULL, NULL, NULL, NULL),
+(2, 'Ghana Oil Company Limited', 'GOIL', NULL, NULL, NULL, NULL, NULL),
 (3, 'Fan Milk Limited - Ghana', 'FML', NULL, NULL, NULL, NULL, NULL),
 (4, 'Ghana Commercial Bank Limited', 'GCB', NULL, NULL, NULL, NULL, NULL);
 
 
 ALTER TABLE `investments` CHANGE `equity` `equity_id` INT(11) NULL DEFAULT NULL;
+
+
+January 25,2015
+-----------------------------
+ALTER TABLE `investments` CHANGE `equity_id` `equities_list_id` INT( 11 ) NULL DEFAULT NULL ;
+ALTER TABLE `equities_lists` CHANGE `share_price` `share_price` DECIMAL( 6, 2 ) NULL DEFAULT NULL ;
+ALTER TABLE `investments` CHANGE `purchase_price` `purchase_price` DECIMAL( 6, 2 ) NULL DEFAULT '0.00';
