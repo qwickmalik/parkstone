@@ -43,7 +43,7 @@ echo $this->Html->script('notification.js');
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('date', 'Inv. Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('total_amount', 'Inv. Amount'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="120" align="right"><b><?php echo $this->Paginator->sort('total_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue"  width="220" align="center"><b><?php echo $this->Paginator->sort('equity_id', 'Equity'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="120" align="right"><b><?php echo $this->Paginator->sort('purchase_price', 'Purchase Price'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
@@ -80,13 +80,13 @@ echo $this->Html->script('notification.js');
                         
                         ?></td>
                 
-                <td align="right"><?php
+                <td align="center"><?php
                         if(isset($each_item['EquitiesList']['equity_abbrev'])){
                             echo $each_item['EquitiesList']['equity_abbrev'];
                         }
                         
                         ?></td>
-                <td align="center"><?php
+                <td align="right"><?php
                         if(isset($each_item['Investment']['purchase_price'])){
                             echo $each_item['Investment']['purchase_price'];
                         }
@@ -101,7 +101,8 @@ echo $this->Html->script('notification.js');
                    echo "No-Action Necessary";
                     
                     }else{
-                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
+                    echo $this->Html->Link('Dispose', '/Investments/disposeEquityInvestment/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false)); 
+                   
                     
                     }
                     
