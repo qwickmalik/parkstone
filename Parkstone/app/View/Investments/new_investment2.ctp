@@ -298,7 +298,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
                         </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-12" id = "equity">
+                        <div class="col-lg-6 col-md-6 col-sm-12" id="equity">
                             <p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">Equity Investment</p>
                             <?php
 //                            echo $this->Form->input('instruction_id', array('label' => 'Instructions','name' => 'instruction_id2', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.instruction_id2') == true ? $this->Session->read('investtemp.instruction_id2') : '' )));

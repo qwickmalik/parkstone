@@ -35,6 +35,7 @@ EQUITIES MANAGEMENT
 
 ##########    BUGS    ##########
 ================================
-
++ New investment for individual. When option of Fixed & Equity selected and one clicks process, for Fixed, totals for Equity get erased and vice-versa. Wasn't like this previously. However the system correctly generates both certificates. Also doesnt seem to clear the session so when i created a new investment (Fixed investment only) for another client, it gave both fixed and equity certificates with details of the previous client's equity and this was recorded in the db
++ When new investment for Indiv is created, it doesnt add the investor_id to the investments table. hence one is unable to retrieve the equity or fixed investment under Manage Investments. 
 + Please check error under payment date on edit_payment.ctp
 + PRINT button for investment certificates not working

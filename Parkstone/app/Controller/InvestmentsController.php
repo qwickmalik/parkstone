@@ -3186,6 +3186,147 @@ if(isset($this->request->data['equity_process'])){
         }
     }
 
+    function makeEquityPayment() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $balance;
+            $total_paid;
+            $hp_price;
+            $old_total_paid;
+            $old_balance;
+            $payment;
+            $order_id;
+            $cheque_numbers = "";
+            $new_cheque_numbers = "";
+            $payment = 0;
+            $investment_id = $_POST['hid_investid'];
+
+
+            if ($this->request->data['InvestmentPayment']['payment_mode'] == "" || $this->request->data['InvestmentPayment']['payment_mode'] == null) {
+                $message = 'Please Select A Mode of Payment.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+            }
+
+            if ($this->request->data['InvestmentPayment']['payment_mode'] == "Post-dated chq" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
+                $message = 'Please Supply a Cheque No.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+            }
+
+
+            if ($this->request->data['InvestmentPayment']['payment_mode'] == "Cheque" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
+                $message = 'Please Supply a Cheque No.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+            }
+
+            if ($this->request->data['InvestmentPayment']['amount'] == "" || $this->request->data['InvestmentPayment']['amount'] == null || $this->request->data['InvestmentPayment']['amount'] == 0) {
+                $message = 'Amount Not Entered.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+            }
+
+
+            if (isset($this->request->data['InvestmentPayment']['cheque_nos'])) {
+                if ($this->request->data['InvestmentPayment']['cheque_nos'] != "" || $this->request->data['InvestmentPayment']['cheque_nos'] != null) {
+                    $cheque_numbers = $this->request->data['InvestmentPayment']['cheque_nos'];
+                }
+            }
+
+
+
+            $payment_day = $this->request->data['InvestmentPayment']['payment_date']['day'];
+            $payment_month = $this->request->data['InvestmentPayment']['payment_date']['month'];
+            $payment_year = $this->request->data['InvestmentPayment']['payment_date']['year'];
+            $fpayment_date = $payment_year . "-" . $payment_month . "-" . $payment_day;
+            $spayment_date = strtotime($fpayment_date);
+            $payment_date = date('Y-m-d', $spayment_date);
+            $session_date = date('d-m-Y', $spayment_date);
+            //$this->request->data['InvestmentPayment']['payment_date'] = $payment_date;
+            $check = $this->Session->check('payment_date');
+            if ($check) {
+                $this->Session->delete('payment_date');
+            }
+            $this->Session->write('payment_date', $session_date);
+
+            $payment += $this->request->data['InvestmentPayment']['amount'];
+            $sms_amount = $this->request->data['InvestmentPayment']['amount'];
+            $payment_mode = $this->request->data['InvestmentPayment']['payment_mode'];
+
+            $balance = 0;
+            $total_paid = 0;
+            $hp_price = 0;
+            $old_total_paid = 0;
+            $old_balance = 0;
+
+
+            $date = date('Y-m-d H:i:s');
+            //use id to retrieve Investment info
+            $investment_details = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            if ($investment_details) {
+                $old_balance = $investment_details['Investment']['balance'];
+                $old_total_paid = $investment_details['Investment']['amount_paidout'];
+                $amount_due = $investment_details['Investment']['amount_due'];
+                $investor = $investment_details['Investment']['investor_id'];
+                $investment_no = $investment_details['Investment']['investment_no'];
+                $investor_name = $investment_details['Investor']['fullname'];
+
+                $total_paid = $old_total_paid + $payment;
+                $balance = $amount_due - $total_paid;
+//print_r('balance: '.$balance.'--'.'amount_due: '.$amount_due.'--'.'totalpaid: '.$total_paid);
+//exit;
+
+                if ($balance <= 0) {
+                    $payment_status = "Paid";
+                } elseif ($balance > 0 && $balance < $amount_due) {
+
+                    $payment_status = "Part_payment";
+                } elseif ($balance == $amount_due) {
+
+                    $payment_status = "Invested";
+                }
+
+                $new_investmentdetails = array('id' => $investment_id, 'balance' => $balance,$amount_due =>$balance  ,'amount_paidout' => $total_paid, 'status' => $payment_status, 'lastpaidout_date' => $payment_date);
+
+                $result = $this->Investment->save($new_investmentdetails);
+                if ($result) {
+//                      print_r($result);
+//            exit;
+                    $investment_paymentdetails = array('investment_id' => $investment_id, 'investor_id' => $investor, 'amount' => $payment, 'payment_mode' => $this->request->data['InvestmentPayment']['payment_mode'], 'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date);
+                    $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
+                    if ($result2) {
+
+                        $check = $this->Session->check('ipayment_receipt');
+                        if ($check) {
+                            $this->Session->delete('ipayment_receipt');
+                        }
+                        $check = $this->Session->check('ireceipt_items');
+                        if ($check) {
+                            $this->Session->delete('ireceipt_items');
+                        }
+
+                        $message = 'Investment Payout Successful';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'paymentReceipt', $investment_id, $payment));
+
+                        //$this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor,$investor_name));
+                    } else {
+
+                        $message = 'Investment Payout Saved With Errors';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
+                    }
+                } else {
+
+                    $message = 'Investment Payout Unsuccessful';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
+                }
+            }
+        }
+    }
+    
     function manageFixedInvestments($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
@@ -3208,7 +3349,8 @@ if(isset($this->request->data['equity_process'])){
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-
+    
+    
     function cancelInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
@@ -3301,6 +3443,41 @@ if(isset($this->request->data['equity_process'])){
                 $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
+        }
+    }
+    
+    function disposeEquityInvestment($investment_id = null) {
+        /* $this->__validateUserType(); */
+        if (!is_null($investment_id)) {
+            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            if ($data) {
+                $this->set('data', $data);
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'disposeEquityReceipt'));
+            }
+        }
+    }
+    
+    function disposeEquityReceipt(){
+        /* $this->__validateUserType(); */
+        $Investment_data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+        //  $check = $this->Session->check('payment_receipt');
+        if ($Investment_data) {
+            // $payment = $this->Session->read('payment_receipt');
+            $this->set('payment', $Investment_data);
+            $this->set('payment_amt', $payment_amt);
+        } else {
+            $message = "Payment successful But Investment Details not found";
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments'));
+        }
+        $issuedcheck = $this->Session->check('userData');
+        if ($issuedcheck) {
+            $issued = $this->Session->read('userData');
+            $this->set('issued', $issued);
         }
     }
 
