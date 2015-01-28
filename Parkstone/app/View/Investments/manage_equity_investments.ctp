@@ -66,7 +66,7 @@ echo $this->Html->script('notification.js');
                 <td align="left"><?php
                         if(isset($each_item['Investment']['id'])){
 //                            echo $each_item['Investment']['id'];
-                            echo $this->Html->link('Edit', '/Investments/editEquityInvestment/');
+                            echo $this->Html->link('Edit', '/Investments/editEquityInvestment/'.$investor_id.'/'.$investor_name.'/'.$each_item['Investment']['id']);
                         }
                         else{
                             echo "Each_iten not set";

@@ -52,7 +52,7 @@ DONE +Review investment management page for Equity investments
 DONE #Views
 DONE 27.01.15 - Cancel equity investment page
 DONE 27.01.15 - Cancel fixed investment page
-DONE 27.01.15 - pay/cashin equity investments 
+DONE 27.01.15 - pay/cashin equity investments + equity receipt 
  
 +Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
  #View
