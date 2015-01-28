@@ -337,8 +337,8 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             <td><b align="right">Equity Purchased:</b></td>
                             <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array_equity['Investment']['equity'])) {
-                                            echo $investment_array_equity['Investment']['equity'];
+                                        if (isset($investment_array_equity['EquitiesList']['equity_abbrev'])) {
+                                            echo $investment_array_equity['EquitiesList']['equity_abbrev'];
                                         }
                                         ?>   </span></td>
                         </tr> 
