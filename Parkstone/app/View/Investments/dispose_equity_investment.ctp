@@ -198,6 +198,7 @@
             <?php
             echo $this->Html->link('Back', "/Investments/manageEquityInvestments/", array("class" => 'btn btn-lg btn-info'));
             echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "btn btn-lg btn-success")); //check the parameters here 
+            echo $this->Html->link('Make Payment to generate receipt', "disposeEquityReceipt/7/2000");
             ?> 
         </div>
 

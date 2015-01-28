@@ -48,11 +48,11 @@ DONE 24.01.15 Fixed bugs with newInvestor, editInvestor (individual) to enable t
 DONE 25.01.15 Reorganized newInvestment module and fixed bugs with equity processing. Everythingworking fine now for individual investor. 
 -Similar to be done with corporate, joint and group investors later
 
-+Review investment management page for Equity investments
- #Views
- - Cancel equity investment page
- - Cancel fixed investment page
- - pay/cashin equity investments 
+DONE +Review investment management page for Equity investments
+DONE #Views
+DONE 27.01.15 - Cancel equity investment page
+DONE 27.01.15 - Cancel fixed investment page
+DONE 27.01.15 - pay/cashin equity investments 
  
 +Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
  #View
