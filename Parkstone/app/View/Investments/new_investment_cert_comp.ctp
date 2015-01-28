@@ -16,8 +16,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 
 <?php 
     //FIXED INCOME CERTIFICATE STARTS HERE
-    if(isset($investment_array_fixed['Investment']['investment_product_id']) && $investment_array_fixed['Investment']['investment_product_id'] == 1 || $investment_array_fixed['Investment']['investment_product_id'] == 3) { ?>
-        <table id="payment_receipt1" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
+    if (isset($investment_array_fixed['Investment']['investment_product_id'])){
+        if($investment_array_fixed['Investment']['investment_product_id'] == 1 || $investment_array_fixed['Investment']['investment_product_id'] == 3) {
+       ?> <table id="payment_receipt1" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
             <?php
             $shopCurrency = "";
             if ($this->Session->check('shopCurrency')) {
@@ -212,7 +213,7 @@ if ($this->Session->check('shopCurrency_investment')) {
             </tr>
         </table>
         <?php 
-            } 
+    } }
             //FIXED INCOME ENDS HERE
             ?>
 
@@ -221,8 +222,9 @@ if ($this->Session->check('shopCurrency_investment')) {
         <?php
         
         //EQUITY CERTIFICATE STARTS HERE 
-         if (isset($investment_array_equity['Investment']['investment_product_id']) && $investment_array_equity['Investment']['investment_product_id'] == 2 || $investment_array_equity['Investment']['investment_product_id'] == 3) { 
-             
+          if (isset($investment_array_equity['Investment']['investment_product_id'])){
+            if($investment_array_equity['Investment']['investment_product_id'] == 2 || $investment_array_equity['Investment']['investment_product_id'] == 3) {
+         
              ?>
    
       
@@ -417,7 +419,7 @@ if ($this->Session->check('shopCurrency_investment')) {
         </table>
         <?php 
         //EQUITY ENDS HERE
-            } 
+            } }
             ?>
 
         <table cellspacing="0" cellpadding="0" border="0" align="left" width="700px">

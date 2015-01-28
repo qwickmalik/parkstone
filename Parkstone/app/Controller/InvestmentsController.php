@@ -1042,19 +1042,32 @@ public function commit_group(){
         if ($this->Session->check('investtemp') == true) {
             $this->Session->delete('investtemp');
         }
-        $check = $this->Session->check('variabless');
+        $check = $this->Session->check('variabless_fixed');
         if ($check) {
-            $this->Session->delete('variabless');
+            $this->Session->delete('variabless_fixed');
         }
-
+$check = $this->Session->check('variabless_equity');
+        if ($check) {
+            $this->Session->delete('variabless_equity');
+        }
         $check = $this->Session->check('investment_array');
         if ($check) {
             $this->Session->delete('investment_array');
+        }
+        if($this->Session->check('investment_array_fixed')){
+            $this->Session->delete('investment_array_fixed');
+        }
+        if($this->Session->check('investment_array_equity')){
+            $this->Session->delete('investment_array_equity');
         }
 
         $check = $this->Session->check('statemt_array');
         if ($check) {
             $this->Session->delete('statemt_array');
+        }
+         $check = $this->Session->check('statemt_array_fixed');
+        if ($check) {
+            $this->Session->delete('statemt_array_fixed');
         }
     }
 
@@ -1126,7 +1139,7 @@ public function commit_group(){
         if(!empty($investors)){
             $message = 'Investor queue full';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
+            $this->redirect(array('controller' => 'Investments', 'action' => $url));
         }
         $investor_array = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
         if ($investor_array) {
@@ -1429,7 +1442,7 @@ function searchinvestor4groupinvestment($investorid = null) {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
-            $this->Session->delete('variabless_fixed');
+            
         }
                    
         $check = $this->Session->check('variabless_equity');
@@ -1454,7 +1467,7 @@ function searchinvestor4groupinvestment($investorid = null) {
                 $this->set('equity', $this->Session->read('variabless_equity.equity'));
                
             }
-            $this->Session->delete('variabless_equity');
+            
         }
     }
 function newInvestment2_joint() {
@@ -1498,7 +1511,7 @@ function newInvestment2_joint() {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
-            $this->Session->delete('variabless_fixed');
+           
         }
                    
         $check = $this->Session->check('variabless_equity');
@@ -1523,7 +1536,7 @@ function newInvestment2_joint() {
                 $this->set('equity', $this->Session->read('variabless_equity.equity'));
                
             }
-            $this->Session->delete('variabless_equity');
+            
         }
     }
     function newInvestment2_comp($investorid = null) {
@@ -1558,7 +1571,7 @@ function newInvestment2_joint() {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
-            $this->Session->delete('variabless_fixed');
+           
         }
                    
         $check = $this->Session->check('variabless_equity');
@@ -1583,7 +1596,7 @@ function newInvestment2_joint() {
                 $this->set('equity', $this->Session->read('variabless_equity.equity'));
                
             }
-            $this->Session->delete('variabless_equity');
+            
         }
         } else {
             $message = 'No Investor Selected';
@@ -1623,7 +1636,7 @@ function newInvestment2Group($investorid = null) {
             if ($check) {
                 $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
             }
-            $this->Session->delete('variabless_fixed');
+          
         }
                    
         $check = $this->Session->check('variabless_equity');
@@ -1648,7 +1661,7 @@ function newInvestment2Group($investorid = null) {
                 $this->set('equity', $this->Session->read('variabless_equity.equity'));
                
             }
-            $this->Session->delete('variabless_equity');
+            
         }
         } else {
             $message = 'No Investor Selected';
@@ -1892,6 +1905,7 @@ function newInvestment2Group($investorid = null) {
                             $this->Session->write('statemt_array_fixed', $statemt_array);
 
                             $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                                'investor_id' => $this->request->data['Investment']['investor_id'],
                                 'investment_amount' => $this->request->data['Investment']['investment_amount'],
                                 'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
                                 'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
@@ -1945,6 +1959,7 @@ function newInvestment2Group($investorid = null) {
                         $this->Session->write('variabless_equity', $variables);
 
                         $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                            'investor_id' => $this->request->data['Investment']['investor_id'],
                             'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
 //                            'custom_rate' => $rate,
                             'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
@@ -2483,7 +2498,6 @@ if(isset($this->request->data['equity_process'])){
                     }
                 }
 
-                
                 $this->Session->delete('variabless_fixed');
             } else {
                 $message = "Sorry No Investment To Display";
@@ -2582,9 +2596,11 @@ if(isset($this->request->data['equity_process'])){
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/');
-        }elseif($this->Session->check('investment_array_fixed')){
+        }
+        if($this->Session->check('investment_array_fixed')){
             $this->Session->delete('investment_array_fixed');
-        }elseif($this->Session->check('investment_array_equity')){
+        }
+        if($this->Session->check('investment_array_equity')){
             $this->Session->delete('investment_array_equity');
         }
         if($this->Session->check('investtemp.investmentproduct_id')){
@@ -2771,9 +2787,11 @@ if(isset($this->request->data['equity_process'])){
             $message = "Sorry No Investment To Display";
             $this->Session->write('imsg', $message);
             $this->redirect('/Investments/newInvestment1Comp');
-        }elseif($this->Session->check('investment_array_fixed')){
+        }
+        if($this->Session->check('investment_array_fixed')){
             $this->Session->delete('investment_array_fixed');
-        }elseif($this->Session->check('investment_array_equity')){
+        }
+        if($this->Session->check('investment_array_equity')){
             $this->Session->delete('investment_array_equity');
         }
         if($this->Session->check('investtemp.investmentproduct_id')){
