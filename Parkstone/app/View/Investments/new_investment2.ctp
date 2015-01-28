@@ -29,9 +29,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <td style="border-bottom: solid 2px dodgerblue;" align="left">
                                 <b>Name</b>
                             </td>
-                            <td style="border-bottom: solid 2px dodgerblue" align="left">
-                                <b>Joint Acc Name</b>
-                            </td>
+                            
                             <td style="border-bottom: solid 2px dodgerblue" align="left">
                                 <b>ITF</b>
                             </td>
@@ -65,15 +63,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         }
                                         ?>
                                     </td>
-                                    <td align="left">
-                                        <?php
-                                        if (isset($investor['joint_surname']) && isset($investor['joint_other_names'])) {
-                                            echo $investor['joint_surname'].' '.$investor['joint_other_names'];
-                                        } else {
-                                            echo '';
-                                        }
-                                        ?>
-                                    </td>
+                                   
                                     <td align="left">
                                         <?php
                                         if (isset($investor['in_trust_for'])) {
