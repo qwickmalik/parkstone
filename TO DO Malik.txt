@@ -19,17 +19,7 @@ DONE 19.12.14	CSS work
 DONE 20.12.14	Bank Deposits and Bank Withdrawals views, CSS work
 DONE 21.12.14	Reports dashboard, 3 Reports, CSS work
 
-Update Edit Investors to pick bank details etc.
-
-19. Information on investment date and term should be added to investment certificates.
-21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
-   and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
-22. Update InvestorDetails to pull out all details from the db
-
-
-
- 
-+Equities/stocks list under equity investment
+DONE +Equities/stocks list under equity investment
 DONE 23.01.15 #view addition to new investment pages for group,joint,individual & corporate
 DONE 23.01.15 -dropdown listing different equity 
 DONE 23.01.15 #functions
@@ -41,19 +31,21 @@ DONE 23.01.15  -Equity setup page with share price,etc (create,edit,list,delete)
 DONE 23.01.15#functions
 DONE 23.01.15 -Create
 DONE 23.01.15 -delete
--edit
+DONE 27.01.15 -edit
 
 DONE 24.01.15 Fixed bugs with newInvestor, editInvestor (individual) to enable testing of investment module. 
 -Similar to be done with corporate, joint and group investors later
-DONE 25.01.15 Reorganized newInvestment module and fixed bugs with equity processing. Everythingworking fine now for individual investor. 
+DONE 25.01.15 Reorganized newInvestment module and fixed bugs with equity processing. Everything working fine now for individual investor. 
 -Similar to be done with corporate, joint and group investors later
 
 DONE +Review investment management page for Equity investments
 DONE #Views
 DONE 27.01.15 - Cancel equity investment page
 DONE 27.01.15 - Cancel fixed investment page
-DONE 27.01.15 - pay/cashin equity investments + equity receipt 
+DONE 27.01.15 - pay/cashing equity investments + equity receipt 
  
+
+
 +Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
  #View
  -Re-investor cash receipt page
@@ -115,3 +107,14 @@ DONE 27.01.15 - pay/cashin equity investments + equity receipt
 +Kwaku: Cron Job to process daily rates of fixed investments
 +Malik: Report to list such additions by cron job in investment management 
 +Malik: Report to list such additions in general reports module
+
+
+#########   BUGS    ###########
+=============================================
+Update Edit Investors to pick bank details etc.
+
+19. Information on investment date and term should be added to investment certificates.
+21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
+   and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
+22. Update InvestorDetails to pull out all details from the db
+
