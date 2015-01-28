@@ -3431,6 +3431,30 @@ if(isset($this->request->data['equity_process'])){
         $this->paginate('Investment');
     }
     
+    function editEquityInvestment($investor_id = null, $investor_name = null, $investment_id = null) {
+        /* $this->__validateUserType(); */
+        $this->set('portfolios', $this->Portfolio->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+        
+        if (!is_null($investment_id)) {
+            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            if ($data) {
+                $this->set('data', $data);
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        }
+    }
+    
     function ReinstateInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
