@@ -48,7 +48,7 @@
 				<?php echo $this->Html->link('New Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
-				<?php echo $this->Html->link('New Investee Company', '/Reinvestments/newInvestee', array('escape' => false)); ?>
+				<?php echo $this->Html->link('Reinvestor Cash Receipt', '/Reinvestments/newCashReceipt', array('escape' => false)); ?>
             </li>
             <li>
 				<?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>

@@ -7,10 +7,9 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestments', 'Reinvestor', 'Investee', 'Currency');
+    var $uses = array('Reinvestments', 'Reinvestor', 'Investee', 'Currency', 'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm');
     var $paginate = array(
-        'Investee' => array('limit' => 25, 'order' => array('Investee.company_name' => 'asc')),
-        'Reinvestor' => array('limit' => 25, 'order' => array('Reinvestor.company_name' => 'asc'))
+        'Reinvestor' => array('limit' => 25, 'order' => array('Reinvestor.company_name' => 'asc')),
     );
 
 //    var $helpers = array('AjaxMultiUpload.Upload');
@@ -420,78 +419,144 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newInvestee() {
-        // $this->__validateUserType();
-        $data = $this->paginate('Investee');
-        $this->set('data', $data);
-//        $this->set('currencies', $this->Currency->find('list'));
+    function newCashReceipt(){
+        /* $this->__validateUserType(); */
+        $this->paginate = array(
+            'limit' => 50, 'order' => array('Reinvestor.id' => 'asc'));
 
-        $setupResults = $this->Investee->getSetup();
-        foreach ($setupResults as $setupResult) {
-            $setupRes = $setupResult;
+        $data = $this->paginate('Reinvestor');
+        
+        $this->set('Reinvestor', $data);
+
+        $check = $this->Session->check('ivt');
+        if ($check) {
+            $cust = $this->Session->read('ivt');
+//            pr($cust);
+            $this->set('int', $cust);
+            $this->Session->delete('ivt');
         }
-
-        $this->set(compact('setupResults'));
-
-    }
-
-    function addInvestee() {
-        $this->autoRender = false;
-        if ($this->request->is('post')) {
-            //Configure::write('debug', 0);
-
-            if (!empty($this->request->data)) {
-
-                    if ($org_search_record = $this->Investee->find('first', array(
-                    'conditions' => array('Investee.company_name' => $this->request->data['Investee']['company_name']),
-                    'recursive' => -1
-                        ))) {
-                     $message = 'This Company is already registered in the system. Please check the Name of the Company.';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-                } elseif ($org_search_record = $this->Investee->find('first', array(
-                    'conditions' => array('Investee.email' => $this->request->data['Investee']['email']),
-                    'recursive' => -1
-                        ))) {
-                     $message = 'This Email is already registered in the system. Please check the Email of the Company.';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-                } elseif($org_search_record = $this->Investee->find('first', array(
-                    'conditions' => array('Investee.mobile' => $this->request->data['Investee']['mobile']),
-                    'recursive' => -1
-                        ))) {
-                     $message = 'This Mobile Number is already registered in the system. Please check the Mobile Number of the Company.';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-                }
-                $result = $this->Investee->save($this->request->data);
-                if ($result) {
-                    $this->request->data = null;
-
-
-                    $message = 'Investment Company Successfully Added';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-                } else {
-                    $message = 'Company details saving unsuccessful';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-                }
-            } else {
-
-
-                $message = 'No data available to save';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
-            }
-        } else {
-            $message = 'Wrong command issued.';
-            $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+        $check = $this->Session->check('ivts');
+        if ($check) {
+            $cust = $this->Session->read('ivts');
+            $this->set('investor', $cust);
+            $this->Session->delete('ivts');
         }
     }
     
-    function delInvestee($sub_id = Null) {
+    function searchreinvestor4cash($investorid = null) {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investname = $this->request->data['investor_search'];
+            $investor = $this->Reinvestor->find('all', array('conditions' => array('OR' => array(array('Reinvestor.company_name LIKE' => "%$investname%"), array('Reinvestor.manager_name LIKE' => "%$investname%")))));
+
+            if ($investor) {
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $cust = $this->Session->write('ivts', $investor);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+            } else {
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+            }
+        } else {
+
+            $investors = $this->Reinvestor->find('all', array('conditions' => array('Reinvestor.id' => $investorid)));
+            $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $investorid)));
+            if ($investors) {
+
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $check = $this->Session->check('ivt');
+                if ($check) {
+                    $this->Session->delete('ivt');
+                }
+                $cust = $this->Session->write('ivts', $investors);
+                $this->Session->write('ivt', $investor);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+            } else {
+
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+            }
+        }
+    }
+    
+    function newCashReceipt2() {
+        /* $this->__validateUserType(); */
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        
+        
+
+        $check = $this->Session->check('investment_type');
+        if ($check) {
+            $this->set('invest_type', $check);
+        }
+
+        $check = $this->get_investors();
+
+        if (count($check) > 0) {
+
+
+            $this->set('investors', $check);
+        } else {
+            $message = 'No Investor Selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+        }
+        $check = $this->Session->check('variabless_fixed');
+        if ($check) {
+            $check = $this->Session->check('variabless_fixed.duedate');
+            if ($check) {
+                $this->set('duedate', $this->Session->read('variabless_fixed.duedate'));
+            }
+            $check = $this->Session->check('variabless_fixed.interest');
+            if ($check) {
+                $this->set('interest', $this->Session->read('variabless_fixed.interest'));
+            }
+            $check = $this->Session->check('variabless_fixed.totaldue');
+            if ($check) {
+                $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
+            }
+            
+        }
+                   
+        $check = $this->Session->check('variabless_equity');
+        if ($check) {
+            $check = $this->Session->check('variabless_equity.totalamt');
+            if ($check) {
+                $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            
+        }
+    }
+    
+    function delCashReceipt($sub_id = Null) {
         $this->autoRender = false;
 
         $result = $this->Investee->delete($sub_id, false);
