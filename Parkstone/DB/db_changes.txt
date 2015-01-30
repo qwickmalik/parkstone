@@ -366,3 +366,27 @@ January 25,2015
 ALTER TABLE `investments` CHANGE `equity_id` `equities_list_id` INT( 11 ) NULL DEFAULT NULL ;
 ALTER TABLE `equities_lists` CHANGE `share_price` `share_price` DECIMAL( 6, 2 ) NULL DEFAULT NULL ;
 ALTER TABLE `investments` CHANGE `purchase_price` `purchase_price` DECIMAL( 6, 2 ) NULL DEFAULT '0.00';
+
+
+January 28,2015
+---------------------------
+TRUNCATE TABLE `payment_modes`;
+--
+-- Dumping data for table `payment_modes`
+--
+
+INSERT INTO `payment_modes` (`id`, `payment_mode_name`) VALUES
+(1, 'Cash'),
+(2, 'Cheque'),
+(3, 'Bank transfer'),
+(4, 'Post-dated chq'),
+(5, 'Standing order'),
+(6, 'Visa');
+
+
+JANUARY 30,2015
+-----------------------
+ALTER TABLE `investments` ADD `numb_shares_sold` INT( 11 ) NULL DEFAULT '0' AFTER `numb_shares` ,
+ADD `numb_shares_left` INT( 11 ) NULL DEFAULT '0' AFTER `numb_shares_sold` ;
+ALTER TABLE `investment_payments` ADD `selling_price` DECIMAL( 6, 2 ) NOT NULL DEFAULT '0.00' AFTER `user_id` ;
+ALTER TABLE `investment_payments` ADD `numb_shares_sold` INT( 11 ) NULL DEFAULT '0' AFTER `amount` ;
