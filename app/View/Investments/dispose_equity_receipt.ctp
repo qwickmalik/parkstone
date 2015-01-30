@@ -80,12 +80,9 @@ echo $this->Html->css('template.css');
                     }
                     ?></b><br></br>
                 <b>Date: </b><?php
-                $check = $this->Session->check('payment_date');
-                if ($check) {
-                    $pdate = $this->Session->read('payment_date');
-                    echo $pdate;
-                    ;
-                }
+               if (isset($payment['InvestmentPayment']['payment_date'])) {
+                        echo $payment['InvestmentPayment']['payment_date'];
+                    }
                 ?>
             </td>
         </tr>
@@ -113,8 +110,8 @@ echo $this->Html->css('template.css');
                     <tr>
                         <td><b align="right">Equity:</b></td>
                         <td><span id="xxxxxx"><?php
-                                if (isset($payment['Investment']['equity_list_id'])) {
-                                    echo $payment['Investment']['equity_list_id'];
+                                if (isset($investment_name['EquitiesList']['equity_abbrev'])) {
+                                    echo $investment_name['EquitiesList']['equity_abbrev'];
                                 }
                                 ?></span></td>
                     </tr>
@@ -138,8 +135,8 @@ echo $this->Html->css('template.css');
                     <tr>
                         <td><b align="right">Selling Price:</b></td>
                         <td><span id="xxxxxx"><?php
-                                if (isset($payment['Investment']['selling_price'])) {
-                                    echo $payment['Investment']['selling_price'];
+                                if (isset($payment['InvestmentPayment']['selling_price'])) {
+                                    echo $payment['InvestmentPayment']['selling_price'];
                                 }
                                 ?></span></td>
                     </tr>
