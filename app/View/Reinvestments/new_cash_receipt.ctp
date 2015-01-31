@@ -1,5 +1,5 @@
 <?php
-//echo $this->Html->script('notification.js');
+echo $this->Html->script('notification.js');
 ?>
 
 <h3 style="color: red;">New Re-Investor Cash Receipt - Step 1</h3>
@@ -8,7 +8,8 @@
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4cash'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('NewCashReceipt', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4cash'), "inputDefaults" => array('div' => false))); ?>
+        
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
@@ -42,81 +43,68 @@
             </tr>
         </table>
         <?php
-        echo $this->Form->end();
+//        echo $this->Form->end();
         ?>
         <div id="clearer"></div>
 
         <!--    <form id="order_list" action="#" method="post">-->
-      <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
+      <?php
+//echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
+?>
+
+        <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
             <tr>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left">
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue" align="left">
-                    <b><?php echo $this->Paginator->sort('company_name', 'Company Name'); ?></b>
+                <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                    <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue" width="200" align="left">
+                <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('manager_name', 'Manager'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left">
                     <b><?php echo $this->Paginator->sort('telephone', 'Telephone No.'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('mobile', 'Mobile No.'); ?></b>
-                </td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
                 </td>
+                
             </tr>
-
-            <?php
-            if (isset($investor)) {
-                foreach ($investor as $each_item):
-                    ?>
-                    <tr>
-                        <td width="200" align="left">
-                        <?php echo $each_item['Reinvestor']['id']; ?>
-                        </td>
-                        <td align="left">
-                            <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
-                        </td>
-                        <td align="left" class="orderAnchor">
-                            <?php echo $this->Html->link($each_item['Reinvestor']['manager_name'], "/Reinvestments/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
-                        </td> <!-- Link to enable editing -->
-                        <td width="200" align="left">
-                            <?php echo $each_item['Reinvestor']['telephone']; ?>
-                        </td>
-                        <td width="200" align="left">
-                        <?php echo $each_item['Reinvestor']['mobile']; ?>
-                        </td>
-                        <td width="200" align="left">
-                        <?php echo $each_item['Reinvestor']['email']; ?>
-                        </td>
-
-                    </tr>
-                        <?php endforeach;
-                    } ?>
+<?php foreach ($data as $each_item): ?>
+                <tr>
+                    <td width="50" align="left"><?php echo $each_item['Reinvestor']['id']; ?></td>
+                    <td align="left" >
+                        <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
+                    </td> 
+                    <td align="left"><?php echo $each_item['Reinvestor']['manager_name']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestor']['telephone']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestor']['email']; ?></td>
+                    
+                </tr>
+<?php endforeach; ?>
             <tr>
-                <td colspan="4" align="right">
+                <td colspan="5" align="right">
 <?php
-//echo $this->Form->button('Delete',array("type" => "#","class" => "button_red"));           //check the parameters here
-?>
+//  echo $this->Form->button('Delete',array("type" => "#","class" => "button_red"));           //check the parameters here
+?><p>&nbsp;</p>
                 </td>
             </tr>
             <tr>
-                <td colspan="4" align="center">
-                    <?php
-                    echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-                    echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-                    echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
-                    echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-                    echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-                    //prints X of Y, where X is current page and Y is number of pages
-                    echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
-                    ?>
+                <td colspan="5" align="center">
+                <?php
+                echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
+                echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                //prints X of Y, where X is current page and Y is number of pages
+                echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
+                ?>
                 </td>
             </tr>
         </table>
+<?php echo $this->Form->end(); ?>	
 
     </div>
     <!-- Content ends here -->
