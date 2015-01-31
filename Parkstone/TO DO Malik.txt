@@ -46,11 +46,12 @@ DONE 27.01.15 - pay/cashing equity investments + equity receipt
  
 
 
-+Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
- #View
- -Re-investor cash receipt page
- #Functions
-  - to be decided
+DONE +Create pages to receive money from re-investor company/subsidiary. Record money coming in and whether they want fixed inv, equity or both and notes. New sub menu
+DONE View
+DONE 29.01.15 -Re-investor cash receipt page
+DONE 29.01.15 (NEEDS TWEAKING) #Functions- to be decided
+DONE 30.01.15 Re-investor cash receipt extra pages + certificate
+  
 
 
 +Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 

@@ -7,9 +7,10 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestments', 'Reinvestor', 'Investee', 'Currency', 'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm');
+    var $uses = array('Reinvestment', 'Reinvestor', 'Investee', 'Currency', 'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm');
     var $paginate = array(
-        'Reinvestor' => array('limit' => 25, 'order' => array('Reinvestor.company_name' => 'asc')),
+        'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
+        
     );
 
 //    var $helpers = array('AjaxMultiUpload.Upload');
@@ -421,12 +422,6 @@ class ReinvestmentsController extends AppController {
 
     function newCashReceipt(){
         /* $this->__validateUserType(); */
-        $this->paginate = array(
-            'limit' => 50, 'order' => array('Reinvestor.id' => 'asc'));
-
-        $data = $this->paginate('Reinvestor');
-        
-        $this->set('Reinvestor', $data);
 
         $check = $this->Session->check('ivt');
         if ($check) {
@@ -441,6 +436,9 @@ class ReinvestmentsController extends AppController {
             $this->set('investor', $cust);
             $this->Session->delete('ivts');
         }
+        
+        $data = $this->paginate('Reinvestor');
+        $this->set('data', $data);
     }
     
     function searchreinvestor4cash($investorid = null) {
@@ -487,27 +485,27 @@ class ReinvestmentsController extends AppController {
         }
     }
     
-    function newCashReceipt2() {
+    function newCashReceipt2($reinvestorid = null) {
         /* $this->__validateUserType(); */
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
         
         
-
+        
         $check = $this->Session->check('investment_type');
-        if ($check) {
-            $this->set('invest_type', $check);
-        }
-
-        $check = $this->get_investors();
-
+//        if ($check) {
+//            $this->set('invest_type', $check);
+//        }
+//
+//        $check = $this->get_investors();
+//
         if (count($check) > 0) {
 
-
-            $this->set('investors', $check);
+//            $this->set('reinvestors', $check);
         } else {
             $message = 'No Investor Selected';
             $this->Session->write('emsg', $message);
@@ -572,6 +570,191 @@ class ReinvestmentsController extends AppController {
         }
     }
 
+    function newReinvestmentCert() {
+        /* $this->__validateUserType(); */
+
+        $investment_array = $this->Session->check('investment_array_fixed');
+        if ($investment_array) {
+            $investment_array = $this->Session->read('investment_array_fixed');
+
+
+            $result = $this->Investment->save($investment_array);
+            $investment_id = $this->Investment->id;
+            $investor_id = $result['Investment']['investor_id'];
+
+            if ($result) {
+
+
+
+                $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
+
+                $this->InvestmentInvestor->save($investor_data);
+                if (isset($investment_number) && !empty($investment_number)) {
+                    $investment_number = $investment_number;
+                } else {
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
+                $this->set('investment_number', $investment_number);
+                $date = date('Y-m-d H:i:s');
+
+
+
+
+
+                $rollover_details = $this->Session->check('rollover_details');
+                if ($rollover_details) {
+                    $rollover_details = $this->Session->read('rollover_details');
+                    $this->Rollover->save($rollover_details);
+                    $this->set('rollover_details', $rollover_details);
+                    $this->Session->delete('rollover_details');
+
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
+
+                        $this->InvestmentStatement->saveAll($statemt_array);
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+                } else {
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+
+                    $this->request->data = null;
+                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                    $this->Investment->save($investment_updates);
+                }
+                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                if ($data) {
+                    $this->set('investment_array_fixed', $data);
+                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+
+                    $issued = $this->Session->check('userData');
+                    if ($issued) {
+                        $issued = $this->Session->read('userData');
+                        $this->set('issued', $issued);
+                    }
+                }
+
+
+                $this->Session->delete('variabless_fixed');
+            } else {
+                $message = 'Sorry,try again';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
+            }
+        }
+
+        $investment_array = $this->Session->check('investment_array_equity');
+        if ($investment_array) {
+            $investment_array = $this->Session->read('investment_array_equity');
+
+
+            $result = $this->Investment->save($investment_array);
+            $investment_id = $this->Investment->id;
+            $investor_id = $result['Investment']['investor_id'];
+
+            if ($result) {
+
+
+
+                $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
+
+                $this->InvestmentInvestor->save($investor_data);
+                if (isset($investment_number) && !empty($investment_number)) {
+                    $investment_number = $investment_number;
+                } else {
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
+                $this->set('investment_number', $investment_number);
+                $date = date('Y-m-d H:i:s');
+
+
+
+
+
+                $rollover_details = $this->Session->check('rollover_details');
+                if ($rollover_details) {
+                    $rollover_details = $this->Session->read('rollover_details');
+                    $this->Rollover->save($rollover_details);
+                    $this->set('rollover_details', $rollover_details);
+                    $this->Session->delete('rollover_details');
+
+                    $statemt_array = $this->Session->check('statemt_array_equity');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_equity');
+
+                        $this->InvestmentStatement->saveAll($statemt_array);
+                        $this->Session->delete('statemt_array_equity');
+                    }
+                } else {
+                    $statemt_array = $this->Session->check('statemt_array_equity');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_equity');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array_equity');
+                    }
+
+                    $this->request->data = null;
+                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                    $this->Investment->save($investment_updates);
+                }
+                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                if ($data) {
+                    $this->set('investment_array_equity', $data);
+                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+
+                    $issued = $this->Session->check('userData');
+                    if ($issued) {
+                        $issued = $this->Session->read('userData');
+                        $this->set('issued', $issued);
+                    }
+                }
+
+
+                $this->Session->delete('variabless_equity');
+            } else {
+                $message = 'Sorry,try again';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
+            }
+        }
+
+
+
+        if (!($this->Session->check('investment_array_fixed')) && !($this->Session->check('investment_array_equity'))) {
+            $message = "Sorry No Investment To Display";
+            $this->Session->write('imsg', $message);
+            $this->redirect('/Investments/newInvestment1Comp');
+        }
+        if ($this->Session->check('investment_array_fixed')) {
+            $this->Session->delete('investment_array_fixed');
+        }
+        if ($this->Session->check('investment_array_equity')) {
+            $this->Session->delete('investment_array_equity');
+        }
+        if ($this->Session->check('investtemp.investmentproduct_id')) {
+            $this->Session->delete('investtemp.investmentproduct_id');
+        }
+    }
+    
     function newInvestment0() {
         //$this->set('idtypes', $this->Idtype->find('list'));
         //$this->set('investortypes', $this->InvestorType->find('list'));
