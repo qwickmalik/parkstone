@@ -65,12 +65,11 @@ DONE 31.01.15 Re-investor cash deposit list/delete/edit views, model and db tabl
  -create product
  -update product
  
- 
 +Under re-investment we will have two different views for reinvesting fixed investments and equities
-  +Re-investor company stays. Money is handled separately from Parkstone pool
-  +Table to store all monies coming in and for which kind of investment=pool
+DONE 31.01.15   +Re-investor company stays. Money is handled separately from Parkstone pool
+DONE 31.01.15 +Table to store all monies coming in and for which kind of investment=pool
     -investment_cash table
-#View
+ #View
  -Choose company page & and fixed/equity reinvestmnt input
  -Fixed reinvestment page (page divided horizontally into 2; 20:80; upper 20% shows information about cash pool last reinvestment etc.;2nd half shows reinvestment options)
  -Equity reinvestment page (page divided upper listing investors and investment info;proportion will be up to malik;lower bottom for making investment)
