@@ -11,15 +11,15 @@ class Reinvestor extends AppModel {
     var $name = "Reinvestor";
     var $usesTable = "reinvestors";
     var $displayField = "company_name";
-//     var $hasMany = array(
-//        'Currency' => array(
-//            'className' => 'Currency',
-//            'foreignKey' => 'setting_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            ));
+     var $hasMany = array(
+        'ReinvestorDeposit' => array(
+            'className' => 'ReinvestorDeposit',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
     
     function getSetup(){
         $this->id = 1;

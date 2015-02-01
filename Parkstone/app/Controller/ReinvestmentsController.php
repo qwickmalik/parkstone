@@ -7,10 +7,10 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestment', 'Reinvestor', 'Investee', 'Currency', 'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm');
+    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'Investee', 'Currency', 'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
-        
+        'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
     );
 
 //    var $helpers = array('AjaxMultiUpload.Upload');
@@ -420,7 +420,7 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newCashReceipt(){
+    function newCashDeposit(){
         /* $this->__validateUserType(); */
 
         $check = $this->Session->check('ivt');
@@ -453,11 +453,11 @@ class ReinvestmentsController extends AppController {
                     $this->Session->delete('ivts');
                 }
                 $cust = $this->Session->write('ivts', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
             } else {
                 $message = 'Sorry, Investor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
             }
         } else {
 
@@ -475,17 +475,17 @@ class ReinvestmentsController extends AppController {
                 }
                 $cust = $this->Session->write('ivts', $investors);
                 $this->Session->write('ivt', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
             } else {
 
                 $message = 'Sorry, Investor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashReceipt'));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
             }
         }
     }
     
-    function newCashReceipt2($reinvestorid = null) {
+    function newCashDeposit2($reinvestorid = null) {
         /* $this->__validateUserType(); */
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
@@ -553,24 +553,87 @@ class ReinvestmentsController extends AppController {
             
         }
     }
+    function listCashDeposits(){
+        /* $this->__validateUserType(); */
+
+        $check = $this->Session->check('ivt');
+        if ($check) {
+            $cust = $this->Session->read('ivt');
+//            pr($cust);
+            $this->set('int', $cust);
+            $this->Session->delete('ivt');
+        }
+        $check = $this->Session->check('ivts');
+        if ($check) {
+            $cust = $this->Session->read('ivts');
+            $this->set('investor', $cust);
+            $this->Session->delete('ivts');
+        }
+        
+        $data = $this->paginate('ReinvestorDeposit');
+        $this->set('data', $data);
+    }
     
-    function delCashReceipt($sub_id = Null) {
+    function searchreinvestor4list($investorid = null) {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investname = $this->request->data['investor_search'];
+            $investor = $this->Reinvestor->find('all', array('conditions' => array('OR' => array(array('Reinvestor.company_name LIKE' => "%$investname%"), array('Reinvestor.manager_name LIKE' => "%$investname%")))));
+
+            if ($investor) {
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $cust = $this->Session->write('ivts', $investor);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            } else {
+                $message = 'Sorry, Reinvestor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            }
+        } else {
+
+            $investors = $this->Reinvestor->find('all', array('conditions' => array('Reinvestor.id' => $investorid)));
+            $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $investorid)));
+            if ($investors) {
+
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $check = $this->Session->check('ivt');
+                if ($check) {
+                    $this->Session->delete('ivt');
+                }
+                $cust = $this->Session->write('ivts', $investors);
+                $this->Session->write('ivt', $investor);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            } else {
+
+                $message = 'Sorry, Reinvestor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            }
+        }
+    }
+    function delCashDeposit($sub_id = Null) {
         $this->autoRender = false;
 
-        $result = $this->Investee->delete($sub_id, false);
+        $result = $this->ReinvestorDeposit->delete($sub_id, false);
         if ($result) {
 
-            $message = 'Investee Deleted';
+            $message = 'Cash Deposit Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestee'));
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
         } else {
-            $message = 'Could Not Delete Investee';
+            $message = 'Could Not Delete Cash Deposit';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newInvestee'));
+            $this->redirect(array('controller' => 'Reivestments', 'action' => 'listCashDeposits'));
         }
     }
 
-    function newReinvestmentCert() {
+    function newDepositCert() {
         /* $this->__validateUserType(); */
 
         $investment_array = $this->Session->check('investment_array_fixed');
@@ -752,6 +815,75 @@ class ReinvestmentsController extends AppController {
         }
         if ($this->Session->check('investtemp.investmentproduct_id')) {
             $this->Session->delete('investtemp.investmentproduct_id');
+        }
+    }
+    
+    function editCashDeposit($reinvestorid = null) {
+        /* $this->__validateUserType(); */
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+        
+        
+        
+        $check = $this->Session->check('investment_type');
+//        if ($check) {
+//            $this->set('invest_type', $check);
+//        }
+//
+//        $check = $this->get_investors();
+//
+        if (count($check) > 0) {
+
+//            $this->set('reinvestors', $check);
+        } else {
+            $message = 'No Investor Selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+        }
+        $check = $this->Session->check('variabless_fixed');
+        if ($check) {
+            $check = $this->Session->check('variabless_fixed.duedate');
+            if ($check) {
+                $this->set('duedate', $this->Session->read('variabless_fixed.duedate'));
+            }
+            $check = $this->Session->check('variabless_fixed.interest');
+            if ($check) {
+                $this->set('interest', $this->Session->read('variabless_fixed.interest'));
+            }
+            $check = $this->Session->check('variabless_fixed.totaldue');
+            if ($check) {
+                $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
+            }
+            
+        }
+                   
+        $check = $this->Session->check('variabless_equity');
+        if ($check) {
+            $check = $this->Session->check('variabless_equity.totalamt');
+            if ($check) {
+                $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+               
+            }
+            $check = $this->Session->check('variabless_equity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_equity.equity'));
+               
+            }
+            
         }
     }
     

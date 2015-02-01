@@ -9,7 +9,7 @@ echo $this->Html->script('notification.js');
 //}
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-investment - Step 2</h3>
+<h3 style="color: red;">New Re-investor Cash Deposit - Step 2</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -47,7 +47,7 @@ echo $this->Html->script('notification.js');
 
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investor_page', array('value' => 'newCashReceipt2'));
+                            echo $this->Form->hidden('investor_page', array('value' => 'newCashDeposit2'));
                             echo $this->Form->hidden('reinvestor_id', array( 'value' => (isset($reinvestor['id'])?$reinvestor['id'] : '') ));
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' )));
@@ -114,10 +114,10 @@ echo $this->Html->script('notification.js');
             <tr>
                 <td align="left" valign="top">&nbsp;</td>
                 <td align="right" valign="middle" colspan="2">
-                    <?php echo $this->Html->link('Back', "/Reinvestments/newCashReceipt", array("class" => 'btn btn-lg btn-info')); ?>
+                    <?php echo $this->Html->link('Back', "/Reinvestments/newCashDeposit", array("class" => 'btn btn-lg btn-info')); ?>
 
                     &nbsp;&nbsp;
-                    <?php echo $this->Html->link('Next', "/Reinvestments/newReinvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
+                    <?php echo $this->Html->link('Next', "/Reinvestments/newDepositCert", array("class" => 'btn btn-lg btn-primary')); ?>
                 </td>
             </tr>
         </table>

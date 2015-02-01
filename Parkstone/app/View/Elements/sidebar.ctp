@@ -35,6 +35,9 @@
             <li>
                 <?php echo $this->Html->link('Manage Investments', '/Investments/clearManageSessions', array('escape' => false)); ?>
             </li>
+            <li>
+                <?php echo $this->Html->link('Payments', '/Investments/processPayments', array('escape' => false)); ?>
+            </li>
             
         </ul>
     </li>
@@ -48,7 +51,10 @@
 				<?php echo $this->Html->link('New Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
-				<?php echo $this->Html->link('Reinvestor Cash Receipt', '/Reinvestments/newCashReceipt', array('escape' => false)); ?>
+				<?php echo $this->Html->link('Reinvestor Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
+            </li>
+            <li>
+				<?php echo $this->Html->link('List/Edit Cash Deposits', '/Reinvestments/listCashDeposits', array('escape' => false)); ?>
             </li>
             <li>
 				<?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
@@ -58,14 +64,14 @@
             </li>
         </ul>
     </li>
-    <li class="lightyellow">
+    <!--<li class="lightyellow">-->
         <?php
-        echo $this->Html->link('
-        		<span class="menu-icon"><i class="fa fa-money"></i></span>
-            	<span class="menu-text">Payments</span>'
-                , '/Investments/processPayments', array('escape' => false));
+//        echo $this->Html->link('
+//        		<span class="menu-icon"><i class="fa fa-money"></i></span>
+//            	<span class="menu-text">Payments</span>'
+//                , '/Investments/processPayments', array('escape' => false));
         ?>
-    </li>
+    <!--</li>-->
 <!--    <li class="lightyellow">
         <?php
 //        echo $this->Html->link('

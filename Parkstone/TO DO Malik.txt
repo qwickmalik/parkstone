@@ -51,7 +51,7 @@ DONE View
 DONE 29.01.15 -Re-investor cash receipt page
 DONE 29.01.15 (NEEDS TWEAKING) #Functions- to be decided
 DONE 30.01.15 Re-investor cash receipt extra pages + certificate
-  
+DONE 31.01.15 Re-investor cash deposit list/delete/edit views, model and db table
 
 
 +Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 

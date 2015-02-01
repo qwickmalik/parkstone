@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
 //    $shopCurrency = $this->Session->read('shopCurrency_investment');
 //}
 ?>
-<h3>Reinvestment Cash Receipt</h3>
+<h3>Reinvestment Cash Deposit Certificate</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>

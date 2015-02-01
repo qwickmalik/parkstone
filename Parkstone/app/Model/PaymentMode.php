@@ -14,7 +14,16 @@ class PaymentMode extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+        'ReinvestorDeposit' => array(
+            'className' => 'ReinvestorDeposit',
+            'foreignKey' => 'payment_mode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        );
 }
 
 ?>
