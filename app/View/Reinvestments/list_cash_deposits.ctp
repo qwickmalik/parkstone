@@ -2,13 +2,13 @@
 echo $this->Html->script('notification.js');
 ?>
 
-<h3 style="color: red;">New Re-Investor Cash Receipt - Step 1</h3>
+<h3 style="color: red;">List Re-investor Cash Deposits</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('NewCashReceipt', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4cash'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('ListCashDeposits', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4list'), "inputDefaults" => array('div' => false))); ?>
         
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
@@ -30,7 +30,7 @@ echo $this->Html->script('notification.js');
                         <input type="hidden" name="hid_investor" value="<?php (isset($int['Reinvestor']['id']) ? $int['Reinvestor']['id'] : '' ); ?>" />
 
 <?php echo $this->Form->button('Search', array("type" => "submit", "id" => "search", "class" => "btn btn-lg btn-success")); ?> &nbsp;
-<?php echo $this->Html->link('Proceed', "/Reinvestments/newCashReceipt2/" . (isset($int['Reinvestor']['id']) ? $int['Reinvestor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
+
                         <span style="color: red;"></span>
                     </div>
 
@@ -61,25 +61,26 @@ echo $this->Html->script('notification.js');
                     <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('manager_name', 'Manager'); ?></b>
+                    <b><?php echo $this->Paginator->sort('currency_id', 'Currency'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left">
-                    <b><?php echo $this->Paginator->sort('telephone', 'Telephone No.'); ?></b>
+                    <b><?php echo $this->Paginator->sort('fixed_inv_amount', 'Fixed Inv. Amount'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('email', 'Email'); ?></b>
+                    <b><?php echo $this->Paginator->sort('equity_inv_amount', 'Equity Inv. Amount'); ?></b>
                 </td>
-                
+                <td align="left"><?php echo "Delete"; ?></td>
             </tr>
 <?php foreach ($data as $each_item): ?>
                 <tr>
-                    <td width="50" align="left"><?php echo $each_item['Reinvestor']['id']; ?></td>
+                    <td width="50" align="left"><?php echo $each_item['ReinvestorDeposit']['id']; ?></td>
                     <td align="left" >
-                        <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
+                        <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/editCashDeposit/" . $each_item['ReinvestorDeposit']['id'], array("class" => $each_item['ReinvestorDeposit']['id'])); ?>
                     </td> 
-                    <td align="left"><?php echo $each_item['Reinvestor']['manager_name']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestor']['telephone']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestor']['email']; ?></td>
+                    <td align="left"><?php echo $each_item['ReinvestorDeposit']['currency_id']; ?></td>
+                    <td align="left"><?php echo $each_item['ReinvestorDeposit']['fixed_inv_amount']; ?></td>
+                    <td align="left"><?php echo $each_item['ReinvestorDeposit']['equity_inv_amount']; ?></td>
+                    <td align="left"><?php echo $this->Html->link("Delete","/Reinvestments/delCashDeposit/".$each_item['ReinvestorDeposit']['id']);   ?></td>
                     
                 </tr>
 <?php endforeach; ?>

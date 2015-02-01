@@ -14,7 +14,16 @@ class InvestmentProduct extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+        'ReinvestorDeposit' => array(
+            'className' => 'ReinvestorDeposit',
+            'foreignKey' => 'investment_product_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        );
 }
 
 ?>

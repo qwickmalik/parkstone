@@ -390,3 +390,29 @@ ALTER TABLE `investments` ADD `numb_shares_sold` INT( 11 ) NULL DEFAULT '0' AFTE
 ADD `numb_shares_left` INT( 11 ) NULL DEFAULT '0' AFTER `numb_shares_sold` ;
 ALTER TABLE `investment_payments` ADD `selling_price` DECIMAL( 6, 2 ) NOT NULL DEFAULT '0.00' AFTER `user_id` ;
 ALTER TABLE `investment_payments` ADD `numb_shares_sold` INT( 11 ) NULL DEFAULT '0' AFTER `amount` ;
+
+JANUARY 31, 2015
+--------------------
+
+CREATE TABLE IF NOT EXISTS `reinvestor_deposits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `investment_product_id` int(11) DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `payment_mode_id` int(11) DEFAULT NULL,
+  `investment_date` datetime DEFAULT NULL,
+  `fixed_inv_amount` varchar(8) DEFAULT NULL,
+  `equity_inv_amount` varchar(8) DEFAULT NULL,
+  `notes` text,
+  `created` timestamp NULL DEFAULT NULL,
+  `modified` timestamp NULL DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `reinvestor_deposits`
+--
+
+INSERT INTO `reinvestor_deposits` (`id`, `reinvestor_id`, `investment_product_id`, `currency_id`, `payment_mode_id`, `investment_date`, `fixed_inv_amount`, `equity_inv_amount`, `notes`, `created`, `modified`, `user_id`) VALUES
+(1, 2, 3, 1, 1, '2015-01-31 00:00:00', '1000', '1000', NULL, '2015-01-31 05:00:00', '2015-01-31 05:00:00', 1);
