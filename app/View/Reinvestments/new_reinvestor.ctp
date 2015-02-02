@@ -12,20 +12,20 @@ echo $this->Html->script('notification.js');
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php
-                echo $this->Form->input('company_name', array());
-                echo $this->Form->input('manager_name', array());
-                echo $this->Form->input('telephone', array());
-                echo $this->Form->input('mobile', array('maxlength' => 40, ));
-                echo $this->Form->input('email');
+                echo $this->Form->input('company_name', array('value' => ($this->Session->check('newReinvestor.company_name') == true ? $this->Session->read('newReinvestor.company_name') : '' )));
+                echo $this->Form->input('manager_name', array('value' => ($this->Session->check('newReinvestor.manager_name') == true ? $this->Session->read('newReinvestor.manager_name') : '' )));
+                echo $this->Form->input('telephone', array('value' => ($this->Session->check('newReinvestor.telephone') == true ? $this->Session->read('newReinvestor.telephone') : '' )));
+                echo $this->Form->input('mobile', array('maxlength' => 40,'value' => ($this->Session->check('newReinvestor.mobile') == true ? $this->Session->read('newReinvestor.mobile') : '' ) ));
+                echo $this->Form->input('email',array('value' => ($this->Session->check('newReinvestor.email') == true ? $this->Session->read('newReinvestor.email') : '' )));
               
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php
-                echo $this->Form->input('location', array());
-                echo $this->Form->input('postal_address', array());
-                echo $this->Form->input('postal_city', ['label' => 'City']);
-                echo $this->Form->input('postal_country', ['label' => 'Country']);
+                echo $this->Form->input('location', array('value' => ($this->Session->check('newReinvestor.location') == true ? $this->Session->read('newReinvestor.location') : '' )));
+                echo $this->Form->input('postal_address', array('value' => ($this->Session->check('newReinvestor.postal_address') == true ? $this->Session->read('newReinvestor.postal_address') : '' )));
+                echo $this->Form->input('postal_city', ['label' => 'City','value' => ($this->Session->check('newReinvestor.postal_city') == true ? $this->Session->read('newReinvestor.postal_city') : '' )]);
+                echo $this->Form->input('postal_country', ['label' => 'Country','value' => ($this->Session->check('newReinvestor.postal_country') == true ? $this->Session->read('newReinvestor.postal_country') : '' )]);
                 echo $this->Form->button('Save Details', array("type" => "submit", "class" => "btn btn-lg btn-success", "id" => "reinvestor_submit", "style" => "float: right; ")); 
                 ?>
             </div>

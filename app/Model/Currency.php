@@ -47,6 +47,14 @@ var $hasMany = array(
             'limit' => '',
             'dependent' => true
             ),
+        'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'currency_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
 
 function getCurrency($currency_id = null){
