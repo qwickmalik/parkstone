@@ -19,6 +19,14 @@ class Reinvestor extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+         'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
     
     function getSetup(){

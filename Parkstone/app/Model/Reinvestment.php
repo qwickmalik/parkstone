@@ -51,16 +51,16 @@ class Reinvestment extends AppModel{
         );
     
     
-    /* var $hasMany = array(
-        'InvestmentPayment' => array(
-            'className' => 'InvestmentPayment',
-            'foreignKey' => 'investment_id',
+     var $hasMany = array(
+        'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'reinvestment_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ),
-            'Rollover' => array(
+            ));
+         /*   'Rollover' => array(
             'className' => 'Rollover',
             'foreignKey' => 'investment_id',
             'conditions' => '',

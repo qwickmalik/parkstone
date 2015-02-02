@@ -122,6 +122,14 @@ class Investment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+            'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
          );
     
