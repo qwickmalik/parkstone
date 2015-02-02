@@ -416,3 +416,24 @@ CREATE TABLE IF NOT EXISTS `reinvestor_deposits` (
 
 INSERT INTO `reinvestor_deposits` (`id`, `reinvestor_id`, `investment_product_id`, `currency_id`, `payment_mode_id`, `investment_date`, `fixed_inv_amount`, `equity_inv_amount`, `notes`, `created`, `modified`, `user_id`) VALUES
 (1, 2, 3, 1, 1, '2015-01-31 00:00:00', '1000', '1000', NULL, '2015-01-31 05:00:00', '2015-01-31 05:00:00', 1);
+
+
+FEBRUARY 2, 2015
+--------------------------
+
+DROP TABLE IF EXISTS `investment_cash`;
+CREATE TABLE IF NOT EXISTS `investment_cashes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `investment_id` int(11) DEFAULT NULL,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `amount` decimal(11,2) DEFAULT '0.00',
+  `investment_type` enum('fixed','equity') DEFAULT NULL,
+  `investment_date` date DEFAULT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  `status` enum('available','invested','paid','part_investment') DEFAULT 'available',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
