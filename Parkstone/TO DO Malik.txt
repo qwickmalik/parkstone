@@ -54,16 +54,16 @@ DONE 30.01.15 Re-investor cash receipt extra pages + certificate
 DONE 31.01.15 Re-investor cash deposit list/delete/edit views, model and db table
 
 
-+Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 
+DONE 04.02.15 +Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 
  with just the destination company name and product.
-#View
- -New Investee view(rename to investment destination)(create,list,edit)
- -Sub menu view for adding products(add,list,edit)
+DONE #View
+DONE 04.02.15 -New Investee view(rename to investment destination)(create,list,edit)
+DONE 04.02.15  -Sub menu view for adding products(add,list,ediT
 #functions
- -create destination
- -edit destination
- -create product
- -update product
+DONE 04.02.15  -create destination
+DONE 04.02.15  -edit destination
+DONE 04.02.15  -create product
+DONE 04.02.15  -update product
  
 +Under re-investment we will have two different views for reinvesting fixed investments and equities
 DONE 31.01.15   +Re-investor company stays. Money is handled separately from Parkstone pool

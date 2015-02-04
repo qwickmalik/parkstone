@@ -8,7 +8,7 @@ class ReinvestmentsController extends AppController {
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
     var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'Investee', 'Currency',
-        'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash');
+        'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash', 'InvestmentDestination', 'InvDestProduct');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
@@ -945,6 +945,150 @@ class ReinvestmentsController extends AppController {
         }
     }
 
+    function newInvestmentDestination() {
+        // $this->__validateUserType();
+        $data = $this->paginate('InvestmentDestination');
+        $this->set('data', $data);
+
+        $setupResults = $this->InvestmentDestination->getCompanies();
+
+        $this->set(compact('setupResults'));
+    }
+
+    function addInvestmentDestination() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+//            Configure::write('debug', 0);
+
+            if (!empty($this->request->data)) {
+                $this->Session->write('newInvestmentDestination', $this->request->data['InvestmentDestination']);
+                if ($org_search_record = $this->InvestmentDestination->find('first', array(
+                    'conditions' => array('InvestmentDestination.company_name' => $this->request->data['InvestmentDestination']['company_name']),
+                    'recursive' => -1
+                        ))) {
+                    $message = 'This Company is already registered in the system. Please check the Name of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'InvestmentDestination', 'action' => 'newInvestmentDestination'));
+                } elseif ($org_search_record = $this->InvestmentDestination->find('first', array(
+                    'conditions' => array('InvestmentDestination.email' => $this->request->data['InvestmentDestination']['email']),
+                    'recursive' => -1
+                        ))) {
+                    $message = 'This Email is already registered in the system. Please check the Email of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                } elseif ($org_search_record = $this->InvestmentDestination->find('first', array(
+                    'conditions' => array('InvestmentDestination.telephone' => $this->request->data['InvestmentDestination']['telephone']),
+                    'recursive' => -1
+                        ))) {
+                    $message = 'This Telephone Number is already registered in the system. Please check the Telephone Number of the Company.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                }
+                $result = $this->InvestmentDestination->save($this->request->data);
+                if ($result) {
+                    $this->request->data = null;
+                    $this->Session->delete('newInvestmentDestination');
+
+                    $message = 'Investment destination successfully added';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                } else {
+                    $message = 'Investment destination saving unsuccessful';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                }
+            } else {
+
+
+                $message = 'No data available to save';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+            }
+        } else {
+            $message = 'Wrong command issued.';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+        }
+    }
+
+    function delInvestmentDestination($sub_id = Null) {
+        $this->autoRender = false;
+
+        $result = $this->InvestmentDestination->delete($sub_id, false);
+        if ($result) {
+
+            $message = 'Investment Destination Deleted';
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+        } else {
+            $message = 'Could Not Delete Investment Destination';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newInvestmentDestination'));
+        }
+    }
+    
+    function invDestProduct() {
+        // $this->__validateUserType();
+        $data = $this->paginate('InvDestProduct');
+        $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+        $this->set('data', $data);
+
+        $setupResults = $this->InvDestProduct->getCompanies();
+
+        $this->set(compact('setupResults'));
+    }
+
+    function addInvDestProduct() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+//            Configure::write('debug', 0);
+
+            if (!empty($this->request->data)) {
+                $this->Session->write('InvDestProduct', $this->request->data['InvDesProduct']);
+                
+                $result = $this->InvDestProduct->save($this->request->data);
+                if ($result) {
+                    $this->request->data = null;
+                    $this->Session->delete('InvDestProduct');
+
+                    $message = 'Investment destination product successfully added';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+                } else {
+                    $message = 'Investment destination product saving unsuccessful';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+                }
+            } else {
+
+
+                $message = 'No data available to save';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+            }
+        } else {
+            $message = 'Wrong command issued.';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+        }
+    }
+
+    function delInvDestProduct($sub_id = Null) {
+        $this->autoRender = false;
+
+        $result = $this->InvDestProduct->delete($sub_id, false);
+        if ($result) {
+
+            $message = 'Investment Destination Product Deleted';
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+        } else {
+            $message = 'Could Not Delete Investment Destination Product';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reivestments', 'action' => 'InvDestProduct'));
+        }
+    }
+    
     function newInvestment0() {
         //$this->set('idtypes', $this->Idtype->find('list'));
         //$this->set('investortypes', $this->InvestorType->find('list'));
