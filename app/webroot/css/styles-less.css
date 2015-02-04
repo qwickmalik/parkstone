@@ -882,6 +882,7 @@ body.collapsed-sidebar .menu li.active a span {
   height: 38px;
   width: 100%;
 }
+
 /***** Sidebar - Main Menu - Child / Active *****/
 .sidebar .child li.active {
   background-color: #2b3545;
