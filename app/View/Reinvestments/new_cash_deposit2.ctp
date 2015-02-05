@@ -74,7 +74,7 @@ echo $this->Html->script('notification.js');
                                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("required","selected" => $day)); ?>
+                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Deposit. Date*:</span>" . $this->Form->day('investment_date', array("required","selected" => $day)); ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("required","selected" => $month)); ?>
@@ -86,9 +86,9 @@ echo $this->Html->script('notification.js');
                                     var day = $("#day").val();
                                     var month = $("#month").val();
                                     var year = $("#year").val();
-                                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                                    $("#InvestmentCashInvestmentDateDay option[value=" + day + "]").attr('selected', true);
+                                    $("#InvestmentCashInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
+                                    $("#InvestmentCashInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -120,7 +120,7 @@ echo $this->Html->script('notification.js');
                     <?php 
 //                    echo $this->Form->button('Save Details', array("type" => "submit", "class" => "btn btn-lg btn-success", "id" => "reinvestor_submit", "style" => "float: right; ")); 
                 
-                    echo $this->Form->button('Next', array("type" => "submit","class" => 'btn btn-lg btn-primary')); ?>
+                    echo $this->Form->button('Submit', array("type" => "submit","class" => 'btn btn-lg btn-primary')); ?>
                 </td>
             </tr>
         </table>
