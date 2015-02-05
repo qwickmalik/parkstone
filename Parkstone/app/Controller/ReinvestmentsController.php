@@ -51,8 +51,14 @@ class ReinvestmentsController extends AppController {
             $reinvestorid = $this->request->data['InvestmentCash']['reinvestor_id'];
             $investment_type = $this->request->data['InvestmentCash']['investmentproduct_id'];
             $investment_prod = '';
+            $payment_name = '';
             $fixed_inv_amount = $this->request->data['InvestmentCash']['fixed_inv_amount'];
             $equity_inv_amount = $this->request->data['InvestmentCash']['equity_inv_amount'];
+            $paymentmodeid = $this->request->data['InvestmentCash']['paymentmode_id'];
+            $payment_mode = $this->PaymentMode->find('first',array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+            if($payment_mode){
+                $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
+            }
             $date = $this->request->data['InvestmentCash']['investment_date']['year'] . "-" . $this->request->data['InvestmentCash']['investment_date']['month'] . "-" . $this->request->data['InvestmentCash']['investment_date']['day'];
             switch ($investment_type) {
                 case 1:
@@ -70,12 +76,12 @@ class ReinvestmentsController extends AppController {
                         $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
                         $this->request->data['InvestmentCash']['currency_id'],
                         'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'investment_type' => 'fixed', 'investment_date' => $date);
+                        'investment_type' => 'fixed', 'investment_date' => $date,'payment_mode' => $payment_name);
                     $result = $this->InvestmentCash->save($cash_depositarray);
                     if ($result) {
                         $message = 'Cash Deposit successfully added';
                         $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','fixed',$result['InvestmentCash']['id']));
                     } else {
 
                         $message = 'Error adding Cash Deposit details. Please try again.';
@@ -98,13 +104,13 @@ class ReinvestmentsController extends AppController {
                         $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
                         $this->request->data['InvestmentCash']['currency_id'],
                         'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'investment_type' => 'equity', 'investment_date' => $date);
+                        'investment_type' => 'equity', 'investment_date' => $date,'payment_mode' => $payment_name);
 
                     $result = $this->InvestmentCash->save($cash_depositarray);
                     if ($result) {
                         $message = 'Cash Deposit successfully added';
                         $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','equity',$result['InvestmentCash']['id']));
                     } else {
 
                         $message = 'Error adding Cash Deposit details. Please try again.';
@@ -127,7 +133,7 @@ class ReinvestmentsController extends AppController {
                         $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
                         $this->request->data['InvestmentCash']['currency_id'],
                         'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'investment_type' => 'equity', 'investment_date' => $date);
+                        'investment_type' => 'equity', 'investment_date' => $date,'payment_mode' => $payment_name);
                     $this->InvestmentCash->create();
                     $result_equity = $this->InvestmentCash->save($cash_depositarray_equity);
 
@@ -135,14 +141,14 @@ class ReinvestmentsController extends AppController {
                         $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
                         $this->request->data['InvestmentCash']['currency_id'],
                         'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'investment_type' => 'fixed', 'investment_date' => $date);
+                        'investment_type' => 'fixed', 'investment_date' => $date,'payment_mode' => $payment_name);
                      $this->InvestmentCash->create();
                     $result_fixed = $this->InvestmentCash->save($cash_depositarray_fixed);
-
+                    
                     if ($result_equity && $result_fixed) {
                         $message = 'Cash Deposit successfully added';
                         $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','both',$result_equity['InvestmentCash']['id'],$result_fixed['InvestmentCash']['id']));
                     } else {
 
                         $message = 'Error adding Cash Deposit details. Please try again.';
@@ -697,189 +703,63 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newDepositCert() {
+    function newDepositCert($product_type = null,$fixed_id = null,$equity_id = null) {
         /* $this->__validateUserType(); */
-
-        $investment_array = $this->Session->check('investment_array_fixed');
-        if ($investment_array) {
-            $investment_array = $this->Session->read('investment_array_fixed');
-
-
-            $result = $this->Investment->save($investment_array);
-            $investment_id = $this->Investment->id;
-            $investor_id = $result['Investment']['investor_id'];
-
-            if ($result) {
-
-
-
-                $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
-
-                $this->InvestmentInvestor->save($investor_data);
-                if (isset($investment_number) && !empty($investment_number)) {
-                    $investment_number = $investment_number;
-                } else {
-                    $investment_number = 'PARKST-INV-00' . $investment_id;
-                }
-                $this->set('investment_number', $investment_number);
-                $date = date('Y-m-d H:i:s');
-
-
-
-
-
-                $rollover_details = $this->Session->check('rollover_details');
-                if ($rollover_details) {
-                    $rollover_details = $this->Session->read('rollover_details');
-                    $this->Rollover->save($rollover_details);
-                    $this->set('rollover_details', $rollover_details);
-                    $this->Session->delete('rollover_details');
-
-                    $statemt_array = $this->Session->check('statemt_array_fixed');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_fixed');
-
-                        $this->InvestmentStatement->saveAll($statemt_array);
-                        $this->Session->delete('statemt_array_fixed');
-                    }
-                } else {
-                    $statemt_array = $this->Session->check('statemt_array_fixed');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_fixed');
-
-
-                        foreach ($statemt_array as $key => $val) {
-                            $val['investment_id'] = $investment_id;
-
-                            $this->InvestmentStatement->create();
-                            $this->InvestmentStatement->save($val);
-                        }
-                        $this->Session->delete('statemt_array_fixed');
-                    }
-
-                    $this->request->data = null;
-                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
-                    $this->Investment->save($investment_updates);
-                }
-                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
-                if ($data) {
-                    $this->set('investment_array_fixed', $data);
-                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
-
-                    $issued = $this->Session->check('userData');
-                    if ($issued) {
-                        $issued = $this->Session->read('userData');
-                        $this->set('issued', $issued);
-                    }
-                }
-
-
-                $this->Session->delete('variabless_fixed');
-            } else {
-                $message = 'Sorry,try again';
-                $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
-            }
+        $data_fixed = array();
+        $data_equity = array();
+        $company_name = '';
+        $date = date('d F, Y');
+        $payment_mode = '';
+        $total_invested = 0.00;
+        $total_equity_invested = 0.00;
+        $total_fixed_invested = 0.00;
+        switch ($product_type){
+            case null:
+            $message = 'Invalid product type selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+                break;
+            case 'fixed':
+                $data_fixed = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $fixed_id)));
+               if($data_fixed){
+                   $company_name = $data_fixed['Reinvestor']['company_name'];
+                   $date = date('d F, Y',strtotime($data_fixed['InvestmentCash']['investment_date']));
+                   $payment_mode = $data_fixed['InvestmentCash']['payment_mode'];
+                   $total_invested = $data_fixed['InvestmentCash']['amount'];
+               }
+                break;
+            case 'equity':
+                $data_equity = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $equity_id)));
+                if($data_equity){
+                   $company_name = $data_equity['Reinvestor']['company_name'];
+                   $date = date('d F, Y',strtotime($data_equity['InvestmentCash']['investment_date']));
+                   $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
+                   $total_invested = $data_equity['InvestmentCash']['amount'];
+               }
+                break;
+            case 'both':
+                
+                $data_fixed = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $fixed_id)));
+                $data_equity = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $equity_id)));
+               if($data_equity){
+                   $company_name = $data_equity['Reinvestor']['company_name'];
+                   $date = date('d F, Y',strtotime($data_equity['InvestmentCash']['investment_date']));
+                   $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
+                   $total_equity_invested = $data_equity['InvestmentCash']['amount'];
+               }
+               if($data_fixed){
+               $total_fixed_invested = $data_fixed['InvestmentCash']['amount'];
+               }
+               $total_invested = $total_fixed_invested + $total_equity_invested;
+                break;
+            default:
+            $message = 'Invalid product type selected';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+                
+                break;
         }
-
-        $investment_array = $this->Session->check('investment_array_equity');
-        if ($investment_array) {
-            $investment_array = $this->Session->read('investment_array_equity');
-
-
-            $result = $this->Investment->save($investment_array);
-            $investment_id = $this->Investment->id;
-            $investor_id = $result['Investment']['investor_id'];
-
-            if ($result) {
-
-
-
-                $investor_data = array('investment_id' => $investment_id, 'investor_id' => $investor_id);
-
-                $this->InvestmentInvestor->save($investor_data);
-                if (isset($investment_number) && !empty($investment_number)) {
-                    $investment_number = $investment_number;
-                } else {
-                    $investment_number = 'PARKST-INV-00' . $investment_id;
-                }
-                $this->set('investment_number', $investment_number);
-                $date = date('Y-m-d H:i:s');
-
-
-
-
-
-                $rollover_details = $this->Session->check('rollover_details');
-                if ($rollover_details) {
-                    $rollover_details = $this->Session->read('rollover_details');
-                    $this->Rollover->save($rollover_details);
-                    $this->set('rollover_details', $rollover_details);
-                    $this->Session->delete('rollover_details');
-
-                    $statemt_array = $this->Session->check('statemt_array_equity');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_equity');
-
-                        $this->InvestmentStatement->saveAll($statemt_array);
-                        $this->Session->delete('statemt_array_equity');
-                    }
-                } else {
-                    $statemt_array = $this->Session->check('statemt_array_equity');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_equity');
-
-
-                        foreach ($statemt_array as $key => $val) {
-                            $val['investment_id'] = $investment_id;
-
-                            $this->InvestmentStatement->create();
-                            $this->InvestmentStatement->save($val);
-                        }
-                        $this->Session->delete('statemt_array_equity');
-                    }
-
-                    $this->request->data = null;
-                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
-                    $this->Investment->save($investment_updates);
-                }
-                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
-                if ($data) {
-                    $this->set('investment_array_equity', $data);
-                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
-
-                    $issued = $this->Session->check('userData');
-                    if ($issued) {
-                        $issued = $this->Session->read('userData');
-                        $this->set('issued', $issued);
-                    }
-                }
-
-
-                $this->Session->delete('variabless_equity');
-            } else {
-                $message = 'Sorry,try again';
-                $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
-            }
-        }
-
-
-
-        if (!($this->Session->check('investment_array_fixed')) && !($this->Session->check('investment_array_equity'))) {
-            $message = "Sorry No Investment To Display";
-            $this->Session->write('imsg', $message);
-            $this->redirect('/Investments/newInvestment1Comp');
-        }
-        if ($this->Session->check('investment_array_fixed')) {
-            $this->Session->delete('investment_array_fixed');
-        }
-        if ($this->Session->check('investment_array_equity')) {
-            $this->Session->delete('investment_array_equity');
-        }
-        if ($this->Session->check('investtemp.investmentproduct_id')) {
-            $this->Session->delete('investtemp.investmentproduct_id');
-        }
+         $this->set(compact('product_type','data_fixed','data_equity','company_name','payment_mode','date','total_invested'));
     }
 
     function editCashDeposit($reinvestorid = null) {

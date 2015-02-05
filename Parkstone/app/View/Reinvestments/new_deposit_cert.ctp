@@ -3,20 +3,14 @@ echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 echo $this->Html->script('notification.js');
 
-//$shopCurrency = "GH$";
-//if ($this->Session->check('shopCurrency_investment')) {
-//    $shopCurrency = $this->Session->read('shopCurrency_investment');
-//}
+
 ?>
 <h3>Reinvestment Cash Deposit Certificate</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
-        <?php
-        if (isset($investment_array_fixed['Investment']['investment_product_id'])) {
-            if ($investment_array_fixed['Investment']['investment_product_id'] == 1 || $investment_array_fixed['Investment']['investment_product_id'] == 3) {
-                ?> <table id="payment_receipt1" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
+       <table id="payment_receipt1" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 15px Navy;">
                 <?php
                 $shopCurrency = "";
                 if ($this->Session->check('shopCurrency')) {
@@ -72,29 +66,22 @@ echo $this->Html->script('notification.js');
                     </tr>
                     <tr>
                         <td align="center" valign="top" colspan="2">
-                            <h1 style="color: Navy;">Fixed Investment Certificate</h1><br />
-        <?php if (isset($investment_array_fixed['Reinvestor']['company_name'])) {
-            ?><b style="font-size: 18px;"> <br /><i style="color: Navy;"><?php
-                                if (isset($investment_array_fixed['Reinvestor']['company_name'])) {
-                                    echo $investment_array_fixed['Reinvestor']['company_name'];
-                                } else {
-                                    echo '';
-                                }
+                            <h1 style="color: Navy;">New Investment Deposit Certificate</h1><br />
+        
+            <b style="font-size: 18px;"> <br /><i style="color: Navy;"><?php
+                                if (isset($company_name)) {
+                                    echo $company_name;
+                                } 
                                 ?></i></b>
-                            <?php }
-                            ?>
+                            
                             <br />
-                            <b>Investment No:  <?php
-                            if (isset($investment_number)) {
-                                echo $investment_number;
-                            }
-                            ?></b><br />
-                                <?php if (isset($investment_array_fixed['Reinvestment']['investment_date'])) { ?> <b>Date: </b>
-                                    <?php echo $investment_array_fixed['Reinvestment']['investment_date']; ?>
-                            <?php } elseif (isset($investment_array_fixed['Reinvestment']['payment_mode'])) { ?>
+                            
+                                <?php if (isset($date)) { ?> <b>Date: </b>
+                                    <?php echo $date; ?>
+                            <?php } if (isset($payment_mode)) { ?>
                                 <b>Payment Mode: </b>
                                 <?php
-                                echo $investment_array_fixed['Reinvestment']['payment_mode'];
+                                echo $payment_mode;
                             }
                             ?>
                         </td>
@@ -119,25 +106,29 @@ echo $this->Html->script('notification.js');
                     <tr>
                         <td align="left" valign="top" width="50%">
                             <table width="100%" cellspacing="10" cellpadding="0" border="0">
-
+                               
+                                <?php  if (isset($product_type) && ($product_type == 'fixed' || $product_type == 'both')) { ?>
                                 <tr>
                                     <td><b align="right">Fixed Investment Amount:</b></td>
                                     <td><span id="xxxxxx">
                                         <?php
-                                        if (isset($investment_array_fixed['Reinvestment']['fixed_inv_amount'])) {
-                                            echo $investment_array_fixed['Reinvestment']['fixed_inv_amount'];
+                                        if (isset($data_fixed['InvestmentCash']['amount'])) {
+                                            echo $data_fixed['InvestmentCash']['amount'];
                                         }
                                         ?>
                                         </span></td>   
                                 </tr> 
+                                
+                                <?php } if (isset($product_type) && ($product_type == 'equity' || $product_type == 'both')) { ?>
                                 <tr>
                                     <td><b align="right">Equity Investment Amount:</b></td>
                                     <td><span id="xxxxxx"><?php
-                                    if (isset($investment_array_fixed['Reinvestment']['equity_inv_amount'])) {
-                                        echo $investment_array_fixed['Reinvestment']['equity_inv_amount'] . '%';
+                                    if (isset($data_equity['InvestmentCash']['amount'])) {
+                                        echo $data_equity['InvestmentCash']['amount'];
                                     }
                                     ?></span></td> 
                                 </tr>
+            <?php } ?>
                             </table>
                         </td>
                         <td align="left" valign="top" width="50%">
@@ -145,8 +136,8 @@ echo $this->Html->script('notification.js');
                                 <tr>
                                     <td><b align="right">Total Amount Invested:</b></td>
                                     <td><span id="xxxxxx"><?php
-                                        if (isset($investment_array_fixed['Reinvestment']['total_inv_amount'])) {
-                                            echo $investment_array_fixed['Reinvestment']['total_inv_amount'] . '%';
+                                        if (isset($total_invested)) {
+                                            echo $total_invested ;
                                         }
                                     ?></span></td>
                                 </tr>
@@ -154,8 +145,7 @@ echo $this->Html->script('notification.js');
                                 <tr>
                                     <td><b align="right">Tax:</b></td>
                                     <td><span id="xxxxxx"><?php
-                                    //if (isset($payment['Investments']['tax'])) {
-                                    // echo $shopCurrency. ' 0.00';//$payment['Investments']['tax'];
+                                    
 //}
         ?></span></td>
                                 </tr>
@@ -198,10 +188,7 @@ echo $this->Html->script('notification.js');
 
                     </tr>
                 </table>
-        <?php
-    }
-}
-?>
+    
 
 
 
@@ -214,7 +201,7 @@ echo $this->Html->script('notification.js');
                 <td align="left" valign="top" width="50%">&nbsp;</td>
                 <td align="right" valign="top" width="50%">
 <?php
-echo $this->Html->link('Return', "/Investments/newInvestment0", array('style' => 'font-size: 14px;', 'class' => 'btn btn-lg btn-info'));
+echo $this->Html->link('Return', "/Reinvestments/newCashDeposit", array('style' => 'font-size: 14px;', 'class' => 'btn btn-lg btn-info'));
 echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
 ?>
                 </td>
