@@ -15,10 +15,12 @@ DONE - newInvestment2 for individual. When option of Fixed & Equity selected and
 Done - When new investment for Indiv is created, it doesnt add the investor_id to the investments table. hence one is unable to retrieve the equity or fixed investment under Manage Investments. 
 DONE - Monies received from clients for equity investments, yet those monies have not been used to buy stocks on the stock exchange should show up in some sort of paginated list together with comments on which equities are to be bought with those monies plus a few client details
 DONE - When time is due for the shares to be sold, the new share price will be entered and this should automatically calculate how much money is due to the client minus commission amount based on % entered earlier (see 2nd bullet above)
-
+DONE - REDIRECT new cash deposit under reinvestment to certificate
 
 TO DO
 ----------
+
++Convert amounts to primary currency selected in system setup
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days
 +Kwaku: Cron Job to process daily rates of fixed investments
