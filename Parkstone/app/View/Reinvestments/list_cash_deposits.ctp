@@ -77,7 +77,7 @@ echo $this->Html->script('notification.js');
                     <td align="left" >
                         <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/editCashDeposit/" . $each_item['ReinvestorDeposit']['id'], array("class" => $each_item['ReinvestorDeposit']['id'])); ?>
                     </td> 
-                    <td align="left"><?php echo $each_item['ReinvestorDeposit']['currency_id']; ?></td>
+                    <td align="left"><?php echo $each_item['Currency']['currency_name']; ?></td>
                     <td align="left"><?php echo $each_item['ReinvestorDeposit']['fixed_inv_amount']; ?></td>
                     <td align="left"><?php echo $each_item['ReinvestorDeposit']['equity_inv_amount']; ?></td>
                     <td align="left"><?php echo $this->Html->link("Delete","/Reinvestments/delCashDeposit/".$each_item['ReinvestorDeposit']['id']);   ?></td>

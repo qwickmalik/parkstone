@@ -28,6 +28,14 @@ class InvestmentCash extends AppModel{
             'limit' => '',
             'dependent' => true
         ),
+         'Reinvestor' => array(
+            'className' => 'Reinvestor',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' =>  '',
+            'limit' => '',
+            'dependent' => true
+        ),
          'Investment' => array(
             'className' => 'Investment',
             'foreignKey' => 'investment_id',
@@ -47,6 +55,14 @@ class InvestmentCash extends AppModel{
          'Currency' => array(
             'className' => 'Currency',
             'foreignKey' => 'currency_id',
+            'conditions' => '',
+            'order' =>  '',
+            'limit' => '',
+            'dependent' => true
+        ),
+         'ReinvestorDeposit' => array(
+            'className' => 'ReinvestorDeposit',
+            'foreignKey' => 'reinvestor_deposit_id',
             'conditions' => '',
             'order' =>  '',
             'limit' => '',

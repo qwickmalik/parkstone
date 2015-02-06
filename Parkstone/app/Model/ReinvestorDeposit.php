@@ -51,8 +51,18 @@ class ReinvestorDeposit extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ),
+            )
          );
+     
+      var $hasMany = array(
+        'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'reinvestor_deposit_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
     
 //    function getSetup(){
 //        $this->id = 1;
