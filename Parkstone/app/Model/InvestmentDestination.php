@@ -21,11 +21,11 @@ class InvestmentDestination extends AppModel {
             'dependent' => true),
          );
     
-//    function getSetup(){
-//        $this->id = 1;
-//        $result = $this->find('first',array('conditions' => array('InvestmentDestination.id' => 1)));
-//        return $result;
-//    }
+    function getSetup(){
+        $this->id = 1;
+        $result = $this->find('first',array('conditions' => array('InvestmentDestination.id' => 1)));
+        return $result;
+    }
     
     function getCompanies(){
         $result = $this->find('all');
