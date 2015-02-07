@@ -65,15 +65,15 @@ DONE 04.02.15  -edit destination
 DONE 04.02.15  -create product
 DONE 04.02.15  -update product
  
-+Under re-investment we will have two different views for reinvesting fixed investments and equities
+DONE 06.02.15 +Under re-investment we will have two different views for reinvesting fixed investments and equities
 DONE 31.01.15   +Re-investor company stays. Money is handled separately from Parkstone pool
 DONE 31.01.15 +Table to store all monies coming in and for which kind of investment=pool
-    -investment_cash table
+DONE    -investment_cash table
  #View
- -Choose company page & and fixed/equity reinvestmnt input
- -Fixed reinvestment page (page divided horizontally into 2; 20:80; upper 20% shows information about cash pool last reinvestment etc.;2nd half shows reinvestment options)
- -Equity reinvestment page (page divided upper listing investors and investment info;proportion will be up to malik;lower bottom for making investment)
- -Reinvestment summary page if successful commit
+DONE 06.02.15 -Choose company page & and fixed/equity reinvestmnt input
+DONE 06.02.15  -Fixed reinvestment page (page divided horizontally into 2; 20:80; upper 20% shows information about cash pool last reinvestment etc.;2nd half shows reinvestment options)
+DONE 06.02.15  -Equity reinvestment page (page divided upper listing investors and investment info;proportion will be up to malik;lower bottom for making investment)
+DONE 06.02.15  -Reinvestment summary page if successful commit
 #function
  -Route decision function after company n investment type choice
  -Fixed reinvestment page function which uses company id and investment type to select cash options for reinvestments

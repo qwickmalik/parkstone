@@ -7,11 +7,13 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'Investee', 'Currency',
-        'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash', 'InvestmentDestination', 'InvDestProduct');
+    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'Investee', 'Currency','InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash', 'InvestmentDestination', 'InvDestProduct', 'EquitiesList');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
+        'InvestmentCash' => array('limit' => 50, 'order' => array('InvestmentCash.id' => 'asc')),
+        'InvestmentDestination' => array('limit' => 50, 'order' => array('InvestmentDestination.id' => 'asc')),
+        'InvDestProduct' => array('limit' => 50, 'order' => array('InvDestProduct.id' => 'asc')),
     );
 
 //    var $helpers = array('AjaxMultiUpload.Upload');
@@ -1070,13 +1072,16 @@ class ReinvestmentsController extends AppController {
     
     function invDestProduct() {
         // $this->__validateUserType();
-        $data = $this->paginate('InvDestProduct');
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+
+//        $setupResults = $this->InvDestProduct->getCompanies();
+
+//        $this->set(compact('setupResults'));
+        $data = $this->paginate('InvDestProduct');
         $this->set('data', $data);
-
-        $setupResults = $this->InvDestProduct->getCompanies();
-
-        $this->set(compact('setupResults'));
+        
     }
 
     function addInvDestProduct() {
@@ -1129,31 +1134,11 @@ class ReinvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Reivestments', 'action' => 'InvDestProduct'));
         }
     }
-    
-    function newInvestment0() {
-        //$this->set('idtypes', $this->Idtype->find('list'));
-        //$this->set('investortypes', $this->InvestorType->find('list'));
-        //$this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id' => 4))));
-    }
 
     function newInvestment() {
-        /* $this->__validateUserType(); 
-          $data = $this->paginate('Investor');
-          $this->set('investor', $data); */
-        $this->set('reinvestors', $this->Reinvestor->find('list'));
-        $this->set('investees', $this->Investee->find('list'));
-        $check = $this->Session->check('ivt');
-        if ($check) {
-            $cust = $this->Session->read('ivt');
-
-            $this->set('int', $cust);
-        }
-        $check = $this->Session->check('ivts');
-        if ($check) {
-            $cust = $this->Session->read('ivts');
-            $this->set('investor', $cust);
-            $this->Session->delete('ivts');
-        }
+        /* $this->__validateUserType(); */
+        $data = $this->paginate('InvestmentCash');
+        $this->set('data', $data);
     }
 
     function getfunds() {
@@ -1169,46 +1154,40 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newInvestment1Joint() {
-        /* $this->__validateUserType(); */
-        $data = $this->paginate('Investor');
-        $this->set('investor', $data);
-
-        $check = $this->Session->check('ivt');
-        if ($check) {
-            $cust = $this->Session->read('ivt');
-//            pr($cust);
-            $this->set('int', $cust);
-            //$this->Session->delete('ivt');
-        }
-        $check = $this->Session->check('ivts');
-        if ($check) {
-            $cust = $this->Session->read('ivts');
-            $this->set('investor', $cust);
-            $this->Session->delete('ivts');
-        }
+    function newInvestment1() {
+        /* $this->__validateUserType(); */ 
+    }
+    
+    function newInvestment1Fixed() {
+        /* $this->__validateUserType(); */     
+        $this->set('investmentcashes', $this->InvestmentCash->find('list'));
+    }
+    
+    function newInvestment1Fixed1() {
+        /* $this->__validateUserType(); */     
+        $this->set('reinvestments', $this->Reinvestment->find('list'));
     }
 
-    function newInvestment2() {
+    function newInvestment1Equity() {
         /* $this->__validateUserType(); */
-        $this->set('portfolios', $this->Portfolio->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
 
-        $check = $this->Session->check('ivt');
-        if ($check) {
-            $investor = $this->Session->read('ivt');
-
-            $this->set('investor', $investor);
-        } else {
-            $message = 'No Investor Selected';
-            $this->Session->write('emsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
-        }
-        $check = $this->Session->check('variabless');
-        if ($check) {
-            $this->set('duedate', $this->Session->read('variabless.duedate'));
-            $this->set('interest', $this->Session->read('variabless.interest'));
-            $this->set('totaldue', $this->Session->read('variabless.totaldue'));
-        }
+//        $check = $this->Session->check('ivt');
+//        if ($check) {
+//            $investor = $this->Session->read('ivt');
+//
+//            $this->set('investor', $investor);
+//        } else {
+//            $message = 'No Investor Selected';
+//            $this->Session->write('emsg', $message);
+//            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
+//        }
+//        $check = $this->Session->check('variabless');
+//        if ($check) {
+//            $this->set('duedate', $this->Session->read('variabless.duedate'));
+//            $this->set('interest', $this->Session->read('variabless.interest'));
+//            $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+//        }
 //        $hp_data = array();
 //        $hp_data_check = $this->Session->check('hp_data');
 //        if ($hp_data_check) {
@@ -1220,6 +1199,11 @@ class ReinvestmentsController extends AppController {
 //        }
     }
 
+    function newInvestment1Equity1() {
+        /* $this->__validateUserType(); */     
+        $this->set('reinvestments', $this->Reinvestment->find('list'));
+    }
+    
     function process() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
