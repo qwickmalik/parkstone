@@ -69,7 +69,7 @@ echo $this->Html->script('notification.js');
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('equity_inv_amount', 'Equity Inv. Amount'); ?></b>
                 </td>
-                <td align="left"><?php echo "Delete"; ?></td>
+                <td style="border-bottom: solid 2px dodgerblue;" align="left"><?php echo "Delete"; ?></td>
             </tr>
 <?php foreach ($data as $each_item): ?>
                 <tr>
