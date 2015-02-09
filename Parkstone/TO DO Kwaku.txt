@@ -29,7 +29,23 @@ TO DO
 - Instructions in Equity will be different
 Schedule
 
+---Parkstone Ideas-----
 
+1. Sum all investment cash amounts not invested while reinvesting...change flag to invested..put totals and details in new table
+	consider storing id of last row used..and have flag in new table to show partly reinvested 
+	las row is check for full reinvestment before going back to investment cash to check
+	this new table will have be for only fixed investments
+----Have to add code to add equity and fixed investments to investment cashs
+
+2. Alternative to 1 above is to have a cron job that runs midnight everyday and sums up all unflagged reinvestment
+   cash to reinvestment deposits..it will check for unused amounts from reinvestment deposits. This will be from
+   two columns known as equity_inv_balance and fixed_investments balance. It will add this to unflagged amounts
+   from investment cash.
+3. There will be another cron job to add daily interests to amounts. Will have accrued column and after outstanding due..different from
+   total expected due or due on maturity date.,,Must consider if i have to add this to reinvestment deposit amounts.(Must know deposits accounts for moneys yet to be invested)
+3. must have a table to record total cash owed clients at any moment..must condiser this being part of cron job calculations .
+	An idea for this is to record totals of cash in investment..principal accrued and total...and add to them everytime they are actually reinvested..demands a new table
+   
 
 
 EQUITIES MANAGEMENT
@@ -37,7 +53,8 @@ EQUITIES MANAGEMENT
 
 + Select an entry from that list to open a new view where details such as stock name, stock price, quantity to be purchased, commission (usually a % of sale value), etc will be captured.
 
-+ The only problem i see with this approach is that it means all the money that a person intends for equity investment will have to be used to buy only one type of stock. This means in a case where the client leaves the decision as to which stocks to buy to Parkstone, they are constrained to buy only one type of stock. Otherwise, they will have to divide the money up into bits during the new_investment process so that the money will show up in bits during the equity management/re-investment process.
++ The only problem i see with this approach is that it means all the money that a person intends for equity investment will have to be used to buy only one type of stock. 
+This means in a case where the client leaves the decision as to which stocks to buy to Parkstone, they are constrained to buy only one type of stock. Otherwise, they will have to divide the money up into bits during the new_investment process so that the money will show up in bits during the equity management/re-investment process.
 
 ##########    BUGS    ##########
 ================================
