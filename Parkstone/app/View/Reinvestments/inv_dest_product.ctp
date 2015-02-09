@@ -12,8 +12,10 @@ echo $this->Html->script('notification.js');
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php
-                echo $this->Form->input('company_id', array('default' => 1, 'label' => 'Destination Company'));
+                echo $this->Form->input('investmentdestination_id', array('label' => 'Destination Company', 'empty' => "--Please select--"));
+                
                 ?>
+                
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php
@@ -47,10 +49,10 @@ echo $this->Html->script('notification.js');
             <?php foreach ($data as $each_item): ?>
                 <tr>
                     <td width="50" align="left"><?php echo $each_item['InvDestProduct']['id']; ?></td>
-                    <td align="left" class="userTypeAnchor"><?php echo $this->Html->link($each_item['InvDestProduct']['company_id'], "Reinvestments/invDestProduct/".$each_item['InvDestProduct']['id'], array("class" => $each_item['InvDestProduct']['id'])); ?></td> 
+                    <td align="left" class="userTypeAnchor"><?php echo $this->Html->link($each_item['InvestmentDestination']['company_name'], "/Reinvestments/invDestProduct/".$each_item['InvestmentDestination']['id']."/".$each_item['InvDestProduct']['id'], array("class" => $each_item['InvDestProduct']['id'])); ?></td> 
                     <td align="left"><?php echo $each_item['InvDestProduct']['inv_dest_product']; ?></td>
                    
-                    <td align="left"><?php echo $this->Html->link("Delete", "/Reinvestments/delInvDestProduct/" . $each_item['InvDestProduct']['id']); ?></td>
+                    <td align="left"><?php echo $this->Html->link("Delete", "/Reinvestments/delInvDestProduct/".$each_item['InvDestProduct']['id']); ?></td>
                 </tr>
             <?php endforeach; ?>
             <tr>

@@ -1070,11 +1070,18 @@ class ReinvestmentsController extends AppController {
         }
     }
     
-    function invDestProduct() {
+    function invDestProduct($company_id = null, $product_id = null) {
         // $this->__validateUserType();
-        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
-        $this->set('invdestproducts', $this->InvDestProduct->find('list'));
-        $this->set('reinvestors', $this->Reinvestor->find('list'));
+        if($company_id != null || $company_id !=""){
+            $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
+            $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+            
+        }
+        else{
+            $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
+            $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+        }
+        
 
 //        $setupResults = $this->InvDestProduct->getCompanies();
 
@@ -1137,8 +1144,32 @@ class ReinvestmentsController extends AppController {
 
     function newInvestment() {
         /* $this->__validateUserType(); */
-        $data = $this->paginate('InvestmentCash');
-        $this->set('data', $data);
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+        
+        if($this->request->is('post')){
+            $reinvestor_id = $this->request->data['Reinvestment']['reinvestor_id'];
+            $investment_type = $this->request->data['Reinvestment']['investment_type'];
+            
+            if($reinvestor_id == '' || $reinvestor_id == NULL){
+                $message = 'Please Select Re-investor';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
+            }
+            elseif($investment_type == '' || $investment_type == NULL){
+                $message = 'Please Select Investment Type';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
+            }
+            else{
+                if($investment_type==1){
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Fixed/'.$reinvestor_id));
+                }
+                elseif($investment_type==2){
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Equity/'.$reinvestor_id));
+                }
+                       
+            }
+        } 
     }
 
     function getfunds() {
@@ -1154,13 +1185,34 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newInvestment1() {
-        /* $this->__validateUserType(); */ 
+    function newInvestment0Fixed($reinvestor_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
+         
+        $this->paginate = array(
+            'conditions' => array('InvestmentCash.investment_type' => 'fixed', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => 'available'),
+            'limit' => 30, 'order' => array('InvestmentCash.id' => 'asc'));
+        $data = $this->paginate('InvestmentCash');
+        $this->set('data', $data);
     }
     
-    function newInvestment1Fixed() {
+    function newInvestment0Equity($reinvestor_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
+         
+        $this->paginate = array(
+            'conditions' => array('InvestmentCash.investment_type' => 'equity', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => 'available'),
+            'limit' => 30, 'order' => array('InvestmentCash.id' => 'asc'));
+        $data = $this->paginate('InvestmentCash');
+        $this->set('data', $data);
+    }
+    
+    function newInvestment1Fixed($investment_id = NULL) {
         /* $this->__validateUserType(); */     
-        $this->set('investmentcashes', $this->InvestmentCash->find('list'));
+        $this->set('investmentcashes', $this->InvestmentCash->find('first', ['conditions' => ['InvestmentCash.id' => $investment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
     }
     
     function newInvestment1Fixed1() {

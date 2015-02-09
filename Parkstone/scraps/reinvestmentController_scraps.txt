@@ -1,0 +1,70 @@
+
+    function newInvestment() {
+        /* $this->__validateUserType(); */
+        $data = $this->paginate('InvestmentCash');
+        $this->set('data', $data);
+    }
+
+    function getfunds() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $investee_id = $_POST['investee_id'];
+            $result = $this->Investee->find('first', array('conditions' => array('Investee.id' => $investee_id)));
+            if ($result) {
+                return json_encode(array('status' => 'ok', 'data' => $result['Investee']));
+            } else {
+                return json_encode(array('status' => 'failed'));
+            }
+        }
+    }
+
+    function newInvestment1() {
+        /* $this->__validateUserType(); */ 
+    }
+    
+    function newInvestment1Fixed() {
+        /* $this->__validateUserType(); */     
+        $this->set('investmentcashes', $this->InvestmentCash->find('list'));
+    }
+    
+    function newInvestment1Fixed1() {
+        /* $this->__validateUserType(); */     
+        $this->set('reinvestments', $this->Reinvestment->find('list'));
+    }
+
+    function newInvestment1Equity() {
+        /* $this->__validateUserType(); */
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+
+//        $check = $this->Session->check('ivt');
+//        if ($check) {
+//            $investor = $this->Session->read('ivt');
+//
+//            $this->set('investor', $investor);
+//        } else {
+//            $message = 'No Investor Selected';
+//            $this->Session->write('emsg', $message);
+//            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
+//        }
+//        $check = $this->Session->check('variabless');
+//        if ($check) {
+//            $this->set('duedate', $this->Session->read('variabless.duedate'));
+//            $this->set('interest', $this->Session->read('variabless.interest'));
+//            $this->set('totaldue', $this->Session->read('variabless.totaldue'));
+//        }
+//        $hp_data = array();
+//        $hp_data_check = $this->Session->check('hp_data');
+//        if ($hp_data_check) {
+//            $hp_data = $this->Session->read('hp_data');
+//
+//            $this->Session->write('order_invoice', $hp_data);
+//            $this->set('hp_data', $hp_data);
+//            $this->Session->delete('hp_data');
+//        }
+    }
+
+    function newInvestment1Equity1() {
+        /* $this->__validateUserType(); */     
+        $this->set('reinvestments', $this->Reinvestment->find('list'));
+    }
+    
