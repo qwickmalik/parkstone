@@ -120,6 +120,14 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+         'ReinvestorCashaccount' => array(
+            'className' => 'ReinvestorCashaccount',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     

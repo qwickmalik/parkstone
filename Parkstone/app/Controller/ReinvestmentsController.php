@@ -54,14 +54,16 @@ class ReinvestmentsController extends AppController {
             $investment_type = $this->request->data['InvestmentCash']['investmentproduct_id'];
             $investment_prod = '';
             $payment_name = '';
-            $userid = null;
+            
             $fixed_inv_amount = $this->request->data['InvestmentCash']['fixed_inv_amount'];
             $equity_inv_amount = $this->request->data['InvestmentCash']['equity_inv_amount'];
+            $payment_name = '';
             $paymentmodeid = $this->request->data['InvestmentCash']['paymentmode_id'];
             $payment_mode = $this->PaymentMode->find('first',array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
             if($payment_mode){
                 $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
             }
+            $userid = null;
             $check = $this->Session->check('userDetails');
         if ($check) {
             $userid = $this->Session->read('userDetails.id');
@@ -1097,8 +1099,8 @@ class ReinvestmentsController extends AppController {
 //            Configure::write('debug', 0);
 
             if (!empty($this->request->data)) {
-                $this->Session->write('InvDestProduct', $this->request->data['InvDesProduct']);
-                
+                $this->Session->write('InvDestProduct', $this->request->data['InvDestProduct']);
+                $this->request->data['InvDestProduct']['investment_destination_id']=$this->request->data['InvDestProduct']['investmentdestination_id'];
                 $result = $this->InvDestProduct->save($this->request->data);
                 if ($result) {
                     $this->request->data = null;

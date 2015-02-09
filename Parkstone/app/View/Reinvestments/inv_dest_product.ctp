@@ -7,7 +7,7 @@ echo $this->Html->script('notification.js');
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
-        <?php echo $this->Form->create('InvDestProducts', array("url" => array('controller' => 'Reinvestments', 'action' => 'addInvDestProduct'), "inputDefaults" => array()));
+        <?php echo $this->Form->create('InvDestProduct', array("url" => array('controller' => 'Reinvestments', 'action' => 'addInvDestProduct'), "inputDefaults" => array()));
         ?>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -39,7 +39,7 @@ echo $this->Html->script('notification.js');
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('company_id', 'Destination Company'); ?></b>
+                    <b><?php echo $this->Paginator->sort('investment_destination_id', 'Destination Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left">
                     <b><?php echo $this->Paginator->sort('inv_dest_product', 'Investment Destination Product'); ?></b>

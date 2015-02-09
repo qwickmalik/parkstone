@@ -14,7 +14,7 @@ class InvestmentDestination extends AppModel {
      var $hasMany = array(
          'InvDestProduct' => array(
             'className' => 'InvDestProduct',
-            'foreignKey' => 'company_id',
+            'foreignKey' => 'investment_destination_id',
             'conditions' => '',
             'order' =>  '',
             'limit' => '',
