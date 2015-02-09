@@ -449,8 +449,8 @@ CREATE TABLE IF NOT EXISTS `investment_destinations` (
   `location` varchar(50) DEFAULT NULL,
   `postal_address` varchar(100) DEFAULT NULL,
   `country` varchar(25) DEFAULT NULL,
-  `created` timestamp DEFAULT NULL,
-  `modified` timestamp DEFAULT NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `modified` timestamp NULL DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -470,3 +470,31 @@ CREATE TABLE IF NOT EXISTS `inv_dest_products` (
 FEBRUARY 5, 2015
 -----------------------------------
 ALTER TABLE `investment_cashes` ADD `reinvestor_deposit_id` INT( 11 ) NULL AFTER `currency_id` ;
+
+
+FEBRUARY 9, 2015
+-------------------------------
+ALTER TABLE `inv_dest_products` CHANGE `company_id` `investment_destination_id` INT( 11 ) NULL DEFAULT NULL ;
+ALTER TABLE `reinvestor_deposits` CHANGE `fixed_inv_amount` `fixed_inv_amount` DECIMAL( 11, 2 ) NULL DEFAULT NULL ;
+ALTER TABLE `reinvestor_deposits` CHANGE `equity_inv_amount` `equity_inv_amount` DECIMAL( 11, 2 ) NULL DEFAULT NULL ;
+ALTER TABLE `reinvestor_deposits` ADD `equity_inv_balance` DECIMAL( 11, 2 ) NULL AFTER `equity_inv_amount` ,
+ADD `fixed_inv_balance` DECIMAL( 11, 2 ) NULL AFTER `equity_inv_balance` ;
+ALTER TABLE `reinvestor_deposits` CHANGE `fixed_inv_amount` `fixed_inv_amount` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `equity_inv_amount` `equity_inv_amount` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `equity_inv_balance` `equity_inv_balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `fixed_inv_balance` `fixed_inv_balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
+CREATE TABLE IF NOT EXISTS `reinvestor_cashaccounts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `fixed_inv_amount` decimal(11,2) DEFAULT '0.00',
+  `equity_inv_amount` decimal(11,2) DEFAULT '0.00',
+  `equity_inv_balance` decimal(11,2) DEFAULT '0.00',
+  `fixed_inv_balance` decimal(11,2) DEFAULT '0.00',
+  `notes` text NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `modified` timestamp NULL DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `investment_cashes` CHANGE `status` `status` ENUM( 'available', 'invested', 'paid', 'part_investment', 'processed' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'available';
