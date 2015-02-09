@@ -28,14 +28,6 @@ class InvestmentCash extends AppModel{
             'limit' => '',
             'dependent' => true
         ),
-         'Reinvestor' => array(
-            'className' => 'Reinvestor',
-            'foreignKey' => 'reinvestor_id',
-            'conditions' => '',
-            'order' =>  '',
-            'limit' => '',
-            'dependent' => true
-        ),
          'Investment' => array(
             'className' => 'Investment',
             'foreignKey' => 'investment_id',

@@ -15,7 +15,7 @@ class InvDestProduct extends AppModel {
      var $belongsTo = array(
          'InvestmentDestination' => array(
             'className' => 'InvestmentDestination',
-            'foreignKey' => 'company_id',
+            'foreignKey' => 'investment_destination_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

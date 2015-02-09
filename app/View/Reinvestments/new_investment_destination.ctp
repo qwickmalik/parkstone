@@ -82,5 +82,8 @@ echo $this->Html->script('notification.js');
             </tr>
         </table>
         <?php echo $this->Form->end(); ?>		
-
+        <script type="javascript">
+            
+            
+            </script>
         <!-- Content ends here -->

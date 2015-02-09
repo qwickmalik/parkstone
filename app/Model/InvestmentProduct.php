@@ -23,6 +23,14 @@ class InvestmentProduct extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+        'ReinvestorCashaccount' => array(
+            'className' => 'ReinvestorCashaccount',
+            'foreignKey' => 'investment_product_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
 }
 

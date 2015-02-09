@@ -9,7 +9,9 @@ class ShellConsolesController extends AppController {
 
     public $components = array('RequestHandler', 'Session', 'Message');
     var $name = 'ShellConsole';
-    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'DailyDefault', 'ClosingBalance', 'Order', 'Expectedinstallment', 'Customer');
+    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
+        'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'DailyDefault', 
+        'ClosingBalance', 'Order', 'Expectedinstallment', 'Customer','InvestmentCash','ReinvestorCashaccount');
 
     function beforeFilter() {
         
@@ -522,43 +524,77 @@ class ShellConsolesController extends AppController {
         }
     }
 
-//
-//    function __EOD() {
-//
-//        $total = $this->Eod->find('count');
-////        
-//        if ($total > 0) {
-//            $set = $this->Eod->find('first', array('order' => 'Eod.id DESC'));
-//            $today = date('Y-m-d');
-//
-//
-//
-//            if (($today != $set['Eod']['eod_date']) && ($set['Eod']['flag'] == 0)) {
-//
-//                $EOD_date = $set['Eod']['eod_date'];
-//                $this->__balEOD($EOD_date);
-//
-//                $this->__incomestatementEOD($EOD_date);
-//
-////            $this->__ownerequityEOD($EOD_date);
-//
-//
-//                $EODdata = array('id' => $set['Eod']['id'], 'flag' => 1);
-//                $result = $this->Eod->save($EODdata);
-//
-//                if ($result) {
-//
-//                    $EODdata2 = array('eod_date' => $today);
-//                    $this->Eod->create();
-//                    $this->Eod->save($EODdata2);
-//                }
-//            }
-//        } else {
-//            $today = date('Y-m-d');
-//            $EODdata3 = array('eod_date' => $today);
-//            $this->Eod->save($EODdata3);
-//        }
-//    }
+function __invEOD(){
+    $fixed_total = 0.00;
+    $data_fixed = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+        array('InvestmentCash.investment_type' => 'fixed',
+        'InvestmentCash.status' => 'available'),'fields' => array("SUM(amount) as 'invested_amount'"),
+        'group' => array('InvestmentCash.reinvestor_id')));
+    
+    $data_equity = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+        array('InvestmentCash.investment_type' => 'equity',
+        'InvestmentCash.status' => 'available'),'fields' => array("SUM(amount) as 'invested_amount'"),
+        'group' => array('InvestmentCash.reinvestor_id')));
+    
+    
+    if($data_fixed){
+        foreach($data_fixed as $data){
+            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'InvestmentCash.status' => 'processed');
+            $reinvestor_id = $data['InvestmentCash']['reinvestor_id'];
+            $result = $this->ReinvestorCashaccount->find('first',array('recursive' => -1,'conditions' =>
+                array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
+            if($result){
+                $id = $result['ReinvestorCashaccount']['id'];
+                $old_total = $result['ReinvestorCashaccount']['fixed_inv_amount'];
+                $old_balance = $result['ReinvestorCashaccount']['fixed_inv_balance'];
+                $new_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['fixed_inv_amount'];
+                $new_balance = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['fixed_inv_balance'];
+                
+                $fixed_data = array('id' => $id,'reinvestor_id' => $reinvestor_id, 'fixed_inv_amount' => $new_total,
+                'fixed_inv_balance' => $new_balance);
+                 $this->ReinvestorCashaccount->save($fixed_data);
+            }else{
+                $new_total = $data[0]['invested_amount'];
+                $new_balance = $data[0]['invested_amount'];
+                
+                $fixed_data = array('reinvestor_id' => $reinvestor_id, 'fixed_inv_amount' => $new_total,
+                'fixed_inv_balance' => $new_balance);
+                $this->ReinvestorCashaccount->create();
+                $this->ReinvestorCashaccount->save($fixed_data);
+            }
+            $this->InvestmentCash->save($updated_datafixed);
+        }
+    }
+    
+    if($data_equity){
+        foreach($data_equity as $data){
+            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'InvestmentCash.status' => 'processed');
+            $reinvestor_id = $data['InvestmentCash']['reinvestor_id'];
+            $result = $this->ReinvestorCashaccount->find('first',array('recursive' => -1,'conditions' =>
+                array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
+            if($result){
+                $id = $result['ReinvestorCashaccount']['id'];
+                $old_total = $result['ReinvestorCashaccount']['equity_inv_amount'];
+                $old_balance = $result['ReinvestorCashaccount']['equity_inv_balance'];
+                $new_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['equity_inv_amount'];
+                $new_balance = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['equity_inv_balance'];
+                
+                $equity_data = array('id' => $id,'reinvestor_id' => $reinvestor_id, 'equity_inv_amount' => $new_total,
+                'equity_inv_balance' => $new_balance);
+                 $this->ReinvestorCashaccount->save($equity_data);
+            }else{
+                $new_total = $data[0]['invested_amount'];
+                $new_balance = $data[0]['invested_amount'];
+                
+                $equity_data = array('reinvestor_id' => $reinvestor_id, 'equity_inv_amount' => $new_total,
+                'equity_inv_balance' => $new_balance);
+                $this->ReinvestorCashaccount->create();
+                $this->ReinvestorCashaccount->save($equity_data);
+            }
+            $this->InvestmentCash->save($updated_dataequity);
+        }
+    }
+}
 
 
     function __balEOD($bDate) {
