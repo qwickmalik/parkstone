@@ -16,23 +16,73 @@ if ($this->Session->check('shopCurrency_investment')) {
         <!-- Step Investment Details Start -->
         <?php
         echo $this->Form->create('newReinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed1'), "inputDefaults" => array('div' => false)));
+        
+        
         ?>
         <p class="subtitle-red">Step 2 - Fixed Investment</p>
                     <div class="row"  style="background: #F0E3C0;">
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <?php
-                            echo "<p><b>&nbsp</b></p>";
-                            echo "<p><b>Re-investor Company:</b>" . "</p>";
-                            echo "<p><b>Investment Date:</b>" . "</p>";
-                            echo "<p><b>Deposited Amount:</b>" . "</p>";
-                            echo "<p><b>Available Amount:</b>" . "</p>";
-                            ?>  
+                            <p></p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Re-investor Company:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['Reinvestor']['company_name']) ? $investmentcashes['Reinvestor']['company_name'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Investment Date:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['InvestmentCash']['investment_date']) ? $investmentcashes['InvestmentCash']['investment_date'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Currency:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['Currency']['symbol']) ? $investmentcashes['Currency']['symbol'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Deposited Amount:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['InvestmentCash']['amount']) ? $investmentcashes['InvestmentCash']['amount'] : '' );?>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Available Amount:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['InvestmentCash']['available_amount']) ? $investmentcashes['InvestmentCash']['available_amount'] : '' );?>
+                                </div>
+                            </div> 
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <?php
-                            echo "<p><b>&nbsp</b></p>";
-                            echo "<p><b>Notes:</b>" . "</p>"
-                            ?>  
+                            <p></p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Investment Type:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['InvestmentCash']['investment_type']) ? $investmentcashes['InvestmentCash']['investment_type'] : '' );?>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Notes:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($investmentcashes['InvestmentCash']['notes']) ? $investmentcashes['InvestmentCash']['notes'] : '' );?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </td>
@@ -43,9 +93,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investment_type', array());
 
-                            echo $this->Form->input('investee_id', array('empty' => '--Please Select--', 'label' => 'Investment Destination Company/Fund', 'selected' => '--Please Select--'));
+                            echo $this->Form->input('investmentdestination_id', array('empty' => '--Please Select--', 'label' => 'Investment Destination Company/Fund', 'selected' => '--Please Select--'));
                             ?>
                             
                         </div>
@@ -167,7 +216,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right;">
                     <?php
-                    echo $this->Html->link('Back', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
+//                    echo $this->Html->link('Back', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
                     echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success"));
                     echo "&nbsp;&nbsp;";
                     echo $this->Html->link('Finish', "/Reinvestments/newInvestment1Fixed1", array("class" => 'btn btn-lg btn-primary'));
