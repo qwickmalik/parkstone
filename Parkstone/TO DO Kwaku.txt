@@ -16,10 +16,19 @@ Done - When new investment for Indiv is created, it doesnt add the investor_id t
 DONE - Monies received from clients for equity investments, yet those monies have not been used to buy stocks on the stock exchange should show up in some sort of paginated list together with comments on which equities are to be bought with those monies plus a few client details
 DONE - When time is due for the shares to be sold, the new share price will be entered and this should automatically calculate how much money is due to the client minus commission amount based on % entered earlier (see 2nd bullet above)
 DONE - REDIRECT new cash deposit under reinvestment to certificate
-
+DONE(OPTION 2) - 1. Sum all investment cash amounts not invested while reinvesting...change flag to invested..put totals and details in new table
+	consider storing id of last row used..and have flag in new table to show partly reinvested 
+	last row is check for full reinvestment before going back to investment cash to check
+	this new table will have be for only fixed investments
+ OR
+ 2. Alternative to 1 above is to have a cron job that runs every midnight and sums up all unflagged reinvestment
+   cash to reinvestor_cashaccounts..it will check for unused balances from reinvestor_cashaccounts. This will be from
+   two columns known as equity_inv_balance and fixed_inv_balance. It will add this to unflagged amounts
+   from investment cash.
+   
 TO DO
 ----------
-
++Have to add code to add equity and fixed investments to insert into investment cashs
 +Convert amounts to primary currency selected in system setup
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days
@@ -31,19 +40,10 @@ Schedule
 
 ---Parkstone Ideas-----
 
-1. Sum all investment cash amounts not invested while reinvesting...change flag to invested..put totals and details in new table
-	consider storing id of last row used..and have flag in new table to show partly reinvested 
-	las row is check for full reinvestment before going back to investment cash to check
-	this new table will have be for only fixed investments
-----Have to add code to add equity and fixed investments to investment cashs
 
-2. Alternative to 1 above is to have a cron job that runs midnight everyday and sums up all unflagged reinvestment
-   cash to reinvestment deposits..it will check for unused amounts from reinvestment deposits. This will be from
-   two columns known as equity_inv_balance and fixed_investments balance. It will add this to unflagged amounts
-   from investment cash.
 3. There will be another cron job to add daily interests to amounts. Will have accrued column and after outstanding due..different from
    total expected due or due on maturity date.,,Must consider if i have to add this to reinvestment deposit amounts.(Must know deposits accounts for moneys yet to be invested)
-3. must have a table to record total cash owed clients at any moment..must condiser this being part of cron job calculations .
+4. must have a table to record total cash owed clients at any moment..must condiser this being part of cron job calculations .
 	An idea for this is to record totals of cash in investment..principal accrued and total...and add to them everytime they are actually reinvested..demands a new table
    
 
