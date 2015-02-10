@@ -25,10 +25,12 @@ DONE(OPTION 2) - 1. Sum all investment cash amounts not invested while reinvesti
    cash to reinvestor_cashaccounts..it will check for unused balances from reinvestor_cashaccounts. This will be from
    two columns known as equity_inv_balance and fixed_inv_balance. It will add this to unflagged amounts
    from investment cash.
-   
+DONE - Have to add code to add equity and fixed investments to insert into investment cashs
+ 
 TO DO
 ----------
-+Have to add code to add equity and fixed investments to insert into investment cashs
+
++modify process_indv and process_corp investment function to accomodate new look joint,group and corp investment view (eg.new_investment2_joint.ctp)
 +Convert amounts to primary currency selected in system setup
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days

@@ -74,6 +74,11 @@ DONE 06.02.15 -Choose company page & and fixed/equity reinvestmnt input
 DONE 06.02.15  -Fixed reinvestment page (page divided horizontally into 2; 20:80; upper 20% shows information about cash pool last reinvestment etc.;2nd half shows reinvestment options)
 DONE 06.02.15  -Equity reinvestment page (page divided upper listing investors and investment info;proportion will be up to malik;lower bottom for making investment)
 DONE 06.02.15  -Reinvestment summary page if successful commit
+
+
+T0 D0
+-------
+modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 #function
  -Route decision function after company n investment type choice
  -Fixed reinvestment page function which uses company id and investment type to select cash options for reinvestments
