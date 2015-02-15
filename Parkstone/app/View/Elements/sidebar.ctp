@@ -48,7 +48,7 @@
         </a>
         <ul class="child">
             <li>
-                <?php echo $this->Html->link('New Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link('Reinvestor Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
@@ -56,20 +56,20 @@
             <li>
                 <?php echo $this->Html->link('List/Edit Cash Deposits', '/Reinvestments/listCashDeposits', array('escape' => false)); ?>
             </li>
+<!--            <li>
+                <?php // echo $this->Html->link('Investment Destinations', '#', array('escape' => false)); ?>
+            </li>-->
             <li>
-                <?php echo $this->Html->link('Investment Destinations', '#', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Inv. Destination', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
             </li>
-                <li style="margin-left: 15px;">
-                    <?php echo $this->Html->link('New/Edit', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
-                </li>
-                <li style="margin-left: 15px;">
-                    <?php echo $this->Html->link('Products', '/Reinvestments/invDestProduct', array('escape' => false)); ?>
-                </li>
+            <li>
+                <?php echo $this->Html->link('Inv. Destination Products', '/Reinvestments/invDestProduct', array('escape' => false)); ?>
+            </li>
             <li>
                 <?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Manage Re-Investments', '/Reinvestments/manageInvestments', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Manage Re-Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
         </ul>
     </li>

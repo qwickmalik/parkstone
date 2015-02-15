@@ -1500,28 +1500,69 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function manageInvestments() {
-        /* $this->__validateUserType(); 
-
-          $data = $this->paginate('Investment');
-
-          $this->set('data', $data);
-          $check = $this->Session->check('mivt');
-          if ($check) {
-          $cust = $this->Session->read('mivt');
-          //            pr($cust);
-          $this->set('int', $cust);
-          $this->Session->delete('mivt');
-          }
-          $check = $this->Session->check('mivts');
-          if ($check) {
-          $cust = $this->Session->read('mivts');
-          $this->set('data', $cust);
-
-          $this->Session->delete('mivts');
-          } */
+    function manageInv() {
+        /* $this->__validateUserType(); */
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+        
+        if($this->request->is('post')){
+            $reinvestor_id = $this->request->data['ManageInvestments']['reinvestor_id'];
+            $investment_type = $this->request->data['ManageInvestments']['investment_type'];
+            
+            if($reinvestor_id == '' || $reinvestor_id == NULL){
+                $message = 'Please Select Re-investor';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+            }
+            elseif($investment_type == '' || $investment_type == NULL){
+                $message = 'Please Select Investment Type';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+            }
+            else{
+                if($investment_type==1){
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/'.$reinvestor_id));
+                }
+                elseif($investment_type==2){
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvEquity/'.$reinvestor_id));
+                }
+                       
+            }
+        }
+    }
+    
+    function manageInvFixed($reinvestor_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
+//        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
+         
+        $this->paginate = array(
+            'conditions' => array('Reinvestment.investment_type' => 'fixed', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
+            'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
+        $data = $this->paginate('Reinvestment');
+        $this->set('data', $data);
+    }
+    
+    function manageInvEquity($reinvestor_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
+        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
+         
+        $this->paginate = array(
+            'conditions' => array('Reinvestment.investment_type' => 'equity', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.status' => 'unpaid'),
+            'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
+        $data = $this->paginate('Reinvestment');
+        $this->set('data', $data);
     }
 
+    function manageInvFixedDetails($reinvestment_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        
+    }
+    
     function processPayments() {
         /* $this->__validateUserType(); */
 

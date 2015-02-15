@@ -35,7 +35,16 @@ class Reinvestor extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+         'Reinvestment' => array(
+            'className' => 'Reinvestment',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+         );
     
     function getSetup(){
         $this->id = 1;
