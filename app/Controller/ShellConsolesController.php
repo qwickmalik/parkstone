@@ -27,7 +27,8 @@ class ShellConsolesController extends AppController {
      */
     public function cronJobs() {
         $this->autoRender = false;
-        $this->__runDailyDefaulters();
+//        $this->__runDailyDefaulters();
+        $this->__invEOD();
     }
 
     public function defaultJobs() {
@@ -528,18 +529,18 @@ function __invEOD(){
     $fixed_total = 0.00;
     $data_fixed = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
         array('InvestmentCash.investment_type' => 'fixed',
-        'InvestmentCash.status' => 'available'),'fields' => array("SUM(amount) as 'invested_amount'"),
+        'InvestmentCash.status' => 'available'),'fields' => array("SUM(InvestmentCash.amount) as 'invested_amount'","InvestmentCash.id","InvestmentCash.reinvestor_id"),
         'group' => array('InvestmentCash.reinvestor_id')));
     
     $data_equity = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
         array('InvestmentCash.investment_type' => 'equity',
-        'InvestmentCash.status' => 'available'),'fields' => array("SUM(amount) as 'invested_amount'"),
+        'InvestmentCash.status' => 'available'),'fields' => array("SUM(InvestmentCash.amount) as 'invested_amount'","InvestmentCash.id","InvestmentCash.reinvestor_id"),
         'group' => array('InvestmentCash.reinvestor_id')));
     
     
     if($data_fixed){
         foreach($data_fixed as $data){
-            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'InvestmentCash.status' => 'processed');
+            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $reinvestor_id = $data['InvestmentCash']['reinvestor_id'];
             $result = $this->ReinvestorCashaccount->find('first',array('recursive' => -1,'conditions' =>
                 array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
@@ -562,13 +563,25 @@ function __invEOD(){
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($fixed_data);
             }
+            
+        }
+        $data_fixed2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+        array('InvestmentCash.investment_type' => 'fixed',
+        'InvestmentCash.status' => 'available')));
+    if($data_fixed2){
+        foreach($data_fixed2 as $data){
+            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $this->InvestmentCash->save($updated_datafixed);
         }
+        
     }
+    }
+    
+    
     
     if($data_equity){
         foreach($data_equity as $data){
-            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'InvestmentCash.status' => 'processed');
+            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $reinvestor_id = $data['InvestmentCash']['reinvestor_id'];
             $result = $this->ReinvestorCashaccount->find('first',array('recursive' => -1,'conditions' =>
                 array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
@@ -591,9 +604,19 @@ function __invEOD(){
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($equity_data);
             }
+        }
+         $data_equity2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+        array('InvestmentCash.investment_type' => 'equity',
+        'InvestmentCash.status' => 'available')));
+       if($data_equity2){
+        foreach($data_equity2 as $data){
+            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $this->InvestmentCash->save($updated_dataequity);
         }
+        
     }
+    }
+    
 }
 
 

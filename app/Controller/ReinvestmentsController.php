@@ -1205,7 +1205,7 @@ class ReinvestmentsController extends AppController {
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
          
         $this->paginate = array(
-            'conditions' => array('InvestmentCash.investment_type' => 'equity', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => 'available'),
+            'conditions' => array('InvestmentCash.investment_type' => 'equity', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => array('processed','available')),
             'limit' => 30, 'order' => array('InvestmentCash.id' => 'asc'));
         $data = $this->paginate('InvestmentCash');
         $this->set('data', $data);
@@ -1222,35 +1222,11 @@ class ReinvestmentsController extends AppController {
         $this->set('reinvestments', $this->Reinvestment->find('list'));
     }
 
-    function newInvestment1Equity() {
+    function newInvestment1Equity($investmentcash_id = null) {
         /* $this->__validateUserType(); */
         $this->set('equitieslists', $this->EquitiesList->find('list'));
-
-//        $check = $this->Session->check('ivt');
-//        if ($check) {
-//            $investor = $this->Session->read('ivt');
-//
-//            $this->set('investor', $investor);
-//        } else {
-//            $message = 'No Investor Selected';
-//            $this->Session->write('emsg', $message);
-//            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1'));
-//        }
-//        $check = $this->Session->check('variabless');
-//        if ($check) {
-//            $this->set('duedate', $this->Session->read('variabless.duedate'));
-//            $this->set('interest', $this->Session->read('variabless.interest'));
-//            $this->set('totaldue', $this->Session->read('variabless.totaldue'));
-//        }
-//        $hp_data = array();
-//        $hp_data_check = $this->Session->check('hp_data');
-//        if ($hp_data_check) {
-//            $hp_data = $this->Session->read('hp_data');
-//
-//            $this->Session->write('order_invoice', $hp_data);
-//            $this->set('hp_data', $hp_data);
-//            $this->Session->delete('hp_data');
-//        }
+        $data = $this->InvestmentCash->find('first',['conditions' => ['InvestmentCash.id' => $investmentcash_id]]);
+        $this->set('data',$data);
     }
 
     function newInvestment1Equity1() {
