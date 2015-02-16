@@ -88,17 +88,17 @@ modify, joint,group and corp investment views to look like individual investment
 
 
 
-+Reinvestment Management Submodule
- +Create Page for managing payments to re-investor company New sub menu
+DONE +Reinvestment Management Submodule
+DONE +Create Page for managing payments to re-investor company New sub menu
 #View
 DONE 12.02.15 - Page for listing companies choosing b/n fixed n equity investments. 
 DONE 12.02.15 - page listing of investments based on choice.(quick link actions against investment.if different company option/button to pay back re-investor company)
- -page to handle repayment to re-investor company
- - Page for detailing investment and actions to take (Cancel,pay[cash_in/end])
- - Cancel equity investment page
- - Cancel fixed investment page
+DONE 15.02.15 -page to handle repayment to re-investor company
+DONE 14.02.15  - Page for detailing investment and actions to take (Cancel,pay[cash_in/end])
+DONE 14.02.15  - Cancel equity investment page
+DONE 14.02.15  - Cancel fixed investment page
  - pay/cash_in equity investments
- - Receive/cash_in fixed investment page
+DONE 15.02.15 - Receive/cash_in fixed investment page
 #Function
  - Rollover fixed investment function
  - cash_in/receive fixed investment cash function

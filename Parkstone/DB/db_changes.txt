@@ -506,3 +506,8 @@ ALTER TABLE `reinvestments` ADD `investment_type` ENUM('fixed','equity') NULL AF
 ALTER TABLE `reinvestments` CHANGE `custom_rate` `custom_rate` DECIMAL(5,2) NULL DEFAULT '0.00';
 ALTER TABLE `reinvestments` ADD `payment_status` ENUM("paid","unpaid") NULL AFTER `old_status`;
 ALTER TABLE `reinvestments` CHANGE `payment_status` `payment_status` ENUM('paid','unpaid') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'unpaid';
+
+
+FEBRUARY 14, 2015
+--------------------------------
+ALTER TABLE `reinvestments` ADD `investment_destination_id` INT(11) NULL AFTER `portfolio_id`, ADD `inv_dest_product_id` INT(11) NULL AFTER `investment_destination_id`;

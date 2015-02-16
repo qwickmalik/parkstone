@@ -2,17 +2,17 @@
 echo $this->Html->script('notification.js');
 ?>
 
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">Manage Re-investments</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('ListCashDeposits', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4list'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('manageEquity', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4list'), "inputDefaults" => array('div' => false))); ?>
         
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
             <tr>
-                <td align="left" valign="top" colspan="3" ><p class="subtitle-red">Step 2 - Select Un-invested Cash - Equity Investments</p></td>
+                <td align="left" valign="top" colspan="3" ><p class="subtitle-blue">Step 2 - Equity Investments - Select Action</p></td>
             </tr>
             <tr>
                 <td align="center" colspan="3" ></td>
@@ -22,7 +22,7 @@ echo $this->Html->script('notification.js');
                     <div class="col-lg-4 col-md-6 col-sm-12" style="align: center; float: none;">
                         
                         <?php
-                        echo $this->Form->input('company_name', array('label' => 'Re-investor Company','empty' => '--Select Company--', 'value' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
+                        echo $this->Form->input('company_name', array('label' => 'Re-investor Company','empty' => '--Select Company--', 'default' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
                         
                         ?>
                         <span style="color: red;"></span>
@@ -33,16 +33,17 @@ echo $this->Html->script('notification.js');
             
         </table>
         <?php
-//        echo $this->Form->end();
+        echo $this->Form->end();
         ?>
         <div id="clearer"></div>
 
         <!--    <form id="order_list" action="#" method="post">-->
       <?php
-//echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
+echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments', 'action' => '#'), "inputDefaults" => array()));
 ?>
 
         <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
+            
             <tr>
                 <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left">
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
@@ -51,37 +52,42 @@ echo $this->Html->script('notification.js');
                     <b><?php echo $this->Paginator->sort('investment_date', '(Re-)investment Date'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                    <b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b>
+                </td>
+                <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('currency_id', 'Currency'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue" align="left">
-                    <b><?php echo $this->Paginator->sort('investment_type', 'Investment Type'); ?></b>
+                <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                    <b><?php echo $this->Paginator->sort('investment_amount', 'Amount Invested'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('amount', 'Available Amount'); ?></b>
+                    <b><?php echo $this->Paginator->sort('custom_rate', 'Rate'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Select"; ?></td>
+                <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Action"; ?></td>
             </tr>
-<?php foreach ($data as $each_item): ?>
+            
+            <?php foreach ($data as $each_item): ?>
                 <tr>
-                    <td width="50" align="left"><?php echo $each_item['InvestmentCash']['id']; ?></td>
-                    <td align="left"><?php echo $each_item['InvestmentCash']['investment_date']; ?></td>
+                    <td width="50" align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
                     <td align="left" ><?php echo $each_item['Reinvestor']['company_name']; ?></td> 
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
-                    <td align="left"><?php echo $each_item['InvestmentCash']['investment_type']; ?></td>
-                    <td align="left"><?php echo $each_item['InvestmentCash']['amount']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['custom_rate']; ?></td>
                     <td align="left">
                         <?php 
-                        //some "if" logic here to check if the investment type is FIXED or EQUITY and then echo the appropriate link for reinvesting
-                        if($each_item['InvestmentCash']['investment_type']=='fixed'):
-                            echo $this->Html->link("Select","/Reinvestments/newInvestment1Fixed/".$each_item['InvestmentCash']['id']);  
-                        elseif ($each_item['InvestmentCash']['investment_type']=='equity'):
-                            echo $this->Html->link("Select","/Reinvestments/newInvestment1Equity/".$each_item['InvestmentCash']['id']);  
-                        endif;
+                            echo $this->Html->link("Details","/Reinvestments/manageInvEquityDetails/".$each_item['Reinvestment']['id']);  
+                            echo " | ";
+                            echo $this->Html->link("Cancel","/Reinvestments/manageInvEquityCancel/".$each_item['Reinvestment']['id']);  
+                            echo " | ";
+                            echo $this->Html->link("Pay","/Reinvestments/payReinvestor/".$each_item['Reinvestment']['id']);  
                         ?>
                     </td>
+                    
                     
                 </tr>
 <?php endforeach; ?>

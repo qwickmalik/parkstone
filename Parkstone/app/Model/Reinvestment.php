@@ -7,22 +7,22 @@ class Reinvestment extends AppModel{
     
     
     var $belongsTo = array(
-        /*'Investor' => array(
-            'className' => 'Investor',
-            'foreignKey' => 'investor_id',
+        'InvestmentDestination' => array(
+            'className' => 'InvestmentDestination',
+            'foreignKey' => 'investment_destination_id',
             'conditions' => '',
-            'order' =>  array('Investor.fullname' => 'asc'),
+            'order' =>  '',
             'limit' => '',
             'dependent' => true
         ),
-        'Portfolio' => array(
-            'className' => 'Portfolio',
-            'foreignKey' => 'portfolio_id',
+        'InvDestProduct' => array(
+            'className' => 'InvDestProduct',
+            'foreignKey' => 'inv_dest_product_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-        ),*/
+        ),
         'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',

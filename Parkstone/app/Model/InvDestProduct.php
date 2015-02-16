@@ -11,6 +11,15 @@ class InvDestProduct extends AppModel {
     var $name = "InvDestProduct";
     var $usesTable = "inv_dest_products";
     var $displayField = "inv_dest_product";
+     var $hasMany = array(
+         'Reinvestment' => array(
+            'className' => 'Reinvestment',
+            'foreignKey' => 'inv_dest_product_id',
+            'conditions' => '',
+            'order' =>  '',
+            'limit' => '',
+            'dependent' => true),
+     );
      
      var $belongsTo = array(
          'InvestmentDestination' => array(
