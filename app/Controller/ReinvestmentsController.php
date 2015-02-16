@@ -1217,9 +1217,13 @@ class ReinvestmentsController extends AppController {
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
     }
     
-    function newInvestment1Fixed1() {
+    function newInvestment1Fixed1($investment_id = null) {
         /* $this->__validateUserType(); */     
-        $this->set('reinvestments', $this->Reinvestment->find('list'));
+        
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $investment_id]]));
+        $this->set('reinvestors', $this->Reinvestor->find('list', []));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list'));
     }
 
     function newInvestment1Equity($investmentcash_id = null) {
@@ -1521,12 +1525,11 @@ class ReinvestmentsController extends AppController {
     
     function manageInvEquity($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
-        
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
-        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
+//        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
          
         $this->paginate = array(
-            'conditions' => array('Reinvestment.investment_type' => 'equity', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.status' => 'unpaid'),
+            'conditions' => array('Reinvestment.investment_type' => 'equity', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
             'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
         $data = $this->paginate('Reinvestment');
         $this->set('data', $data);
@@ -1536,8 +1539,48 @@ class ReinvestmentsController extends AppController {
         /* $this->__validateUserType(); */
         
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
         
     }
+    
+    function manageInvEquityDetails($reinvestment_id = NULL) {
+        /* $this->__validateUserType(); */
+        
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
+        
+    }
+    
+    function manageInvFixedCancel(){
+        
+    }
+    
+    function manageInvEquityCancel(){
+        
+    }
+    
+    function payReinvestorFixed($reinvestment_id = NULL){
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
+    }
+    
+    function payReinvestorEquity($reinvestment_id = NULL){
+        
+    }
+    
+    function payReinvestorFixedReceipt($reinvestment_id = NULL){
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
+    }
+    
+    function payReinvestorEquityReceipt($reinvestment_id = NULL){
+        
+    }
+    
     
     function processPayments() {
         /* $this->__validateUserType(); */

@@ -48,10 +48,10 @@
         </a>
         <ul class="child">
             <li>
-                <?php echo $this->Html->link('New/Edit Reinvestor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Re-Investor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Reinvestor Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Re-Investor Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link('List/Edit Cash Deposits', '/Reinvestments/listCashDeposits', array('escape' => false)); ?>
@@ -70,6 +70,9 @@
             </li>
             <li>
                 <?php echo $this->Html->link('Manage Re-Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Pay Re-Investor', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
         </ul>
     </li>

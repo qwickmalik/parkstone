@@ -17,7 +17,7 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
         <!-- Step Investment Details Start -->
         
-        <p class="subtitle-blue">Fixed Re-investment Details</p>
+        <p class="subtitle-blue">Equity Re-investment Details</p>
                     <div class="row" >
                         <br>
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -128,7 +128,7 @@ echo $this->Html->script('notification.js');
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right;">
                     <?php
                     echo "<p>&nbsp;</p>";
-                    echo $this->Html->link('Back', "/Reinvestments/manageInvFixed", array("class" => 'btn btn-lg btn-info'));
+                    echo $this->Html->link('Back', "/Reinvestments/manageInvEquity", array("class" => 'btn btn-lg btn-info'));
                     echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
                     ?>
                 </div>

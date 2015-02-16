@@ -84,7 +84,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                             echo " | ";
                             echo $this->Html->link("Cancel","/Reinvestments/manageInvFixedCancel/".$each_item['Reinvestment']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Pay","/Reinvestments/payReinvestor/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
                         ?>
                     </td>
                     

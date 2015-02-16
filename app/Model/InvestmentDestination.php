@@ -19,6 +19,13 @@ class InvestmentDestination extends AppModel {
             'order' =>  '',
             'limit' => '',
             'dependent' => true),
+         'Reinvestment' => array(
+            'className' => 'Reinvestment',
+            'foreignKey' => 'investment_destination_id',
+            'conditions' => '',
+            'order' =>  '',
+            'limit' => '',
+            'dependent' => true),
          );
     
     function getSetup(){
