@@ -2436,6 +2436,7 @@ class InvestmentsController extends AppController {
                 $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
                     'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
                     'amount' => $result['Investment']['investment_amount'],
+                   'available_amount' => $result['Investment']['investment_amount'],
                     'investment_type' => 'fixed', 'payment_mode' => $payment_name,
                     'investment_date' => $result['Investment']['investment_date']);
                 $this->InvestmentCash->create();
@@ -2535,6 +2536,7 @@ class InvestmentsController extends AppController {
                 $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
                     'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
                     'amount' => $result['Investment']['numb_shares_left'] * $result['Investment']['purchase_price'],
+                   'available_amount' => $result['Investment']['numb_shares_left'] * $result['Investment']['purchase_price'],
                     'investment_type' => 'equity', 'payment_mode' => $payment_name,
                     'investment_date' => $result['Investment']['investment_date']);
                 $this->InvestmentCash->create();
@@ -2657,6 +2659,7 @@ class InvestmentsController extends AppController {
                 $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
                     'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
                     'amount' => $result['Investment']['investment_amount'],
+                   'available_amount' => $result['Investment']['investment_amount'],
                     'investment_type' => 'fixed', 'payment_mode' => $payment_name,
                     'investment_date' => $result['Investment']['investment_date']);
                 $this->InvestmentCash->create();
@@ -2751,6 +2754,7 @@ class InvestmentsController extends AppController {
                 $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
                     'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
                     'amount' => $result['Investment']['numb_shares_left'] * $result['Investment']['purchase_price'],
+                   'available_amount' => $result['Investment']['numb_shares_left'] * $result['Investment']['purchase_price'],
                     'investment_type' => 'equity', 'payment_mode' => $payment_name,
                     'investment_date' => $result['Investment']['investment_date']);
                 $this->InvestmentCash->create();

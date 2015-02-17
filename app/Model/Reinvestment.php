@@ -7,14 +7,14 @@ class Reinvestment extends AppModel{
     
     
     var $belongsTo = array(
-        'InvestmentDestination' => array(
-            'className' => 'InvestmentDestination',
-            'foreignKey' => 'investment_destination_id',
+        /*'Investor' => array(
+            'className' => 'Investor',
+            'foreignKey' => 'investor_id',
             'conditions' => '',
-            'order' =>  '',
+            'order' =>  array('Investor.fullname' => 'asc'),
             'limit' => '',
             'dependent' => true
-        ),
+        ),*/
         'InvDestProduct' => array(
             'className' => 'InvDestProduct',
             'foreignKey' => 'inv_dest_product_id',
@@ -48,26 +48,34 @@ class Reinvestment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-//        'EquitiesList' => array(
-//            'className' => 'EquitiesList',
-//            'foreignKey' => 'equity_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            )
-        );
-    
-    
-     var $hasMany = array(
-        'InvestmentCash' => array(
-            'className' => 'InvestmentCash',
-            'foreignKey' => 'reinvestment_id',
+        'EquitiesList' => array(
+            'className' => 'EquitiesList',
+            'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
+            ),
+        'InvestmentCash' => array(
+            'className' => 'InvestmentCash',
+            'foreignKey' => 'investment_cash_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
+        );
+    
+    
+//     var $hasMany = array(
+//        'Reinvestment' => array(
+//            'className' => 'Reinvestment',
+//            'foreignKey' => 'investment_cash_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ));
          /*   'Rollover' => array(
             'className' => 'Rollover',
             'foreignKey' => 'investment_id',
