@@ -36,14 +36,6 @@ class InvestmentCash extends AppModel{
             'limit' => '',
             'dependent' => true
         ),
-         'Reinvestment' => array(
-            'className' => 'Reinvestment',
-            'foreignKey' => 'reinvestment_id',
-            'conditions' => '',
-            'order' =>  '',
-            'limit' => '',
-            'dependent' => true
-        ),
          'Currency' => array(
             'className' => 'Currency',
             'foreignKey' => 'currency_id',
@@ -60,6 +52,15 @@ class InvestmentCash extends AppModel{
             'limit' => '',
             'dependent' => true
         ));
+      var $hasMany = array(
+        'Reinvestment' => array(
+            'className' => 'Reinvestment',
+            'foreignKey' => 'investment_cash_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
     
 }
 
