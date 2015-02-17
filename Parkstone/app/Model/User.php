@@ -128,7 +128,15 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            )
+            ),
+        'ReinvestmentsEquity' => array(
+            'className' => 'ReinvestmentsEquity',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
         );
     
     var $belongsTo = array(

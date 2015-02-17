@@ -1281,9 +1281,21 @@ function getInvProd(){
     
     function newInvestment1Equity($investmentcash_id = null) {
         /* $this->__validateUserType(); */
+        if ($this->request->is('post')) {
+            if ($this->ReinvestmentsEquity->save($this->request->data)) {
+                
+                $message = 'Equity successfully saved';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity1'));
+                }
+        }
+    
         $this->set('equitieslists', $this->EquitiesList->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+        
         $data = $this->InvestmentCash->find('first',['conditions' => ['InvestmentCash.id' => $investmentcash_id]]);
-        $this->set('data',$data);
+        $this->set('equitydetails',$data);
     }
 
     function newInvestment1Equity1() {

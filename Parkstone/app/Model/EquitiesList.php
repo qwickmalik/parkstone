@@ -19,14 +19,14 @@ class EquitiesList extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-//        'Reinvestment' => array(
-//            'className' => 'Reinvestment',
-//            'foreignKey' => 'equity_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            )
+        'ReinvestmentsEquity' => array(
+            'className' => 'ReinvestmentsEquity',
+            'foreignKey' => 'equity_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
     
     function getEquity(){

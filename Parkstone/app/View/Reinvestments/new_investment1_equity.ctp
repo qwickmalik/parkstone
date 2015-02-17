@@ -15,24 +15,73 @@ if ($this->Session->check('shopCurrency_investment')) {
         <div id="clearer"></div>
         <!-- Step Investment Details Start -->
         <?php
-        echo $this->Form->create('newReinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed1'), "inputDefaults" => array('div' => false)));
+        echo $this->Form->create('newEquityReinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity'), "inputDefaults" => array('div' => false)));
         ?>
         <p class="subtitle-red">Step 2 - Equity Re-Investment</p>
                     <div class="row"  style="background: #E2F4FB;">
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <?php
-                            echo "<p><b>&nbsp</b></p>";
-                            echo "<p><b>Re-investor Company:</b>" . "</p>";
-                            echo "<p><b>Investment Date:</b>" . "</p>";
-                            echo "<p><b>Deposited Amount:</b>" . "</p>";
-                            echo "<p><b>Available Amount:</b>" . "</p>";
-                            ?>  
+                            <p></p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Re-investor Company:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['Reinvestor']['company_name']) ? $equitydetails['Reinvestor']['company_name'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Investment Date:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['InvestmentCash']['investment_date']) ? $equitydetails['InvestmentCash']['investment_date'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Currency:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['Currency']['symbol']) ? $equitydetails['Currency']['symbol'] : '' );?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Deposited Amount:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['InvestmentCash']['amount']) ? $equitydetails['InvestmentCash']['amount'] : '' );?>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Available Amount:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['InvestmentCash']['available_amount']) ? $equitydetails['InvestmentCash']['available_amount'] : '' );?>
+                                </div>
+                            </div> 
+                            
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <?php
-                            echo "<p><b>&nbsp</b></p>";
-                            echo "<p><b>Notes:</b>" . "</p>"
-                            ?>  
+                            <p></p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Investment Type:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['InvestmentCash']['investment_type']) ? $equitydetails['InvestmentCash']['investment_type'] : '' );?>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Notes:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($equitydetails['InvestmentCash']['notes']) ? $equitydetails['InvestmentCash']['notes'] : '' );?>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </td>
@@ -44,13 +93,22 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-6 col-md-6 col-sm-12" id = "equity">
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investment_type', array());
+                            echo $this->Form->hidden('reinvestor_id', array('value' => (isset($equitydetails['InvestmentCash']['reinvestor_id']) ? $equitydetails['InvestmentCash']['reinvestor_id'] : '' )));
+
+                            echo $this->Form->hidden('investment_date', array('value' => (isset($equitydetails['InvestmentCash']['investment_date']) ? $equitydetails['InvestmentCash']['investment_date'] : '' )));
+                            
+                            echo $this->Form->hidden('currency_id', array('value' => (isset($equitydetails['InvestmentCash']['currency_id']) ? $equitydetails['InvestmentCash']['currency_id'] : '' )));
+
+                            echo $this->Form->hidden('investment_type', array('value' => (isset($equitydetails['InvestmentCash']['investment_type']) ? $equitydetails['InvestmentCash']['investment_type'] : '' )));
+                            
+                            echo $this->Form->hidden('details', array('value' => (isset($equitydetails['InvestmentCash']['notes']) ? $equitydetails['InvestmentCash']['notes'] : '' )));
+                                
 
                             echo $this->Form->input('equities_list_id', ['type' => 'select','options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                             
                             echo "<p><i>Desired equity not listed here?".$this->Html->link('Add to the list', '/Settings/equitiesList') ."</i></p>";
                             
-                            echo $this->Form->input('share_price', array('disabled','label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' ))); 
+                            echo $this->Form->input('purchase_price', array('disabled','label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' ))); 
                             
                               echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' )));   
                              
