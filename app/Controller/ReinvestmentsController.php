@@ -7,7 +7,7 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'Investee', 'Currency',
+    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount','Investee', 'Currency',
         'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash',
         'InvestmentDestination', 'InvDestProduct', 'EquitiesList');
     var $paginate = array(
@@ -1189,7 +1189,7 @@ function getInvProd(){
             }
             else{
                 if($investment_type==1){
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Fixed/'.$reinvestor_id));
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed/'.$reinvestor_id));
                 }
                 elseif($investment_type==2){
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Equity/'.$reinvestor_id));
@@ -1236,9 +1236,9 @@ function getInvProd(){
         $this->set('data', $data);
     }
     
-    function newInvestment1Fixed($investment_id = NULL) {
+    function newInvestment1Fixed($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */     
-        $this->set('investmentcashes', $this->InvestmentCash->find('first', ['conditions' => ['InvestmentCash.id' => $investment_id]]));
+        $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         
     }
