@@ -62,3 +62,4 @@ This means in a case where the client leaves the decision as to which stocks to 
 ================================
 + Please check error under payment date on edit_payment.ctp
 + PRINT button for investment certificates not working
++ Pls take a look at newInvestment2_comp() and process_comp() for me. when an investment entry is processed, the investor id is lost and it throws an error. Same problem with group investment too. I've sorted out the views
