@@ -74,10 +74,16 @@
                             foreach ($investor as $each_item):
                                 ?>
                                 <tr>
-                                      <td align="left">   <?php  echo $this->Html->link($each_item['Investor']['surname'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                                      <td align="left">   <?php  
+//                                        echo $this->Html->link($each_item['Investor']['surname'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); 
+                                        echo $each_item['Investor']['surname']; 
+                                      ?>
                                 </td>
                                 <td align="left" class="investorAnchor">
-                                    <?php echo $this->Html->link($each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); ?>
+                                    <?php 
+                                        // echo $this->Html->link($each_item['Investor']['other_names'], "/Investments/investorDetails/" . $each_item['Investor']['id'], array("class" => $each_item['Investor']['id'])); 
+                                    echo $each_item['Investor']['other_names']; 
+                                    ?>
                                 </td> <!-- Link to enable editing -->
                                 <td align="left">
                                     <?php echo $each_item['Investor']['in_trust_for']; ?>

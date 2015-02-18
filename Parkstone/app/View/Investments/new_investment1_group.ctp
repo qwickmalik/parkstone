@@ -8,7 +8,7 @@
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4compinvestment'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4groupinvestment'), "inputDefaults" => array('div' => false))); ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
