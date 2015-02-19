@@ -78,6 +78,9 @@ DONE 06.02.15  -Reinvestment summary page if successful commit
 
 T0 D0
 -------
+--pls look at format for /mask.js and implement
+modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
+
 DONE 17.02.15 modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 DONE 17.02.15 + pls is it possible to let the stuff in the blue box on the page /Investments/newInvestment2 remain after processing fixed so the same parameters will be used for equity?
 
