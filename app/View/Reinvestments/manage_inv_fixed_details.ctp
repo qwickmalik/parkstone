@@ -128,7 +128,7 @@ echo $this->Html->script('notification.js');
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right;">
                     <?php
                     echo "<p>&nbsp;</p>";
-                    echo $this->Html->link('Back', "/Reinvestments/manageInvFixed", array("class" => 'btn btn-lg btn-info'));
+                    echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".(isset($reinvestments['Reinvestor']['id']) ? $reinvestments['Reinvestor']['id'] :'' ), array("class" => 'btn btn-lg btn-info'));
                     echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
                     ?>
                 </div>

@@ -7,9 +7,9 @@ class ReinvestmentsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reinvestments';
-    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount','Investee', 'Currency',
+    var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount', 'Investee', 'Currency',
         'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash',
-        'InvestmentDestination', 'InvDestProduct', 'EquitiesList');
+        'InvestmentDestination', 'InvDestProduct', 'EquitiesList','ReinvestmentsEquity');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
@@ -56,138 +56,137 @@ class ReinvestmentsController extends AppController {
             $investment_type = $this->request->data['InvestmentCash']['investmentproduct_id'];
             $investment_prod = '';
             $payment_name = '';
-            
+
             $fixed_inv_amount = $this->request->data['InvestmentCash']['fixed_inv_amount'];
             $equity_inv_amount = $this->request->data['InvestmentCash']['equity_inv_amount'];
             $payment_name = '';
             $paymentmodeid = $this->request->data['InvestmentCash']['paymentmode_id'];
-            $payment_mode = $this->PaymentMode->find('first',array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
-            if($payment_mode){
+            $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+            if ($payment_mode) {
                 $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
             }
             $userid = null;
             $check = $this->Session->check('userDetails');
-        if ($check) {
-            $userid = $this->Session->read('userDetails.id');
-        }
-            $date = $this->request->data['InvestmentCash']['investment_date']['year'] . "-" . $this->request->data['InvestmentCash']['investment_date']['month'] . "-" . $this->request->data['InvestmentCash']['investment_date']['day'];
-           $reinvestorDeposit_data = array('reinvestor_id' => $reinvestorid,'investment_product_id' => $investment_type,
-                        'currency_id' => $this->request->data['InvestmentCash']['currency_id'],
-               'payment_mode_id' => $paymentmodeid,'investment_date' => $date,'fixed_inv_amount' => $fixed_inv_amount,
-                        'equity_inv_amount' => $equity_inv_amount,'notes' => $this->request->data['InvestmentCash']['notes']
-                   ,'user_id' => $userid);
-           $result_deposit = $this->ReinvestorDeposit->save($reinvestorDeposit_data);
-           if($result_deposit){
-               $deposit_id = $result_deposit['ReinvestorDeposit']['id'];
-            switch ($investment_type) {
-                case 1:
-                    if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
-                        $message = 'Please supply fixed investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
-                        $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    
-                    $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
-                        $this->request->data['InvestmentCash']['currency_id'],
-                        'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'available_amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'investment_type' => 'fixed', 'investment_date' => $date,'payment_mode' => $payment_name);
-                    $result = $this->InvestmentCash->save($cash_depositarray);
-                    if ($result) {
-                        
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','fixed',$result['InvestmentCash']['id']));
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    break;
-                case 2:
-                    if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
-                        $message = 'Please supply equity investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
-                        $message = 'Please supply ONLY equity investment amount for this type of Investment product';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
-                        $this->request->data['InvestmentCash']['currency_id'],
-                        'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'available_amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'investment_type' => 'equity', 'investment_date' => $date,'payment_mode' => $payment_name);
-
-                    $result = $this->InvestmentCash->save($cash_depositarray);
-                    if ($result) {
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','equity',$result['InvestmentCash']['id']));
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    break;
-                case 3:
-                    if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
-                        $message = 'Please supply equity investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
-                        $message = 'Please supply fixed investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    $cash_depositarray_equity = array('reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
-                        $this->request->data['InvestmentCash']['currency_id'],
-                        'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'available_amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
-                        'investment_type' => 'equity', 'investment_date' => $date,'payment_mode' => $payment_name);
-                    $this->InvestmentCash->create();
-                    $result_equity = $this->InvestmentCash->save($cash_depositarray_equity);
-
-                    $cash_depositarray_fixed = array('reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
-                        $this->request->data['InvestmentCash']['currency_id'],
-                        'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'available_amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
-                        'investment_type' => 'fixed', 'investment_date' => $date,'payment_mode' => $payment_name);
-                     $this->InvestmentCash->create();
-                    $result_fixed = $this->InvestmentCash->save($cash_depositarray_fixed);
-                    
-                    if ($result_equity && $result_fixed) {
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert','both',$result_equity['InvestmentCash']['id'],$result_fixed['InvestmentCash']['id']));
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    }
-                    break;
+            if ($check) {
+                $userid = $this->Session->read('userDetails.id');
             }
-        }else{
-               $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
-                    
-        }
+            $date = $this->request->data['InvestmentCash']['investment_date']['year'] . "-" . $this->request->data['InvestmentCash']['investment_date']['month'] . "-" . $this->request->data['InvestmentCash']['investment_date']['day'];
+            $reinvestorDeposit_data = array('reinvestor_id' => $reinvestorid, 'investment_product_id' => $investment_type,
+                'currency_id' => $this->request->data['InvestmentCash']['currency_id'],
+                'payment_mode_id' => $paymentmodeid, 'investment_date' => $date, 'fixed_inv_amount' => $fixed_inv_amount,
+                'equity_inv_amount' => $equity_inv_amount, 'notes' => $this->request->data['InvestmentCash']['notes']
+                , 'user_id' => $userid);
+            $result_deposit = $this->ReinvestorDeposit->save($reinvestorDeposit_data);
+            if ($result_deposit) {
+                $deposit_id = $result_deposit['ReinvestorDeposit']['id'];
+                switch ($investment_type) {
+                    case 1:
+                        if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
+                            $message = 'Please supply fixed investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
+                            $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+
+                        $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                            $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
+                            $this->request->data['InvestmentCash']['currency_id'],
+                            'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
+                            'available_amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
+                            'investment_type' => 'fixed', 'investment_date' => $date, 'payment_mode' => $payment_name);
+                        $result = $this->InvestmentCash->save($cash_depositarray);
+                        if ($result) {
+
+                            $message = 'Cash Deposit successfully added';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'fixed', $result['InvestmentCash']['id']));
+                        } else {
+
+                            $message = 'Error adding Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        break;
+                    case 2:
+                        if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
+                            $message = 'Please supply equity investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
+                            $message = 'Please supply ONLY equity investment amount for this type of Investment product';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                            $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
+                            $this->request->data['InvestmentCash']['currency_id'],
+                            'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
+                            'available_amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
+                            'investment_type' => 'equity', 'investment_date' => $date, 'payment_mode' => $payment_name);
+
+                        $result = $this->InvestmentCash->save($cash_depositarray);
+                        if ($result) {
+                            $message = 'Cash Deposit successfully added';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'equity', $result['InvestmentCash']['id']));
+                        } else {
+
+                            $message = 'Error adding Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        break;
+                    case 3:
+                        if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
+                            $message = 'Please supply equity investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
+                            $message = 'Please supply fixed investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        $cash_depositarray_equity = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                            $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
+                            $this->request->data['InvestmentCash']['currency_id'],
+                            'amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
+                            'available_amount' => $this->request->data['InvestmentCash']['equity_inv_amount'],
+                            'investment_type' => 'equity', 'investment_date' => $date, 'payment_mode' => $payment_name);
+                        $this->InvestmentCash->create();
+                        $result_equity = $this->InvestmentCash->save($cash_depositarray_equity);
+
+                        $cash_depositarray_fixed = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                            $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
+                            $this->request->data['InvestmentCash']['currency_id'],
+                            'amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
+                            'available_amount' => $this->request->data['InvestmentCash']['fixed_inv_amount'],
+                            'investment_type' => 'fixed', 'investment_date' => $date, 'payment_mode' => $payment_name);
+                        $this->InvestmentCash->create();
+                        $result_fixed = $this->InvestmentCash->save($cash_depositarray_fixed);
+
+                        if ($result_equity && $result_fixed) {
+                            $message = 'Cash Deposit successfully added';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'both', $result_equity['InvestmentCash']['id'], $result_fixed['InvestmentCash']['id']));
+                        } else {
+
+                            $message = 'Error adding Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                        }
+                        break;
+                }
+            } else {
+                $message = 'Error adding Cash Deposit details. Please try again.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+            }
         }
     }
 
@@ -734,7 +733,7 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newDepositCert($product_type = null,$fixed_id = null,$equity_id = null) {
+    function newDepositCert($product_type = null, $fixed_id = null, $equity_id = null) {
         /* $this->__validateUserType(); */
         $data_fixed = array();
         $data_equity = array();
@@ -746,61 +745,60 @@ class ReinvestmentsController extends AppController {
         $total_equity_invested = 0.00;
         $total_fixed_invested = 0.00;
         $check = $this->Session->check('newCashDeposit');
-        if($check){
-        $this->Session->delete('newCashDeposit');
+        if ($check) {
+            $this->Session->delete('newCashDeposit');
         }
-        switch ($product_type){
+        switch ($product_type) {
             case null:
-            $message = 'Invalid product type selected';
-            $this->Session->write('emsg', $message);
-            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+                $message = 'Invalid product type selected';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
                 break;
             case 'fixed':
-                $data_fixed = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $fixed_id)));
-               if($data_fixed){
-                   $company_name = $data_fixed['Reinvestor']['company_name'];
-                   $date = date('d F, Y',strtotime($data_fixed['InvestmentCash']['investment_date']));
-                   $payment_mode = $data_fixed['InvestmentCash']['payment_mode'];
-                   $total_invested = $data_fixed['InvestmentCash']['amount'];
-               }
+                $data_fixed = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $fixed_id)));
+                if ($data_fixed) {
+                    $company_name = $data_fixed['Reinvestor']['company_name'];
+                    $date = date('d F, Y', strtotime($data_fixed['InvestmentCash']['investment_date']));
+                    $payment_mode = $data_fixed['InvestmentCash']['payment_mode'];
+                    $total_invested = $data_fixed['InvestmentCash']['amount'];
+                }
                 break;
             case 'equity':
-                $data_equity = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $equity_id)));
-                if($data_equity){
-                   $company_name = $data_equity['Reinvestor']['company_name'];
-                   $date = date('d F, Y',strtotime($data_equity['InvestmentCash']['investment_date']));
-                   $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
-                   $total_invested = $data_equity['InvestmentCash']['amount'];
-               }
+                $data_equity = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $equity_id)));
+                if ($data_equity) {
+                    $company_name = $data_equity['Reinvestor']['company_name'];
+                    $date = date('d F, Y', strtotime($data_equity['InvestmentCash']['investment_date']));
+                    $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
+                    $total_invested = $data_equity['InvestmentCash']['amount'];
+                }
                 break;
             case 'both':
-                
-                $data_fixed = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $fixed_id)));
-                $data_equity = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.id'=> $equity_id)));
-               if($data_equity){
-                   $company_name = $data_equity['Reinvestor']['company_name'];
-                   $date = date('d F, Y',strtotime($data_equity['InvestmentCash']['investment_date']));
-                   $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
-                   $total_equity_invested = $data_equity['InvestmentCash']['amount'];
-               }
-               if($data_fixed){
-               $total_fixed_invested = $data_fixed['InvestmentCash']['amount'];
-               }
-               $total_invested = $total_fixed_invested + $total_equity_invested;
+
+                $data_fixed = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $fixed_id)));
+                $data_equity = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $equity_id)));
+                if ($data_equity) {
+                    $company_name = $data_equity['Reinvestor']['company_name'];
+                    $date = date('d F, Y', strtotime($data_equity['InvestmentCash']['investment_date']));
+                    $payment_mode = $data_equity['InvestmentCash']['payment_mode'];
+                    $total_equity_invested = $data_equity['InvestmentCash']['amount'];
+                }
+                if ($data_fixed) {
+                    $total_fixed_invested = $data_fixed['InvestmentCash']['amount'];
+                }
+                $total_invested = $total_fixed_invested + $total_equity_invested;
                 break;
             default:
-            $message = 'Invalid product type selected';
-            $this->Session->write('emsg', $message);
-            $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
-                
+                $message = 'Invalid product type selected';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+
                 break;
         }
         $check = $this->Session->check('userData');
         if ($check) {
             $issued = $this->Session->read('userData');
-            
         }
-         $this->set(compact('issued','product_type','data_fixed','data_equity','company_name','payment_mode','date','total_invested'));
+        $this->set(compact('issued', 'product_type', 'data_fixed', 'data_equity', 'company_name', 'payment_mode', 'date', 'total_invested'));
     }
 
     function editCashDeposit($deposit_id = null) {
@@ -811,9 +809,9 @@ class ReinvestmentsController extends AppController {
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('reinvestors', $this->Reinvestor->find('list'));
-        
+
         //Edit Cash Deposit
-        if(($this->request->is('post'))){
+        if (($this->request->is('post'))) {
             $this->Session->write('newCashDeposit', $this->request->data['ReinvestorDeposit']);
             $reinvestorid = $this->request->data['ReinvestorDeposit']['reinvestor_id'];
             $investment_type = $this->request->data['ReinvestorDeposit']['investmentproduct_id'];
@@ -824,176 +822,174 @@ class ReinvestmentsController extends AppController {
             $fixed_inv_amount = $this->request->data['ReinvestorDeposit']['fixed_inv_amount'];
             $equity_inv_amount = $this->request->data['ReinvestorDeposit']['equity_inv_amount'];
             $paymentmodeid = $this->request->data['ReinvestorDeposit']['paymentmode_id'];
-            $payment_mode = $this->PaymentMode->find('first',array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
-           
-            if($payment_mode){
+            $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+
+            if ($payment_mode) {
                 $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
             }
             $check = $this->Session->check('userDetails');
-        if ($check) {
-            $userid = $this->Session->read('userDetails.id');
-        }
-            $date = $this->request->data['ReinvestorDeposit']['investment_date']['year'] . "-" . $this->request->data['ReinvestorDeposit']['investment_date']['month'] . "-" . $this->request->data['ReinvestorDeposit']['investment_date']['day'];
-           $reinvestorDeposit_data = array('id' =>$deposit_id,'reinvestor_id' => $reinvestorid,
-                        'currency_id' => $this->request->data['ReinvestorDeposit']['currency_id'],
-               'payment_mode_id' => $paymentmodeid,'investment_date' => $date,'fixed_inv_amount' => $fixed_inv_amount,
-                        'equity_inv_amount' => $equity_inv_amount,'notes' => $this->request->data['ReinvestorDeposit']['notes']
-                   ,'user_id' => $userid);
-           $result_deposit = $this->ReinvestorDeposit->save($reinvestorDeposit_data);
-           if($result_deposit){
-               
-            switch ($investment_type) {
-                case 1:
-                    if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
-                        $message = 'Please supply fixed investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
-                        $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    $fixed_data = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id,'InvestmentCash.investment_type' => 'fixed')));
-                    if($fixed_data){
-                        $investmentcash_id = $fixed_data['InvestmentCash']['id'];
-                        
-                        $cash_depositarray = array('id' => $investmentcash_id,'reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 
-                            'user_id' => $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
-                        $this->request->data['ReinvestorDeposit']['currency_id'],
-                        'amount' => $this->request->data['ReinvestorDeposit']['fixed_inv_amount'],
-                         'investment_date' => $date,'payment_mode' => $payment_name);
-                    $result = $this->InvestmentCash->save($cash_depositarray);
-                    if ($result) {
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    }else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                  
-                    break;
-                case 2:
-                    if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
-                        $message = 'Please supply equity investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
-                        $message = 'Please supply ONLY equity investment amount for this type of Investment product';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                     $fixed_data = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id,'InvestmentCash.investment_type' => 'equity')));
-                    if($fixed_data){
-                        $investmentcash_id = $fixed_data['InvestmentCash']['id'];
-                        
-                    $cash_depositarray = array('id' =>$investmentcash_id,'reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
-                        $this->request->data['ReinvestorDeposit']['currency_id'],
-                        'amount' => $this->request->data['ReinvestorDeposit']['equity_inv_amount'],
-                         'investment_date' => $date,'payment_mode' => $payment_name);
-
-                    $result = $this->InvestmentCash->save($cash_depositarray);
-                    if ($result) {
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    } else {
-
-                        $message = 'Error adding Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    break;
-                case 3:
-                    if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
-                        $message = 'Please supply equity investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
-                        $message = 'Please supply fixed investment amount';
-                        $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    $equity_data = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id,'InvestmentCash.investment_type' => 'equity')));
-                    if($equity_data){
-                        $investmentcash_id = $equity_data['InvestmentCash']['id'];
-                        
-                    $cash_depositarray_equity = array('id' => $investmentcash_id,'reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['ReinvestorDeposit']['user_id'], 
-                        'currency_id' => $this->request->data['ReinvestorDeposit']['currency_id'],
-                        'amount' => $this->request->data['ReinvestorDeposit']['equity_inv_amount'],
-                         'investment_date' => $date,'payment_mode' => $payment_name);
-                    
-                    $result_equity = $this->InvestmentCash->save($cash_depositarray_equity);
-                    }
-                    
-                    $fixed_data = $this->InvestmentCash->find('first',array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id,'InvestmentCash.investment_type' => 'fixed')));
-                    if($fixed_data){
-                        $investmentcash_id = $fixed_data['InvestmentCash']['id'];
-                        
-                    $cash_depositarray_fixed = array('id' => $investmentcash_id,'reinvestor_deposit_id' => $deposit_id,'reinvestor_id' => $reinvestorid, 'user_id' =>
-                        $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
-                        $this->request->data['ReinvestorDeposit']['currency_id'],
-                        'amount' => $this->request->data['ReinvestorDeposit']['fixed_inv_amount'],
-                         'investment_date' => $date,'payment_mode' => $payment_name);
-                     
-                    $result_fixed = $this->InvestmentCash->save($cash_depositarray_fixed);
-                    }
-                    if(isset($result_equity) && isset($result_fixed)){
-                    if ($result_equity && $result_fixed) {
-                        $message = 'Cash Deposit successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
-                    } else {
-
-                        $message = 'Error editing Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    }else {
-
-                        $message = 'Error editing Cash Deposit details. Please try again.';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    }
-                    break;
+            if ($check) {
+                $userid = $this->Session->read('userDetails.id');
             }
-        }else{
-               $message = 'Error adding Cash Deposit details. Please try again.';
-               $this->Session->write('emsg', $message);
-               $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
-                    
+            $date = $this->request->data['ReinvestorDeposit']['investment_date']['year'] . "-" . $this->request->data['ReinvestorDeposit']['investment_date']['month'] . "-" . $this->request->data['ReinvestorDeposit']['investment_date']['day'];
+            $reinvestorDeposit_data = array('id' => $deposit_id, 'reinvestor_id' => $reinvestorid,
+                'currency_id' => $this->request->data['ReinvestorDeposit']['currency_id'],
+                'payment_mode_id' => $paymentmodeid, 'investment_date' => $date, 'fixed_inv_amount' => $fixed_inv_amount,
+                'equity_inv_amount' => $equity_inv_amount, 'notes' => $this->request->data['ReinvestorDeposit']['notes']
+                , 'user_id' => $userid);
+            $result_deposit = $this->ReinvestorDeposit->save($reinvestorDeposit_data);
+            if ($result_deposit) {
+
+                switch ($investment_type) {
+                    case 1:
+                        if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
+                            $message = 'Please supply fixed investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
+                            $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        $fixed_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'fixed')));
+                        if ($fixed_data) {
+                            $investmentcash_id = $fixed_data['InvestmentCash']['id'];
+
+                            $cash_depositarray = array('id' => $investmentcash_id, 'reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid,
+                                'user_id' => $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
+                                $this->request->data['ReinvestorDeposit']['currency_id'],
+                                'amount' => $this->request->data['ReinvestorDeposit']['fixed_inv_amount'],
+                                'investment_date' => $date, 'payment_mode' => $payment_name);
+                            $result = $this->InvestmentCash->save($cash_depositarray);
+                            if ($result) {
+                                $message = 'Cash Deposit successfully added';
+                                $this->Session->write('smsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                            } else {
+
+                                $message = 'Error adding Cash Deposit details. Please try again.';
+                                $this->Session->write('emsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            }
+                        } else {
+
+                            $message = 'Error adding Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+
+                        break;
+                    case 2:
+                        if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
+                            $message = 'Please supply equity investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
+                            $message = 'Please supply ONLY equity investment amount for this type of Investment product';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        $fixed_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'equity')));
+                        if ($fixed_data) {
+                            $investmentcash_id = $fixed_data['InvestmentCash']['id'];
+
+                            $cash_depositarray = array('id' => $investmentcash_id, 'reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                                $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
+                                $this->request->data['ReinvestorDeposit']['currency_id'],
+                                'amount' => $this->request->data['ReinvestorDeposit']['equity_inv_amount'],
+                                'investment_date' => $date, 'payment_mode' => $payment_name);
+
+                            $result = $this->InvestmentCash->save($cash_depositarray);
+                            if ($result) {
+                                $message = 'Cash Deposit successfully added';
+                                $this->Session->write('smsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                            } else {
+
+                                $message = 'Error adding Cash Deposit details. Please try again.';
+                                $this->Session->write('emsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            }
+                        } else {
+
+                            $message = 'Error adding Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        break;
+                    case 3:
+                        if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
+                            $message = 'Please supply equity investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
+                            $message = 'Please supply fixed investment amount';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        $equity_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'equity')));
+                        if ($equity_data) {
+                            $investmentcash_id = $equity_data['InvestmentCash']['id'];
+
+                            $cash_depositarray_equity = array('id' => $investmentcash_id, 'reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                                $this->request->data['ReinvestorDeposit']['user_id'],
+                                'currency_id' => $this->request->data['ReinvestorDeposit']['currency_id'],
+                                'amount' => $this->request->data['ReinvestorDeposit']['equity_inv_amount'],
+                                'investment_date' => $date, 'payment_mode' => $payment_name);
+
+                            $result_equity = $this->InvestmentCash->save($cash_depositarray_equity);
+                        }
+
+                        $fixed_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'fixed')));
+                        if ($fixed_data) {
+                            $investmentcash_id = $fixed_data['InvestmentCash']['id'];
+
+                            $cash_depositarray_fixed = array('id' => $investmentcash_id, 'reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
+                                $this->request->data['ReinvestorDeposit']['user_id'], 'currency_id' =>
+                                $this->request->data['ReinvestorDeposit']['currency_id'],
+                                'amount' => $this->request->data['ReinvestorDeposit']['fixed_inv_amount'],
+                                'investment_date' => $date, 'payment_mode' => $payment_name);
+
+                            $result_fixed = $this->InvestmentCash->save($cash_depositarray_fixed);
+                        }
+                        if (isset($result_equity) && isset($result_fixed)) {
+                            if ($result_equity && $result_fixed) {
+                                $message = 'Cash Deposit successfully added';
+                                $this->Session->write('smsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                            } else {
+
+                                $message = 'Error editing Cash Deposit details. Please try again.';
+                                $this->Session->write('emsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            }
+                        } else {
+
+                            $message = 'Error editing Cash Deposit details. Please try again.';
+                            $this->Session->write('emsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                        }
+                        break;
+                }
+            } else {
+                $message = 'Error adding Cash Deposit details. Please try again.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+            }
         }
-        }
-         $data = $this->ReinvestorDeposit->find('first',array('conditions' => array('ReinvestorDeposit.id' =>
-             $deposit_id)));
-         
-         if($data){
-             $this->set('data',$data);
-         }else{   
+        $data = $this->ReinvestorDeposit->find('first', array('conditions' => array('ReinvestorDeposit.id' =>
+                $deposit_id)));
+
+        if ($data) {
+            $this->set('data', $data);
+        } else {
             $message = 'Invalid Selection. Please try again';
             $this->Session->write('bmsg', $message);
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
         }
-        
     }
 
     function newInvestmentDestination() {
@@ -1005,26 +1001,27 @@ class ReinvestmentsController extends AppController {
 
         $this->set(compact('setupResults'));
     }
-function getInvProd(){
-    $this->autoRender = false;
+
+    function getInvProd() {
+        $this->autoRender = false;
         if ($this->request->is('ajax')) {
             $dest_id = $_POST['destination_id'];
-            if(!empty($dest_id)){
-                $data = $this->InvDestProduct->find('all',['conditions' =>  
-    ['InvDestProduct.investment_destination_id' => $dest_id]]);
-                if($data){
-                   return json_encode(array('status'=>'ok','data'=>$data));
-                }else{
-                    return json_encode(array('status' => 'fail','data' => 'No Data Found'));
+            if (!empty($dest_id)) {
+                $data = $this->InvDestProduct->find('all', ['conditions' =>
+                    ['InvDestProduct.investment_destination_id' => $dest_id]]);
+                if ($data) {
+                    return json_encode(array('status' => 'ok', 'data' => $data));
+                } else {
+                    return json_encode(array('status' => 'fail', 'data' => 'No Data Found'));
                 }
-                
-            }else{
-                    return json_encode(array('status' => 'fail','data' => 'Invalid Selection'));
-                }
-        }else{
-                    return json_encode(array('status' => 'fail','data' => 'Invalid Access Method'));
-                }
-}
+            } else {
+                return json_encode(array('status' => 'fail', 'data' => 'Invalid Selection'));
+            }
+        } else {
+            return json_encode(array('status' => 'fail', 'data' => 'Invalid Access Method'));
+        }
+    }
+
     function addInvestmentDestination() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
@@ -1096,26 +1093,22 @@ function getInvProd(){
             $this->redirect(array('controller' => 'Reivestments', 'action' => 'newInvestmentDestination'));
         }
     }
-    
+
     function invDestProduct($company_id = null, $product_id = null) {
         // $this->__validateUserType();
-        if($company_id != null || $company_id !=""){
+        if ($company_id != null || $company_id != "") {
             $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
             $this->set('invdestproducts', $this->InvDestProduct->find('list'));
-            
-        }
-        else{
+        } else {
             $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
             $this->set('invdestproducts', $this->InvDestProduct->find('list'));
         }
-        
+
 
 //        $setupResults = $this->InvDestProduct->getCompanies();
-
 //        $this->set(compact('setupResults'));
         $data = $this->paginate('InvDestProduct');
         $this->set('data', $data);
-        
     }
 
     function addInvDestProduct() {
@@ -1125,7 +1118,7 @@ function getInvProd(){
 
             if (!empty($this->request->data)) {
                 $this->Session->write('InvDestProduct', $this->request->data['InvDestProduct']);
-                $this->request->data['InvDestProduct']['investment_destination_id']=$this->request->data['InvDestProduct']['investmentdestination_id'];
+                $this->request->data['InvDestProduct']['investment_destination_id'] = $this->request->data['InvDestProduct']['investmentdestination_id'];
                 $result = $this->InvDestProduct->save($this->request->data);
                 if ($result) {
                     $this->request->data = null;
@@ -1172,31 +1165,35 @@ function getInvProd(){
     function newInvestment() {
         /* $this->__validateUserType(); */
         $this->set('reinvestors', $this->Reinvestor->find('list'));
-        
-        if($this->request->is('post')){
+        $check = $this->Session->check('reinvesttemp');
+        if ($check) {
+            $this->Session->delete('reinvesttemp');
+        }
+        $check = $this->Session->check('variabless_refixed');
+        if ($check) {
+            $this->Session->delete('variabless_refixed');
+        }
+
+        if ($this->request->is('post')) {
             $reinvestor_id = $this->request->data['Reinvestment']['reinvestor_id'];
             $investment_type = $this->request->data['Reinvestment']['investment_type'];
-            
-            if($reinvestor_id == '' || $reinvestor_id == NULL){
+
+            if ($reinvestor_id == '' || $reinvestor_id == NULL) {
                 $message = 'Please Select Re-investor';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
-            }
-            elseif($investment_type == '' || $investment_type == NULL){
+            } elseif ($investment_type == '' || $investment_type == NULL) {
                 $message = 'Please Select Investment Type';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
-            }
-            else{
-                if($investment_type==1){
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed/'.$reinvestor_id));
+            } else {
+                if ($investment_type == 1) {
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed/' . $reinvestor_id));
+                } elseif ($investment_type == 2) {
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Equity/' . $reinvestor_id));
                 }
-                elseif($investment_type==2){
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Equity/'.$reinvestor_id));
-                }
-                       
             }
-        } 
+        }
     }
 
     function getfunds() {
@@ -1212,105 +1209,88 @@ function getInvProd(){
         }
     }
 
+    function getAvailableAmount() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $amount = $_POST['amount'];
+            $reinvestor_id = $_POST['reinvestor_id'];
+            $result = $this->ReinvestorCashaccount->find('first', array('conditions' =>
+                array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
+            if ($result) {
+                if ($result['ReinvestorCashaccount']['fixed_inv_balance'] < $amount) {
+                    return json_encode(array('status' => 'ok', 'data' => 'prompt'));
+                } else {
+                    return json_encode(array('status' => 'ok', 'data' => 'proceed'));
+                }
+            } else {
+                return json_encode(array('status' => 'failed'));
+            }
+        }
+    }
+    
     function newInvestment0Fixed($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
-        
+
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
-         
+
         $this->paginate = array(
             'conditions' => array('InvestmentCash.investment_type' => 'fixed', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => 'processed'),
             'limit' => 30, 'order' => array('InvestmentCash.id' => 'asc'));
         $data = $this->paginate('InvestmentCash');
         $this->set('data', $data);
     }
-    
+
     function newInvestment0Equity($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
-        
+
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
-         
+ if ($this->Session->check('reinvesttemp') == true) {
+                $this->Session->delete('reinvesttemp');
+            }
+            $check = $this->Session->check('variabless_reequity');
+        if ($check) {
+            $this->Session->delete('variabless_reequity');
+        }
         $this->paginate = array(
-            'conditions' => array('InvestmentCash.investment_type' => 'equity', 'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' =>'processed'),
+            'conditions' => array('InvestmentCash.investment_type' => 'equity',
+                'InvestmentCash.reinvestor_id' => $reinvestor_id, 'InvestmentCash.status' => array('processed','part_investment')),
             'limit' => 30, 'order' => array('InvestmentCash.id' => 'asc'));
         $data = $this->paginate('InvestmentCash');
         $this->set('data', $data);
     }
+
     
     function newInvestment1Fixed($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */     
+        /* $this->__validateUserType(); */
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
-        
-    }
-    
-    function newInvestment1Fixed1($investment_id = null) {
-        /* $this->__validateUserType(); */     
-        
-        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $investment_id]]));
-        $this->set('reinvestors', $this->Reinvestor->find('list', []));
-        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
-        $this->set('invdestproducts', $this->InvDestProduct->find('list'));
-        
-        //subtract from reinvestoraacount fixed balance
-         $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
-            $reinvestor_id = $data['InvestmentCash']['reinvestor_id'];
-            $result = $this->ReinvestorCashaccount->find('first',array('recursive' => -1,'conditions' =>
-                array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
-            if($result){
-                $id = $result['ReinvestorCashaccount']['id'];
-                $old_balance = $result['ReinvestorCashaccount']['fixed_inv_balance'];
-                $new_balance = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['fixed_inv_balance'];
-                
-                $fixed_data = array('id' => $id,'reinvestor_id' => $reinvestor_id,
-                'fixed_inv_balance' => $new_balance);
-                 $this->ReinvestorCashaccount->save($fixed_data);
+        $check = $this->Session->check('variabless_refixed');
+        if ($check) {
+            $check = $this->Session->check('variabless_refixed.duedate');
+            if ($check) {
+                $this->set('duedate', $this->Session->read('variabless_refixed.duedate'));
             }
-            
-            
-            //change investmentcash status to invested
-             $data_fixed2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
-        array('InvestmentCash.investment_type' => 'fixed',
-        'InvestmentCash.status' => 'available')));
-    if($data_fixed2){
-        foreach($data_fixed2 as $data){
-            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
-            $this->InvestmentCash->save($updated_datafixed);
+            $check = $this->Session->check('variabless_refixed.interest');
+            if ($check) {
+                $this->set('interest', $this->Session->read('variabless_refixed.interest'));
+            }
+            $check = $this->Session->check('variabless_refixed.totaldue');
+            if ($check) {
+                $this->set('totaldue', $this->Session->read('variabless_refixed.totaldue'));
+            }
         }
-    }
-    }
-    
-    function newInvestment1Equity($investmentcash_id = null) {
-        /* $this->__validateUserType(); */
-        if ($this->request->is('post')) {
-            if ($this->ReinvestmentsEquity->save($this->request->data)) {
-                
-                $message = 'Equity successfully saved';
-                $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity1'));
-                }
-        }
-    
-        $this->set('equitieslists', $this->EquitiesList->find('list'));
-        $this->set('currencies', $this->Currency->find('list'));
-        $this->set('reinvestors', $this->Reinvestor->find('list'));
-        
-        $data = $this->InvestmentCash->find('first',['conditions' => ['InvestmentCash.id' => $investmentcash_id]]);
-        $this->set('equitydetails',$data);
     }
 
-    function newInvestment1Equity1() {
-        /* $this->__validateUserType(); */     
-        $this->set('reinvestments', $this->Reinvestment->find('list'));
-    }
     
-    function process_fixd(){
-         $this->autoRender = false;
+    function process_fixd() {
+        $this->autoRender = false;
         if ($this->request->is('post')) {
-        $amount = $this->request->data['Reinvestment']['investment_amount'];
+            $amount = $this->request->data['Reinvestment']['investment_amount'];
             $currency_id = $this->request->data['Reinvestment']['currency_id'];
             $custom_rate = $this->request->data['Reinvestment']['interest_rate'];
-            $investcash_id = $this->request->data['Reinvestment']['investment_cash_id'];
-            $investmentproduct_id = $this->request->data['Investment']['inv_dest_product_id'];
+            $investcash_id = $this->request->data['Reinvestment']['reinvestorcashaccount_id'];
+            $reinvestor_id = $this->request->data['Reinvestment']['reinvestor_id'];
+            $investmentproduct_id = $this->request->data['Reinvestment']['inv_dest_product_id'];
             $inv_day = $this->request->data['Reinvestment']['investment_date']['day'];
             if (!empty($inv_day)) {
                 $inv_month = $this->request->data['Reinvestment']['investment_date']['month'];
@@ -1331,168 +1311,488 @@ function getInvProd(){
                     $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
                 }
             }
-            
+
             $this->Session->write('reinvesttemp', $this->request->data['Reinvestment']);
-             if ($this->request->data['Reinvestment']['investmentdestination_id'] == "" || $this->request->data['Reinvestment']['investmentdestination_id'] == null) {
-                    $message = 'Please Select an Investment Destication Company/Fund';
+            if ($this->request->data['Reinvestment']['investmentdestination_id'] == "" || $this->request->data['Reinvestment']['investmentdestination_id'] == null) {
+                $message = 'Please Select an Investment Destication Company/Fund';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            }
+
+            if ($this->request->data['Reinvestment']['inv_dest_product_id'] == "" || $this->request->data['Reinvestment']['inv_dest_product_id'] == null) {
+                $message = 'Please Select an Investment Product';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            }
+
+            if ($this->request->data['Reinvestment']['investment_amount'] == "" || $this->request->data['Reinvestment']['investment_amount'] == null) {
+                $message = 'Please Supply an Investment Amount';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            } else {
+                $invamount = $this->request->data['Reinvestment']['investment_amount'];
+                $result = $this->ReinvestorCashaccount->find('first', array('conditions' =>
+                    array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
+                if ($result) {
+                    if ($result['ReinvestorCashaccount']['fixed_inv_balance'] < $invamount) {
+                        $message = 'Investment amount cannot be more than available amount';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                    }
+                }
+            }
+
+            if ($this->request->data['Reinvestment']['duration'] == "" || $this->request->data['Reinvestment']['duration'] == null) {
+                $message = 'Please Supply  an Investment Duration';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            }
+
+            if ($this->request->data['Reinvestment']['investment_period'] == "" || $this->request->data['Reinvestment']['investment_period'] == null) {
+                $message = 'Please Select an Investment Period';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            }
+            if (($this->request->data['Reinvestment']['interest_rate'] == "") || is_null($this->request->data['Reinvestment']['interest_rate'])) {
+                $message = 'Please State Interest Rate';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            }
+
+            $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
+            $first_date = $inv_date;
+
+            $date = new DateTime($first_date);
+            $period = $this->request->data['Reinvestment']['investment_period'];
+            $duration = $this->request->data['Reinvestment']['duration'];
+            $year = $duration;
+            switch ($period) {
+                case 'Day(s)':
+
+                    $date->add(new DateInterval('P' . $duration . 'D'));
+                    $date_statemt = new DateTime($first_date);
+                    $principal = $investment_amount;
+                    $statemt_array = array();
+                    $rate = $custom_rate;
+
+                    $interest_amount1 = ($rate / 100) * $investment_amount;
+                    $interest_amount = $interest_amount1 * $duration;
+                    $amount_due = $interest_amount + $investment_amount;
+                    for ($n = 1; $n <= $duration; $n++) {
+                        $date_statemt->add(new DateInterval('P1D'));
+
+                        $total = $interest_amount1 + $principal;
+                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                            'principal' => $principal,
+                            'interest' => $interest_amount1,
+                            'maturity_date' => $date_statemt->format('Y-m-d'),
+                            'total' => $total);
+                        $principal = $total;
+                    }
+
+                    break;
+
+                case 'Month(s)':
+
+                    $date->add(new DateInterval('P' . $duration . 'M'));
+                    $date_statemt = new DateTime($first_date);
+                    $principal = $investment_amount;
+                    $statemt_array = array();
+                    $rate = $custom_rate;
+
+                    $interest_amount1 = ($rate / 100) * $investment_amount;
+                    $interest_amount = $interest_amount1 * $duration;
+                    $amount_due = $interest_amount + $investment_amount;
+                    for ($n = 1; $n <= $duration; $n++) {
+                        $date_statemt->add(new DateInterval('P1M'));
+
+                        $total = $interest_amount1 + $principal;
+                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                            'principal' => $principal,
+                            'interest' => $interest_amount1,
+                            'maturity_date' => $date_statemt->format('Y-m-d'),
+                            'total' => $total);
+                        $principal = $total;
+                    }
+
+                    break;
+
+                case 'Year(s)':
+                    $date->add(new DateInterval('P' . $duration . 'M'));
+                    $date_statemt = new DateTime($first_date);
+                    $principal = $investment_amount;
+                    $statemt_array = array();
+                    $rate = $custom_rate;
+
+                    $interest_amount1 = ($rate / 100) * $investment_amount;
+                    $interest_amount = $interest_amount1 * $duration;
+                    $amount_due = $interest_amount + $investment_amount;
+                    for ($n = 1; $n <= $duration; $n++) {
+                        $date_statemt->add(new DateInterval('P1M'));
+
+                        $total = $interest_amount1 + $principal;
+                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                            'principal' => $principal,
+                            'interest' => $interest_amount1,
+                            'maturity_date' => $date_statemt->format('Y-m-d'),
+                            'total' => $total);
+                        $principal = $total;
+                    }
+
+
+                    break;
+            }
+
+            $check = $this->Session->check('statemt_array_refixed');
+            if ($check) {
+                $this->Session->delete('statemt_array_refixed');
+            }
+            $this->Session->write('statemt_array_refixed', $statemt_array);
+
+            $reinvestment_array = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+                'investment_amount' => $this->request->data['Reinvestment']['investment_amount'],
+                'inv_dest_product_id' => $this->request->data['Reinvestment']['inv_dest_product_id'],
+                'interest_rate' => $rate,
+                'investment_destination_id' => $this->request->data['Reinvestment']['investmentdestination_id'],
+                'currency_id' => $this->request->data['Reinvestment']['currency_id'],
+                'duration' => $this->request->data['Reinvestment']['duration'],
+                'investment_period' => $this->request->data['Reinvestment']['investment_period'],
+                'interest_earned' => $interest_amount,
+                'investment_date' => $inv_date,
+                'investment_type' => 'fixed',
+                'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
+                'balance' => $amount_due,
+                'created_by' => $this->request->data['Reinvestment']['user_id'],
+                'modified_by' => $this->request->data['Reinvestment']['user_id']
+            );
+
+
+            $check = $this->Session->check('investment_array_refixed');
+            if ($check) {
+                $this->Session->delete('investment_array_refixed');
+            }
+
+            $this->Session->write('investment_array_refixed', $reinvestment_array);
+
+            $check = $this->Session->check('variabless_refixed');
+            if ($check) {
+                $this->Session->delete('variabless_refixed');
+            }
+
+            $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+            $this->Session->write('variabless_refixed', $variables);
+
+            if ($this->Session->check('reinvesttemp') == true) {
+                $this->Session->delete('reinvesttemp');
+            }
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+        }
+    }
+    
+    function newInvestment1Fixed1($reinvestor_id = null) {
+        /* $this->__validateUserType(); */
+        $check = $this->Session->check('investment_array_refixed');
+            if (!$check) {
+                $message = 'Process before submitting';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+           
+            }
+            $read = $this->Session->read('investment_array_refixed');
+        $result = $this->Reinvestment->save($read);
+        $reinvestment_id = $this->Reinvestment->id;
+        if($result){
+            $invested_amount = $result['Reinvestment']['investment_amount'];
+            $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' =>
+                ['Reinvestment.id' => $reinvestment_id]]));
+        
+        $check = $this->Session->check('reinvesttemp');
+        if ($check) {
+            $this->Session->delete('reinvesttemp');
+        }
+        //subtract from reinvestoraacount fixed balance and probably deposit
+        $reinvestment_data = $this->ReinvestorCashaccount->find('first' ,
+    ['recursive' => -1,'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
+        if($reinvestment_data){
+            $id = $reinvestment_data['ReinvestorCashaccount']['id'];
+            $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
+            $new_balance = $old_balance - $invested_amount;
+
+            $fixed_data = array('id' => $id,'fixed_inv_balance' => $new_balance);
+            $this->ReinvestorCashaccount->save($fixed_data);
+        }
+        
+
+     $this->Session->delete('investment_array_refixed');
+        
+        }else{
+             $message = 'Error saving new re-investment details. Please try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+           
+        }
+        
+    }
+
+    function newInvestment1Equity($reinvestor_id = null,$investmentcash_id = null) {
+        /* $this->__validateUserType(); */
+       $check = $this->Session->check('variabless_reequity');
+        if ($check) {
+            $check = $this->Session->check('variabless_reequity.totalamt');
+            if ($check) {
+                $this->set('totalamt', $this->Session->read('variabless_reequity.totalamt'));
+            }
+            $check = $this->Session->check('variabless_reequity.share_price');
+            if ($check) {
+                $this->set('share_price', $this->Session->read('variabless_reequity.share_price'));
+            }
+            $check = $this->Session->check('variabless_reequity.total_fees');
+            if ($check) {
+                $this->set('total_fees', $this->Session->read('variabless_reequity.total_fees'));
+            }
+            $check = $this->Session->check('variabless_reequity.equity');
+            if ($check) {
+                $this->set('equity', $this->Session->read('variabless_reequity.equity'));
+            }
+        }
+        $this->set('reinvestorcashaccount', $this->ReinvestorCashaccount->find('first', ['recursive' => -1,'conditions' =>
+                ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('reinvestors', $this->Reinvestor->find('list'));
+
+        
+        $data = $this->InvestmentCash->find('first', ['conditions' => ['InvestmentCash.id' => $investmentcash_id]]);
+        $this->set('equitydetails', $data);
+    }
+
+    function process_equity(){
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+//            $amount = $this->request->data['Reinvestment']['investment_amount'];
+            $currency_id = $this->request->data['Reinvestment']['currency_id'];
+            $reinvestcash_id = $this->request->data['Reinvestment']['reinvestorcashaccount_id'];
+            $investcash_id = $this->request->data['Reinvestment']['investment_cash_id'];
+            $reinvestor_id = $this->request->data['Reinvestment']['reinvestor_id'];
+            $inv_day = $this->request->data['Reinvestment']['reinvestment_date']['day'];
+            if (!empty($inv_day)) {
+                $inv_month = $this->request->data['Reinvestment']['reinvestment_date']['month'];
+                $inv_year = $this->request->data['Reinvestment']['reinvestment_date']['year'];
+                $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
+                $sinv_date = strtotime($finv_date);
+                $inv_date = date('Y-m-d', $sinv_date);
+            } else {
+                $inv_date = date('Y-m-d');
+            }
+            $this->request->data['Reinvestment']['reinvestment_date'] = $inv_date;
+            if ($this->Session->check('reinvesttemp') == true) {
+                $this->Session->delete('reinvesttemp');
+            }
+            if (isset($currency_id) && !empty($currency_id)) {
+                $currency_array = $this->Currency->find('first', array('conditions' => array('Currency.id' => $currency_id)));
+                if ($currency_array) {
+                    $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
+                }
+            }
+
+            $this->Session->write('reeinvesttemp', $this->request->data['Reinvestment']);
+            
+
+
+              
+
+                if ($this->request->data['Reinvestment']['equities_list_id'] == "" || $this->request->data['Reinvestment']['equities_list_id'] == null) {
+                    $message = 'Please Select Equity Purchased';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+                }
+
+                if ($this->request->data['Reinvestment']['share_price'] == "" || $this->request->data['Reinvestment']['share_price'] == null) {
+                    $message = 'Please State Equity Purchase Price';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
                 }
                 
-                if ($this->request->data['Reinvestment']['inv_dest_product_id'] == "" || $this->request->data['Reinvestment']['inv_dest_product_id'] == null) {
-                    $message = 'Please Select an Investment Product';
+                if ($this->request->data['Reinvestment']['numb_shares'] == "" || $this->request->data['Reinvestment']['numb_shares'] == null) {
+                    $message = 'Please State number of Shares';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
                 }
+//                if (($this->request->data['Investment']['total_fees'] == "") || is_null($this->request->data['Investment']['total_fees'])) {
+//                    $message = 'Please State Total Fees';
+//                    $this->Session->write('bmsg', $message);
+//                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+//                }
 
-                if ($this->request->data['Reinvestment']['investment_amount'] == "" || $this->request->data['Reinvestment']['investment_amount'] == null) {
-                    $message = 'Please Supply an Investment Amount';
+
+                $numb0fshares = $this->request->data['Reinvestment']['numb_shares'];
+                $equity_price = $this->request->data['Reinvestment']['share_price'];
+                $total_fees = $this->request->data['Reinvestment']['total_fees'];
+                $available_amount = $this->request->data['Reinvestment']['available_amount'];
+                $totalamt = ($numb0fshares * $equity_price) + $total_fees;
+                $inv_amount = $numb0fshares * $equity_price;
+                $result = $this->ReinvestorCashaccount->find('first', array('conditions' =>
+                    array('ReinvestorCashaccount.reinvestor_id' => $reinvestor_id)));
+                if ($result) {
+                    if ($result['ReinvestorCashaccount']['equity_inv_balance'] < $totalamt) {
+                        $message = 'Investment amount cannot be more than available reinvestor deposit';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+                 }
+                }
+                if($available_amount < $totalamt){
+                       $message = 'Investment amount cannot be more than investors deposit';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
-                }
-
-                if ($this->request->data['Reinvestment']['duration'] == "" || $this->request->data['Reinvestment']['duration'] == null) {
-                    $message = 'Please Supply  an Investment Duration';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
-                }
-
-                if ($this->request->data['Reinvestment']['investment_period'] == "" || $this->request->data['Reinvestment']['investment_period'] == null) {
-                    $message = 'Please Select an Investment Period';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
-                }
-                if (($this->request->data['Reinvestment']['interest_rate'] == "") || is_null($this->request->data['Reinvestment']['interest_rate'])) {
-                    $message = 'Please State Interest Rate';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed',$investcash_id));
-                }
-                
-                $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
-                $first_date = $inv_date;
-                
-                $date = new DateTime($first_date);
-                $period = $this->request->data['Reinvestment']['investment_period']; 
-                $duration = $this->request->data['Reinvestment']['duration']; 
-                $year = $duration;
-                switch($period){
-                    case 'Day(s)':
-                       
-                        $date->add(new DateInterval('P' . $duration . 'D'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        $rate = $custom_rate;
-                        
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $duration;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $duration; $n++) {
-                            $date_statemt->add(new DateInterval('P1D'));
-
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        } 
-                        
-                        break;
-                    
-                    case 'Month(s)':
-                        
-                         $date->add(new DateInterval('P' . $duration . 'M'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        $rate = $custom_rate;
-                        
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $duration;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $duration; $n++) {
-                            $date_statemt->add(new DateInterval('P1M'));
-
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        } 
-                        
-                        break;
-                        
-                    case 'Year(s)':
-                         $date->add(new DateInterval('P' . $duration . 'M'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        $rate = $custom_rate;
-                        
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $duration;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $duration; $n++) {
-                            $date_statemt->add(new DateInterval('P1M'));
-
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        } 
-                        
-                        
-                        break;
-                }
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
                  
-                        $check = $this->Session->check('statemt_array_refixed');
-                        if ($check) {
-                            $this->Session->delete('statemt_array_refixed');
-                        }
-                        $this->Session->write('statemt_array_refixed', $statemt_array);
+                }
+                
+                $equity_name = '';
+                    $equities_list_id = $this->request->data['Reinvestment']['equities_list_id'];
+                    $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $equities_list_id)));
+                    if ($equity) {
+                        $equity_name = $equity['EquitiesList']['equity_abbrev'];
+                    }
+                    $check = $this->Session->check('variabless_reequity');
+                    if ($check) {
+                        $this->Session->delete('variabless_reequity');
+                    }
 
-                        $reinvestment_array = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                            'investment_amount' => $this->request->data['Reinvestment']['investment_amount'],
-                            'investment_cash_id' => $this->request->data['Reinvestment']['investment_cash_id'],
-                            'inv_dest_product_id' => $this->request->data['Reinvestment']['inv_dest_product_id'],
-                            'interest_rate' => $rate,
-                            'investmentdestination_id' => $this->request->data['Reinvestment']['investmentdestination_id'],
-                            'currency_id' => $this->request->data['Reinvestment']['currency_id'],
-                            'duration' => $this->request->data['Reinvestment']['duration'],
-                            'investment_period' => $this->request->data['Reinvestment']['investment_period'],
-                            'instruction_details' => $this->request->data['Reinvestment']['instruction_details'],
-                            'interest_earned' => $interest_amount,
-                            'investment_date' => $inv_date,
-                            'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
-                            'balance' => $amount_due,
-                            'created_by' => $this->request->data['Reinvestment']['user_id'],
-                            'modified_by' => $this->request->data['Reinvestment']['user_id']
-                        );
+                    $variables = array('totalamt' => $totalamt, 'share_price' => $this->request->data['Reinvestment']['share_price'], 'total_fees' => $this->request->data['Reinvestment']['total_fees'], 'equity' => $equity_name);
+                    
+                    $this->Session->write('variabless_reequity', $variables);
+
+                    $investment_array = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                        'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+                        'investor_id' => $this->request->data['Reinvestment']['investor_id'],
+                        'investment_type' => 'equity',
+                        'investment_cash_id' => $this->request->data['Reinvestment']['investment_cash_id'] ,
+                        'currency_id' => $this->request->data['Reinvestment']['currency_id'],
+                        'investment_amount' => $inv_amount,
+                        'investment_date' => $this->request->data['Reinvestment']['investment_date'],
+                        'reinvestment_date' => $inv_date,
+                        'equities_list_id' => $equities_list_id,
+//                            'purchase_date' => $pinv_date,
+                        'purchase_date' => $inv_date,
+                        'purchase_price' => $this->request->data['Reinvestment']['share_price'],
+                        'numb_shares' => $this->request->data['Reinvestment']['numb_shares'],
+                        'numb_shares_left' => $this->request->data['Reinvestment']['numb_shares'],
+                        'total_fees' => $this->request->data['Reinvestment']['total_fees'],
+                        'total_amount' => $totalamt,
+                        'created_by' => $this->request->data['Reinvestment']['user_id'],
+                        'modified_by' => $this->request->data['Reinvestment']['user_id']
+                    );
+
+                    $check = $this->Session->check('investment_array_reequity');
+                    if ($check) {
+                        $this->Session->delete('investment_array_reequity');
+                    }
+                    
+                     if($available_amount > $totalamt){
+                       $message = 'Investment amount is more than investor\'s deposit. Consider increasing number of purchased shares. <br/> Click on Submit to ignore and continue';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+                 
+                }
+                    $this->Session->write('investment_array_reequity', $investment_array);
+                        $message = 'Investment Successfully Processed. Click on submit to save and proceed';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+                 
+        }
+        
+        
+    }
+    function newInvestment1Equity1($reinvestor_id = null,$investcash_id=null) {
+        /* $this->__validateUserType(); */
+        $this->set('reinvestments', $this->Reinvestment->find('list'));
+        if ($this->Session->check('reinvesttemp') == true) {
+                $this->Session->delete('reinvesttemp');
+            }
+            $check = $this->Session->check('variabless_reequity');
+        if ($check) {
+            $this->Session->delete('variabless_reequity');
+        }
+        
+        $check = $this->Session->check('investment_array_reequity');
+            if (!$check) {
+                $message = 'Process before submitting';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+           
+            }
+            $read = $this->Session->read('investment_array_reequity');
+            $ic_result = $this->InvestmentCash->find('first',['conditions' => ['InvestmentCash.id' => $investcash_id]]);
+        $result = $this->ReinvestmentsEquity->save($read);
+        $reinvestment_id = $this->ReinvestmentsEquity->id;
+        if($result){
+            
+            $invested_amount = $result['ReinvestmentsEquity']['total_amount'];
+            if($ic_result){
+            $balance = $ic_result['InvestmentCash']['available_amount'] - $result['ReinvestmentsEquity']['total_amount'];
+            if($balance > 0){
+                $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'part_investment',
+                    'modified_by' => ($this->Session->check('userDetails.id') == true ? 
+                                    $this->Session->read('userDetails.id') : '' ));
+            }else{
+                
+                $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'invested',
+                    'modified_by' => ($this->Session->check('userDetails.id') == true ? 
+                                    $this->Session->read('userDetails.id') : '' ));
+            }
+                $this->InvestmentCash->save($investmencash_array);
+            }
+                //delete from reinvestor_cashaccounts
+                   //subtract from reinvestoraacount equity balance and probably deposit
+        $reinvestment_data = $this->ReinvestorCashaccount->find('first' ,
+    ['recursive' => -1,'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
+        if($reinvestment_data){
+            $id = $reinvestment_data['ReinvestorCashaccount']['id'];
+            $old_balance = $reinvestment_data['ReinvestorCashaccount']['equity_inv_balance'];
+            $new_balance = $old_balance - $invested_amount;
+
+            $equity_data = array('id' => $id,'equity_inv_balance' => $new_balance);
+            $this->ReinvestorCashaccount->save($equity_data);
+        }
+                $check = $this->Session->check('investment_array_reequity');
+                    if ($check) {
+                        $this->Session->delete('investment_array_reequity');
+                    } 
+                    $this->set('reinvestments', $this->ReinvestmentsEquity->find('first', ['conditions' =>
+                ['ReinvestmentsEquity.id' => $reinvestment_id]]));
+        }else{
+             $message = 'Error saving new re-investment details. Please try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity',$reinvestor_id,$investcash_id));
+           
+        }
+        
+                
+               
+    }
+
+public function getPurchasePrice() {
+        $this->autoRender = false;
+        $this->autoLayout = false;
+
+        if ($this->request->is('ajax')) {
 
 
-                        $check = $this->Session->check('investment_array_refixed');
-                        if ($check) {
-                            $this->Session->delete('investment_array_refixed');
-                        }
-
-                        $this->Session->write('investment_array_refixed', $reinvestment_array);
-
-                        $check = $this->Session->check('variabless_refixed');
-                        if ($check) {
-                            $this->Session->delete('variabless_refixed');
-                        }
-
-                        $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
-                        $this->Session->write('variabless_refixed', $variables);
-
+            if (!empty($_POST['ID'])) {
+                $ID = $_POST['ID'];
+                $catLst = $this->EquitiesList->find('first', array('fields' => array('EquitiesList.ID', 'EquitiesList.share_price'), 'conditions' => array('EquitiesList.id' => $ID), 'recursive' => -1));
+                if ($catLst) {
+                    $itemLsts = json_encode($catLst);
+                    return $itemLsts;
+                } else {
+                    $error = json_encode(array("error" => "No Data For Sub-Type"));
+                    return $error;
+                }
+            } else {
+                $error = json_encode(array("error" => "INVALID SELECTION"));
+                return $error;
+            }
         }
     }
     
@@ -1741,51 +2041,47 @@ function getInvProd(){
     function manageInv() {
         /* $this->__validateUserType(); */
         $this->set('reinvestors', $this->Reinvestor->find('list'));
-        
-        if($this->request->is('post')){
+
+        if ($this->request->is('post')) {
             $reinvestor_id = $this->request->data['ManageInvestments']['reinvestor_id'];
             $investment_type = $this->request->data['ManageInvestments']['investment_type'];
-            
-            if($reinvestor_id == '' || $reinvestor_id == NULL){
+
+            if ($reinvestor_id == '' || $reinvestor_id == NULL) {
                 $message = 'Please Select Re-investor';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
-            }
-            elseif($investment_type == '' || $investment_type == NULL){
+            } elseif ($investment_type == '' || $investment_type == NULL) {
                 $message = 'Please Select Investment Type';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
-            }
-            else{
-                if($investment_type==1){
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/'.$reinvestor_id));
+            } else {
+                if ($investment_type == 1) {
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/' . $reinvestor_id));
+                } elseif ($investment_type == 2) {
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvEquity/' . $reinvestor_id));
                 }
-                elseif($investment_type==2){
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvEquity/'.$reinvestor_id));
-                }
-                       
             }
         }
     }
-    
+
     function manageInvFixed($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
-        
+
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
-         
+
         $this->paginate = array(
             'conditions' => array('Reinvestment.investment_type' => 'fixed', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
             'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
         $data = $this->paginate('Reinvestment');
         $this->set('data', $data);
     }
-    
+
     function manageInvEquity($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
-         
+
         $this->paginate = array(
             'conditions' => array('Reinvestment.investment_type' => 'equity', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
             'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
@@ -1795,51 +2091,48 @@ function getInvProd(){
 
     function manageInvFixedDetails($reinvestment_id = NULL) {
         /* $this->__validateUserType(); */
-        
+
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
         $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
-        
     }
-    
+
     function manageInvEquityDetails($reinvestment_id = NULL) {
         /* $this->__validateUserType(); */
-        
-        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
-        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
-        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
-        
-    }
-    
-    function manageInvFixedCancel(){
-        
-    }
-    
-    function manageInvEquityCancel(){
-        
-    }
-    
-    function payReinvestorFixed($reinvestment_id = NULL){
+
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
         $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
     }
-    
-    function payReinvestorEquity($reinvestment_id = NULL){
+
+    function manageInvFixedCancel() {
         
     }
-    
-    function payReinvestorFixedReceipt($reinvestment_id = NULL){
+
+    function manageInvEquityCancel() {
+        
+    }
+
+    function payReinvestorFixed($reinvestment_id = NULL) {
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
         $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
     }
-    
-    function payReinvestorEquityReceipt($reinvestment_id = NULL){
+
+    function payReinvestorEquity($reinvestment_id = NULL) {
         
     }
-    
-    
+
+    function payReinvestorFixedReceipt($reinvestment_id = NULL) {
+        $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
+    }
+
+    function payReinvestorEquityReceipt($reinvestment_id = NULL) {
+        
+    }
+
     function processPayments() {
         /* $this->__validateUserType(); */
 
@@ -1863,6 +2156,9 @@ function getInvProd(){
     }
 
     function makePayment() {
+        // subtract from reinvestor deposits and cash accounts and add to amount paidout in reinvestor_cashaccounts
+        
+        
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $balance;

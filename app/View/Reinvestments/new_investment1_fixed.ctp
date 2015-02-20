@@ -28,31 +28,35 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Re-investor Company:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['Reinvestor']['company_name']) ? $investmentcashes['Reinvestor']['company_name'] : '' );?>
+                                    <?php echo (isset($reinvestorcashaccounts['Reinvestor']['company_name']) ? 
+                                            $reinvestorcashaccounts['Reinvestor']['company_name'] : '' );?>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Investment Date:</b></p>";?>
+                                    <?php echo "<p><b>Last Modified Date:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['InvestmentCash']['investment_date']) ? $investmentcashes['InvestmentCash']['investment_date'] : '' );?>
+                                    <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['modified']) ?
+                                            $reinvestorcashaccounts['ReinvestorCashaccount']['modified'] : '' );?>
                                 </div>
                             </div>
-                            <div class="row">
+<!--                            <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Currency:</b></p>";?>
+                                    <?php // echo "<p><b>Currency:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['Currency']['symbol']) ? $investmentcashes['Currency']['symbol'] : '' );?>
+                                    <?php // echo (isset($reinvestorcashaccounts['Currency']['symbol']) ? 
+//                                            $reinvestorcashaccounts['Currency']['symbol'] : '' );?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     <?php echo "<p><b>Deposited Amount:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['InvestmentCash']['amount']) ? $investmentcashes['InvestmentCash']['amount'] : '' );?>
+                                    <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount']) ?
+                                            $reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'] : '' );?>
                                 </div>
                             </div>
                             
@@ -61,7 +65,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Available Amount:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['InvestmentCash']['available_amount']) ? $investmentcashes['InvestmentCash']['available_amount'] : '' );?>
+                                    <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance']) ?
+                                            $reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'] : '' );?>
                                 </div>
                             </div> 
                         </div>
@@ -72,7 +77,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Investment Type:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['InvestmentCash']['investment_type']) ? $investmentcashes['InvestmentCash']['investment_type'] : '' );?>
+                                    <?php echo 'Fixed Investment';?>
                                 </div>
                             </div> 
                             <div class="row">
@@ -80,7 +85,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Notes:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($investmentcashes['InvestmentCash']['notes']) ? $investmentcashes['InvestmentCash']['notes'] : '' );?>
+                                    <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['notes']) ?
+                                            $reinvestorcashaccounts['ReinvestorCashaccount']['notes'] : '' );?>
                                 </div>
                             </div>
                         </div>
@@ -95,17 +101,23 @@ if ($this->Session->check('shopCurrency_investment')) {
                             
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                             echo $this->Form->hidden('investment_cash_id', array('value' => (isset($investmentcashes['InvestmentCash']['id']) ? $investmentcashes['InvestmentCash']['id'] : '' )));
-                             echo $this->Form->hidden('reinvestor_id', array('value' => (isset($investmentcashes['InvestmentCash']['reinvestor_id']) ? $investmentcashes['InvestmentCash']['reinvestor_id'] : '' )));
+                             echo $this->Form->hidden('reinvestorcashaccount_id', array('value' => (isset($reinvestorcashaccounts['ReinvestorCashaccount']['id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['id'] : '' )));
+                             echo $this->Form->hidden('reinvestor_id', array('value' => (isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' )));
 
-                            echo $this->Form->input('investmentdestination_id', array('required','empty' => '--Please Select--', 'value' => ($this->Session->check('reinvesttemp.investmentdestination_id') == true ? $this->Session->read('reinvesttemp.investmentdestination_id') : '' ), 'label' => 'Investment Destination Company/Fund'));
+                            echo $this->Form->input('investmentdestination_id', 
+                                    array('required','empty' => '--Please Select--', 
+                                        'value' => ($this->Session->check('reinvesttemp.investmentdestination_id') 
+                                    == true ? $this->Session->read('reinvesttemp.investmentdestination_id') : '' ),
+                                        'label' => 'Investment Destination Company/Fund*'));
                             ?>
                             
                                 </div>
                             <div class="row">
                                 <?php
-                                 echo $this->Form->input('inv_dest_product_id', array('required','empty' => '--Please Select--', 'value' => ($this->Session->check('reinvesttemp.inv_dest_product_id') == true ? $this->Session->read('reinvesttemp.inv_dest_product_id') : '' ), 'label' => 'Investment Product','class' => 'invprods'));
-                                 echo $this->Form->hidden('currency_id',['value' => (isset($investmentcashes['Currency']['id']) ? $investmentcashes['Currency']['id'] : '' )]);
+                                 echo $this->Form->input('inv_dest_product_id', array('required','empty' => '--Please Select--', 'value' => ($this->Session->check('reinvesttemp.inv_dest_product_id') == true ? $this->Session->read('reinvesttemp.inv_dest_product_id') : '' ), 'label' => 'Investment Product*','class' => 'invprods'));
+                                 echo $this->Form->hidden('currency_id',['value' => 
+                                     (isset($reinvestorcashaccounts['Reinvestor']['currency_id']) ? 
+                                     $reinvestorcashaccounts['Reinvestor']['currency_id'] : '' )]);
                                 ?>
                             
                                 </div>
@@ -114,25 +126,32 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-7 col-md-7 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo $this->Form->input('investment_amount', array('required','label' => 'Investment Amount', 'class' => 'required', 'value' => ($this->Session->check('reinvesttemp.investment_amount') == true ? $this->Session->read('reinvesttemp.investment_amount') : '' ))); ?>
+                                    <?php echo $this->Form->input('investment_amount', array('required',
+                                        'label' => 'Investment Amount*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reinvesttemp.investment_amount') == true 
+                                            ? $this->Session->read('reinvesttemp.investment_amount') : '' ))); ?>
+                                
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('duration',array('required','label' => 'Duration', 'value' => ($this->Session->check('reinvesttemp.duration') == true ? $this->Session->read('reinvesttemp.duration') : '' ),'width' => '50px'));
+                                    echo $this->Form->input('duration',array('required','label' => 'Duration*', 
+                                        'value' => ($this->Session->check('reinvesttemp.duration') == true ? 
+                                            $this->Session->read('reinvesttemp.duration') : '' ),'width' => '50px'));
                                     
                                     ?>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php
+                                <div class="col-lg-4 col-md-4 col-sm-12">  <?php
                                     
-                                    echo $this->Form->input('investment_period', array('required','label' => 'Investment Period', 'empty' => "--Please Select--",
-                                        'options'=> array('Day(s)' => 'Day(s)','Month(s)' => 'Month(s)','Year(s)'=>'Year(s)'),'value' => ($this->Session->check('reinvesttemp.investment_period') == true ? $this->Session->read('reinvesttemp.investment_period') : '' ))); ?>
-
+                                    echo $this->Form->input('investment_period', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
+                                        'options'=> array('Day(s)' => 'Day(s)','Month(s)' => 'Month(s)','Year(s)'=>'Year(s)'),
+                                        'value' => ($this->Session->check('reinvesttemp.investment_period') == true ? 
+                                            $this->Session->read('reinvesttemp.investment_period') : '' ))); ?>
+                                     
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
-                                    <?php echo $this->Form->input('interest_rate', array('required','label' => 'Interest(%)', 'value' => ($this->Session->check('reinvesttemp.interest_rate') == true ? $this->Session->read('reinvesttemp.interest_rate') : '' ))); ?>
-
+                                    <?php echo $this->Form->input('interest_rate', array('required','label' => 'Interest(%)*', 'value' => ($this->Session->check('reinvesttemp.interest_rate') == true ? $this->Session->read('reinvesttemp.interest_rate') : '' ))); ?>
+                                    
                                 </div>
                             </div>
                             <div class="row"> 
@@ -164,6 +183,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year, "class" => "large")); ?>
+                                
                                 </div>
                                 <script>
                                     var day = $("#day").val();
@@ -240,7 +260,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 //                    echo $this->Html->link('Back', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
                     echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success"));
                     echo "&nbsp;&nbsp;";
-                    echo $this->Html->link('Finish', "/Reinvestments/newInvestment1Fixed1", array("class" => 'btn btn-lg btn-primary'));
+                    echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Fixed1/".(isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' ), array("class" => 'btn btn-lg btn-primary'));
                     ?>
                 </div>
                     
@@ -255,6 +275,39 @@ if ($this->Session->check('shopCurrency_investment')) {
     <script type="text/javascript" language="javascript">
         $(document).ready(function ()
         {
+             $("#ReinvestmentInvestmentAmount").mouseout(function () {
+                 var inv_amount = $(this).val();
+                 var url = '../getAvailableAmount';
+                 var reinvestor_id = $("#ReinvestmentReinvestorId").val();
+                 var query = "action=getAvailableAmount&amount=" + inv_amount + "&reinvestor_id=" + reinvestor_id;
+                 if (inv_amount != ""){
+                      $.ajax({
+                    url: url,
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    if (data['status'] == 'ok') {
+                        
+                    if(data['data'] == 'prompt'){
+                        alert("Investment amount provided is more than available");
+                        $(this).focus();
+                         $(this).attr('border-color','red');
+                         return false;
+                    }
+                     $(this).attr('border-color','#c6ced0');
+                    } 
+                    },
+                    error: function () {
+                        $(".errormsg").show();
+                            $(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            $(".errormsg").hide();
+                  }
+            });
+                 }
+                 
+             });
             $("#ReinvestmentInvestmentdestinationId").change(function () {
                 var url = '../getInvProd';
                 var destination_id = $(this).val();

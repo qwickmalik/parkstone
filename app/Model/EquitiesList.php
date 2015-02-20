@@ -21,7 +21,7 @@ class EquitiesList extends AppModel {
             ),
         'ReinvestmentsEquity' => array(
             'className' => 'ReinvestmentsEquity',
-            'foreignKey' => 'equity_id',
+            'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

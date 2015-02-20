@@ -78,7 +78,7 @@ echo $this->Html->script('notification.js');
                         if($each_item['InvestmentCash']['investment_type']=='fixed'):
                             echo $this->Html->link("Select","/Reinvestments/newInvestment1Fixed/".$each_item['InvestmentCash']['id']);  
                         elseif ($each_item['InvestmentCash']['investment_type']=='equity'):
-                            echo $this->Html->link("Select","/Reinvestments/newInvestment1Equity/".$each_item['InvestmentCash']['id']);  
+                            echo $this->Html->link("Select","/Reinvestments/newInvestment1Equity/".(isset($reinvestors['Reinvestor']['id']) ? $reinvestors['Reinvestor']['id'] : '' )."/".$each_item['InvestmentCash']['id']);  
                         endif;
                         ?>
                     </td>

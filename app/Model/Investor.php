@@ -77,6 +77,14 @@ class Investor extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
+            'ReinvestmentsEquity' => array(
+            'className' => 'ReinvestmentsEquity',
+            'foreignKey' => 'investor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
             'Investment' => array(
             'className' => 'Investment',
             'foreignKey' => 'investor_id',

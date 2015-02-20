@@ -3229,10 +3229,20 @@ var ucsl_report = {
      
     
         //callback function to handle supplier detail listing for editing
-        $("a#print_report").click(function(event){
+        $("a#print_statement").click(function(event){
             $("#dateRow").hide();
             $("#emailRow").hide();
-            $("#report_content").printElement();
+            $(".inner").printElement();
+            $("#dateRow").show();
+            $("#emailRow").show();
+            event.preventDefault();
+            return false;
+        });
+        //callback function to handle supplier detail listing for editing
+        $("a#print_receipt").click(function(event){
+            $("#dateRow").hide();
+            $("#emailRow").hide();
+            $(".inner").printElement();
             $("#dateRow").show();
             $("#emailRow").show();
             event.preventDefault();

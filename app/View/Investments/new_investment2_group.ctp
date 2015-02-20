@@ -110,11 +110,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investor_type_id', array('value' => 5));
                             echo $this->Form->hidden('investor_page', array('value' => 'newInvestment2Group'));
-                            echo $this->Form->hidden('investor_id', array('value' => (isset($investor['investor_id']) ? $investor['investor_id'] : '')));
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investors['Investor']['id']) ? $investors['Investor']['id'] : '')));
 
-                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
+                            echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product',  'required','empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
 
-                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
+                            echo $this->Form->input('currency_id', array('type' => 'select', 'required','options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
                             ?>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
