@@ -604,3 +604,19 @@ CREATE TABLE IF NOT EXISTS `reinvestment_statements` (
 ALTER TABLE `investments` CHANGE `custom_rate` `custom_rate` INT( 3 ) NULL DEFAULT '0';
 ALTER TABLE `reinvestments` CHANGE `interest_rate` `interest_rate` INT( 3 ) NULL DEFAULT '0';
 ALTER TABLE `investment_terms` CHANGE `interest_rate` `interest_rate` INT( 3 ) NULL DEFAULT '0';
+ALTER TABLE `investments` ADD `total_amount_earned` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `amount_due` ;
+ALTER TABLE `investments` ADD `interest_accrued` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `balance` ;
+
+
+CREATE TABLE IF NOT EXISTS `daily_interest_statements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `investment_id` int(11) DEFAULT NULL,
+  `investor_id` int(11) DEFAULT NULL,
+  `principal` decimal(11,2) DEFAULT '0.00',
+  `interest` decimal(11,2) DEFAULT '0.00',
+  `total` decimal(11,2) DEFAULT '0.00',
+  `date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
