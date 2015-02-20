@@ -80,7 +80,7 @@ echo $this->Html->script('notification.js');
                                     <?php echo "<p><b>Interest Rate:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($reinvestments['Reinvestment']['custom_rate']) ? $reinvestments['Reinvestment']['custom_rate'] : '' );?>
+                                    <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'].'%' : '' );?>
                                 </div>
                             </div>
                             <div class="row">
@@ -99,6 +99,15 @@ echo $this->Html->script('notification.js');
                                     <?php echo (isset($reinvestments['Reinvestment']['due_date']) ? $reinvestments['Reinvestment']['due_date'] : '' );?>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Expected Interest:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php echo (isset($reinvestments['Reinvestment']['expected_interest']) ? $reinvestments['Reinvestment']['expected_interest'] : '' );?>
+                                </div>
+                            </div>
+                            
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     <?php echo "<p><b>Interest Accrued:</b></p>";?>

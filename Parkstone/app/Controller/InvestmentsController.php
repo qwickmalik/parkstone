@@ -2843,8 +2843,9 @@ class InvestmentsController extends AppController {
             $investment_array = $this->Session->read('investment_array_fixed');
 
 
-            $result = $this->Investment->save($investment_array);
+            $this->Investment->save($investment_array);
             $investment_id = $this->Investment->id;
+            $result = $this->Investment->find('first',['conditions' => ['Investment.id' =>$investment_id]]);
             if ($result) {
 
                 $payment_name = '';
@@ -2943,8 +2944,10 @@ class InvestmentsController extends AppController {
             $investment_array = $this->Session->read('investment_array_equity');
 
 
-            $result = $this->Investment->save($investment_array);
+            $this->Investment->save($investment_array);
             $investment_id = $this->Investment->id;
+            
+            $result = $this->Investment->find('first',['conditions' => ['Investment.id' =>$investment_id]]);
             if ($result) {
                 
                 $payment_name = '';
@@ -3067,10 +3070,11 @@ class InvestmentsController extends AppController {
             $investment_array = $this->Session->read('investment_array_fixed');
 
 
-            $result = $this->Investment->save($investment_array);
+            $this->Investment->save($investment_array);
             $investment_id = $this->Investment->id;
             $investor_id = $result['Investment']['investor_id'];
-
+            
+            $result = $this->Investment->find('first',['conditions' => ['Investment.id' =>$investment_id]]);
             if ($result) {
 
 
@@ -3162,13 +3166,13 @@ class InvestmentsController extends AppController {
             $investment_array = $this->Session->read('investment_array_equity');
 
 
-            $result = $this->Investment->save($investment_array);
+            $this->Investment->save($investment_array);
             $investment_id = $this->Investment->id;
-            $investor_id = $result['Investment']['investor_id'];
-
+            $result = $this->Investment->find('first',['conditions' => ['Investment.id' =>$investment_id]]);
             if ($result) {
 
-
+                
+            $investor_id = $result['Investment']['investor_id'];
                 $payment_name = '';
                 $paymentmodeid = $result['Investment']['payment_mode_id'];
                 $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
@@ -4195,7 +4199,7 @@ class InvestmentsController extends AppController {
                         $principal = $total;
                     }
 
-                    $investment_array = array('id' => $data['Investment']['id'], 'balance' => $amount_due, 'interest_earned' => $interest_amount, 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
+                    $investment_array = array('id' => $data['Investment']['id'], 'balance' => $amount_due, 'expected_interest' => $interest_amount, 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
 
                     $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
                     $check = $this->Session->check('variabless');

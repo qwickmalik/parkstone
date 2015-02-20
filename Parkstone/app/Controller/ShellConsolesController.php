@@ -619,7 +619,62 @@ function __invEOD(){
     
 }
 
-function dailyInterests(){
+
+function __dailyInterests(){
+    
+    $investment_data = $this->Investment->find('first',['conditions' => ['Investment.status' => $data]]);
+    if($investment_data){
+        $term_id = $investment_data['Investment']['investment_term_id'];
+    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+
+                    if ($portfolio) {
+
+                        $year = $portfolio['InvestmentTerm']['period'];
+                        $date->add(new DateInterval('P' . $year . 'Y'));
+                        $date_statemt = new DateTime($first_date);
+                        $principal = $investment_amount;
+                        $statemt_array = array();
+                        if (isset($custom_rate) && !empty($custom_rate)) {
+                            $rate = $custom_rate;
+                        } else {
+                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
+                        }
+                        $interest_amount1 = ($rate / 100) * $investment_amount;
+                        $interest_amount = $interest_amount1 * $year;
+                        $amount_due = $interest_amount + $investment_amount;
+                        for ($n = 1; $n <= $year; $n++) {
+                            $date_statemt->add(new DateInterval('P1Y'));
+
+                            $total = $interest_amount1 + $principal;
+                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                'principal' => $principal,
+                                'interest' => $interest_amount1,
+                                'maturity_date' => $date_statemt->format('Y-m-d'),
+                                'total' => $total);
+                            $principal = $total;
+                        }
+                        $check = $this->Session->check('statemt_array_fixed');
+                        if ($check) {
+                            $this->Session->delete('statemt_array_fixed');
+                        }
+                        $this->Session->write('statemt_array_fixed', $statemt_array);
+
+                        $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                            'investor_id' => $this->request->data['Investment']['investor_id'],
+                            'investment_amount' => $this->request->data['Investment']['investment_amount'],
+                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
+                            'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                            'custom_rate' => $rate,
+                            'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
+                            'currency_id' => $this->request->data['Investment']['currency_id'],
+                            'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
+                            'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
+                            'instruction_id' => $this->request->data['Investment']['instruction_id'],
+                            'instruction_details' => $this->request->data['Investment']['instruction_details'],
+                            'interest_earned' => $interest_amount,
+                            'investment_date' => $inv_date,
+                            'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+                        );
     $statemt_array = $this->Session->check('statemt_array_fixed');
                     if ($statemt_array) {
                         $statemt_array = $this->Session->read('statemt_array_fixed');
@@ -633,6 +688,9 @@ function dailyInterests(){
                         }
                         $this->Session->delete('statemt_array_fixed');
                     }
+                    
+                    }
+    }
 }
 
     function __balEOD($bDate) {

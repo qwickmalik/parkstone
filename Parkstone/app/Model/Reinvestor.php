@@ -52,6 +52,22 @@ class Reinvestor extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+         'ReinvestmentRollover' => array(
+            'className' => 'ReinvestmentRollover',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+         'ReinvestmentStatement' => array(
+            'className' => 'ReinvestmentStatement',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
          );
     
     function getSetup(){
