@@ -130,6 +130,14 @@ class Investment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+            'DailyInterestStatement' => array(
+            'className' => 'DailyInterestStatement',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
          );
     

@@ -116,6 +116,14 @@ class Investor extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+            'DailyInterestStatement' => array(
+            'className' => 'DailyInterestStatement',
+            'foreignKey' => 'investor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
             );
 }

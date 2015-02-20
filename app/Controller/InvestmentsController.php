@@ -1981,6 +1981,7 @@ class InvestmentsController extends AppController {
                             'instruction_id' => $this->request->data['Investment']['instruction_id'],
                             'instruction_details' => $this->request->data['Investment']['instruction_details'],
                             'interest_earned' => $interest_amount,
+                            'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                             'investment_date' => $inv_date,
                             'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                         );
@@ -2325,6 +2326,7 @@ class InvestmentsController extends AppController {
                             'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
                             'instruction_id' => $this->request->data['Investment']['instruction_id'],
                             'instruction_details' => $this->request->data['Investment']['instruction_details'],
+                            'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                             'interest_earned' => $interest_amount,
                             'investment_date' => $inv_date,
                             'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
@@ -3539,6 +3541,10 @@ class InvestmentsController extends AppController {
     }
 
     function makePayment() {
+        
+        //amount being paidout must not be more than $value['Investment']['total_amount_earned'];
+        //if less or equal to,proceed but subtract paidamount from $value['Investment']['total_amount_earned'];
+        //must use the above column throughout instead of amount_due
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $balance;

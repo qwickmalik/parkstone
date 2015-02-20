@@ -11,7 +11,8 @@ class ShellConsolesController extends AppController {
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
         'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'DailyDefault', 
-        'ClosingBalance', 'Order', 'Expectedinstallment', 'Customer','InvestmentCash','ReinvestorCashaccount');
+        'ClosingBalance', 'Order', 'Expectedinstallment', 'Customer','InvestmentCash',
+        'ReinvestorCashaccount','DailyInterestStatement','Investment','InvestmentTerm');
 
     function beforeFilter() {
         
@@ -622,75 +623,43 @@ function __invEOD(){
 
 function __dailyInterests(){
     
-    $investment_data = $this->Investment->find('first',['conditions' => ['Investment.status' => $data]]);
+    $investment_data = $this->Investment->find('all',['recursive' => -1,
+        'conditions' => ['Investment.status' => array('Rolled_over','Invested')]]);
     if($investment_data){
-        $term_id = $investment_data['Investment']['investment_term_id'];
-    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+        foreach($investment_data as $value){
+        $term_id = $value['Investment']['investment_term_id'];
+        
 
-                    if ($portfolio) {
-
-                        $year = $portfolio['InvestmentTerm']['period'];
-                        $date->add(new DateInterval('P' . $year . 'Y'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        if (isset($custom_rate) && !empty($custom_rate)) {
-                            $rate = $custom_rate;
-                        } else {
-                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
-                        }
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $year;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $year; $n++) {
-                            $date_statemt->add(new DateInterval('P1Y'));
-
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        }
-                        $check = $this->Session->check('statemt_array_fixed');
-                        if ($check) {
-                            $this->Session->delete('statemt_array_fixed');
-                        }
-                        $this->Session->write('statemt_array_fixed', $statemt_array);
-
-                        $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                            'investor_id' => $this->request->data['Investment']['investor_id'],
-                            'investment_amount' => $this->request->data['Investment']['investment_amount'],
-                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
-                            'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                            'custom_rate' => $rate,
-                            'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                            'currency_id' => $this->request->data['Investment']['currency_id'],
-                            'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                            'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                            'instruction_id' => $this->request->data['Investment']['instruction_id'],
-                            'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                            'interest_earned' => $interest_amount,
-                            'investment_date' => $inv_date,
-                            'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+        $investment_amount = $value['Investment']['total_amount_earned'];
+        $rate = $value['Investment']['custom_rate'];
+        $date = date('Y-m-d');
+        $yearly_interest = ($rate / 100) * $investment_amount;
+        $daily_interest = $yearly_interest/365;
+        $old_accrued_interest = $value['Investment']['interest_accrued'];
+        $new_accrued_interest = $old_accrued_interest + $daily_interest;
+        $new_total_earned = $investment_amount + $daily_interest;
+        
+                            $statemt_array = array(
+                                'investment_id' => $value['Investment']['id'],
+                                'investor_id' => $value['Investment']['investor_id'],
+                                'principal' => $investment_amount,
+                                'interest' => $daily_interest,
+                                'date' => $date,
+                                'total' => $new_total_earned);
+                            
+                             $investment_array = array(
+                                 'id' => $value['Investment']['id'],
+                             'total_amount_earned' => $new_total_earned,
+                            'interest_accrued' => $new_accrued_interest
                         );
-    $statemt_array = $this->Session->check('statemt_array_fixed');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_fixed');
-
-
-                        foreach ($statemt_array as $key => $val) {
-                            $val['investment_id'] = $investment_id;
-
-                            $this->InvestmentStatement->create();
-                            $this->InvestmentStatement->save($val);
-                        }
-                        $this->Session->delete('statemt_array_fixed');
-                    }
+                    $this->DailyInterestStatement->create();       
+                    $this->DailyInterestStatement->save($statemt_array);
                     
-                    }
+                    $this->Investment->save($investment_array);
+        }
+                    
     }
+    
 }
 
     function __balEOD($bDate) {
