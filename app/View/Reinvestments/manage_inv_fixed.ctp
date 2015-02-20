@@ -79,12 +79,24 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
                     <td align="left"><?php echo $each_item['Reinvestment']['interest_rate']; ?></td>
                     <td align="left">
-                        <?php 
+                        <?php if($each_item['Reinvestment']['status'] == 'Invested' || 
+                                $each_item['Reinvestment']['status']=='Rolled_over'
+                                || $each_item['Reinvestment']['status'] == 'Part_payment'){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Cancel","/Reinvestments/manageInvFixedCancel/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Cancel","/Reinvestments/manageInvFixedCancel/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);  
                             echo " | ";
-                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Roll-over","/Reinvestments/rolloverReinvestorFixed/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
+                            echo " | ";
+                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+                        }elseif($each_item['Reinvestment']['status'] == 'Cancelled'){
+                            echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
+                            echo " | ";
+                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+                        }elseif($each_item['Reinvestment']['status'] == 'Paid'){
+                            echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
+                      
+                        }
                         ?>
                     </td>
                     
