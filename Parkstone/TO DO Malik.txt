@@ -76,22 +76,10 @@ DONE 06.02.15  -Equity reinvestment page (page divided upper listing investors a
 DONE 06.02.15  -Reinvestment summary page if successful commit
 
 
-T0 D0
--------
---pls look at format for /mask.js and implement
 modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 
 DONE 17.02.15 modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 DONE 17.02.15 + pls is it possible to let the stuff in the blue box on the page /Investments/newInvestment2 remain after processing fixed so the same parameters will be used for equity?
-
-#function
- -Route decision function after company n investment type choice
- -Fixed reinvestment page function which uses company id and investment type to select cash options for reinvestments
- -Function to calculate/process reinvestment and store in session for review b
- -Function to complete and save reinvestment 
- -function to display reinvestment summary
-
-
 
 DONE +Reinvestment Management Submodule
 DONE +Create Page for managing payments to re-investor company New sub menu
@@ -104,13 +92,13 @@ DONE 14.02.15  - Cancel equity investment page
 DONE 14.02.15  - Cancel fixed investment page
  - pay/cash_in equity investments
 DONE 15.02.15 - Receive/cash_in fixed investment page
-#Function
- - Rollover fixed investment function
- - cash_in/receive fixed investment cash function
- - cancel  equity function
- - cancel fixed  investment
- - pay reinvestor company
+
  
+T0 D0
+-------
+--pls look at format for /mask.js for validation and implement in new investor pages
+
+ + Please review new investor edit and details page for indv,joint,group and corp 
  Extras
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days

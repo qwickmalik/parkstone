@@ -553,3 +553,54 @@ FEBRUARY 18,2015
 ALTER TABLE `reinvestments` CHANGE `reinvestor_id` `reinvestor_id` INT( 11 ) NULL ,
 CHANGE `user_id` `user_id` INT( 11 ) NULL ;
 ALTER TABLE `reinvestments` ADD `investment_destination_id` INT( 11 ) NULL AFTER `inv_dest_product_id` ;
+
+FEBRUARY 19,2015
+------------------------
+ALTER TABLE `reinvestments_equities` ADD `total_amount` DECIMAL( 11, 2 ) NULL AFTER `investment_amount` ;
+ALTER TABLE `reinvestments_equities` ADD `investment_cash_id` INT( 11 ) NULL AFTER `investor_id` ;
+ALTER TABLE `reinvestor_cashaccounts` ADD `amount_paidout` DECIMAL( 11, 2 ) NULL AFTER `fixed_inv_balance` ;
+ALTER TABLE `reinvestor_cashaccounts` CHANGE `amount_paidout` `equity_amount_paidout` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
+ALTER TABLE `reinvestor_cashaccounts` ADD `fixed_amount_paidout` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `equity_amount_paidout`;
+ALTER TABLE `reinvestments_equities` ADD `total_fees` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `purchase_price` ;
+ALTER TABLE `reinvestments_equities` CHANGE `user_id` `user_id` INT( 11 ) NULL ;
+ALTER TABLE `reinvestments` CHANGE `investment_type` `investment_type` ENUM( 'fixed', 'equity' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'fixed';
+ALTER TABLE `reinvestments_equities` CHANGE `investment_type` `investment_type` ENUM( 'fixed', 'equity' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'equity';
+
+
+FEBRUARY 20,2015
+------------------------
+ALTER TABLE `reinvestments` ADD `total_amount_earned` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `amount_due` ;
+ALTER TABLE `reinvestments` ADD `expected_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `interest_earned` ;
+ALTER TABLE `reinvestments` ADD `earned_balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `balance` ;
+
+CREATE TABLE IF NOT EXISTS `reinvestment_rollovers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `amount` decimal(11,2) DEFAULT '0.00',
+  `created` datetime NOT NULL,
+  `rollover_date` date DEFAULT NULL,
+  `delete_status` enum('dead','alive') DEFAULT 'alive',
+  `deleted_by` varchar(200) DEFAULT NULL,
+  `edit_details_username_oldnnewamout` varchar(200) DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `reinvestment_statements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `principal` decimal(11,2) DEFAULT '0.00',
+  `interest` decimal(11,2) DEFAULT '0.00',
+  `total` decimal(11,2) DEFAULT '0.00',
+  `maturity_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+ALTER TABLE `investments` CHANGE `custom_rate` `custom_rate` INT( 3 ) NULL DEFAULT '0';
+ALTER TABLE `reinvestments` CHANGE `interest_rate` `interest_rate` INT( 3 ) NULL DEFAULT '0';
+ALTER TABLE `investment_terms` CHANGE `interest_rate` `interest_rate` INT( 3 ) NULL DEFAULT '0';
