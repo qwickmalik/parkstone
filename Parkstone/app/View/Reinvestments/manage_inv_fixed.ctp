@@ -64,7 +64,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <b><?php echo $this->Paginator->sort('investment_amount', 'Amount Invested'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('custom_rate', 'Rate'); ?></b>
+                    <b><?php echo $this->Paginator->sort('interest_rate', 'Rate'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Action"; ?></td>
             </tr>
@@ -77,7 +77,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <td align="left" ><?php echo $each_item['Reinvestor']['company_name']; ?></td> 
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
                     <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['custom_rate']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['interest_rate']; ?></td>
                     <td align="left">
                         <?php 
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  

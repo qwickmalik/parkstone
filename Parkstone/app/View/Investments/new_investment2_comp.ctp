@@ -111,7 +111,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('investor_type_id', array('value' => 3));
                             echo $this->Form->hidden('investor_page', array('value' => 'newInvestment2_comp'));
 
-                            echo $this->Form->hidden('investor_id', array('value' => (isset($investor['investor_id']) ? $investor['investor_id'] : '')));
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investors['Investor']['id']) ? $investors['Investor']['id'] : '')));
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
 
@@ -521,7 +521,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 if (equity_id != "") {
                     var query = "action=getPurchasePrice&ID=" + equity_id;
                     jQuery.ajax({
-                        url: "../Investments/getPurchasePrice",
+                        url: "../getPurchasePrice",
                         data: query,
                         dataType: 'json',
                         type: 'POST',

@@ -30,15 +30,6 @@ class InvDestProduct extends AppModel {
             'limit' => '',
             'dependent' => true),
      );
-     var $hasMany = array(
-        'Reinvestment' => array(
-            'className' => 'Reinvestment',
-            'foreignKey' => 'inv_dest_product_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ));
     function getSetup(){
         $this->id = 1;
         $result = $this->find('first',array('conditions' => array('InvDestProduct.id' => 1)));

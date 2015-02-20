@@ -619,6 +619,21 @@ function __invEOD(){
     
 }
 
+function dailyInterests(){
+    $statemt_array = $this->Session->check('statemt_array_fixed');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+}
 
     function __balEOD($bDate) {
 

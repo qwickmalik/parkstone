@@ -78,7 +78,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Interest Rate:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($reinvestments['Reinvestment']['custom_rate']) ? $reinvestments['Reinvestment']['custom_rate'] : '' );?>
+                                    <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'] : '' );?>
                                 </div>
                             </div>
                             <div class="row">

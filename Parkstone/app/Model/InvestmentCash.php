@@ -60,6 +60,14 @@ class InvestmentCash extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'ReinvestmentsEquity' => array(
+            'className' => 'ReinvestmentsEquity',
+            'foreignKey' => 'investment_cash_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
     
 }

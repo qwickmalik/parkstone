@@ -24,7 +24,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Re-investor Company:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "COMPANY NAME" ;?>
+                                       <?php echo (isset($reinvestments['Reinvestor']['company_name']) ? $reinvestments['Reinvestor']['company_name'] :'' );?>
+                              
                                 </div>
                             </div>
                             <div class="row">
@@ -32,7 +33,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Investment Date:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "06/02/2015";?>
+                                  <?php echo (isset($reinvestments['ReinvestmentsEquity']['investment_date']) ? $reinvestments['ReinvestmentsEquity']['investment_date'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
@@ -40,26 +42,21 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Currency:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "GHS";?>
+                                        <?php echo (isset($reinvestments['Currency']['symbol']) ? $reinvestments['Currency']['symbol'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Deposited Amount:</b></p>";?>
+                                    <?php echo "<p><b>Investment Amount:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "500,000.00";?>
+                                        <?php echo (isset($reinvestments['ReinvestmentsEquity']['investment_amount']) ? 
+                                                $reinvestments['ReinvestmentsEquity']['investment_amount'] : '' );?>
+                               
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Available Amount:</b></p>";?>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "300,000.00";?>
-                                </div>
-                            </div>
                             
                               
                         </div>
@@ -69,7 +66,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Equity:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "CPC";?>
+                                <?php echo (isset($reinvestments['EquitiesList']['equity_abbrev']) ? 
+                                                $reinvestments['EquitiesList']['equity_abbrev'] : '' );?>
                                 </div>
                             </div>
                             <div class="row">
@@ -77,7 +75,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Purchase Price:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "3.35"; ?>
+                                     <?php echo (isset($reinvestments['ReinvestmentsEquity']['purchase_price']) ? 
+                                                $reinvestments['ReinvestmentsEquity']['purchase_price'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
@@ -85,7 +85,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>No. of Shares Purchased:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "5,500";?>
+                                  <?php echo (isset($reinvestments['ReinvestmentsEquity']['numb_shares']) ? 
+                                                $reinvestments['ReinvestmentsEquity']['numb_shares'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
@@ -93,15 +95,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Total Fees:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "150.00";?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Total Amount Invested:</b></p>";?>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "300,000.00";?>
+                                    <?php echo (isset($reinvestments['ReinvestmentsEquity']['total_fees']) ? 
+                                                $reinvestments['ReinvestmentsEquity']['total_fees'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
@@ -109,7 +105,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Re-investment Date:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "06/02/2015";?>
+                                 <?php echo (isset($reinvestments['ReinvestmentsEquity']['reinvestment_date']) ?
+                                         $reinvestments['ReinvestmentsEquity']['reinvestment_date'] : '' );?>
+                               
                                 </div>
                             </div>
                             <div class="row">
@@ -117,7 +115,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Notes:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo "xxxxxxx";?>
+                                    <?php echo (isset($reinvestments['ReinvestmentsEquity']['details']) ?
+                                         $reinvestments['ReinvestmentsEquity']['details'] : '' );?>
+                               
                                 </div>
                             </div>
                         </div>
