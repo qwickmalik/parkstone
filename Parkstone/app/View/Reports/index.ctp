@@ -11,6 +11,7 @@
                 $general_ledger = array(
                     $this->Html->link('Journal Voucher: Receipt Voucher','/Reports/jvReceiptVoucher', array('escape' => false)),
                     $this->Html->link('Investor Contract','/Reports/investorContract', array('escape' => false)),
+                    $this->Html->link('Daily Interests','/Reports/dailyInterests', array('escape' => false)),
                     $this->Html->link('Maturity List','/Reports/maturityList', array('escape' => false)),
                     $this->Html->link('Discounting of Investment','/Reports/discountInvestment', array('escape' => false)),
                     $this->Html->link('Journal Voucher: Payment Voucher','/Reports/jvPaymentVoucher', array('escape' => false)),
