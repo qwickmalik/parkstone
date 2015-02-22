@@ -34,9 +34,9 @@ DONE 23.01.15 -delete
 DONE 27.01.15 -edit
 
 DONE 24.01.15 Fixed bugs with newInvestor, editInvestor (individual) to enable testing of investment module. 
--Similar to be done with corporate, joint and group investors later
+DONE 21.02.15 -Similar to be done with corporate, joint and group investors later
 DONE 25.01.15 Reorganized newInvestment module and fixed bugs with equity processing. Everything working fine now for individual investor. 
--Similar to be done with corporate, joint and group investors later
+DONE 21.02.15 -Similar to be done with corporate, joint and group investors later
 
 DONE +Review investment management page for Equity investments
 DONE #Views
@@ -54,8 +54,7 @@ DONE 30.01.15 Re-investor cash receipt extra pages + certificate
 DONE 31.01.15 Re-investor cash deposit list/delete/edit views, model and db table
 
 
-DONE 04.02.15 +Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page 
- with just the destination company name and product.
+DONE 04.02.15 +Reinvestment submodule for setup of  fixed reinvestment destination. Change investee to investment destination. Desination listing page with just the destination company name and product.
 DONE #View
 DONE 04.02.15 -New Investee view(rename to investment destination)(create,list,edit)
 DONE 04.02.15  -Sub menu view for adding products(add,list,ediT
@@ -76,8 +75,7 @@ DONE 06.02.15  -Equity reinvestment page (page divided upper listing investors a
 DONE 06.02.15  -Reinvestment summary page if successful commit
 
 
-modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
-
+DONE 17.02.15 modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 DONE 17.02.15 modify, joint,group and corp investment views to look like individual investment view (new_investment2.ctp)
 DONE 17.02.15 + pls is it possible to let the stuff in the blue box on the page /Investments/newInvestment2 remain after processing fixed so the same parameters will be used for equity?
 
@@ -96,9 +94,11 @@ DONE 15.02.15 - Receive/cash_in fixed investment page
  
 T0 D0
 -------
+Check Investment Statements especially for equities. 
+    
 --pls look at format for /mask.js for validation and implement in new investor pages
 
- + Please review new investor edit and details page for indv,joint,group and corp 
++ Please review new investor edit and details page for indv,joint,group and corp 
  Extras
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days

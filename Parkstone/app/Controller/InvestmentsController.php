@@ -3833,14 +3833,20 @@ class InvestmentsController extends AppController {
     function manageFixedInvestments($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
-            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+//            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+            
+            $this->paginate = array(
+                'conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)),
+                'limit' => 30, 
+                'order' => array('Investment.id' => 'asc'));
+            $data = $this->paginate('Investment');
+
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
 
             if ($data) {
                 $this->set('data', $data);
             } else {
-
                 $message = 'Sorry, No Fixed Investments Found';
                 $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
@@ -3945,6 +3951,35 @@ class InvestmentsController extends AppController {
         $this->paginate('Investment');
     }
 
+    function editFixedInvestment($investor_id = null, $investment_id = null) {
+        /* $this->__validateUserType(); */
+        $this->set('portfolios', $this->Portfolio->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+        
+        if (!is_null($investor_id)) {
+            $investors = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
+            $this->set('inv', $investors);
+        }
+
+        if (!is_null($investment_id)) {
+            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            if ($data) {
+                $this->set('data', $data);
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        }
+    }
+    
     function editEquityInvestment($investor_id = null, $investor_name = null, $investment_id = null) {
         /* $this->__validateUserType(); */
         $this->set('portfolios', $this->Portfolio->find('list'));
@@ -3956,6 +3991,11 @@ class InvestmentsController extends AppController {
         $this->set('instructions', $this->Instruction->find('list'));
         $this->set('equitieslists', $this->EquitiesList->find('list'));
 
+        if (!is_null($investor_id)) {
+            $investors = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
+            $this->set('inv', $investors);
+        }
+        
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
             if ($data) {
