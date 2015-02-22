@@ -356,16 +356,24 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->input('numb_shares', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.numb_shares') == true ? $this->Session->read('investtemp.numb_shares') : '' )));
                                     ?>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <p>&nbsp;</p>
+                                    <?php
+                                    echo $this->Form->input('total_fees_chk', array('value' => 0, 'type' => 'checkbox', 'label' => 'Total Fees Paid?'));
+                                    ?>
+                                </div>
+                                
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' )));
 //                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
                                     ?>
+                                    
                                 </div>
                             </div>
                             <p>&nbsp;</p><p>&nbsp;</p>

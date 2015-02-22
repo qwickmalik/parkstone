@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
 	<div class="inner">
 		<div id="clearer"></div>
 	
-        <?php echo $this->Html->link('Edit/Delete Investments', "/Investments/listPayments", array("class" => 'btn btn-lg btn-success')); ?>
+        <?php // echo $this->Html->link('Edit/Delete Investments', "/Investments/listPayments", array("class" => 'btn btn-lg btn-success')); ?>
 
 
     <?php
@@ -40,16 +40,17 @@ echo $this->Html->script('notification.js');
             </td>
         </tr>
         <tr>
-            <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b>ID<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Details<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Inv. Date<?php // echo $this->Paginator->sort('date', 'Supply Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Amount<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Rate (%)</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Due Date<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Amount Due<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b>Status<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Edit</b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Details</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Rate(%)'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
             
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
@@ -59,6 +60,11 @@ echo $this->Html->script('notification.js');
                             echo $each_item['Investment']['id'];
                         }
                         
+                        ?></td>
+                <td align="left"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id']);
+                        }
                         ?></td>
                 <td align="left"><?php
                         if(isset($each_item['Portfolio']['payment_name'])){
@@ -121,54 +127,6 @@ echo $this->Html->script('notification.js');
                 
         <?php  }} ?>
             </tr>
-<!--            <tr>
-                <td align="left">2</td>
-                <td align="left">Acc type</td>
-                <td align="right">01/01/2014</td>
-                <td align="right">20,000</td>
-                <td align="center">15</td>
-                <td align="right">01/07/2014</td>
-                <td align="right">20,000</td>
-                <td align="center">
-                    <?php //echo $this->Html->Link('Pay', '/Investments/payInvestor/', array('escape'=>false));?> | <a <?php //echo $this->Html->Link('Rollover', '/Investments/rollover/', array('escape'=>false));?> | <?php //echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/', array('escape'=>false));?></td>
-                <td align="center">Rollover</td>
-                <td align="left"><?php //echo $this->Html->Link('Statement', '/Investments/statementInvDetail',array('escape'=>false));?></td>
-            </tr>
-            <tr>
-                <td align="left">3</td>
-                <td align="left">Acc type</td>
-                <td align="right">01/01/2014</td>
-                <td align="right">20,000</td>
-                <td align="center">15</td>
-                <td align="right">01/07/2014</td>
-                <td align="right">20,000</td>
-                <td align="center">
-                    <?php //echo $this->Html->Link('Pay', '/Investments/payInvestor/', array('escape'=>false));?> | <a <?php //echo $this->Html->Link('Rollover', '/Investments/rollover/', array('escape'=>false));?> | <?php //echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/', array('escape'=>false));?></td>
-                <td align="center">Cancelled</td>
-                <td align="left"><?php //echo $this->Html->Link('Statement', '/Investments/statementInvDetail',array('escape'=>false));?></td>
-            </tr>
-            -->
-        <?php // }} ?>
-        <tr>
-            <td colspan="10" align="right">
-                <?php
-//                echo $this->Form->end();
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="10" align="center">
-                <?php
-//                echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
-//                echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
-//                //prints X of Y, where X is current page and Y is number of pages
-//                echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
-                ?>
-            </td>
-        </tr>
         <tr>
             <td colspan="1" align="left">
                 <?php 
