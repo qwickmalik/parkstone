@@ -2341,6 +2341,11 @@ public function convert2PdfnEmail(){
         
     }
     
+    function dailyInterests(){
+//        $this->__validateUserType3();
+        
+    }
+    
     function maturityList(){
 //        $this->__validateUserType3();
         
