@@ -630,14 +630,17 @@ function __dailyInterests(){
         $term_id = $value['Investment']['investment_term_id'];
         
 
-        $investment_amount = $value['Investment']['total_amount_earned'];
+        $investment_amount1 = $value['Investment']['total_amount_earned'];
+        $investment_amount = $value['Investment']['earned_balance'];
+        
         $rate = $value['Investment']['custom_rate'];
         $date = date('Y-m-d');
         $yearly_interest = ($rate / 100) * $investment_amount;
         $daily_interest = $yearly_interest/365;
         $old_accrued_interest = $value['Investment']['interest_accrued'];
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
-        $new_total_earned = $investment_amount + $daily_interest;
+        $new_balanced_earned = $investment_amount + $daily_interest;
+        $new_total_earned = $investment_amount1 + $daily_interest;
         
                             $statemt_array = array(
                                 'investment_id' => $value['Investment']['id'],
@@ -649,6 +652,7 @@ function __dailyInterests(){
                             
                              $investment_array = array(
                                  'id' => $value['Investment']['id'],
+                                 'earned_balance' => $new_balanced_earned,
                              'total_amount_earned' => $new_total_earned,
                             'interest_accrued' => $new_accrued_interest
                         );
