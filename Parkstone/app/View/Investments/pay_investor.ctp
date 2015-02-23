@@ -133,9 +133,23 @@
 ?> 
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
-<!--                         <input type="hidden" id="month" value="<?php // echo $month; ?>"/>
-                            <input type="hidden" id="day" value="<?php // echo $day; ?>"/>
-                            <input type="hidden" id="year" value="<?php // echo $Year; ?>"/>-->
+                             <?php
+                                    if ($this->Session->check('payinvesttemp.payment_date') == true) {
+
+                                        $dob_string = $this->Session->read('payinvesttemp.payment_date');
+                                        $month = date('m', strtotime($dob_string));
+                                        $day = date('d', strtotime($dob_string));
+                                        $Year = date('Y', strtotime($dob_string));
+                                    } else {
+
+                                        $month = date('m');
+                                        $day = date('d');
+                                        $Year = date('Y');
+                                    }
+                                    ?>
+                                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
+                                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
 
                             <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>Payment Date:</span>" . $this->Form->day('payment_date', array("class" => "large")); ?>&nbsp;
                         </div>
@@ -145,25 +159,29 @@
                         <div class="col-lg-4 col-md-4 col-sm-12">
 <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('payment_date', 1950, date('Y'), array( "class" => "large")); ?>
                         </div>
-<!--
+
                         <script>
                             var day = $("#day").val();
                             var month = $("#month").val();
                             var year = $("#year").val();
-                            $("#InvestorDobDay option[value=" + day + "]").attr('selected', true);
-                            $("#InvestorDobMonth option[value=" + month + "]").attr('selected', true);
-                            $("#InvestorDobYear option[value=" + year + "]").attr('selected', true);
-                        </script>-->
+                            $("#InvestmentPaymentPaymentDateDay option[value=" + day + "]").attr('selected', true);
+                            $("#InvestmentPaymentPaymentDateMonth option[value=" + month + "]").attr('selected', true);
+                            $("#InvestmentPaymentPaymentDateYear option[value=" + year + "]").attr('selected', true);
+                        </script>
                     </div>
-<?php echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;" . $this->Form->input('payment_mode', array('options' => array("Cash" => "Cash", "Cheque" => "Cheque", "Post-dated chq" => "Post-dated chq", "Standing order" => "Standing order", "Visa" => "Visa"), 'empty' => '--Please Select--', 'label' => false)); ?>
+<?php echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;" . $this->Form->input('payment_mode', array('options' => array("Cash" => "Cash", "Cheque" => "Cheque", "Post-dated chq" => "Post-dated chq", "Standing order" => "Standing order", "Visa" => "Visa"), 
+    'selected' => ($this->Session->check('payinvesttemp.payment_mode') == true ? 
+                                            $this->Session->read('payinvesttemp.payment_mode') : '' ),'empty' => '--Please Select--', 'label' => false)); ?>
                 </td>
 
 
 
                 <td align="right" valign="top" width="50%">
 <?php
-echo "<b style='font-size: 16px;'>Amount being Paid:</b>&nbsp;" . $this->Form->input('amount', array('size' => 17, 'class' => 'input1', 'label' => false));
-echo "<b style='font-size: 16px;'>Cheque Nos.:</b>&nbsp;" . $this->Form->input('cheque_nos', array('size' => 5, 'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;', 'label' => false));
+echo "<b style='font-size: 16px;'>Amount being Paid:</b>&nbsp;" . $this->Form->input('amount', array('size' => 17, 'class' => 'input1','value' => ($this->Session->check('payinvesttemp.amount') == true ? 
+                                            $this->Session->read('payinvesttemp.amount') : '' ) ,'label' => false));
+echo "<b style='font-size: 16px;'>Cheque Nos.:</b>&nbsp;" . $this->Form->input('cheque_nos', array('size' => 5,'value' => ($this->Session->check('payinvesttemp.cheque_nos') == true ? 
+                                            $this->Session->read('payinvesttemp.cheque_nos') : '' ), 'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;', 'label' => false));
 ?>
                 </td>
             </tr>
@@ -209,3 +227,21 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
 
     </div>
     <!-- Content ends here -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function()
+        {
+         $("#InvestmentPaymentPaymentMode").change(function (){
+             
+           var payment_mode = $(this).val();
+           
+           if(payment_mode == 'Cheque'){
+               
+               $("#InvestmentPaymentChequeNos").prop('disabled',false);
+           }
+             if(payment_mode == 'Post-dated chq'){
+               $("#InvestmentPaymentChequeNos").prop('disabled',false);
+           }
+        });
+        });
+        
+        </script>
