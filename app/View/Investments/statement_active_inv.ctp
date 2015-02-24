@@ -146,8 +146,8 @@ if ($this->Session->check('shopCurrency')) {
                         }
                         ?></td>
                           <td align="right"><?php 
-                        if(isset($each_item['Investment']['amount_due'])){
-                            echo number_format($each_item['Investment']['amount_due'], 2, '.', ',');
+                        if(isset($each_item['Investment']['earned_balance'])){
+                            echo number_format($each_item['Investment']['earned_balance'], 2, '.', ',');
                         }
                         ?></td>
                     </tr>

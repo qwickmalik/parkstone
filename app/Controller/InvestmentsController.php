@@ -10,7 +10,7 @@ class InvestmentsController extends AppController {
     var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment',
         'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover',
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
-        'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList', 'InvestmentCash');
+        'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList', 'InvestmentCash','DailyInterestStatement');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -3072,11 +3072,11 @@ class InvestmentsController extends AppController {
 
             $this->Investment->save($investment_array);
             $investment_id = $this->Investment->id;
-            $investor_id = $result['Investment']['investor_id'];
 
             $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($result) {
-
+                
+            $investor_id = $result['Investment']['investor_id'];
 
                 $payment_name = '';
                 $paymentmodeid = $result['Investment']['payment_mode_id'];
@@ -3490,6 +3490,10 @@ class InvestmentsController extends AppController {
         $check = $this->Session->check('mivt');
         if ($check) {
             $this->Session->delete('mivt');
+        }
+        $check = $this->Session->check('payinvesttemp');
+        if ($check) {
+            $this->Session->delete('payinvesttemp');
         }
         $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
     }
@@ -4386,8 +4390,8 @@ class InvestmentsController extends AppController {
     public function statementInvDetail($invesmentID = null, $investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($invesmentID)) {
-            $data = $this->InvestmentStatement->find('all', array('conditions' =>
-                array('InvestmentStatement.investment_id' => $invesmentID)));
+            $data = $this->DailyInterestStatement->find('all', array('conditions' =>
+                array('DailyInterestStatement.investment_id' => $invesmentID)));
             $issued = $this->Session->check('userData');
             if ($issued) {
                 $issued = $this->Session->read('userData');
@@ -4396,10 +4400,10 @@ class InvestmentsController extends AppController {
 
             if ($data) {
                 $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
-                $data_total = $this->InvestmentStatement->find('all', array('fields' =>
-                    array("SUM(InvestmentStatement.principal) as 'total_principal',"
-                        . "SUM(InvestmentStatement.interest) as 'total_interest',SUM(InvestmentStatement.total) as 'sum_total'"),
-                    'conditions' => array('InvestmentStatement.investment_id' => $invesmentID)));
+                $data_total = $this->DailyInterestStatement->find('all', array('fields' =>
+                    array("SUM(DailyInterestStatement.principal) as 'total_principal',"
+                        . "SUM(DailyInterestStatement.interest) as 'total_interest',SUM(DailyInterestStatement.total) as 'sum_total'"),
+                    'conditions' => array('DailyInterestStatement.investment_id' => $invesmentID)));
 
                 if ($data2) {
                     $this->set('data2', $data2);

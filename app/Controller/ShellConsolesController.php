@@ -34,7 +34,8 @@ class ShellConsolesController extends AppController {
 
     public function defaultJobs() {
         $this->autoRender = false;
-        $this->__defaultDaily();
+        //$this->__defaultDaily();
+        $this->__dailyInterests();
     }
 
     public function endOFDAY() {
@@ -622,7 +623,7 @@ function __invEOD(){
 
 
 function __dailyInterests(){
-    
+    print_r('lll');
     $investment_data = $this->Investment->find('all',['recursive' => -1,
         'conditions' => ['Investment.status' => array('Rolled_over','Invested')]]);
     if($investment_data){
@@ -659,7 +660,8 @@ function __dailyInterests(){
                     $this->DailyInterestStatement->create();       
                     $this->DailyInterestStatement->save($statemt_array);
                     
-                    $this->Investment->save($investment_array);
+                     $this->Investment->save($investment_array);
+                    
         }
                     
     }
