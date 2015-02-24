@@ -107,8 +107,8 @@
                         <tr>
                             <td><b align="right">Amount Due:</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['Investment']['amount_due'])) {
-                                        echo $data['Investment']['amount_due'];
+                                    if (isset($data['Investment']['earned_balance'])) {
+                                        echo $data['Investment']['earned_balance'];
                                     }
                                     ?></span></td>
                         </tr>
@@ -237,9 +237,15 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
            if(payment_mode == 'Cheque'){
                
                $("#InvestmentPaymentChequeNos").prop('disabled',false);
+               return false;
            }
              if(payment_mode == 'Post-dated chq'){
                $("#InvestmentPaymentChequeNos").prop('disabled',false);
+               return false;
+           }
+           
+                        if(payment_mode != 'Post-dated chq' && payment_mode != 'Cheque'){
+               $("#InvestmentPaymentChequeNos").prop('disabled',true);
            }
         });
         });

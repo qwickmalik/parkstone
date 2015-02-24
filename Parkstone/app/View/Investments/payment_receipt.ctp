@@ -141,9 +141,9 @@ echo $this->Html->css('template.css');
                 </tr>
                 <tr>
                     <td><b align="right">Amount Due:</b></td>
-                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['amount_due'])) {
+                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['earned_balance'])) {
   
-                    echo $shopCurrency. ' ' .$payment['Investment']['amount_due'];
+                    echo $shopCurrency. ' ' .$payment['Investment']['earned_balance'];
 } ?></span></td>
                 </tr>
                 

@@ -110,23 +110,23 @@ echo $this->Html->script('jquery.printElement.js');
 <?php  if(isset($data)){ foreach ($data as $each_item) {   ?>
                     <tr>
                         <td align="left"><?php 
-                        if(isset($each_item['InvestmentStatement']['maturity_date'])){
-                            echo date('M,y',strtotime($each_item['InvestmentStatement']['maturity_date']));//.",".date('y',$each_item['InvestmentStatement']['maturity_date']);
+                        if(isset($each_item['DailyInterestStatement']['date'])){
+                            echo date('M,y',strtotime($each_item['DailyInterestStatement']['date']));//.",".date('y',$each_item['InvestmentStatement']['maturity_date']);
                         }
                         ?></td>
                         <td align="right"><?php 
-                        if(isset($each_item['InvestmentStatement']['principal'])){
-                            echo number_format($each_item['InvestmentStatement']['principal'], 2, '.', ',');
+                        if(isset($each_item['DailyInterestStatement']['principal'])){
+                            echo number_format($each_item['DailyInterestStatement']['principal'], 2, '.', ',');
                         }
                         ?></td>
                         <td align="center"><?php 
-                        if(isset($each_item['InvestmentStatement']['interest'])){
-                            echo $each_item['InvestmentStatement']['interest'];
+                        if(isset($each_item['DailyInterestStatement']['interest'])){
+                            echo $each_item['DailyInterestStatement']['interest'];
                         }
                         ?></td>
                         <td align="right"><?php 
-                        if(isset($each_item['InvestmentStatement']['total'])){
-                            echo number_format($each_item['InvestmentStatement']['total'], 2, '.', ',');
+                        if(isset($each_item['DailyInterestStatement']['total'])){
+                            echo number_format($each_item['DailyInterestStatement']['total'], 2, '.', ',');
                         }
                         ?></td>
                     </tr>
