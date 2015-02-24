@@ -90,7 +90,7 @@ DONE 14.02.15  - Cancel equity investment page
 DONE 14.02.15  - Cancel fixed investment page
  - pay/cash_in equity investments
 DONE 15.02.15 - Receive/cash_in fixed investment page
-
+DONE 23.02.15 Daily interest statement for fixed investments
  
 T0 D0
 -------
