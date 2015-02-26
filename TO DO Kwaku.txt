@@ -1,4 +1,60 @@
 
+---NOTES FROM ELSIE---
+We will get income from the following sources:
+
+1.       Management fees – a percentage of funds under management. This will be charged per each client, 
+       and the percentage will be specific and agreed with client upfront.
+
+      If this income source is used, it will be known upfront, and therefore, 
+	  it may be useful if we have a box that we can check on management fee (yes/no). if yes, %.  If no, performance fee (as below).
+
+2.       Performance fee – With this fee, there will be no specific fee charged. 
+        Our fee will be based on performance – ie the difference between the return we 
+		generate for theclient (the benchmark rate) and what we actually realise on making the investment. 
+		The better we perform, the higher this fee could be. For eg. We agree a benchmark rate with client of 20% 
+		(this will be the rate put in the fixed income space for computation of interest), and we go out and make an investment at 25%. 
+		The difference of 5% becomes our income (performance fee).
+
+3.       Mix of management fee and performance fee – we discussed this based on a portfolio of equity and fixed income. 
+         We could have a base management fee (fixed and agreed), and then the performance fee additional, 
+		 based on a certain benchmark return. If this benchmark is achieved, then we get an additional performance fee.  
+		 With this option we may need to be able to select the options 1, 2 or 3 for fees.
+
+ 
+
+       I would suggest a question to be ticked – fee?, then pop up box with management or performance or both. 
+	   If management selected, then input rate.  if performance, indicate if 100% or alternative percentage. 
+	   You will also need benchmark rate if the rate is not displayed on the page.
+
+       I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
+
+NOTES FROM REVIEW 24TH FEB.2015
+--------------------------------------
+--New Investor
+*ID Issue date must end in current year and start 10years back
+*Birthday ends current year and starts from 1940(shld mk this dynamic..must calculate diff bn 2015-1940)
+*Bank Info should be optional
+
+--New Invesment
+*Add "Semi Annual to Payment Schedule"
+*Use investment term style in new-reinvestments(days,years,months)
+*update all payment/cash receipt functions to convert using current rates from  currency sub-module
+*Total fees should not be compulsory and must be a percentage
+*Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
+ Purchase price will be confirmed under Re-investments
+*Add number formatting function to all cash displays
+*Principals dont change after interest calculations. interest is always calculated on the same principal
+*Input must be provided for management fee[as disccused above in elsie's notes] 
+*There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+*Cancel fixed investment Principal Amount +(interest%-5%) up to current date
+*Payments can be made only if status is set to cancel or investment is due
+*Interest should be per 365 days hence divided by 365(clarify with Elsie)
+
+
+--Re-investments
+*Purchase price input under new reinvestments should be editable not disabled.
+
+
 TO DO
 ----------
 
