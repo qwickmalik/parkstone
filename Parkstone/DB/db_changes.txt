@@ -620,3 +620,7 @@ CREATE TABLE IF NOT EXISTS `daily_interest_statements` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+FEBRUARY 23, 2015
+-------------------------
+ALTER TABLE `investments` ADD `earned_balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_amount_earned` ;
