@@ -1,42 +1,15 @@
-DONE - New Investor Step 2 (Bank Details) has bank name as a numeric field for both individual and corporate NewInvestor
-DONE -Set editInvestor to load Investor Type, Investment Officer Fields and Investor photo. Without Investor Type, cant save edits for investors
---Still yet to implement saving picture thru ajax
-DONE - Bank Details not loading in editInvestor
-DONE - Next of Kin name not going to db for newInvestorIndivJoint
-DONE - statementAllInv to load investment details
-DONE - statementActiveInv to load active investments
-DONE - Investment Product dropdown not working when Fixed investment & Equity is selected.
-DONE - function process_indv() in InvestmentsController not calculating returns for fixed investment
-DONE - Please check new_investment2 (and its variants for group/company/joint investments). Process buttons generate error when Investment Product is set to Fixed Income & Equity
-DONE - Show ITF in investment choosing and selecting page
-DONE - URGENT!!! Please check manage_equity_investment.ctp. Investment list not showing so can't proceed with further details of equity investment management
-DONE - Please check new_investment2.ctp lines 404-431. Not displaying summaries for Equity
-DONE - newInvestment2 for individual. When option of Fixed & Equity selected and one clicks process, for Fixed, totals for Equity get erased and vice-versa. Wasn't like this previously. However the system correctly generates both certificates. Also doesnt seem to clear the session so when i created a new investment (Fixed investment only) for another client, it gave both fixed and equity certificates with details of the previous client's equity and this was recorded in the db
-Done - When new investment for Indiv is created, it doesnt add the investor_id to the investments table. hence one is unable to retrieve the equity or fixed investment under Manage Investments. 
-DONE - Monies received from clients for equity investments, yet those monies have not been used to buy stocks on the stock exchange should show up in some sort of paginated list together with comments on which equities are to be bought with those monies plus a few client details
-DONE - When time is due for the shares to be sold, the new share price will be entered and this should automatically calculate how much money is due to the client minus commission amount based on % entered earlier (see 2nd bullet above)
-DONE - REDIRECT new cash deposit under reinvestment to certificate
-DONE(OPTION 2) - 1. Sum all investment cash amounts not invested while reinvesting...change flag to invested..put totals and details in new table
-	consider storing id of last row used..and have flag in new table to show partly reinvested 
-	last row is check for full reinvestment before going back to investment cash to check
-	this new table will have be for only fixed investments
- OR
- 2. Alternative to 1 above is to have a cron job that runs every midnight and sums up all unflagged reinvestment
-   cash to reinvestor_cashaccounts..it will check for unused balances from reinvestor_cashaccounts. This will be from
-   two columns known as equity_inv_balance and fixed_inv_balance. It will add this to unflagged amounts
-   from investment cash.
-DONE - Have to add code to add equity and fixed investments to insert into investment cashs
 
-DONE - Make sure reinvestment amount is not more than available
- 
 TO DO
 ----------
+
+MOTTO--"Growth with stability"
 #function
- -Route decision function after company n investment type choice
- -Fixed reinvestment page function which uses company id and investment type to select cash options for reinvestments
- -Function to calculate/process reinvestment and store in session for review b
- -Function to complete and save reinvestment 
- -function to display reinvestment summary
+ #Function
+ - cash_in/receive fixed investment cash function
+ - cancel  equity function
+ - cancel fixed  investment
+ - pay reinvestor company
+ ---AJAX UPLOAD OF INVESTOR IMAGES
 +modify process_indv and process_corp investment function to accomodate new look joint,group and corp investment view (eg.new_investment2_joint.ctp)
 +Convert amounts to primary currency selected in system setup
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
