@@ -101,14 +101,14 @@ echo $this->Html->css('template.css');
 
                 <tr>
                     <td><b align="right">Investment Term:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($payment['Portfolio']['payment_name'])) {
-    echo $payment['Portfolio']['payment_name'];
+                    <td><span id="xxxxxx"><?php if (isset($payment['InvestmentTerm']['term_name'])) {
+    echo $payment['InvestmentTerm']['term_name'];
 } ?></span></td>
                 </tr>
                 <tr>
                     <td><b align="right">Investment Rate:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($payment['Portfolio']['interest_rate'])) {
-    echo $payment['Portfolio']['interest_rate'];
+                    <td><span id="xxxxxx"><?php if (isset($payment['Investment']['custom_rate'])) {
+    echo $payment['Investment']['custom_rate'].'%';
 } ?></span></td>
                 </tr>
                 
@@ -134,16 +134,16 @@ echo $this->Html->css('template.css');
 -->                </tr>
                 <tr>
                     <td><b align="right">Interest Earned:</b></td>
-                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['interest_earned'])) {
+                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['interest_accrued'])) {
   
-                    echo $shopCurrency. ' ' .$payment['Investment']['interest_earned'];
+                    echo $shopCurrency. ' ' .$payment['Investment']['interest_accrued'];
 } ?></span></td>
                 </tr>
                 <tr>
                     <td><b align="right">Amount Due:</b></td>
-                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['earned_balance'])) {
+                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['total_amount_earned'])) {
   
-                    echo $shopCurrency. ' ' .$payment['Investment']['earned_balance'];
+                    echo $shopCurrency. ' ' .$payment['Investment']['total_amount_earned'];
 } ?></span></td>
                 </tr>
                 
@@ -156,8 +156,8 @@ echo $this->Html->css('template.css');
                 
                 <tr>
                     <td><b align="right">Outstanding Balance:</b></td>
-                    <td><span id="xxxxxx"><b><?php if (isset($payment['Investment']['balance'])) {
-    echo $shopCurrency. ' ' .$payment['Investment']['balance'];
+                    <td><span id="xxxxxx"><b><?php if (isset($payment['Investment']['earned_balance'])) {
+    echo $shopCurrency. ' ' .$payment['Investment']['earned_balance'];
 } ?></b></span></td>
                 </tr>
             </table>

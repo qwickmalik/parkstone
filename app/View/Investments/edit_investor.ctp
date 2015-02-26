@@ -145,7 +145,7 @@ echo $this->Html->script('notification.js');
 //                                        echo $this->Form->input('income_other', array('label' => 'Other', 'value' => (isset($investor['Investor']['income_other']) ? $investor['Investor']['income_other'] : '' ), 'placeholder' => 'Enter amount of money received from all other sources`'));
 //echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>Gross Income:</span>".$this->Form->select('gross_income', array('1' => 'Below GHC5,000', '2' => 'GHC5,000 - GHC100,000', '3' => 'Above GHC100,000'));
 //                                        echo $this->Form->input('gross_income_id', array('label' => 'Gross Income', 'default' => 0, 'value' => (isset($investor['Investor']['gross_income_id']) ? $investor['Investor']['gross_income_id'] : '--Please Select--' )));
-                                        echo $this->Form->input('grossincome_id', array('label' => 'Bank Name*', 'empty' => "--Select gross income--", 'value' => (isset($investor['Investor']['gross_income_id']) ? $investor['Investor']['gross_income_id'] : '' )));
+                                        echo $this->Form->input('grossincome_id', array('label' => 'Gross Income', 'empty' => "--Select gross income--", 'value' => (isset($investor['Investor']['gross_income_id']) ? $investor['Investor']['gross_income_id'] : '' )));
                                         ?>
 
 

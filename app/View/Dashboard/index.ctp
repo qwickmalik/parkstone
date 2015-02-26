@@ -94,13 +94,22 @@
 					<!-- Title Bar End -->
 
 					<!-- Social Stats List Start -->
+                                        <?php
+                                        $amount = 0;
+                                        if(isset($investments)){
+                                          foreach($investments as $invest){
+                                              $amount +=$invest[0]['amt'];
+                                          }  
+                                        }
+                                        
+                                        ?>
 					<ul>
-						<li><i class="fa fa-arrow-right"></i> No. of Clients <span>1,425</span></li>
-						<li><i class="fa fa-arrow-right"></i> Total Client Investments <span>GHC 251,546</span></li>
-						<li><i class="fa fa-arrow-right"></i> Total Company Investments <span>GHC 351,546</span></li>
-						<li><i class="fa fa-arrow-right"></i> Expected Client Payments for Current Mth <span>GHC 311,546</span></li>
-						<li><i class="fa fa-arrow-right"></i> Expected Comp Inv Returns for Current Mth <span>GHC 451,546</span></li>
-						<li><i class="fa fa-arrow-right"></i> Profit <span>GHC 140,000</span></li>
+                                                <li><i class="fa fa-arrow-right"></i> No. of Clients <span><?php if(isset($clients)){ echo $clients; }else{ echo '1,425';}; ?></span></li>
+						<li><i class="fa fa-arrow-right"></i> Total Client Investments <span><?php if(isset($amount)){ echo  'GH$ '.number_format($amount, 2, '.', ','); }else{ echo 'GH$ 251,546';};  ?></span></li>
+						<li><i class="fa fa-arrow-right"></i> Total Company Investments <span>GH$ 351,546</span></li>
+						<li><i class="fa fa-arrow-right"></i> Expected Client Payments for Current Mth <span>GH$ 311,546</span></li>
+						<li><i class="fa fa-arrow-right"></i> Expected Comp Inv Returns for Current Mth <span>GH$ 451,546</span></li>
+						<li><i class="fa fa-arrow-right"></i> Profit <span>GH$ 140,000</span></li>
 					</ul>
 					<!-- Social Stats List End -->
 

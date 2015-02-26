@@ -3,7 +3,7 @@
 class DashboardController extends AppController {
 
     var $name = 'Dashboard';
-    var $uses = array('Dashboard');
+    var $uses = array('Dashboard','Investor','InvestmentCash');
     
 /*
     function beforeFilter() {
@@ -48,7 +48,8 @@ class DashboardController extends AppController {
 */
     function index() {
         // $this->__validateUserType();
-        
+        $this->set('clients',$this->Investor->find('count'));
+        $this->set('investments',$this->InvestmentCash->find('all',['fields' => ['SUM(InvestmentCash.amount) As amt'],'conditions' => ['InvestmentCash.status' => array('Invested','Processed')]]));
     }
 
    
