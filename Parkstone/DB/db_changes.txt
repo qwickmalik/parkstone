@@ -624,3 +624,17 @@ CREATE TABLE IF NOT EXISTS `daily_interest_statements` (
 FEBRUARY 23, 2015
 -------------------------
 ALTER TABLE `investments` ADD `earned_balance` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_amount_earned` ;
+
+MARCH 02, 2015
+------------------------
+TRUNCATE TABLE `payment_schedules`;
+--
+-- Dumping data for table `payment_schedules`
+--
+
+INSERT INTO `payment_schedules` (`id`, `payment_schedule_name`) VALUES
+(1, 'Monthly'),
+(2, 'Quarterly'),
+(3, 'Semi-Annually'),
+(4, 'Yearly');
+SET FOREIGN_KEY_CHECKS=1;

@@ -31,24 +31,26 @@ We will get income from the following sources:
 NOTES FROM REVIEW 24TH FEB.2015
 --------------------------------------
 --New Investor
-*ID Issue date must end in current year and start 10years back
-*Birthday ends current year and starts from 1940(shld mk this dynamic..must calculate diff bn 2015-1940)
-*Bank Info should be optional
+DONE - *ID Issue date must end in current year and start 10years back
+DONE - *Birthday ends current year and starts from 1940(shld mk this dynamic..must calculate diff bn 2015-1940)
+DONE - *Bank Info should be optional
 
 --New Invesment
-*Add "Semi Annual to Payment Schedule"
-*Use investment term style in new-reinvestments(days,years,months)
-*update all payment/cash receipt functions to convert using current rates from  currency sub-module
+DONE -*Add "Semi Annual to Payment Schedule"
+DONE -*Use investment term style in new-reinvestments(days,years,months)
 *Total fees should not be compulsory and must be a percentage
 *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
 *Add number formatting function to all cash displays
+*roll over only if due
+*I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
 *Principals dont change after interest calculations. interest is always calculated on the same principal
 *Input must be provided for management fee[as disccused above in elsie's notes] 
 *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 *Cancel fixed investment Principal Amount +(interest%-5%) up to current date
 *Payments can be made only if status is set to cancel or investment is due
 *Interest should be per 365 days hence divided by 365(clarify with Elsie)
+*update all payment/cash receipt functions to convert using current rates from  currency sub-module
 
 
 --Re-investments
