@@ -113,7 +113,7 @@ echo $this->Html->script('notification.js');
                                     <td><span id="xxxxxx">
                                         <?php
                                         if (isset($data_fixed['InvestmentCash']['amount'])) {
-                                            echo $data_fixed['InvestmentCash']['amount'];
+                                            echo number_format($data_fixed['InvestmentCash']['amount'], 2, '.', ',');
                                         }
                                         ?>
                                         </span></td>   
@@ -124,7 +124,7 @@ echo $this->Html->script('notification.js');
                                     <td><b align="right">Equity Investment Amount:</b></td>
                                     <td><span id="xxxxxx"><?php
                                     if (isset($data_equity['InvestmentCash']['amount'])) {
-                                        echo $data_equity['InvestmentCash']['amount'];
+                                        echo number_format($data_equity['InvestmentCash']['amount'], 2, '.', ',');
                                     }
                                     ?></span></td> 
                                 </tr>
@@ -137,7 +137,7 @@ echo $this->Html->script('notification.js');
                                     <td><b align="right">Total Amount Invested:</b></td>
                                     <td><span id="xxxxxx"><?php
                                         if (isset($total_invested)) {
-                                            echo $total_invested ;
+                                            echo  number_format($total_invested, 2, '.', ',');
                                         }
                                     ?></span></td>
                                 </tr>

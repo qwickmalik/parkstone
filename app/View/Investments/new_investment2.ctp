@@ -127,7 +127,39 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <?php
                             echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp1.paymentschedule_id') == true ? $this->Session->read('investtemp1.paymentschedule_id') : '' )));
                             echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp1.paymentmode_id') == true ? $this->Session->read('investtemp1.paymentmode_id') : '' )));
+                             
                             ?>
+                            
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12"> 
+                            
+                               <div class="col-lg-5 col-md-5 col-sm-12 hidden-fee">
+                                       <?php
+                             echo $this->Form->input('management_fee_type', ['type' => 'select', 'options' => 
+                                 array('No Fee' => 'No Fee','Management Fee' =>'Management Fee','Performance Fee' => 'Performance Fee',
+                                     'Management & Performance Fee' => 'Management & Performance Fee'),
+                                 'empty' => '--Select Fee Type--', 'selected' => 
+                                       ($this->Session->check('investtemp1.management_fee') == true ?
+                                       $this->Session->read('investtemp1.management_fee') : '' )]);
+                             
+                              ?>
+                             </div> 
+                            
+                            <div class="col-lg-3 col-md-3 col-sm-12 hidden-fee">
+                               <?php 
+                               echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' => 
+                                       ($this->Session->check('investtemp1.base_fees') == true ?
+                                       $this->Session->read('investtemp1.base_fees') : '' )));
+
+                                ?> 
+                            </div>   
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                           <?php 
+                           echo $this->Form->input('benchmark_rate', array( 'label' => 'Benchmark Rate(%)', 'value' => 
+                                       ($this->Session->check('investtemp1.benchmark_rate') == true ?
+                                       $this->Session->read('investtemp1.benchmark_rate') : '' )));
+                             ?>
+                            </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12"> 
                             <div class="col-lg-4 col-md-4 col-sm-12">
@@ -183,14 +215,35 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo $this->Form->input('investment_amount', array('label' => 'Investment Amount', 'class' => 'required', 'value' => ($this->Session->check('investtemp.investment_amount') == true ? $this->Session->read('investtemp.investment_amount') : '' ))); ?>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.investmentterm_id') == true ? $this->Session->read('investtemp.investmentterm_id') : '' ))); ?>
+<!--                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php // echo $this->Form->input('investmentterm_id', array('label' => 'Investment Term', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp.investmentterm_id') == true ? $this->Session->read('investtemp.investmentterm_id') : '' ))); ?>
 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));    ?>
-                                    <?php echo $this->Form->input('custom_rate', array('label' => 'Expected Interest', 'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
+                                    <?php // echo $this->Form->input('custom_rate', array('label' => 'Expected Interest', 'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : '' ))); ?>
 
+                                </div>-->
+                                  <div class="col-lg-2 col-md-2 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('duration',array('required','label' => 'Duration*', 
+                                        'value' => ($this->Session->check('investtemp.duration') == true ? 
+                                            $this->Session->read('investtemp.duration') : '' ),'width' => '50px'));
+                                    
+                                    ?>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">  <?php
+                                    
+                                    echo $this->Form->input('investment_period', array('required','label' => 'Period*', 'empty' => "--Select--",
+                                        'options'=> array('Day(s)' => 'Day(s)','Month(s)' => 'Month(s)','Year(s)'=>'Year(s)'),
+                                        'selected' => ($this->Session->check('investtemp.investment_period') == true ? 
+                                            $this->Session->read('investtemp.investment_period') : '' ))); ?>
+                                     
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                    <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
+                                    <?php echo $this->Form->input('custom_rate', array('required','label' => 'Benchmark(%)*', 'value' => ($this->Session->check('investtemp.interest_rate') == true ? $this->Session->read('reinvesttemp.interest_rate') : '' ))); ?>
+                                    
                                 </div>
                             </div>
                             <div class="row"> 
@@ -264,7 +317,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Interest:</span><br>";
                                     if (isset($interest)) {
-                                        echo $shopCurrency . ' ' . $interest;
+                                        echo $shopCurrency . ' ' . number_format($interest, 2, '.', ',');
+                                       
                                     } else {
                                         echo '';
                                     }
@@ -275,7 +329,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span><br>";
                                     if (isset($totaldue)) {
-                                        echo $shopCurrency . ' ' . $totaldue;
+                                        echo $shopCurrency . ' ' .  number_format($totaldue, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -358,7 +412,18 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     echo $this->Form->input('share_price', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' )));
                                     echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' )));
                                     ?>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <?php
+                                    echo $this->Form->input('min_share_price', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.min_share_price') == true ? $this->Session->read('investtemp.min_share_price') : '' )));
+                                   ?>
                                 </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <?php
+                                    echo $this->Form->input('max_share_price', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.max_share_price') == true ? $this->Session->read('investtemp.max_share_price') : '' )));
+                                    ?>
+                                </div>
+                                </div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -369,19 +434,19 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <p>&nbsp;</p>
                                     <?php
-                                    echo $this->Form->input('total_fees_chk', array('value' => 0, 'type' => 'checkbox', 'label' => 'Total Fees Paid?'));
+                                    echo $this->Form->input('equity_fees_chk', array('value' => 0, 'type' => 'checkbox', 'label' => 'Equity Fees?'));
                                     ?>
                                 </div>
                                 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' )));
+                                    echo $this->Form->input('total_fees', array('label' => 'Equity Fees', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' )));
 //                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
                                     ?>
                                     
                                 </div>
                             </div>
-                            <p>&nbsp;</p><p>&nbsp;</p>
+                            <p>&nbsp;</p>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success", 'name' => "equity_process")); ?>
                             </div>
@@ -411,7 +476,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
                                     if (isset($share_price)) {
-                                        echo $shopCurrency . ' ' . $share_price;
+                                        echo $shopCurrency . ' ' . number_format($share_price, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -422,7 +487,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Fees:</span><br>";
                                     if (isset($total_fees)) {
-                                        echo $shopCurrency . ' ' . $total_fees;
+                                        echo $shopCurrency . ' ' . number_format($total_fees, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -433,7 +498,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
                                     if (isset($totalamt)) {
-                                        echo $shopCurrency . ' ' . $totalamt;
+                                        echo $shopCurrency . ' ' . number_format($totalamt, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -478,6 +543,7 @@ if ($this->Session->check('shopCurrency_investment')) {
     <script lang="javascript">
         jQuery(document).ready(function ($) {
             var prod_val = $("#InvestmentInvestmentproductId").val();
+//             $(".hidden-fee").hide();
             if (prod_val == "1") {
 
                 $("#fixed").show("slow");
@@ -500,6 +566,20 @@ if ($this->Session->check('shopCurrency_investment')) {
                 $("#equity").show("slow");
             }
 
+//$("#InvestmentTotalFeesChk").click(function(){
+//    
+//        var fee_check = $(this).val();
+//       
+//    if(fee_check == "1"){
+//        $(".hidden-fee").show();
+//        return false;
+//    }
+//    if(fee_check == "0"){
+//        $(".hidden-fee").hide();
+//        return false;
+//    }
+//    
+//});
             $("#InvestmentInvestmentproductId").change(function () {
 
 

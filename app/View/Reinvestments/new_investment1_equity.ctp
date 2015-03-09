@@ -51,7 +51,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_amount']) ? 
-                                            $reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_amount'] : '' );?>
+                                            number_format($reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_amount'], 2, '.', ',')
+                                             : '' );?>
                                 </div>
                             </div>
                             
@@ -61,7 +62,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_balance']) ? 
-                                            $reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_balance'] : '' );?>
+                                            number_format($reinvestorcashaccount['ReinvestorCashaccount']['equity_inv_balance'], 2, '.', ',') : '' );?>
                                 </div>
                             </div> 
                             
@@ -73,7 +74,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Investor's Deposited Amount:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($equitydetails['InvestmentCash']['amount']) ? $equitydetails['InvestmentCash']['amount'] : '' );?>
+                                    <?php echo (isset($equitydetails['InvestmentCash']['amount']) ? number_format($equitydetails['InvestmentCash']['amount'], 2, '.', ',') : '' );?>
                                 </div>
                             </div>
                             
@@ -82,7 +83,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Investor's Available Amount:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($equitydetails['InvestmentCash']['available_amount']) ? $equitydetails['InvestmentCash']['available_amount'] : '' );?>
+                                    <?php echo (isset($equitydetails['InvestmentCash']['available_amount']) ? number_format($equitydetails['InvestmentCash']['available_amount'], 2, '.', ',') : '' );?>
                                 </div>
                             </div> 
                             <div class="row">
@@ -221,7 +222,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <?php
                                 echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Amount:</span>";
                                 if (isset($totalamt)) {
-                                    echo $shopCurrency.' '.$totalamt;
+                                    echo $shopCurrency.' '.number_format($totalamt, 2, '.', ',');
                                 } else {
                                     echo '';
                                 }

@@ -1408,6 +1408,7 @@ class ReinvestmentsController extends AppController {
 
                         $total = $interest_amount1 + $principal;
                         $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
                             'principal' => $principal,
                             'interest' => $interest_amount1,
                             'maturity_date' => $date_statemt->format('Y-m-d'),
@@ -1418,7 +1419,7 @@ class ReinvestmentsController extends AppController {
                     break;
 
                 case 'Year(s)':
-                    $date->add(new DateInterval('P' . $duration . 'M'));
+                    $date->add(new DateInterval('P' . $duration . 'Y'));
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
                     $statemt_array = array();
@@ -1428,10 +1429,11 @@ class ReinvestmentsController extends AppController {
                     $interest_amount = $interest_amount1 * $duration;
                     $amount_due = $interest_amount + $investment_amount;
                     for ($n = 1; $n <= $duration; $n++) {
-                        $date_statemt->add(new DateInterval('P1M'));
+                        $date_statemt->add(new DateInterval('P1Y'));
 
                         $total = $interest_amount1 + $principal;
-                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                       $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
                             'principal' => $principal,
                             'interest' => $interest_amount1,
                             'maturity_date' => $date_statemt->format('Y-m-d'),
@@ -2145,7 +2147,7 @@ class ReinvestmentsController extends AppController {
         if (!is_null($reinvestment_id)) {
            $reinvest_data = $this->Reinvestment->find('first',['Reinvestment.id' => $reinvestment_id]); 
            if($reinvest_data){
-               $investment_amount = $reinvest_data['Reinvestment']['total_amount_earned'];
+               $investment_amount = $reinvest_data['Reinvestment']['earned_balance'];
                $first_date = date('Y-m-d');
             $custom_rate = $reinvest_data['Reinvestment']['interest_rate'];
             $date = new DateTime($first_date);
@@ -2210,7 +2212,7 @@ class ReinvestmentsController extends AppController {
                     break;
 
                 case 'Year(s)':
-                    $date->add(new DateInterval('P' . $duration . 'M'));
+                    $date->add(new DateInterval('P' . $duration . 'Y'));
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
                     $statemt_array = array();
@@ -2220,7 +2222,7 @@ class ReinvestmentsController extends AppController {
                     $interest_amount = $interest_amount1 * $duration;
                     $amount_due = $interest_amount + $investment_amount;
                     for ($n = 1; $n <= $duration; $n++) {
-                        $date_statemt->add(new DateInterval('P1M'));
+                        $date_statemt->add(new DateInterval('P1Y'));
 
                         $total = $interest_amount1 + $principal;
                         $statemt_array[] = array('user_id' => ($this->Session->check('userDetails.id') == true ?

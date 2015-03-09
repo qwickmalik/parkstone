@@ -52,7 +52,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                         <?php echo (isset($reinvestments['ReinvestmentsEquity']['investment_amount']) ? 
-                                                $reinvestments['ReinvestmentsEquity']['investment_amount'] : '' );?>
+                                               number_format($reinvestments['ReinvestmentsEquity']['investment_amount'], 2, '.', ',')
+                                                 : '' );?>
                                
                                 </div>
                             </div>
@@ -76,7 +77,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                      <?php echo (isset($reinvestments['ReinvestmentsEquity']['purchase_price']) ? 
-                                                $reinvestments['ReinvestmentsEquity']['purchase_price'] : '' );?>
+                                                number_format($reinvestments['ReinvestmentsEquity']['purchase_price'], 2, '.', ',')
+                                              : '' );?>
                                
                                 </div>
                             </div>
@@ -96,7 +98,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestments['ReinvestmentsEquity']['total_fees']) ? 
-                                                $reinvestments['ReinvestmentsEquity']['total_fees'] : '' );?>
+                                                number_format($reinvestments['ReinvestmentsEquity']['total_fees'], 2, '.', ',') : '' );?>
                                
                                 </div>
                             </div>

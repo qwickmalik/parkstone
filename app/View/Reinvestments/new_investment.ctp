@@ -4,7 +4,7 @@
 
 
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">Process Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
