@@ -68,7 +68,7 @@ echo $this->Html->script('icheck/icheck.js');
 					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->month('dob', array('size' => 1, 'label'=>false,'value' => (isset($investor['Investor']['dob']) ? date('m',strtotime($investor['Investor']['dob'])) :  date('m')),'empty' => '---Select a Birth Month---',  'required')); ?>&nbsp;
                                                 </div>
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
-					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('dob', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['dob']) ? date('Y',strtotime($investor['Investor']['dob'])) :  date('Y')),'empty' => '---Select Birth Year---', 'required' =>'required')); ?>
+					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('dob', date('Y')-80, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['dob']) ? date('Y',strtotime($investor['Investor']['dob'])) :  date('Y')),'empty' => '---Select Birth Year---', 'required' =>'required')); ?>
                                                 </div>
                                             </div>
 
@@ -222,15 +222,15 @@ echo $this->Html->script('icheck/icheck.js');
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php
-						echo $this->Form->input('acc_name', array('label' => 'Account Name*','class' => 'required', 'placeholder' => "Enter investor name as used with the bank"));  
-						echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'class' => 'required','placeholder' => "Enter name of bank"));  
+						echo $this->Form->input('acc_name', array('label' => 'Account Name', 'placeholder' => "Enter investor name as used with the bank"));  
+						echo $this->Form->input('bank_name', array('label' => 'Bank Name','placeholder' => "Enter name of bank"));  
 						?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <?php 
-						echo $this->Form->input('bank_branch', array('label' => 'Bank Branch*','class' => 'required', 'placeholder' => "Enter bank branch/location"));  
-						echo $this->Form->input('acc_number', array('label' => 'Account Number*','class' => 'required', 'placeholder' => "Enter account number"));  
+						echo $this->Form->input('bank_branch', array('label' => 'Bank Branch','placeholder' => "Enter bank branch/location"));  
+						echo $this->Form->input('acc_number', array('label' => 'Account Number', 'placeholder' => "Enter account number"));  
 						
                                                 ?>
                                     </div>
@@ -260,7 +260,7 @@ echo $this->Html->script('icheck/icheck.js');
 							  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->month('nk_dob', array('size' => 1, 'label'=>false,'value' => (isset($investor['Investor']['nk_dob']) ? date('m',strtotime($investor['Investor']['nk_dob'])) : date('m') ),'empty' => (isset($investor['Investor']['nk_dob']) ? date('F',strtotime($investor['Investor']['nk_dob'])) : date('F') ))); ?>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
-							  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('nk_dob', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y') ),'empty' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y')))); ?>
+							  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('nk_dob', date('Y')-80, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y') ),'empty' => (isset($investor['Investor']['nk_dob']) ? date('Y',strtotime($investor['Investor']['nk_dob'])) : date('Y')))); ?>
                                                 </div>
                                             </div>
                                             <?php

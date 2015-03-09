@@ -10,7 +10,7 @@ class InvestmentsController extends AppController {
     var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment',
         'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover',
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
-        'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList', 'InvestmentCash','DailyInterestStatement');
+        'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList', 'InvestmentCash', 'DailyInterestStatement');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -1787,8 +1787,7 @@ class InvestmentsController extends AppController {
             $this->Session->write('investtemp', $this->request->data['Investment']);
 
 
-            $term_id = $this->request->data['Investment']['investmentterm_id'];
-
+//            $term_id = $this->request->data['Investment']['investmentterm_id'];
 //            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
             if (isset($this->request->data['fixed_process'])) {
 //                switch ($investmentproduct_id) {
@@ -1931,79 +1930,163 @@ class InvestmentsController extends AppController {
 //                switch ($investmentproduct_id) {
 //                    case 1:
                 if (isset($this->request->data['fixed_process'])) {
-                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+//                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+//
+//                    if ($portfolio) {
+//                        $year = $portfolio['InvestmentTerm']['period'];
+//                        $date->add(new DateInterval('P' . $year . 'Y'));
+//                        $date_statemt = new DateTime($first_date);
+//                        $principal = $investment_amount;
+//                        $statemt_array = array();
+//                        if (isset($custom_rate) && !empty($custom_rate)) {
+//                            $rate = $custom_rate;
+//                        } else {
+//                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
+//                        }
+//                        $interest_amount1 = ($rate / 100) * $investment_amount;
+//                        $interest_amount = $interest_amount1 * $year;
+//                        $amount_due = $interest_amount + $investment_amount;
+//                        for ($n = 1; $n <= $year; $n++) {
+//                            $date_statemt->add(new DateInterval('P1Y'));
+//
+//                            $total = $interest_amount1 + $principal;
+//                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+//                                'principal' => $principal,
+//                                'interest' => $interest_amount1,
+//                                'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                'total' => $total);
+//                            $principal = $total;
+//                        }
+                    $period = $this->request->data['Investment']['investment_period'];
+                    $duration = $this->request->data['Investment']['duration'];
+                    $year = $duration;
+                    switch ($period) {
+                        case 'Day(s)':
 
-                    if ($portfolio) {
-
-                        $year = $portfolio['InvestmentTerm']['period'];
-                        $date->add(new DateInterval('P' . $year . 'Y'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        if (isset($custom_rate) && !empty($custom_rate)) {
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
                             $rate = $custom_rate;
-                        } else {
-                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
-                        }
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $year;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $year; $n++) {
-                            $date_statemt->add(new DateInterval('P1Y'));
 
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        }
-                        $check = $this->Session->check('statemt_array_fixed');
-                        if ($check) {
-                            $this->Session->delete('statemt_array_fixed');
-                        }
-                        $this->Session->write('statemt_array_fixed', $statemt_array);
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1D'));
 
-                        $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                            'investor_id' => $this->request->data['Investment']['investor_id'],
-                            'investment_amount' => $this->request->data['Investment']['investment_amount'],
-                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
-                            'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                            'custom_rate' => $rate,
-                            'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                            'currency_id' => $this->request->data['Investment']['currency_id'],
-                            'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                            'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                            'instruction_id' => $this->request->data['Investment']['instruction_id'],
-                            'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                            'interest_earned' => $interest_amount,
-                            'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                            'earned_balance' => $this->request->data['Investment']['investment_amount'],
-                            'investment_date' => $inv_date,
-                            'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
-                        );
+                                $total = $interest_amount1 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
+
+                            break;
+
+                        case 'Month(s)':
+
+                            $date->add(new DateInterval('P' . $duration . 'M'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1M'));
+
+                                $total = $interest_amount1 + $principal;
+                                 $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
+
+                            break;
+
+                        case 'Year(s)':
+                            $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1Y'));
+
+                                $total = $interest_amount1 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
 
 
-                        $check = $this->Session->check('investment_array_fixed');
-                        if ($check) {
-                            $this->Session->delete('investment_array_fixed');
-                        }
-
-                        $this->Session->write('investment_array_fixed', $investment_array);
-
-                        $check = $this->Session->check('variabless_fixed');
-                        if ($check) {
-                            $this->Session->delete('variabless_fixed');
-                        }
-
-                        $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
-                        $this->Session->write('variabless_fixed', $variables);
-                    } else {
-                        $message = 'Investment Term settings missing. Contact Administrator';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            break;
                     }
+                    $check = $this->Session->check('statemt_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+                    $this->Session->write('statemt_array_fixed', $statemt_array);
+
+                    $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'investment_amount' => $this->request->data['Investment']['investment_amount'],
+//                        'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
+                        'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                        'custom_rate' => $rate,
+                        'duration' => $this->request->data['Investment']['duration'],
+                        'investment_period' => $this->request->data['Investment']['investment_period'],
+                        'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
+                        'currency_id' => $this->request->data['Investment']['currency_id'],
+                        'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
+                        'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
+                        'instruction_id' => $this->request->data['Investment']['instruction_id'],
+                        'instruction_details' => $this->request->data['Investment']['instruction_details'],
+                        'interest_earned' => $interest_amount,
+                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
+                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                        'investment_date' => $inv_date,
+                        'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+                    );
+
+
+                    $check = $this->Session->check('investment_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('investment_array_fixed');
+                    }
+
+                    $this->Session->write('investment_array_fixed', $investment_array);
+
+                    $check = $this->Session->check('variabless_fixed');
+                    if ($check) {
+                        $this->Session->delete('variabless_fixed');
+                    }
+
+                    $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+                    $this->Session->write('variabless_fixed', $variables);
+//                    } 
+//                    else {
+//                        $message = 'Investment Term settings missing. Contact Administrator';
+//                        $this->Session->write('emsg', $message);
+//                        $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                    }
 //                        break;
                 }
                 if (isset($this->request->data['equity_process'])) {
@@ -2134,8 +2217,7 @@ class InvestmentsController extends AppController {
 
             $this->Session->write('investtemp1', $this->request->data['Investment']);
 
-            $term_id = $this->request->data['Investment']['investmentterm_id'];
-
+//            $term_id = $this->request->data['Investment']['investmentterm_id'];
 //            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
             if (isset($this->request->data['fixed_process'])) {
 //                switch ($investmentproduct_id) {
@@ -2278,79 +2360,162 @@ class InvestmentsController extends AppController {
 //                switch ($investmentproduct_id) {
 //                    case 1:
                 if (isset($this->request->data['fixed_process'])) {
-                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+//                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+//
+//                    if ($portfolio) {
+//                        $year = $portfolio['InvestmentTerm']['period'];
+//                        $date->add(new DateInterval('P' . $year . 'Y'));
+//                        $date_statemt = new DateTime($first_date);
+//                        $principal = $investment_amount;
+//                        $statemt_array = array();
+//                        if (isset($custom_rate) && !empty($custom_rate)) {
+//                            $rate = $custom_rate;
+//                        } else {
+//                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
+//                        }
+//                        $interest_amount1 = ($rate / 100) * $investment_amount;
+//                        $interest_amount = $interest_amount1 * $year;
+//                        $amount_due = $interest_amount + $investment_amount;
+//                        for ($n = 1; $n <= $year; $n++) {
+//                            $date_statemt->add(new DateInterval('P1Y'));
+//
+//                            $total = $interest_amount1 + $principal;
+//                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+//                                'principal' => $principal,
+//                                'interest' => $interest_amount1,
+//                                'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                'total' => $total);
+//                            $principal = $total;
+//                        }
+                    $period = $this->request->data['Investment']['investment_period'];
+                    $duration = $this->request->data['Investment']['duration'];
+                    $year = $duration;
+                    switch ($period) {
+                        case 'Day(s)':
 
-                    if ($portfolio) {
-
-                        $year = $portfolio['InvestmentTerm']['period'];
-                        $date->add(new DateInterval('P' . $year . 'Y'));
-                        $date_statemt = new DateTime($first_date);
-                        $principal = $investment_amount;
-                        $statemt_array = array();
-                        if (isset($custom_rate) && !empty($custom_rate)) {
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
                             $rate = $custom_rate;
-                        } else {
-                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
-                        }
-                        $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1 * $year;
-                        $amount_due = $interest_amount + $investment_amount;
-                        for ($n = 1; $n <= $year; $n++) {
-                            $date_statemt->add(new DateInterval('P1Y'));
 
-                            $total = $interest_amount1 + $principal;
-                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                'principal' => $principal,
-                                'interest' => $interest_amount1,
-                                'maturity_date' => $date_statemt->format('Y-m-d'),
-                                'total' => $total);
-                            $principal = $total;
-                        }
-                        $check = $this->Session->check('statemt_array_fixed');
-                        if ($check) {
-                            $this->Session->delete('statemt_array_fixed');
-                        }
-                        $this->Session->write('statemt_array_fixed', $statemt_array);
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1D'));
 
-                        $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                            'investor_id' => $this->request->data['Investment']['investor_id'],
-                            'investment_amount' => $this->request->data['Investment']['investment_amount'],
-                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
-                            'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                            'custom_rate' => $rate,
-                            'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                            'currency_id' => $this->request->data['Investment']['currency_id'],
-                            'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                            'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                            'instruction_id' => $this->request->data['Investment']['instruction_id'],
-                            'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                            'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                            'earned_balance' => $this->request->data['Investment']['investment_amount'],
-                            'interest_earned' => $interest_amount,
-                            'investment_date' => $inv_date,
-                            'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
-                        );
+                                $total = $interest_amount1 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
+
+                            break;
+
+                        case 'Month(s)':
+
+                            $date->add(new DateInterval('P' . $duration . 'M'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1M'));
+
+                                $total = $interest_amount1 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
+
+                            break;
+
+                        case 'Year(s)':
+                            $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * $duration;
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1Y'));
+
+                                $total = $interest_amount1 + $principal;
+                                 $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount1,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+                                $principal = $total;
+                            }
 
 
-                        $check = $this->Session->check('investment_array_fixed');
-                        if ($check) {
-                            $this->Session->delete('investment_array_fixed');
-                        }
-
-                        $this->Session->write('investment_array_fixed', $investment_array);
-
-                        $check = $this->Session->check('variabless_fixed');
-                        if ($check) {
-                            $this->Session->delete('variabless_fixed');
-                        }
-
-                        $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
-                        $this->Session->write('variabless_fixed', $variables);
-                    } else {
-                        $message = 'Investment Term settings missing. Contact Administrator';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                            break;
                     }
+                    $check = $this->Session->check('statemt_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+                    $this->Session->write('statemt_array_fixed', $statemt_array);
+
+                    $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'investment_amount' => $this->request->data['Investment']['investment_amount'],
+//                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
+                        'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                        'custom_rate' => $rate,
+                        'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
+                        'currency_id' => $this->request->data['Investment']['currency_id'],
+                        'duration' => $this->request->data['Investment']['duration'],
+                        'investment_period' => $this->request->data['Investment']['investment_period'],
+                        'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
+                        'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
+                        'instruction_id' => $this->request->data['Investment']['instruction_id'],
+                        'instruction_details' => $this->request->data['Investment']['instruction_details'],
+                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
+                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                        'interest_earned' => $interest_amount,
+                        'investment_date' => $inv_date,
+                        'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+                    );
+
+
+                    $check = $this->Session->check('investment_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('investment_array_fixed');
+                    }
+
+                    $this->Session->write('investment_array_fixed', $investment_array);
+
+                    $check = $this->Session->check('variabless_fixed');
+                    if ($check) {
+                        $this->Session->delete('variabless_fixed');
+                    }
+
+                    $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+                    $this->Session->write('variabless_fixed', $variables);
+//                    } else {
+//                        $message = 'Investment Term settings missing. Contact Administrator';
+//                        $this->Session->write('emsg', $message);
+//                        $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                    }
 //                        break;
                 }
                 if (isset($this->request->data['equity_process'])) {
@@ -3075,8 +3240,8 @@ class InvestmentsController extends AppController {
 
             $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($result) {
-                
-            $investor_id = $result['Investment']['investor_id'];
+
+                $investor_id = $result['Investment']['investor_id'];
 
                 $payment_name = '';
                 $paymentmodeid = $result['Investment']['payment_mode_id'];
@@ -3572,8 +3737,8 @@ class InvestmentsController extends AppController {
                 $inv_date = date('Y-m-d');
             }
             $this->request->data['InvestmentPayment']['payment_date'] = $inv_date;
-            $this->Session->write('payinvesttemp',$this->request->data['InvestmentPayment']);
-            
+            $this->Session->write('payinvesttemp', $this->request->data['InvestmentPayment']);
+
             if ($this->request->data['InvestmentPayment']['payment_mode'] == "" || $this->request->data['InvestmentPayment']['payment_mode'] == null) {
                 $message = 'Please Select A Mode of Payment.';
                 $this->Session->write('emsg', $message);
@@ -4229,78 +4394,146 @@ class InvestmentsController extends AppController {
         if (!is_null($invesmentID)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
             if ($data) {
-                $portfolio_id = $data['Investment']['investment_term_id'];
-                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $portfolio_id), 'recursive' => -1));
+//                $portfolio_id = $data['Investment']['investment_term_id'];
+//                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $portfolio_id), 'recursive' => -1));
+//
+//                if ($portfolio) {
 
-                if ($portfolio) {
-
-                    $year = $portfolio['InvestmentTerm']['period'];
-
-
-                    if (isset($custom_rate) && !empty($custom_rate)) {
+                $period = $data['Investment']['investment_period'];
+                $duration = $data['Investment']['duration'];
+                $custom_rate = $data['Investment']['custom_rate'];
+                $year = $duration;
+                switch ($period) {
+                    case 'Day(s)':
+                        $investment_amount = $data['Investment']['earned_balance'];
+                        $finv_date = $data['Investment']['due_date'];
+                        $date->add(new DateInterval('P' . $duration . 'D'));
+                        $date_statemt = new DateTime($first_date);
+                        $principal = $investment_amount;
+                        $statemt_array = array();
                         $rate = $custom_rate;
-                    } else {
-                        $rate = $portfolio['InvestmentTerm']['interest_rate'];
-                    }
-                    $investment_amount = $data['Investment']['amount_due'];
-                    $interest_amount1 = ($rate / 100) * $investment_amount;
-                    $interest_amount = $interest_amount1 * $months;
-                    $amount_due = $interest_amount + $investment_amount;
-                    $finv_date = $data['Investment']['due_date'];
-                    $sinv_date = strtotime($finv_date);
-                    $inv_date = date('Y-m-d', $sinv_date);
-                    $first_date = $inv_date;
-                    $date = new DateTime($first_date);
-                    $date->add(new DateInterval('P' . $year . 'Y'));
+
+                        $interest_amount1 = ($rate / 100) * $investment_amount;
+                        $interest_amount = $interest_amount1 * $duration;
+                        $amount_due = $interest_amount + $investment_amount;
+                        for ($n = 1; $n <= $duration; $n++) {
+                            $date_statemt->add(new DateInterval('P1D'));
+
+                            $total = $interest_amount1 + $principal;
+                    $statemt_array[] = array('investment_id' => $data['Investment']['id'], 
+                        'user_id' => $data['Investment']['user_id'],
+                        'investor_id' => $data['Investment']['investor_id'], 
+                        'principal' => $principal, 'interest' => $interest_amount1, 
+                        'maturity_date' => $date_statemt->format('Y-m-d'), 
+                        'total' => $total);
+                            $principal = $total;
+                        }
+               
+                        break;
+
+                    case 'Month(s)':
+                         $investment_amount = $data['Investment']['earned_balance'];
+                        $finv_date = $data['Investment']['due_date'];
+                        $date->add(new DateInterval('P' . $duration . 'M'));
+                        $date_statemt = new DateTime($first_date);
+                        $principal = $investment_amount;
+                        $statemt_array = array();
+                        $rate = $custom_rate;
+
+                        $interest_amount1 = ($rate / 100) * $investment_amount;
+                        $interest_amount = $interest_amount1 * $duration;
+                        $amount_due = $interest_amount + $investment_amount;
+                        for ($n = 1; $n <= $duration; $n++) {
+                            $date_statemt->add(new DateInterval('P1M'));
+
+                            $total = $interest_amount1 + $principal;
+                            $statemt_array[] = array('investment_id' => $data['Investment']['id'], 
+                        'user_id' => $data['Investment']['user_id'],
+                        'investor_id' => $data['Investment']['investor_id'], 
+                        'principal' => $principal, 'interest' => $interest_amount1, 
+                        'maturity_date' => $date_statemt->format('Y-m-d'), 
+                        'total' => $total);
+                            $principal = $total;
+                        }
+
+                        break;
+
+                    case 'Year(s)':
+                         $investment_amount = $data['Investment']['earned_balance'];
+                        $finv_date = $data['Investment']['due_date'];
+                        $date->add(new DateInterval('P' . $duration . 'Y'));
+                        $date_statemt = new DateTime($first_date);
+                        $principal = $investment_amount;
+                        $statemt_array = array();
+                        $rate = $custom_rate;
+
+                        $interest_amount1 = ($rate / 100) * $investment_amount;
+                        $interest_amount = $interest_amount1 * $duration;
+                        $amount_due = $interest_amount + $investment_amount;
+                        for ($n = 1; $n <= $duration; $n++) {
+                            $date_statemt->add(new DateInterval('P1Y'));
+
+                            $total = $interest_amount1 + $principal;
+                            $statemt_array[] = array('investment_id' => $data['Investment']['id'], 
+                        'user_id' => $data['Investment']['user_id'],
+                        'investor_id' => $data['Investment']['investor_id'], 
+                        'principal' => $principal, 'interest' => $interest_amount1, 
+                        'maturity_date' => $date_statemt->format('Y-m-d'), 
+                        'total' => $total);
+                            $principal = $total;
+                        }
 
 
-                    $date_statemt = new DateTime($first_date);
-                    $principal = $investment_amount;
-                    $statemt_array = array();
-
-                    for ($n = 1; $n <= $year; $n++) {
-                        $date_statemt->add(new DateInterval('P1Y'));
-
-                        $total = $interest_amount1 + $principal;
-                        $statemt_array[] = array('investment_id' => $data['Investment']['id'], 'user_id' => $data['Investment']['user_id'], 'investor_id' => $data['Investment']['investor_id'], 'principal' => $principal, 'interest' => $interest_amount1, 'maturity_date' => $date_statemt->format('Y-m-d'), 'total' => $total);
-                        $principal = $total;
-                    }
-
-                    $investment_array = array('id' => $data['Investment']['id'], 'balance' => $amount_due,
-                        'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
-                        'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
-
-                    $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
-                    $check = $this->Session->check('variabless');
-                    if ($check) {
-                        $this->Session->delete('variabless');
-                    }
-
-                    $check = $this->Session->check('investment_array');
-                    if ($check) {
-                        $this->Session->delete('investment_array');
-                    }
-
-                    $check = $this->Session->check('rollover_details');
-                    if ($check) {
-                        $this->Session->delete('rollover_details');
-                    }
-                    $check = $this->Session->check('statemt_array');
-                    if ($check) {
-                        $this->Session->delete('statemt_array');
-                    }
-
-
-                    $this->Session->write('statemt_array', $statemt_array);
-                    $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
-                    $this->Session->write('variabless', $variables);
-                    $this->Session->write('rollover_details', $rollover_details);
-                    $this->Session->write('investment_array', $investment_array);
-
-                    $message = 'Investment details successfully saved';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestmentCert'));
+                        break;
                 }
+//                $year = $portfolio['InvestmentTerm']['period'];
+//
+//
+//                if (isset($custom_rate) && !empty($custom_rate)) {
+//                    $rate = $custom_rate;
+//                } else {
+//                    $rate = $portfolio['InvestmentTerm']['interest_rate'];
+//                }
+                
+
+
+                
+
+                $investment_array = array('id' => $data['Investment']['id'], 'balance' => $amount_due,
+                    'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
+                    'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
+
+                $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
+                $check = $this->Session->check('variabless');
+                if ($check) {
+                    $this->Session->delete('variabless');
+                }
+
+                $check = $this->Session->check('investment_array');
+                if ($check) {
+                    $this->Session->delete('investment_array');
+                }
+
+                $check = $this->Session->check('rollover_details');
+                if ($check) {
+                    $this->Session->delete('rollover_details');
+                }
+                $check = $this->Session->check('statemt_array');
+                if ($check) {
+                    $this->Session->delete('statemt_array');
+                }
+
+
+                $this->Session->write('statemt_array', $statemt_array);
+                $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+                $this->Session->write('variabless', $variables);
+                $this->Session->write('rollover_details', $rollover_details);
+                $this->Session->write('investment_array', $investment_array);
+
+                $message = 'Investment details successfully saved';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestmentCert'));
+//                }
             } else {
 
                 $message = 'Sorry, Investment Details Not Found';
@@ -4429,7 +4662,6 @@ class InvestmentsController extends AppController {
         }
     }
 
-    
     public function statementDailyInterest($invesmentID = null, $investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($invesmentID)) {
@@ -4471,7 +4703,7 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
         }
     }
-    
+
     public function payments() {
         /* $this->__validateUserType(); */
     }

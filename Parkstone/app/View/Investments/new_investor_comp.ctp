@@ -66,7 +66,7 @@ echo $this->Html->script('notification.js');
                                                 <?php echo $this->Form->month('date_incorp', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('m', strtotime($investor['Investor']['date_incorp'])) : '--Select Month--'), 'empty' => '--Select Month--', 'class' => 'required')); ?>&nbsp;
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->year('date_incorp', 1950, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('Y', strtotime($investor['Investor']['date_incorp'])) : '--Select Year--' ), 'empty' => '--Select Year--', 'class' => 'required')); ?>
+                                                <?php echo $this->Form->year('date_incorp', 1890, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('Y', strtotime($investor['Investor']['date_incorp'])) : '--Select Year--' ), 'empty' => '--Select Year--', 'class' => 'required')); ?>
                                             </div>
                                         </div>
 

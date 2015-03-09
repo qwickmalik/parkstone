@@ -56,7 +56,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount']) ?
-                                            $reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'] : '' );?>
+                                            number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'], 2, '.', ',') : '' );?>
                                 </div>
                             </div>
                             
@@ -66,7 +66,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance']) ?
-                                            $reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'] : '' );?>
+                                            number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'], 2, '.', ',') : '' );?>
                                 </div>
                             </div> 
                         </div>
@@ -129,7 +129,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo $this->Form->input('investment_amount', array('required',
                                         'label' => 'Investment Amount*', 'class' => 'required', 'value' => 
                                             ($this->Session->check('reinvesttemp.investment_amount') == true 
-                                            ? $this->Session->read('reinvesttemp.investment_amount') : '' ))); ?>
+                                            ? number_format($this->Session->read('reinvesttemp.investment_amount'), 2, '.', ',') : '' ))); ?>
                                 
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
@@ -227,7 +227,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <td align="right"><b align="right">Interest Accrued: </b></td>
                                 <td><span id="xxxxxx"><?php
                                         if (isset($interest)) {
-                                            echo $shopCurrency . ' ' . $interest;
+                                            echo $shopCurrency . ' ' . number_format($interest, 2, '.', ',');
                                         } else {
                                             echo '';
                                         }
@@ -242,7 +242,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <td align="right"><b align="right" style='color: #ff0000'>Total Amount Due: </b></td>
                                 <td><span id="xxxxxx" ><b><?php
                                             if (isset($totaldue)) {
-                                                echo $shopCurrency . ' ' . $totaldue;
+                                                echo $shopCurrency . ' ' . number_format($totaldue, 2, '.', ',');
                                             } else {
                                                 echo '';
                                             }

@@ -44,14 +44,35 @@
     <li class="parent cream">
         <a href="#">
             <span class="menu-icon"><i class="fa fa-money"></i></span>
-            <span class="menu-text">Re-investments</span>
+            <span class="menu-text">Process Investments</span>
+        </a>
+        <ul class="child">
+           
+            <li>
+                <?php echo $this->Html->link('Process Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Manage Processed Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('New/Edit Inv. Destination', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Inv. Destination Products', '/Reinvestments/invDestProduct', array('escape' => false)); ?>
+            </li> 
+        </ul>
+    </li>
+    <li class="parent cream">
+        <a href="#">
+            <span class="menu-icon"><i class="fa fa-money"></i></span>
+            <span class="menu-text">Fund Management</span>
         </a>
         <ul class="child">
             <li>
-                <?php echo $this->Html->link('New/Edit Re-Investor', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Client', '/Reinvestments/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Re-Investor Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Client Cash Deposit', '/Reinvestments/newCashDeposit', array('escape' => false)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link('List/Edit Cash Deposits', '/Reinvestments/listCashDeposits', array('escape' => false)); ?>
@@ -64,18 +85,25 @@
             </li>
             <li>
                 <?php echo $this->Html->link('Inv. Destination Products', '/Reinvestments/invDestProduct', array('escape' => false)); ?>
+            </li> 
+            
+            <li>
+                <?php echo $this->Html->link('Pay Client Funds', '/Reinvestments/manageInv', array('escape' => false)); ?>
+            </li>
+             <li>
+                <?php echo $this->Html->link('Invest Fund', '/Reinvestments/newInvestment', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('New Re-Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Manage Invested Funds', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Manage Re-Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Inv. Destination', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Pay Re-Investor', '/Reinvestments/manageInv', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Inv. Destination Products', '/Reinvestments/invDestProduct', array('escape' => false)); ?>
             </li>
         </ul>
-    </li>
+        </li>
     <!--<li class="lightyellow">-->
     <?php
 //        echo $this->Html->link('

@@ -274,7 +274,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Interest:</span><br>";
                                     if (isset($interest)) {
-                                        echo $shopCurrency . ' ' . $interest;
+                                        echo $shopCurrency . ' ' . number_format($interest, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -285,7 +285,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span><br>";
                                     if (isset($totaldue)) {
-                                        echo $shopCurrency . ' ' . $totaldue;
+                                        echo $shopCurrency . ' ' . number_format($totaldue, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -421,7 +421,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
                                     if (isset($share_price)) {
-                                        echo $shopCurrency . ' ' . $share_price;
+                                        echo $shopCurrency . ' ' . number_format($share_price, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -432,7 +432,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Fees:</span><br>";
                                     if (isset($total_fees)) {
-                                        echo $shopCurrency . ' ' . $total_fees;
+                                        echo $shopCurrency . ' ' . number_format($total_fees, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }
@@ -443,7 +443,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
                                     if (isset($totalamt)) {
-                                        echo $shopCurrency . ' ' . $totalamt;
+                                        echo $shopCurrency . ' ' . number_format($totalamt, 2, '.', ',');
                                     } else {
                                         echo '';
                                     }

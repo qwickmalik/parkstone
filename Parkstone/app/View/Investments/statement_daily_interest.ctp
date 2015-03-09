@@ -166,7 +166,7 @@ echo $this->Html->script('jquery.printElement.js');
                         ?></td>
                         <td align="center"><?php 
                         if(isset($each_item['InvestmentStatement']['interest'])){
-                            echo $each_item['InvestmentStatement']['interest'];
+                            echo number_format($each_item['InvestmentStatement']['interest'], 2, '.', ',');
                         }
                         ?></td>
                         <td align="right"><?php 

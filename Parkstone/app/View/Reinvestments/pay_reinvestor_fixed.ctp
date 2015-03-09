@@ -50,7 +50,7 @@ echo $this->Html->script('notification.js');
                         <?php echo "<p><b>Investment Amount:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['investment_amount']) ? $reinvestments['Reinvestment']['investment_amount'] : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['investment_amount']) ? number_format($reinvestments['Reinvestment']['investment_amount'] , 2, '.', ',') : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -104,7 +104,7 @@ echo $this->Html->script('notification.js');
                         <?php echo "<p><b>Interest Accrued:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['interest_earned']) ? $reinvestments['Reinvestment']['interest_earned'] : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['interest_earned']) ? number_format($reinvestments['Reinvestment']['interest_earned'] , 2, '.', ',') : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -112,7 +112,7 @@ echo $this->Html->script('notification.js');
                         <?php echo "<p><b>Total Amount Due:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['amount_due']) ? $reinvestments['Reinvestment']['amount_due'] : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['amount_due']) ? number_format($reinvestments['Reinvestment']['amount_due'] , 2, '.', ',') : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
