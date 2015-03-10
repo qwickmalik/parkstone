@@ -41,7 +41,7 @@ DONE -*Use investment term style in new-reinvestments(days,years,months)
 *Total fees should not be compulsory and must be a percentage
 *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
-*Add number formatting function to all cash displays
+DONE -Add number formatting function to all cash displays
 *roll over only if due
 *I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
 *Principals dont change after interest calculations. interest is always calculated on the same principal
