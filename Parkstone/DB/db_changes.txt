@@ -638,3 +638,12 @@ INSERT INTO `payment_schedules` (`id`, `payment_schedule_name`) VALUES
 (3, 'Semi-Annually'),
 (4, 'Yearly');
 SET FOREIGN_KEY_CHECKS=1;
+
+MARCH 04, 2015
+-------------------------
+ALTER TABLE `investments` ADD `management_fee_type` VARCHAR( 30 ) NULL AFTER `total_fees` ,
+ADD `base_fees` INT( 3 ) NULL AFTER `management_fee_type` ,
+ADD `benchmark_rate` INT( 3 ) NULL AFTER `base_fees` ,
+ADD `min_share_price` INT NULL AFTER `benchmark_rate` ,
+ADD `max_share_price` INT NULL AFTER `min_share_price` ,
+ADD `equity_fees_chk` ENUM( '0', '1' ) NULL DEFAULT '0' AFTER `max_share_price` 
