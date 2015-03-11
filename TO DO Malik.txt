@@ -41,13 +41,20 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 --New Invesment
 DONE 10.03.15 *Allow for selection of multiple equities instead of one
- *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+
 DONE 10.03.15 *Add currency sub-module from settings in Suame POS
 DONE by Kwaku *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
 DONE by Kwaku *Input must be provided for management fee[as disccused above in elsie's notes] 
-DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 
+
+---TO DO
+
+*There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+
+*Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+*MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
+*he above means it will also have the exchange rates submodule in settings
 
 --Manage Investments
 *Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
@@ -57,7 +64,7 @@ DONE by Kwaku *There should be a total amount input in top blue column which wil
 *Workflow must be implemented for payments
 *Payments can be made only if status is set to cancel or investment is due
 *Approval must be made before payments are confirmed ..add status to show approval status
-*Client statements must resemble client statemtns elsie has given(to kwaku)
+*Client statements must resemble client statements as in tech_specs folder
 *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 *Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
 
