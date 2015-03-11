@@ -1,5 +1,6 @@
 Notes FROM REVIEW 04 MARCH, 2015
 ---------------------------------
+ 
 
 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
@@ -39,7 +40,7 @@ NOTES FROM REVIEW 24TH FEB.2015
 --------------------------------------
 
 --New Invesment
-*Allow for selection of multiple equities instead of one
+DONE 10.03.15 *Allow for selection of multiple equities instead of one
 *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
 *Add currency sub-module from settings in Suame POS
 *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
