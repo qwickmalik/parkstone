@@ -139,6 +139,36 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->input('paymentmode_id', array('label' => 'Payment Mode', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp1.paymentmode_id') == true ? $this->Session->read('investtemp1.paymentmode_id') : '' )));
                             ?>
                         </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12"> 
+                            
+                               <div class="col-lg-5 col-md-5 col-sm-12">
+                                       <?php
+                             echo $this->Form->input('management_fee_type', ['type' => 'select', 'options' => 
+                                 array('No Fee' => 'No Fee','Management Fee' =>'Management Fee','Performance Fee' => 'Performance Fee',
+                                     'Management & Performance Fee' => 'Management & Performance Fee'),
+                                 'empty' => '--Select Fee Type--', 'selected' => 
+                                       ($this->Session->check('investtemp1.management_fee') == true ?
+                                       $this->Session->read('investtemp1.management_fee') : '' )]);
+                             
+                              ?>
+                             </div> 
+                            
+                            <div class="col-lg-3 col-md-3 col-sm-12 hidden-fee">
+                               <?php 
+                               echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' => 
+                                       ($this->Session->check('investtemp1.base_fees') == true ?
+                                       $this->Session->read('investtemp1.base_fees') : '' )));
+
+                                ?> 
+                            </div>   
+                            <div class="col-lg-4 col-md-4 col-sm-12 BenchmarkRate">
+                           <?php 
+                           echo $this->Form->input('benchmark_rate', array( 'label' => 'Benchmark Rate(%)', 'value' => 
+                                       ($this->Session->check('investtemp1.benchmark_rate') == true ?
+                                       $this->Session->read('investtemp1.benchmark_rate') : '' )));
+                             ?>
+                            </div>
+                        </div>
                         <div class="col-lg-6 col-md-6 col-sm-12"> 
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
@@ -368,6 +398,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     echo $this->Form->input('share_price', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.share_price') == true ? $this->Session->read('investtemp.share_price') : '' )));
                                     echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('investtemp.purchase_price') == true ? $this->Session->read('investtemp.purchase_price') : '' )));
                                     ?>
+                                   
                                 </div>
                             </div>
                             <div class="row">
@@ -376,19 +407,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     echo $this->Form->input('numb_shares', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.numb_shares') == true ? $this->Session->read('investtemp.numb_shares') : '' )));
                                     ?>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <p>&nbsp;</p>
+                               <div class="col-lg-4 col-md-4 col-sm-6">
                                     <?php
-                                    echo $this->Form->input('total_fees_chk', array('value' => 0, 'type' => 'checkbox', 'label' => 'Total Fees Paid?'));
-                                    ?>
+                                    echo $this->Form->input('min_share_price', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.min_share_price') == true ? $this->Session->read('investtemp.min_share_price') : '' )));
+                                   ?>
                                 </div>
-                                
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6">
                                     <?php
-                                    echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_fees') == true ? $this->Session->read('investtemp.total_fees') : '' )));
-//                             echo $this->Form->input('total_amount', array('label' => 'Total Amount*', 'class' => 'required', 'value' => ($this->Session->check('investtemp.total_amount') == true ? $this->Session->read('investtemp.total_amount') : '' ))); 
+                                    echo $this->Form->input('max_share_price', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.max_share_price') == true ? $this->Session->read('investtemp.max_share_price') : '' )));
                                     ?>
-                                    
                                 </div>
                             </div>
                             <p>&nbsp;</p><p>&nbsp;</p>
@@ -406,7 +433,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 //                                }
                                 ?>
 
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Equity:</span><br>";
                                     if (isset($equity)) {
@@ -417,7 +444,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     ?>
 
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
                                     if (isset($share_price)) {
@@ -428,18 +455,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     ?>
 
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Fees:</span><br>";
-                                    if (isset($total_fees)) {
-                                        echo $shopCurrency . ' ' . number_format($total_fees, 2, '.', ',');
-                                    } else {
-                                        echo '';
-                                    }
-                                    ?>
-
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
+                             
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
                                     if (isset($totalamt)) {
@@ -537,7 +554,20 @@ if ($this->Session->check('shopCurrency_investment')) {
         }
         
     });
-    
+    //hide benchmark if management fee is chosen
+            $("#InvestmentManagementFeeType").change(function () {
+                var fee_type = $(this).val();
+                $(".BenchmarkRate").show();
+                 $(".hidden-fee").show();
+                if(fee_type == "Performance Fee"){
+                    $(".hidden-fee").hide();
+                    return false;
+                }
+                if(fee_type =="Management Fee"){
+                    $(".BenchmarkRate").hide();
+                    return false;
+                }
+            });
      jQuery("#InvestmentEquitiesListId").change(function(){
 
     var equity_id = jQuery(this).val();
