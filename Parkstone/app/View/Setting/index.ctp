@@ -23,7 +23,15 @@
         ?>
         
         <?php echo $this->Html->link('
-				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
+					<div id="innertext">
+						<h3>Currencies</h3>
+						<p>Add/edit currencies</p>
+					</div>
+				</div>', '/Settings/currencies', array('escape' => false)); ?>
+        
+        <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
 					<div id="innertext">
 						<h3>Bank Accounts</h3>
 						<p>Add/edit company bank accounts</p>
@@ -31,7 +39,7 @@
 				</div>', '/Settings/bankAccounts', array('escape' => false)); ?>
         
         <?php echo $this->Html->link('
-				<div id="settingsbox">' . $this->Html->image('company.png', array()) . '
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
 					<div id="innertext">
 						<h3>Banks</h3>
 						<p>Add/edit banks</p>
