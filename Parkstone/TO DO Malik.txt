@@ -41,11 +41,11 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 --New Invesment
 DONE 10.03.15 *Allow for selection of multiple equities instead of one
-DONE 10.03.15 *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
-*Add currency sub-module from settings in Suame POS
-DONE *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
+ *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+DONE 10.03.15 *Add currency sub-module from settings in Suame POS
+DONE by Kwaku *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
-DONE by Kwaku*Input must be provided for management fee[as disccused above in elsie's notes] 
+DONE by Kwaku *Input must be provided for management fee[as disccused above in elsie's notes] 
 DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 
 
@@ -64,11 +64,11 @@ DONE by Kwaku *There should be a total amount input in top blue column which wil
 
 
 --Re-investments(PROCESS INVESTMENTS)
-*Change name "Reinvestments to Manage Investments[this conflicts with manage investments under investment module..do we propose different name?]"
-*Divide Reinvestments into two.
- 1.Fund Management [Re-investor submodules..and cash deposit submodules..The two divisions might have to share destination 
-   submodule..also consider moving destination submodules to settings]
- 2. Manage Investments[should this be Investment backend or a better phrase becos of the conflict?]
+DONE by Kwaku *Change name "Reinvestments to Manage Investments[this conflicts with manage investments under investment module..do we propose different name?]"
+DONE by Kwaku *Divide Reinvestments into two.
+DONE by Kwaku 1.Fund Management [Re-investor submodules..and cash deposit submodules..The two divisions might have to share destination 
+DONE by Kwaku    submodule..also consider moving destination submodules to settings]
+DONE by Kwaku  2. Manage Investments[should this be Investment backend or a better phrase becos of the conflict?]
 
 ---Company Accounts
 *If using Asset Management, it might have to be used for handle assets in terms of client funds
