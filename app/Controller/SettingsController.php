@@ -9,6 +9,7 @@ class SettingsController extends AppController {
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
         'CustomerCategory' => array('limit' => 25, 'order' => array('CustomerCategory.customer_category' => 'asc')),
+        'Currency' => array('limit' => 20, 'order' => array('Currency.id' => 'asc')),
         'Tax' => array('limit' => 25, 'order' => array('Tax.tax_name' => 'asc')),
         'Rate' => array('limit' => 25, 'order' => array('Rate.id' => 'asc')),
         'Supplier' => array('limit' => 25, 'order' => array('Supplier.supplier_name' => 'asc')),
@@ -1069,6 +1070,75 @@ class SettingsController extends AppController {
         }
     }
 
+    
+    public function currencies($curr_id = NULL) {
+
+        $data = $this->paginate('Currency');
+        $this->set('data', $data);
+
+        if ($curr_id != null && $curr_id != '') {
+            $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.id' => $curr_id]]));
+        } 
+        
+        else {
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data['Currency']['id'])) {
+
+                    $curr_id = $this->request->data['Currency']['id'];
+                    $curr_name = $this->request->data['Currency']['currency_name'];
+                    $curr_symbol = $this->request->data['Currency']['symbol'];
+                    
+
+                    $this->Currency->delete($curr_id, false);
+                    $result = $this->Currency->save(array('id' => $curr_id, 'currency_name' => $curr_name, 'symbol' => $curr_symbol,));
+                    
+                    
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Currency Updated';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+                    } else {
+                        $message = 'Could not update Currency';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+                    }
+                } else {
+                    $result = $this->Currency->save($this->request->data);
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Currency Added';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+                    } else {
+                        $message = 'Could not add new Currency';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+                    }
+                }
+            }
+        }
+    }
+
+    function delCurrency($curr_id = null) {
+        if (!empty($curr_id) && !is_null($curr_id)) {
+
+            $result = $this->Currency->delete($curr_id, false);
+
+            if ($result) {
+                $message = 'Currency successfully deleted';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+            } else {
+                $message = 'Could not delete currency';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'currencies'));
+            }
+        }
+    }
 }
 
 ?>

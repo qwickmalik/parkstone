@@ -41,12 +41,12 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 --New Invesment
 DONE 10.03.15 *Allow for selection of multiple equities instead of one
-*Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+DONE 10.03.15 *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
 *Add currency sub-module from settings in Suame POS
-*Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
+DONE *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
-*Input must be provided for management fee[as disccused above in elsie's notes] 
-*There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+DONE by Kwaku*Input must be provided for management fee[as disccused above in elsie's notes] 
+DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 
 
 --Manage Investments
