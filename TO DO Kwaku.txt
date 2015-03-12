@@ -1,4 +1,29 @@
+Notes FROM REVIEW 04 MARCH, 2015
+---------------------------------
+-All backend calculation of interest should translate to days eg(60/365)
+-Base Fee will be charged monthly on total for fixed investments
+-Equity Fee must move from new investment to process investments
+-Hide Benchmark fee(in blue column) if management fee chosen
+-Calculate( or accrue) equity management fees quarterly and store
 
+notes from Grace
+------------------
+Technically all cash on a client’s ledger is supposed to be invested. And so
+ if a client wants some cash, we have to terminate an existing investment 
+ to make money available to pay from the client’s ledger. However where there 
+ are instructions from the client to hold a portion of their investment as cash,
+ then we will first pay out of the cash and later terminate other running investments 
+ to make up for the amount requested. This is a rare situation since clients will most
+ likely keep their cash or money in an investment and for a period too.
+
+ 
+
+On your second question, if the cash requested by a client is above what is in one investment 
+then we will terminate the next running investment and top it up with the first investment and 
+pay the client. For instance if a client has GHS 5,000.00 and GHS 2,000.00 running separately, 
+and requests for GHS 6,000.00. We will terminate both investments and pay out the GHS 6,000.00 and
+ reinvest the remaining amount, GHS 1,000.00.
+ 
 ---NOTES FROM ELSIE---
 We will get income from the following sources:
 
@@ -39,28 +64,28 @@ DONE - *Bank Info should be optional
 DONE -*Add "Semi Annual to Payment Schedule"
 DONE -*Use investment term style in new-reinvestments(days,years,months)
 *Total fees should not be compulsory and must be a percentage
-*Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
+DONE -*Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
  Purchase price will be confirmed under Re-investments
 DONE -Add number formatting function to all cash displays
 *roll over only if due
-*I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
+DONE -I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
 *Principals dont change after interest calculations. interest is always calculated on the same principal
-*Input must be provided for management fee[as disccused above in elsie's notes] 
+DONE -Input must be provided for management fee[as disccused above in elsie's notes] 
 *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 *Cancel fixed investment Principal Amount +(interest%-5%) up to current date
 *Payments can be made only if status is set to cancel or investment is due
 *Interest should be per 365 days hence divided by 365(clarify with Elsie)
 *update all payment/cash receipt functions to convert using current rates from  currency sub-module
-
+*On click of process of fixed or equity Investment/Reinvestment, subtract from total investment amount and display in balance label
 
 --Re-investments
 *Purchase price input under new reinvestments should be editable not disabled.
-
+--FundManagement should have its own controller and view folder
 
 TO DO
 ----------
 
-MOTTO--"Growth with stability"
+DONE -MOTTO--"Growth with stability"
 #function
  #Function
  - cash_in/receive fixed investment cash function
