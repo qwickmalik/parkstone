@@ -28,23 +28,23 @@ var $belongsTo = array(
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ),
-        'Send' => array(
-            'className' => 'Send',
-            'foreignKey' => 'currency_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'Commission' => array(
-            'className' => 'Commission',
-            'foreignKey' => 'currency_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )  
+            )
+//        'Send' => array(
+//            'className' => 'Send',
+//            'foreignKey' => 'currency_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//        'Commission' => array(
+//            'className' => 'Commission',
+//            'foreignKey' => 'currency_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            )  
     );
     
 function getCurrency($currency_id = null){

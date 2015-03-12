@@ -4,7 +4,7 @@ echo $this->Html->script('notification.js');
 
 
 <!-- Content starts here -->
-<h3 style="color: red;">Manage Re-investments</h3>
+<h3 style="color: red;">Manage Processed Investments</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -15,7 +15,7 @@ echo $this->Html->script('notification.js');
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
-                <td align="left" valign="top" colspan="3" ><p class="subtitle-blue">Step 1 - Choose Re-investor Company</p></td>
+                <td align="left" valign="top" colspan="3" ><p class="subtitle-blue">Step 1 - Choose Company</p></td>
             </tr>
             <tr>
                 <td align="left" valign="top" colspan="3">
@@ -23,7 +23,7 @@ echo $this->Html->script('notification.js');
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <?php
                         
-                        echo $this->Form->input('reinvestor_id', array('label' => 'Re-investor Company','empty' => '--Select Company--'));
+                        echo $this->Form->input('reinvestor_id', array('label' => 'Company','value' => 1,'default' => 1,'disabled'));
                         ?>  
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">

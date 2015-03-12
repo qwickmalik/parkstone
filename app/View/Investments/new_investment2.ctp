@@ -234,10 +234,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12">  <?php
                                     
-                                    echo $this->Form->input('investment_period', array('required','label' => 'Period*', 'empty' => "--Select--",
+                                    echo $this->Form->hidden('investment_period',array('value' => 'Day(s)'));
+                                    echo $this->Form->input('investment_period2', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
                                         'options'=> array('Day(s)' => 'Day(s)'),
-                                        'selected' => ($this->Session->check('investtemp.investment_period') == true ? 
-                                            $this->Session->read('investtemp.investment_period') : '' ))); ?>
+                                        'default' => 'Day(s)','value' => 'Day(s)','disabled')); ?>
                                      
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
@@ -301,7 +301,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id', ['type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id', ['class' => 'equity_id','id' => '','type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -337,7 +337,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id2', ['type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id2', ['class' => 'equity_id','id' => '2','type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -370,7 +370,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id3', ['type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id3', ['class' => 'equity_id','id' => '3','type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -403,7 +403,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id4', ['type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id4', ['class' => 'equity_id','id' => '4','type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -436,7 +436,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id5', ['type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id5', ['class' => 'equity_id','id' => '5','type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -469,18 +469,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
 
                             <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php
-                                    echo $this->Form->input('min_share_price', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.min_share_price') == true ? $this->Session->read('investtemp.min_share_price') : '' )));
-                                   ?>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php
-                                    echo $this->Form->input('max_share_price', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('investtemp.max_share_price') == true ? $this->Session->read('investtemp.max_share_price') : '' )));
-                                    ?>
-
-                                </div>
+                                
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php 
                                         echo "<p>&nbsp;</p>";
@@ -647,13 +636,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                 }
             });
             //get current equity share price
-            jQuery("#InvestmentEquitiesListId").change(function () {
-
+            jQuery(".equity_id").change(function () {
+                var class_no = jQuery(this).prop('id');
+               
+               
                 var equity_id = jQuery(this).val();
                 if (equity_id == "") {
 
-                    jQuery('#InvestmentSharePrice').val("");
-                    jQuery('#InvestmentPurchasePrice').val("");
+                    jQuery('#InvestmentSharePrice'+class_no).val("");
+                    jQuery('#InvestmentPurchasePrice'+class_no).val("");
                 }
                 if (equity_id != "") {
                     var query = "action=getPurchasePrice&ID=" + equity_id;
@@ -671,8 +662,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 jQuery(".errormsg").hide();
                             } else {
                                 //jquery("midleveltype").
-                                jQuery('#InvestmentSharePrice').val(data['EquitiesList']['share_price']);
-                                jQuery('#InvestmentPurchasePrice').val(data['EquitiesList']['share_price']);
+                                jQuery('#InvestmentSharePrice'+class_no).val(data['EquitiesList']['share_price']);
+                                jQuery('#InvestmentPurchasePrice'+class_no).val(data['EquitiesList']['share_price']);
 
                                 return false;
                             }

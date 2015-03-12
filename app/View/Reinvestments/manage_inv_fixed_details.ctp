@@ -11,19 +11,19 @@ echo $this->Html->script('notification.js');
 //}
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">Manage Re-investments</h3>
+<h3 style="color: red;">Manage Processed Investments</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
         <!-- Step Investment Details Start -->
         
-        <p class="subtitle-blue">Fixed Re-investment Details</p>
+        <p class="subtitle-blue">Fixed Investment Details</p>
                     <div class="row" >
                         <br>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Re-investor Company:</b></p>";?>
+                                    <?php echo "<p><b>Company:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestments['Reinvestor']['company_name']) ? $reinvestments['Reinvestor']['company_name'] :'' );?>
@@ -85,7 +85,7 @@ echo $this->Html->script('notification.js');
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Re-investment Date:</b></p>";?>
+                                    <?php echo "<p><b>Investment Date:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestments['Reinvestment']['investment_date']) ? $reinvestments['Reinvestment']['investment_date'] : '' );?>

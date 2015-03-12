@@ -2,7 +2,7 @@
 echo $this->Html->script('notification.js');
 ?>
 
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">Process Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -22,7 +22,7 @@ echo $this->Html->script('notification.js');
                     <div class="col-lg-4 col-md-6 col-sm-12" style="align: center; float: none;">
                         
                         <?php
-                        echo $this->Form->input('company_name', array('label' => 'Re-investor Company','empty' => '--Select Company--', 'value' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
+                        echo $this->Form->input('company_name', array('label' => 'Company','empty' => '--Select Company--', 'value' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
                         
                         ?>
                         <span style="color: red;"></span>
