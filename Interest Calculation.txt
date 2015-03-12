@@ -1,0 +1,15 @@
+The calculation of interest is done this way.
+
+Supposing the client invested a GHS 1,000.00 at 80% for 91 days, this is how the interest calculation will be done: (GHS 1,000.00*0.80)*(91/365) = GHS 199.45.
+
+To calculate the daily interest it will be (GHS 1,000.00*0.80)*(1/365)= GHS 2.19 for day 1 and so forth
+
+In the event that the client needs his or her money after 50 days, the calculation will be: (GHS 1,000.00*0.75)*(50/365)=GHS 102.74.
+
+Note that 0.75 is 0.80-0.05. (80%-5%).
+
+ 
+
+Please note also that rate are quoted per annum, so the 80% is for the whole period and depending on client’s choice of tenure for
+ the investment the number of days could be 91 days, 182 days or 365 days. So interest calculation can always be done at the beginning 
+ of the investment or later when the client is terminating the investment.
