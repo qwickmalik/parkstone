@@ -9,7 +9,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 }
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">Process Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -17,7 +17,7 @@ if ($this->Session->check('shopCurrency_investment')) {
         <?php
         echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'process_equity'), "inputDefaults" => array('div' => false)));
         ?>
-        <p class="subtitle-red">Step 2 - Equity Re-Investment</p>
+        <p class="subtitle-red">Step 2 - Equity Investment</p>
                     <div class="row"  style="background: #E2F4FB;">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <p></p>

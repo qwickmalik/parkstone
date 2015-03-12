@@ -137,6 +137,15 @@ class User extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+        
+        'ExchangeRate' => array(
+            'className' => 'ExchangeRate',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
     
     var $belongsTo = array(

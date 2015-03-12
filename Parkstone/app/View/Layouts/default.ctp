@@ -44,7 +44,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                         ?>
                     </div>
                     <div class="user-info">
-                        <span style="font-size: 11px; color: #eaeaea;"><i>Investing your money wisely</i></span>
+                        <span style="font-size: 11px; color: #eaeaea;"><i>Growth with stability</i></span>
                     </div>
                 </div>
 
