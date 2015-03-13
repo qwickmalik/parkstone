@@ -22,13 +22,16 @@ echo $this->Html->script('notification.js');
                 echo $this->Form->input('currency_name', ['value' => isset($curr['Currency']['currency_name']) ? $curr['Currency']['currency_name'] : '' ]);
 
                 echo $this->Form->hidden('id', ['value' => isset($curr['Currency']['id']) ? $curr['Currency']['id'] : '' ]);
+                echo $this->Form->input('symbol', ['value' => isset($curr['Currency']['symbol']) ? $curr['Currency']['symbol'] : '' ]);
+                
+                
 
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php 
                 
-                echo $this->Form->input('symbol', ['value' => isset($curr['Currency']['symbol']) ? $curr['Currency']['symbol'] : '' ]);
+                echo $this->Form->radio('is_local', array("0" => "No","1" => "Yes"),array('value' => '0',"label" => "Local Currency", 'class' => 'iradio_flat-blue'));
 
                 echo $this->Form->button('Save', array("type" => "submit", "id" => "custCatBtn", "class" => "btn btn-lg btn-success", 'style' => 'float: right;'));
                 ?>

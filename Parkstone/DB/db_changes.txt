@@ -648,6 +648,7 @@ ADD `min_share_price` INT NULL AFTER `benchmark_rate` ,
 ADD `max_share_price` INT NULL AFTER `min_share_price` ,
 ADD `equity_fees_chk` ENUM( '0', '1' ) NULL DEFAULT '0' AFTER `max_share_price` 
 
+
 MARCH 11, 2015
 --------------------------
 
@@ -698,51 +699,37 @@ DROP `min_share_price` ,
 DROP `max_share_price` ;
 
 
-CREATE TABLE IF NOT EXISTS `investor_equities` (
+
+
+March 12, 2015
+-----------------------------
+
+DROP TABLE IF EXISTS `currencies`;
+CREATE TABLE IF NOT EXISTS `currencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `investment_id` int(11) DEFAULT NULL,
-  `equities_list_id` int(11) DEFAULT NULL,
-  `numb_shares` int(11) DEFAULT NULL,
-  `purchase_price` decimal(6,2) DEFAULT NULL,
-  `min_share_price` decimal(6,2) DEFAULT NULL,
-  `max_share_price` decimal(6,2) DEFAULT NULL,
-  `numb_shares_sold` int(11) DEFAULT NULL,
-  `numb_shares_left` int(11) DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `modified_by` int(11) DEFAULT NULL,
+  `currency_name` varchar(20) NOT NULL,
+  `symbol` varchar(10) NOT NULL,
+  `setting_id` int(11) NOT NULL,
+  `is_local` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
-ALTER TABLE `investor_equities` ADD `purchase_date` DATE NULL AFTER `numb_shares_left` ;
-
-
-MARCH 12, 2015
-----------------
-ALTER TABLE `reinvestments` CHANGE `status` `status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Termination_Requested', 'Payment_Requested' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Invested';
-ALTER TABLE `reinvestments` CHANGE `old_status` `old_status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Termination_Requested', 'Payment_Requested' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+INSERT INTO `currencies` (`id`, `currency_name`, `symbol`, `setting_id`, `is_local`) VALUES
+(1, 'Ghana Cedi', 'GHS', 0, 1),
+(2, 'US Dollar', 'USD', 1, 0),
+(3, 'Pound Sterling', 'GBP', 1, 0);
 
 
---
--- Table structure for table `reinvestor_equities`
---
-
-DROP TABLE IF EXISTS `reinvestor_equities`;
-CREATE TABLE IF NOT EXISTS `reinvestor_equities` (
+DROP TABLE IF EXISTS `exchange_rates`;
+CREATE TABLE IF NOT EXISTS `exchange_rates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `investment_id` int(11) DEFAULT NULL,
-  `equities_list_id` int(11) DEFAULT NULL,
-  `numb_shares` int(11) DEFAULT NULL,
-  `purchase_price` decimal(6,2) DEFAULT NULL,
-  `min_share_price` decimal(6,2) DEFAULT NULL,
-  `max_share_price` decimal(6,2) DEFAULT NULL,
-  `numb_shares_sold` int(11) DEFAULT NULL,
-  `numb_shares_left` int(11) DEFAULT NULL,
-  `purchase_date` date DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `is_local` int(1) DEFAULT NULL,
+  `foreign_currency` int(11) DEFAULT NULL,
+  `local_currency_name` varchar(25) DEFAULT NULL,
+  `local_currency` decimal(6,2) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `modified_by` int(11) DEFAULT NULL,
+  `modified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

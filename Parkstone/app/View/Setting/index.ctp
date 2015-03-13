@@ -33,6 +33,14 @@
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
 					<div id="innertext">
+						<h3>Exchange Rates</h3>
+						<p>Add/edit exchange rates</p>
+					</div>
+				</div>', '/Settings/exchangeRates', array('escape' => false)); ?>
+        
+        <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
+					<div id="innertext">
 						<h3>Bank Accounts</h3>
 						<p>Add/edit company bank accounts</p>
 					</div>
