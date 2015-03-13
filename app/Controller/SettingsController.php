@@ -4,12 +4,13 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory', 'Portfolio', 'Bank', 'BankAccount', 'EquitiesList');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory', 'Portfolio', 'Bank', 'BankAccount', 'EquitiesList', 'ExchangeRate');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
         'CustomerCategory' => array('limit' => 25, 'order' => array('CustomerCategory.customer_category' => 'asc')),
         'Currency' => array('limit' => 20, 'order' => array('Currency.id' => 'asc')),
+        'ExchangeRate' => array('limit' => 5, 'order' => array('ExchangeRate.id' => 'asc')),
         'Tax' => array('limit' => 25, 'order' => array('Tax.tax_name' => 'asc')),
         'Rate' => array('limit' => 25, 'order' => array('Rate.id' => 'asc')),
         'Supplier' => array('limit' => 25, 'order' => array('Supplier.supplier_name' => 'asc')),
@@ -66,14 +67,10 @@ class SettingsController extends AppController {
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
             }
-        }
-        
-        else {
+        } else {
             $data = $this->paginate('EquitiesList');
             $this->set('data', $data);
         }
-        
-            
     }
 
     function delEquityName($equity_id) {
@@ -1070,7 +1067,6 @@ class SettingsController extends AppController {
         }
     }
 
-    
     public function currencies($curr_id = NULL) {
 
         $data = $this->paginate('Currency');
@@ -1078,21 +1074,19 @@ class SettingsController extends AppController {
 
         if ($curr_id != null && $curr_id != '') {
             $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.id' => $curr_id]]));
-        } 
-        
-        else {
+        } else {
             if ($this->request->is('post')) {
                 if (!empty($this->request->data['Currency']['id'])) {
 
                     $curr_id = $this->request->data['Currency']['id'];
                     $curr_name = $this->request->data['Currency']['currency_name'];
                     $curr_symbol = $this->request->data['Currency']['symbol'];
-                    
+
 
                     $this->Currency->delete($curr_id, false);
                     $result = $this->Currency->save(array('id' => $curr_id, 'currency_name' => $curr_name, 'symbol' => $curr_symbol,));
-                    
-                    
+
+
                     if ($result) {
                         $this->request->data = null;
 
@@ -1139,6 +1133,91 @@ class SettingsController extends AppController {
             }
         }
     }
+
+    function exchangeRates() {
+
+//          $this->__validateUserType2();
+        $this->set('currencies', $this->Currency->find('list', array('conditions' => array('Currency.is_local' => 0))));
+        $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.is_local' => 1]]));
+        $data = $this->paginate('ExchangeRate');
+        $this->set('data', $data);
+        
+        $message = '';
+        
+        if ($this->request->is('post')) {
+            //Configure::write('debug', 0);
+            //$this->autoRender = false;
+            //$this->autoLayout = false;
+            if (!empty($this->request->data)) {
+
+                if ($this->Session->check('userDetails')) {
+                    $user_id = $this->Session->read('userDetails.id');
+                    $this->request->data['ExchangeRate']['user_id'] = $user_id;
+                }
+                $result = $this->ExchangeRate->save($this->request->data);
+                // print_r($result);
+                //exit;
+                if ($result) {
+                    $this->request->data = null;
+
+                    // return "success";
+                    $message = 'Exchange Details Successfully Saved';
+
+                    $this->Session->write('smsg', $message);
+                } else {
+                    // return "unsuccessful";
+
+                    $message = 'Exchange Details Save Unsuccessful';
+
+                    $this->Session->write('emsg', $message);
+                }
+            }
+        }
+    }
+
+    function returnDoExchange() {
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        $this->redirect(array('controller' => 'Settings', 'action' => 'exchangeRates'));
+    }
+
+    function delEx() {
+
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        if ($this->request->is('ajax')) {
+            //  Configure::write('debug', 0);
+            if (!empty($this->request->data)) {
+                $currID = $_POST['exId'];
+
+                $result = $this->ExchangeRate->delete($currID, false);
+
+                if ($result) {
+                    return "success";
+                } else {
+                    return "unsuccessful";
+                }
+            }
+        }
+    }
+
+    function exInfo() {
+
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        if ($this->request->is('ajax')) {
+            //Configure::write('debug', 0);
+
+            if (!empty($_POST['exId'])) {
+                $comId = $_POST['exId'];
+                $comLst = $this->ExchangeRate->find('first', array('conditions' => array('ExchangeRate.id' => $comId)));
+
+                $comLsts = json_encode($comLst);
+                return $comLsts;
+            }
+        }
+    }
+
 }
 
 ?>

@@ -17,6 +17,7 @@ echo $this->Html->css('template.css');
 echo $this->Html->css('styles-less.css');
 echo $this->Html->css('style.less');
 echo $this->Html->css('style.css');
+echo $this->Html->css('icheck/flat/_all.css');
 //Javascript
 echo $this->Html->script('jquery-1.9.1.min.js');
 echo $this->Html->script('nowloading.js'); 

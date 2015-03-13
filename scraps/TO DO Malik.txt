@@ -1,0 +1,101 @@
+Notes FROM REVIEW 04 MARCH, 2015
+---------------------------------
+ 
+
+-Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
+-From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
+-
+Following Processes must follow a flow
+-------------------------------------
+--Payment
+*NB: Payment can only be made if client account has specified cash that is after termination or maturity
+	 Also when cash is invested..it is subtracted from account available balance.
+	 
+ Payment Flow
+ -----------
+ 1. Put in request
+ 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+ 3. If money in account,approve payment,else consider terminate investment.
+ 4. Offer page for re-investment of remaining funds and probably new instructions
+ 5. Make payment page available
+ 
+--Termination/Cancel Investment Flow
+1. Put in request
+2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+3. Approve or reject termination
+4. Make payment page available
+
+
+--New Investor
+1. Add investor details
+2. Page to list pending new investors
+3. On click investor, open details page.
+4. Approve or reject
+
+--------------------------------------------
+
+
+
+NOTES FROM REVIEW 24TH FEB.2015
+--------------------------------------
+
+--New Invesment
+DONE 10.03.15 *Allow for selection of multiple equities instead of one
+ *Use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+DONE 12.03.15 *Add currency sub-module from settings in Suame POS
+DONE by Kwaku *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
+ Purchase price will be confirmed under Re-investments
+DONE by Kwaku *Input must be provided for management fee[as disccused above in elsie's notes] 
+DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+
+
+--Manage Investments
+*Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
+
+*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
+*Cancel/terminate investment contract is subject to approval and fee 
+*Workflow must be implemented for payments
+*Payments can be made only if status is set to cancel or investment is due
+*Approval must be made before payments are confirmed ..add status to show approval status
+*Client statements must resemble client statemtns elsie has given(to kwaku)
+*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
+*Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
+
+
+
+--Re-investments(PROCESS INVESTMENTS)
+DONE by Kwaku *Change name "Reinvestments to Manage Investments[this conflicts with manage investments under investment module..do we propose different name?]"
+DONE by Kwaku *Divide Reinvestments into two.
+DONE by Kwaku 1.Fund Management [Re-investor submodules..and cash deposit submodules..The two divisions might have to share destination 
+DONE by Kwaku    submodule..also consider moving destination submodules to settings]
+DONE by Kwaku  2. Manage Investments[should this be Investment backend or a better phrase becos of the conflict?]
+
+---Company Accounts
+*If using Asset Management, it might have to be used for handle assets in terms of client funds
+
+
+
+
+T0 D0
+-------
+Check Investment Statements especially for equities. 
+    
+--pls look at format for /mask.js for validation and implement in new investor pages
+
++ Please review new investor edit and details page for indv,joint,group and corp 
+ Extras
++KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
++Kwaku: Payment terms to be calculated in days
++Kwaku: Cron Job to process daily rates of fixed investments
++Malik: Report to list such additions by cron job in investment management 
++Malik: Report to list such additions in general reports module
+
+
+#########   BUGS    ###########
+=============================================
+Update Edit Investors to pick bank details etc.
+
+19. Information on investment date and term should be added to investment certificates.
+21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
+   and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
+22. Update InvestorDetails to pull out all details from the db
