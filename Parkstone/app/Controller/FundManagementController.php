@@ -3,13 +3,13 @@
 CakePlugin::load('Uploader');
 App::import('Vendor', 'Uploader.Uploader');
 
-class ReinvestmentsController extends AppController {
+class FundManagementController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
-    var $name = 'Reinvestments';
+    var $name = 'FundManagement';
     var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount', 'Investee', 'Currency',
         'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash',
-        'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'ReinvestmentsEquity',
+        'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'FundManagementEquity',
         'ReinvestmentRollover','ReinvestmentStatement','ReinvestmentEquityStatement','ReinvestorEquity','InvestorEquity');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
@@ -85,12 +85,12 @@ class ReinvestmentsController extends AppController {
                         if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
                             $message = 'Please supply fixed investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
                             $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
 
                         $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
@@ -104,24 +104,24 @@ class ReinvestmentsController extends AppController {
 
                             $message = 'Cash Deposit successfully added';
                             $this->Session->write('smsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'fixed', $result['InvestmentCash']['id']));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newDepositCert', 'fixed', $result['InvestmentCash']['id']));
                         } else {
 
                             $message = 'Error adding Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         break;
                     case 2:
                         if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
                             $message = 'Please supply equity investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
                             $message = 'Please supply ONLY equity investment amount for this type of Investment product';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         $cash_depositarray = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
                             $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
@@ -134,24 +134,24 @@ class ReinvestmentsController extends AppController {
                         if ($result) {
                             $message = 'Cash Deposit successfully added';
                             $this->Session->write('smsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'equity', $result['InvestmentCash']['id']));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newDepositCert', 'equity', $result['InvestmentCash']['id']));
                         } else {
 
                             $message = 'Error adding Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         break;
                     case 3:
                         if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
                             $message = 'Please supply equity investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
                             $message = 'Please supply fixed investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         $cash_depositarray_equity = array('reinvestor_deposit_id' => $deposit_id, 'reinvestor_id' => $reinvestorid, 'user_id' =>
                             $this->request->data['InvestmentCash']['user_id'], 'currency_id' =>
@@ -174,19 +174,19 @@ class ReinvestmentsController extends AppController {
                         if ($result_equity && $result_fixed) {
                             $message = 'Cash Deposit successfully added';
                             $this->Session->write('smsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newDepositCert', 'both', $result_equity['InvestmentCash']['id'], $result_fixed['InvestmentCash']['id']));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newDepositCert', 'both', $result_equity['InvestmentCash']['id'], $result_fixed['InvestmentCash']['id']));
                         } else {
 
                             $message = 'Error adding Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
                         }
                         break;
                 }
             } else {
                 $message = 'Error adding Cash Deposit details. Please try again.';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit2', $reinvestorid));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit2', $reinvestorid));
             }
         }
     }
@@ -510,21 +510,21 @@ class ReinvestmentsController extends AppController {
                         ))) {
                     $message = 'This Company is already registered in the system. Please check the Name of the Company.';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
                 } elseif ($org_search_record = $this->Reinvestor->find('first', array(
                     'conditions' => array('Reinvestor.email' => $this->request->data['Reinvestor']['email']),
                     'recursive' => -1
                         ))) {
                     $message = 'This Email is already registered in the system. Please check the Email of the Company.';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
                 } elseif ($org_search_record = $this->Reinvestor->find('first', array(
                     'conditions' => array('Reinvestor.mobile' => $this->request->data['Reinvestor']['mobile']),
                     'recursive' => -1
                         ))) {
                     $message = 'This Mobile Number is already registered in the system. Please check the Mobile Number of the Company.';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
                 }
                 $result = $this->Reinvestor->save($this->request->data);
                 if ($result) {
@@ -533,23 +533,23 @@ class ReinvestmentsController extends AppController {
 
                     $message = 'Reinvestor Company Successfully Added';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
                 } else {
                     $message = 'Company details saving unsuccessful';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
                 }
             } else {
 
 
                 $message = 'No data available to save';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
             }
         } else {
             $message = 'Wrong command issued.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
         }
     }
 
@@ -561,7 +561,7 @@ class ReinvestmentsController extends AppController {
 
             $message = 'Reinvestor Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newReinvestor'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newReinvestor'));
         } else {
             $message = 'Could Not Delete Reinvestor';
             $this->Session->write('bmsg', $message);
@@ -569,7 +569,7 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-    function newCashDeposit() {
+    public function newCashDeposit() {
         /* $this->__validateUserType(); */
 
         $check = $this->Session->check('ivt');
@@ -602,11 +602,11 @@ class ReinvestmentsController extends AppController {
                     $this->Session->delete('ivts');
                 }
                 $cust = $this->Session->write('ivts', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
             } else {
                 $message = 'Sorry, Investor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
             }
         } else {
 
@@ -624,12 +624,12 @@ class ReinvestmentsController extends AppController {
                 }
                 $cust = $this->Session->write('ivts', $investors);
                 $this->Session->write('ivt', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
             } else {
 
                 $message = 'Sorry, Investor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
             }
         }
     }
@@ -649,7 +649,7 @@ class ReinvestmentsController extends AppController {
         } else {
             $message = 'Re-Investor details missing. Please check Re-investor details.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'newCashDeposit'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
         }
     }
 
@@ -686,11 +686,11 @@ class ReinvestmentsController extends AppController {
                     $this->Session->delete('ivts');
                 }
                 $cust = $this->Session->write('ivts', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
             } else {
                 $message = 'Sorry, Reinvestor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
             }
         } else {
 
@@ -708,12 +708,12 @@ class ReinvestmentsController extends AppController {
                 }
                 $cust = $this->Session->write('ivts', $investors);
                 $this->Session->write('ivt', $investor);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
             } else {
 
                 $message = 'Sorry, Reinvestor Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
             }
         }
     }
@@ -726,11 +726,11 @@ class ReinvestmentsController extends AppController {
             $this->InvestmentCash->deleteAll();
             $message = 'Cash Deposit Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
         } else {
             $message = 'Could Not Delete Cash Deposit';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reivestments', 'action' => 'listCashDeposits'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
         }
     }
 
@@ -753,7 +753,7 @@ class ReinvestmentsController extends AppController {
             case null:
                 $message = 'Invalid product type selected';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
                 break;
             case 'fixed':
                 $data_fixed = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $fixed_id)));
@@ -791,7 +791,7 @@ class ReinvestmentsController extends AppController {
             default:
                 $message = 'Invalid product type selected';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reivestments', 'action' => 'newCashDeposit'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newCashDeposit'));
 
                 break;
         }
@@ -846,12 +846,12 @@ class ReinvestmentsController extends AppController {
                         if ($fixed_inv_amount == '' || is_null($fixed_inv_amount)) {
                             $message = 'Please supply fixed investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         if ($equity_inv_amount != '' && !is_null($equity_inv_amount)) {
                             $message = 'Please supply ONLY fixed investment amount for this type of Investment product';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         $fixed_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'fixed')));
                         if ($fixed_data) {
@@ -866,18 +866,18 @@ class ReinvestmentsController extends AppController {
                             if ($result) {
                                 $message = 'Cash Deposit successfully added';
                                 $this->Session->write('smsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
                             } else {
 
                                 $message = 'Error adding Cash Deposit details. Please try again.';
                                 $this->Session->write('emsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                             }
                         } else {
 
                             $message = 'Error adding Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
 
                         break;
@@ -885,12 +885,12 @@ class ReinvestmentsController extends AppController {
                         if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
                             $message = 'Please supply equity investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         if ($fixed_inv_amount != '' && !is_null($fixed_inv_amount)) {
                             $message = 'Please supply ONLY equity investment amount for this type of Investment product';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         $fixed_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'equity')));
                         if ($fixed_data) {
@@ -906,30 +906,30 @@ class ReinvestmentsController extends AppController {
                             if ($result) {
                                 $message = 'Cash Deposit successfully added';
                                 $this->Session->write('smsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
                             } else {
 
                                 $message = 'Error adding Cash Deposit details. Please try again.';
                                 $this->Session->write('emsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                             }
                         } else {
 
                             $message = 'Error adding Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         break;
                     case 3:
                         if ($equity_inv_amount == '' || is_null($equity_inv_amount)) {
                             $message = 'Please supply equity investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         if ($fixed_inv_amount == '' && is_null($fixed_inv_amount)) {
                             $message = 'Please supply fixed investment amount';
                             $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         $equity_data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.reinvestor_deposit_id' => $deposit_id, 'InvestmentCash.investment_type' => 'equity')));
                         if ($equity_data) {
@@ -960,25 +960,25 @@ class ReinvestmentsController extends AppController {
                             if ($result_equity && $result_fixed) {
                                 $message = 'Cash Deposit successfully added';
                                 $this->Session->write('smsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
                             } else {
 
                                 $message = 'Error editing Cash Deposit details. Please try again.';
                                 $this->Session->write('emsg', $message);
-                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                                $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                             }
                         } else {
 
                             $message = 'Error editing Cash Deposit details. Please try again.';
                             $this->Session->write('emsg', $message);
-                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                            $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
                         }
                         break;
                 }
             } else {
                 $message = 'Error adding Cash Deposit details. Please try again.';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'editCashDeposit', $deposit_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'editCashDeposit', $deposit_id));
             }
         }
         $data = $this->ReinvestorDeposit->find('first', array('conditions' => array('ReinvestorDeposit.id' =>
@@ -989,7 +989,7 @@ class ReinvestmentsController extends AppController {
         } else {
             $message = 'Invalid Selection. Please try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'listCashDeposits'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'listCashDeposits'));
         }
     }
 
@@ -1043,14 +1043,14 @@ class ReinvestmentsController extends AppController {
                         ))) {
                     $message = 'This Email is already registered in the system. Please check the Email of the Company.';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
                 } elseif ($org_search_record = $this->InvestmentDestination->find('first', array(
                     'conditions' => array('InvestmentDestination.telephone' => $this->request->data['InvestmentDestination']['telephone']),
                     'recursive' => -1
                         ))) {
                     $message = 'This Telephone Number is already registered in the system. Please check the Telephone Number of the Company.';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
                 }
                 $result = $this->InvestmentDestination->save($this->request->data);
                 if ($result) {
@@ -1059,23 +1059,23 @@ class ReinvestmentsController extends AppController {
 
                     $message = 'Investment destination successfully added';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
                 } else {
                     $message = 'Investment destination saving unsuccessful';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
                 }
             } else {
 
 
                 $message = 'No data available to save';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
             }
         } else {
             $message = 'Wrong command issued.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
         }
     }
 
@@ -1087,7 +1087,7 @@ class ReinvestmentsController extends AppController {
 
             $message = 'Investment Destination Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestmentDestination'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestmentDestination'));
         } else {
             $message = 'Could Not Delete Investment Destination';
             $this->Session->write('bmsg', $message);
@@ -1127,23 +1127,23 @@ class ReinvestmentsController extends AppController {
 
                     $message = 'Investment destination product successfully added';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'InvDestProduct'));
                 } else {
                     $message = 'Investment destination product saving unsuccessful';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'InvDestProduct'));
                 }
             } else {
 
 
                 $message = 'No data available to save';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'InvDestProduct'));
             }
         } else {
             $message = 'Wrong command issued.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'InvDestProduct'));
         }
     }
 
@@ -1155,7 +1155,7 @@ class ReinvestmentsController extends AppController {
 
             $message = 'Investment Destination Product Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'InvDestProduct'));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'InvDestProduct'));
         } else {
             $message = 'Could Not Delete Investment Destination Product';
             $this->Session->write('bmsg', $message);
@@ -1182,16 +1182,16 @@ class ReinvestmentsController extends AppController {
             if ($reinvestor_id == '' || $reinvestor_id == NULL) {
                 $message = 'Please Select Investment Company';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment'));
             } elseif ($investment_type == '' || $investment_type == NULL) {
                 $message = 'Please Select Investment Type';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment'));
             } else {
                 if ($investment_type == 1) {
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed/' . $reinvestor_id));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed/' . $reinvestor_id));
                 } elseif ($investment_type == 2) {
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment0Equity/' . $reinvestor_id));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment0Equity/' . $reinvestor_id));
                 }
             }
         }
@@ -1315,19 +1315,19 @@ class ReinvestmentsController extends AppController {
             if ($this->request->data['Reinvestment']['investmentdestination_id'] == "" || $this->request->data['Reinvestment']['investmentdestination_id'] == null) {
                 $message = 'Please Select an Investment Destication Company/Fund';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             }
 
             if ($this->request->data['Reinvestment']['inv_dest_product_id'] == "" || $this->request->data['Reinvestment']['inv_dest_product_id'] == null) {
                 $message = 'Please Select an Investment Product';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             }
 
             if ($this->request->data['Reinvestment']['investment_amount'] == "" || $this->request->data['Reinvestment']['investment_amount'] == null) {
                 $message = 'Please Supply an Investment Amount';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             } else {
                 $invamount = $this->request->data['Reinvestment']['investment_amount'];
                 $result = $this->ReinvestorCashaccount->find('first', array('conditions' =>
@@ -1336,7 +1336,7 @@ class ReinvestmentsController extends AppController {
                     if ($result['ReinvestorCashaccount']['fixed_inv_balance'] < $invamount) {
                         $message = 'Investment amount cannot be more than available amount';
                         $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                        $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
                     }
                 }
             }
@@ -1344,18 +1344,18 @@ class ReinvestmentsController extends AppController {
             if ($this->request->data['Reinvestment']['duration'] == "" || $this->request->data['Reinvestment']['duration'] == null) {
                 $message = 'Please Supply  an Investment Duration';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             }
 
             if ($this->request->data['Reinvestment']['investment_period'] == "" || $this->request->data['Reinvestment']['investment_period'] == null) {
                 $message = 'Please Select an Investment Period';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             }
             if (($this->request->data['Reinvestment']['interest_rate'] == "") || is_null($this->request->data['Reinvestment']['interest_rate'])) {
                 $message = 'Please State Interest Rate';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
             }
 
             $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
@@ -1490,7 +1490,7 @@ class ReinvestmentsController extends AppController {
             if ($this->Session->check('reinvesttemp') == true) {
                 $this->Session->delete('reinvesttemp');
             }
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
         }
     }
 
@@ -1500,7 +1500,7 @@ class ReinvestmentsController extends AppController {
         if (!$check) {
             $message = 'Process before submitting';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
         }
         $read = $this->Session->read('investment_array_refixed');
         $result = $this->Reinvestment->save($read);
@@ -1543,7 +1543,7 @@ class ReinvestmentsController extends AppController {
         } else {
             $message = 'Error saving new re-investment details. Please try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Fixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Fixed', $reinvestor_id));
         }
     }
 
@@ -1617,19 +1617,19 @@ class ReinvestmentsController extends AppController {
             if ($this->request->data['Reinvestment']['equities_list_id'] == "" || $this->request->data['Reinvestment']['equities_list_id'] == null) {
                 $message = 'Please Select Equity Purchased';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
 
             if ($this->request->data['Reinvestment']['share_price'] == "" || $this->request->data['Reinvestment']['share_price'] == null) {
                 $message = 'Please State Equity Purchase Price';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
 
             if ($this->request->data['Reinvestment']['numb_shares'] == "" || $this->request->data['Reinvestment']['numb_shares'] == null) {
                 $message = 'Please State number of Shares';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
 //                if (($this->request->data['Investment']['total_fees'] == "") || is_null($this->request->data['Investment']['total_fees'])) {
 //                    $message = 'Please State Total Fees';
@@ -1650,13 +1650,13 @@ class ReinvestmentsController extends AppController {
                 if ($result['ReinvestorCashaccount']['equity_inv_balance'] < $totalamt) {
                     $message = 'Investment amount cannot be more than available reinvestor deposit';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
                 }
             }
             if ($available_amount < $totalamt) {
                 $message = 'Investment amount cannot be more than investors deposit';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
 
             $equity_name = '';
@@ -1703,12 +1703,12 @@ class ReinvestmentsController extends AppController {
             if ($available_amount > $totalamt) {
                 $message = 'Investment amount is more than investor\'s deposit. Consider increasing number of purchased shares. <br/> Click on Submit to ignore and continue';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
             $this->Session->write('investment_array_reequity', $investment_array);
             $message = 'Investment Successfully Processed. Click on submit to save and proceed';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
         }
     }
 
@@ -1727,17 +1727,17 @@ class ReinvestmentsController extends AppController {
         if (!$check) {
             $message = 'Process before submitting';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
         }
         $read = $this->Session->read('investment_array_reequity');
         $ic_result = $this->InvestmentCash->find('first', ['conditions' => ['InvestmentCash.id' => $investcash_id]]);
-        $result = $this->ReinvestmentsEquity->save($read);
-        $reinvestment_id = $this->ReinvestmentsEquity->id;
+        $result = $this->FundManagementEquity->save($read);
+        $reinvestment_id = $this->FundManagementEquity->id;
         if ($result) {
 
-            $invested_amount = $result['ReinvestmentsEquity']['total_amount'];
+            $invested_amount = $result['FundManagementEquity']['total_amount'];
             if ($ic_result) {
-                $balance = $ic_result['InvestmentCash']['available_amount'] - $result['ReinvestmentsEquity']['total_amount'];
+                $balance = $ic_result['InvestmentCash']['available_amount'] - $result['FundManagementEquity']['total_amount'];
                 if ($balance > 0) {
                     $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'part_investment',
                         'modified_by' => ($this->Session->check('userDetails.id') == true ?
@@ -1778,12 +1778,12 @@ class ReinvestmentsController extends AppController {
             if ($check) {
                 $this->Session->delete('investment_array_reequity');
             }
-            $this->set('reinvestments', $this->ReinvestmentsEquity->find('first', ['conditions' =>
-                        ['ReinvestmentsEquity.id' => $reinvestment_id]]));
+            $this->set('reinvestments', $this->FundManagementEquity->find('first', ['conditions' =>
+                        ['FundManagementEquity.id' => $reinvestment_id]]));
         } else {
             $message = 'Error saving new re-investment details. Please try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
         }
     }
 
@@ -2064,16 +2064,16 @@ class ReinvestmentsController extends AppController {
             if ($reinvestor_id == '' || $reinvestor_id == NULL) {
                 $message = 'Please Select Investment Company';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInv'));
             } elseif ($investment_type == '' || $investment_type == NULL) {
                 $message = 'Please Select Investment Type';
                 $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInv'));
             } else {
                 if ($investment_type == 1) {
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/' . $reinvestor_id));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed/' . $reinvestor_id));
                 } elseif ($investment_type == 2) {
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvEquity/' . $reinvestor_id));
+                    $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvEquity/' . $reinvestor_id));
                 }
             }
         }
@@ -2128,16 +2128,16 @@ class ReinvestmentsController extends AppController {
 
                 $message = 'Termination request successful sent';
                 $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
             }else {
             $message = 'Termination request unsuccessful. Try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
         } else {
             $message = 'Invalid Selection Made. Try again.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
 
@@ -2149,16 +2149,16 @@ class ReinvestmentsController extends AppController {
 
                 $message = 'Payment request successfully sent';
                 $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+                $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
             }else {
             $message = 'Payment request unsuccessful. Try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
         } else {
             $message = 'Invalid Selection Made. Try again.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
     
@@ -2287,23 +2287,23 @@ class ReinvestmentsController extends AppController {
                 $this->ReinvestmentRollover->save($rollover_details);
              $message = 'Roll-over successful';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
             }else {
             $message = 'Roll-over unsuccessful. Try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
              
                   
            }else {
             $message = 'Roll-over unsuccessful. Try again';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
         }else {
             $message = 'Invalid Selection Made. Try again.';
             $this->Session->write('bmsg', $message);
-            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+            $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
             function payReinvestorFixed($reinvestment_id = NULL) {

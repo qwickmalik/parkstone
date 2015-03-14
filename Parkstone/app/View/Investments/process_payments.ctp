@@ -29,7 +29,7 @@
                 ?>
                 &nbsp;
                 <?php 
-					echo $this->Html->link('Proceed',"/Investments/manageClientInvestments/".(isset($int['Investor']['id']) ? $int['Investor']['id']."/".$int['Investor']['fullname'] : '' ),array("class" => 'btn btn-lg btn-primary')); 
+					echo $this->Html->link('Proceed',"/Investments/processPayments2/".(isset($int['Investor']['id']) ? $int['Investor']['id']."/".$int['Investor']['fullname'] : '' ),array("class" => 'btn btn-lg btn-primary')); 
 				?>
                 <span style="color: red;"></span>
             </td>
