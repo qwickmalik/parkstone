@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('NewCashDeposit', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4cash'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('NewCashDeposit', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'FundManagement', 'action' => 'searchreinvestor4cash'), "inputDefaults" => array('div' => false))); ?>
         
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
@@ -30,7 +30,7 @@ echo $this->Html->script('notification.js');
                         <input type="hidden" name="hid_investor" value="<?php (isset($int['Reinvestor']['id']) ? $int['Reinvestor']['id'] : '' ); ?>" />
 
 <?php echo $this->Form->button('Search', array("type" => "submit", "id" => "search", "class" => "btn btn-lg btn-success")); ?> &nbsp;
-<?php echo $this->Html->link('Proceed', "/Reinvestments/newCashDeposit2/" . (isset($int['Reinvestor']['id']) ? $int['Reinvestor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
+<?php echo $this->Html->link('Proceed', "/FundManagement/newCashDeposit2/" . (isset($int['Reinvestor']['id']) ? $int['Reinvestor']['id'] : '' ), array("class" => 'btn btn-lg btn-primary')); ?>
                         <span style="color: red;"></span>
                     </div>
 
@@ -49,7 +49,7 @@ echo $this->Html->script('notification.js');
 
         <!--    <form id="order_list" action="#" method="post">-->
       <?php
-//echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
+//echo $this->Form->create('', array("url" => array('controller' => 'FundManagement', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
 ?>
 
         <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
@@ -75,7 +75,7 @@ echo $this->Html->script('notification.js');
                 <tr>
                     <td width="50" align="left"><?php echo $each_item['Reinvestor']['id']; ?></td>
                     <td align="left" >
-                        <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/Reinvestments/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
+                        <?php echo $this->Html->link($each_item['Reinvestor']['company_name'], "/FundManagement/searchreinvestor4cash/" . $each_item['Reinvestor']['id'], array("class" => $each_item['Reinvestor']['id'])); ?>
                     </td> 
                     <td align="left"><?php echo $each_item['Reinvestor']['manager_name']; ?></td>
                     <td align="left"><?php echo $each_item['Reinvestor']['telephone']; ?></td>

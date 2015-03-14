@@ -4137,6 +4137,35 @@ class InvestmentsController extends AppController {
         }
     }
 
+    function processPayments2($investor_id = null, $investor_name = null) {
+        /* $this->__validateUserType(); */
+        if (!is_null($investor_id) && !is_null($investor_name)) {
+//            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+
+            $this->paginate = array(
+                'conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)),
+                'limit' => 30,
+                'order' => array('Investment.id' => 'asc'));
+            $data = $this->paginate('Investment');
+
+            $this->set('investor_id', $investor_id);
+            $this->set('investor_name', $investor_name);
+
+            if ($data) {
+                $this->set('data', $data);
+            } else {
+                $message = 'Sorry, No Fixed Investments Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+            }
+        } else {
+
+            $message = 'Sorry, Investor Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+        }
+    }
+    
     function cancelInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
