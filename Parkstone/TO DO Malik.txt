@@ -1,6 +1,17 @@
-Notes FROM REVIEW 04 MARCH, 2015
+
+
+	 
+ Payment Flow
+ -----------
+ Done 14.03.14 1. Put in request
+ Done 14.03.14 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+ Done 14.03.14 3. If money in account,approve payment,else consider terminate investment.
+ Done 14.03.14 4. Offer page for re-investment of remaining funds and probably new instructions
+ Done 14.03.14 5. Make payment page available
+
+ Notes FROM REVIEW 04 MARCH, 2015
 ---------------------------------
- 
+
 
 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
@@ -10,15 +21,75 @@ Following Processes must follow a flow
 --Payment
 *NB: Payment can only be made if client account has specified cash that is after termination or maturity
 	 Also when cash is invested..it is subtracted from account available balance.
-	 
- Payment Flow
- -----------
- 1. Put in request
- 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
- 3. If money in account,approve payment,else consider terminate investment.
- 4. Offer page for re-investment of remaining funds and probably new instructions
- 5. Make payment page available
- 
+
+so what u hv done is very fine
+we have to add a few more things
+first of all
+
+when u click the process payments..we should have a list of requests for payments
+then when every client is clicked..we are say presented with the ledger
+the ledger will be the different entries..deposits by client,payments,terminations etc
+i will build a new table for that to mk it easy so dont worry..just providing the view will help
+so with the ledger..we have the entries and at the bottom some kind of balance that is cash at hand which is all deposits - invested
+if the balance is less than client has requested then some investment has to be terminated
+so there has to be a button at the top or bottom somewhere
+or rather wait
+
+so this is just a payment request
+so that is supposing a client payment is due
+so it will have the ledger and some rqdios to reject,approve and default pending approval
+so when its approved, there will be a different page for listing all approved and unprocessed payments
+there they can have the daily maturity report
+this can be a page or a tab or submenu of the payments menu
+so from here they can make requests for payments which will lead to the process mentioned above
+hope this is clear
+just trying to pick out the process better
+ok so for terminations that will just start from manage investment or manage processed investments
+so he clicks terminate investment and a request is sent
+so on ther page listing termination requests, it can be approved or not
+when approved it comes back to the list of approved terminations
+when the approved termination requests are granted.
+the user clicks on the investment terminates and has a button to pay some amount or all and reinvest the rest
+dont know if this will better beserver with a wizard
+to prevent replication of these processes
+take terminate for instance
+we can have an action link for for as a column on the listing of approved terminatoins..that will say pay and link to the a copy of current payment page we hvhave
+then a button to reinvest after sucessful payment
+we can look at doing same for the payment process
+otherwise instead of copies we can just hv re-investment button on the payment receipt or summary page that allows to go to a reinvestment page to reinvest what is left
+that will alow for a good workflow in the app. That is the trend in current softwares now so we will do well to follow
+we can try and have flows in all our modules in our softwares from hence forth so more use of wizards or buttons/menu to help direct flow
+let me know if u hv any questions pls
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --Termination/Cancel Investment Flow
 1. Put in request
 2. On request review page have button to see client legder(elsie is sending in example of client ledger)

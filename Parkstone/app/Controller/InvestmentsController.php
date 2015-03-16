@@ -3777,7 +3777,7 @@ class InvestmentsController extends AppController {
         }
     }
 
-    function processPayments() {
+    function processPayments_OLD() {
         /* $this->__validateUserType(); */
 
         $data = $this->paginate('Investment');
@@ -3799,6 +3799,16 @@ class InvestmentsController extends AppController {
         }
     }
 
+    function processPayments() {
+        /* $this->__validateUserType(); */
+
+        $data = $this->paginate('Investment');
+
+        $this->set('data', $data);
+        
+        
+    }
+    
     function makePayment() {
 
         //amount being paidout must not be more than $value['Investment']['total_amount_earned'];
