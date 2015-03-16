@@ -733,3 +733,8 @@ CREATE TABLE IF NOT EXISTS `exchange_rates` (
   `modified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+March 14,2015
+------------------
+ALTER TABLE `reinvestor_equities` CHANGE `investment_id` `reinvestment_id` INT( 11 ) NULL DEFAULT NULL ;
