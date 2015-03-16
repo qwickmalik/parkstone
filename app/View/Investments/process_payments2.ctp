@@ -8,16 +8,15 @@ echo $this->Html->script('notification.js');
 	<div class="inner">
 		<div id="clearer"></div>
 	
-        <?php // echo $this->Html->link('Edit/Delete Investments', "/Investments/listPayments", array("class" => 'btn btn-lg btn-success')); ?>
-
-
-    <?php
-//    echo $this->Form->create('', array("url" => array('controller' => 'Stocks', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
-    ?>
+        
     <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
         <tr>
             <td colspan="9">
                 <table border="0" width="100%" cellspacing="5" cellpadding="0" align="left">
+                    <tr>
+                        <td align="left" width="200"><p style="font-size: 18px;">CLIENT LEDGER </p></td>
+                        <td align="left"><p style="font-size: 18px;">&nbsp;</p></td>
+                    </tr>
                     <tr>
                         <td align="left" width="200"><p style="font-size: 18px;">Investor ID: </p></td>
                         <td align="left"><p style="font-size: 18px;"><?php
@@ -37,58 +36,7 @@ echo $this->Html->script('notification.js');
                         ?></p></td>
                     </tr>
                 </table>
-                
-<!--                <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Date</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Voucher Number</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Description</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Debit</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Credit</b></td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">12/01/2014</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2</td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Deposit for investment</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,000.00</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">12/01/2014</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Investment in Accord for one year (IC/01/14/0016)</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,000.00</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">15/06/2014</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">15</td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Deposit for investment</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,000.00</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">12/01/2014</td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Investment in Accord for one year (IC/01/14/0016)</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,000.00</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">18/07/2014</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Discounting of IC/01/14/0001</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,179.32</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">18/07/2014</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">18</td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;">Payment of investment proceeds(IC/01/14/0016)</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;">2,179.32</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"></td>
-                    </tr>
-                </table>-->
+               
             </td>
         </tr>
         <tr>
@@ -160,7 +108,7 @@ echo $this->Html->script('notification.js');
                    echo "No-Action Necessary";
                     
                     }else{
-                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> <!--|--> <?php // echo $this->Html->Link('Cancel', '/Investments/cancelInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
+                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Terminate', '/Investments/cancelInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
                     
                     }
                     
