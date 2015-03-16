@@ -11,16 +11,16 @@ class EquitiesList extends AppModel {
      var $displayField = "equity_abbrev";
      
     var $hasMany = array(
-        'Investment' => array(
-            'className' => 'Investment',
+        'InvestorEquity' => array(
+            'className' => 'InvestorEquity',
             'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
             ),
-        'ReinvestmentsEquity' => array(
-            'className' => 'ReinvestmentsEquity',
+        'ReinvestorEquity' => array(
+            'className' => 'ReinvestorEquity',
             'foreignKey' => 'equities_list_id',
             'conditions' => '',
             'order' => '',

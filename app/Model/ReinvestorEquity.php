@@ -7,9 +7,9 @@ class ReinvestorEquity extends AppModel{
     
     
     var $belongsTo = array(
-        'Investment' => array(
-            'className' => 'Investment',
-            'foreignKey' => 'investment_id',
+        'Reinvestment' => array(
+            'className' => 'Reinvestment',
+            'foreignKey' => 'reinvestment_id',
             'conditions' => '',
             'order' =>  '',
             'limit' => '',

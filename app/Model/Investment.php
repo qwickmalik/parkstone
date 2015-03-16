@@ -47,14 +47,6 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-        'EquitiesList' => array(
-            'className' => 'EquitiesList',
-            'foreignKey' => 'equities_list_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
 	'PaymentSchedule' => array(
             'className' => 'PaymentSchedule',
             'foreignKey' => 'payment_schedule_id',
@@ -133,6 +125,14 @@ class Investment extends AppModel{
             ),
             'DailyInterestStatement' => array(
             'className' => 'DailyInterestStatement',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+            'InvestorEquity' => array(
+            'className' => 'InvestorEquity',
             'foreignKey' => 'investment_id',
             'conditions' => '',
             'order' => '',

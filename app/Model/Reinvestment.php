@@ -48,14 +48,6 @@ class Reinvestment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-        'EquitiesList' => array(
-            'className' => 'EquitiesList',
-            'foreignKey' => 'equities_list_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
         'InvestmentCash' => array(
             'className' => 'InvestmentCash',
             'foreignKey' => 'investment_cash_id',
@@ -83,25 +75,16 @@ class Reinvestment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'ReinvestorEquity' => array(
+            'className' => 'ReinvestorEquity',
+            'foreignKey' => 'reinvestment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
          );
-         /*   'Rollover' => array(
-            'className' => 'Rollover',
-            'foreignKey' => 'investment_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-            'InvestmentStatement' => array(
-            'className' => 'InvestmentStatement',
-            'foreignKey' => 'investment_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )
-         );*/
     
 }
 ?>
