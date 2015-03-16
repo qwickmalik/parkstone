@@ -735,6 +735,61 @@ CREATE TABLE IF NOT EXISTS `exchange_rates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
-March 14,2015
+March 16,2015
 ------------------
-ALTER TABLE `reinvestor_equities` CHANGE `investment_id` `reinvestment_id` INT( 11 ) NULL DEFAULT NULL ;
+--
+-- Table structure for table `investor_equities`
+--
+
+DROP TABLE IF EXISTS `investor_equities`;
+CREATE TABLE IF NOT EXISTS `investor_equities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `investment_id` int(11) DEFAULT NULL,
+  `equities_list_id` int(11) DEFAULT NULL,
+  `numb_shares` int(11) DEFAULT NULL,
+  `purchase_price` decimal(6,2) DEFAULT NULL,
+  `min_share_price` decimal(6,2) DEFAULT NULL,
+  `max_share_price` decimal(6,2) DEFAULT NULL,
+  `numb_shares_sold` int(11) DEFAULT NULL,
+  `numb_shares_left` int(11) DEFAULT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Truncate table before insert `investor_equities`
+--
+
+TRUNCATE TABLE `investor_equities`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reinvestor_equities`
+--
+
+DROP TABLE IF EXISTS `reinvestor_equities`;
+CREATE TABLE IF NOT EXISTS `reinvestor_equities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `equities_list_id` int(11) DEFAULT NULL,
+  `numb_shares` int(11) DEFAULT NULL,
+  `purchase_price` decimal(6,2) DEFAULT NULL,
+  `min_share_price` decimal(6,2) DEFAULT NULL,
+  `max_share_price` decimal(6,2) DEFAULT NULL,
+  `numb_shares_sold` int(11) DEFAULT NULL,
+  `numb_shares_left` int(11) DEFAULT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Truncate table before insert `reinvestor_equities`
+--
