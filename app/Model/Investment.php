@@ -131,14 +131,14 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-//        'InvestorEquity' => array(
-//            'className' => 'InvestorEquity',
-//            'foreignKey' => 'investment_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            )
+        'InvestorEquity' => array(
+            'className' => 'InvestorEquity',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
          );
     
 }
