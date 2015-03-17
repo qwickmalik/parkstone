@@ -3,7 +3,7 @@ echo $this->Html->script('notification.js');
 ?>
 
 <!-- Content starts here -->
-<h3>Process Payments Step 2: Client Ledger</h3>
+<h3>Approve Payments Step 2: Client Ledger</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -94,11 +94,12 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
                                 echo $this->Html->Link('Re-instate', '/Investments/ReinstateInvestment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false));
                             } elseif (isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid') {
                                 echo "No-Action Necessary";
-                            } else {
-                                echo $this->Html->Link('Pay', '/Investments/payInvestor/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
-                                ?> | <?php echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false)); ?> | <?php
-                                echo $this->Html->Link('Terminate', '/Investments/cancelInvestment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false));
-                            }
+                            } 
+//                            else {
+//                                echo $this->Html->Link('Pay', '/Investments/payInvestor/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
+//                                ?><!-- | --><?php // echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false)); ?><!-- | --><?php
+//                                echo $this->Html->Link('Terminate', '/Investments/cancelInvestment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false));
+//                            }
                             ?></td>
                         <td align="center" style="border-bottom: solid 1px Gray;"><?php
                             if (isset($each_item['Investment']['status'])) {
@@ -118,6 +119,15 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
                 <td align="right">0000.00</td>
                 <td align="right"></td>
                 <td align="right" colspan="3">
+                    <fieldset>
+                                <legend style="display: none;">Approvals</legend>
+                                <input id="ApproveInvestmentsApprovals0" type="radio" value="0" name="data[ApproveInvestments][approvals]">
+                                <label for="ApproveInvestmentsApprovals0">Reject</label>
+                                <input id="ApproveInvestmentsApprovals1" type="radio" value="1" name="data[ApproveInvestments][approvals]">
+                                <label for="ApproveInvestmentsApprovals1">Approve</label>
+                                <input id="ApproveInvestmentsApprovals2" type="radio" value="2" name="data[ApproveInvestments][approvals]" checked="checked">
+                                <label for="ApproveInvestmentsApprovals2">Pending Approval</label>
+                            </fieldset>
                     
                 </td>
             </tr>
@@ -126,9 +136,9 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <?php
-            echo $this->Html->link('Back', "/Investments/processPayments", array("class" => 'btn btn-info'));
+            echo $this->Html->link('Back', "/Investments/approvePayments", array("class" => 'btn btn-info'));
 //            echo $this->Html->link('Process', "#", array("class" => 'btn btn-success', 'style' => 'float: right;'));
-//            echo $this->Form->button('Save', array("class" => 'btn btn-success', 'style' => 'float: right;'));
+            echo $this->Form->button('Save', array("class" => 'btn btn-success', 'style' => 'float: right;'));
             ?>
         </div>
 
