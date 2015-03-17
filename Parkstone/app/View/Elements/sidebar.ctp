@@ -36,7 +36,13 @@
                 <?php echo $this->Html->link('Manage Investments', '/Investments/clearManageSessions', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Payments', '/Investments/processPayments', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Approve Terminations', '/Investments/approveTerminations', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Approve Payments', '/Investments/approvePayments', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Make Payments', '/Investments/processPayments', array('escape' => false)); ?>
             </li>
 
         </ul>

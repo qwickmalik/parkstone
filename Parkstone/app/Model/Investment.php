@@ -91,7 +91,7 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'Rollover' => array(
+        'Rollover' => array(
             'className' => 'Rollover',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -99,7 +99,7 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'InvestmentStatement' => array(
+        'InvestmentStatement' => array(
             'className' => 'InvestmentStatement',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -107,7 +107,7 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'InvestmentInvestor' => array(
+        'InvestmentInvestor' => array(
             'className' => 'InvestmentInvestor',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -115,7 +115,7 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'InvestmentCash' => array(
+        'InvestmentCash' => array(
             'className' => 'InvestmentCash',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -123,7 +123,7 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'DailyInterestStatement' => array(
+        'DailyInterestStatement' => array(
             'className' => 'DailyInterestStatement',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -131,14 +131,14 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-            'InvestorEquity' => array(
-            'className' => 'InvestorEquity',
-            'foreignKey' => 'investment_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )
+//        'InvestorEquity' => array(
+//            'className' => 'InvestorEquity',
+//            'foreignKey' => 'investment_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            )
          );
     
 }
