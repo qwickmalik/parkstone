@@ -63,20 +63,22 @@ DONE - *Bank Info should be optional
 --New Invesment
 DONE -*Add "Semi Annual to Payment Schedule"
 DONE -*Use investment term style in new-reinvestments(days,years,months)
-*Total fees should not be compulsory and must be a percentage
+DONE -*Total fees should not be compulsory and must be a percentage
 DONE -*Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
- Purchase price will be confirmed under Re-investments
+
 DONE -Add number formatting function to all cash displays
-*roll over only if due
 DONE -I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
-*Principals dont change after interest calculations. interest is always calculated on the same principal
+DONE - *Principals dont change after interest calculations. interest is always calculated on the same principal
 DONE -Input must be provided for management fee[as disccused above in elsie's notes] 
 *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+*On click of process of fixed or equity Investment/Reinvestment, subtract from total investment amount and display in balance label
 *Cancel fixed investment Principal Amount +(interest%-5%) up to current date
 *Payments can be made only if status is set to cancel or investment is due
 *Interest should be per 365 days hence divided by 365(clarify with Elsie)
 *update all payment/cash receipt functions to convert using current rates from  currency sub-module
-*On click of process of fixed or equity Investment/Reinvestment, subtract from total investment amount and display in balance label
+
+*roll over only if due
+* Purchase price will be confirmed under Re-investments
 
 --Re-investments
 *Purchase price input under new reinvestments should be editable not disabled.
@@ -112,7 +114,7 @@ Schedule
 + PRINT button for investment certificates not working
 + Pls take a look at newInvestment2_comp() and process_comp() for me.
  when an investment entry is processed, the investor id is lost and it throws an error. Same problem with group investment too. I've sorted out the views
-
+New investor for group next button gives js error
 ---Parkstone Ideas-----
 
 
