@@ -1,49 +1,7 @@
 
-
+--We need summary pages for new investments..These as I said should not be certificates but look like the investment contracts(similar to investment contracts in the reports module)
 	 
- Payment Flow
- -----------
- Done 14.03.14 1. Put in request
- Done 14.03.14 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
- Done 14.03.14 3. If money in account,approve payment,else consider terminate investment.
-
- Done 14.03.14 4. Offer page for re-investment of remaining funds and probably new instructions
- Done 14.03.14 5. Make payment page available
-
- Notes FROM REVIEW 04 MARCH, 2015
----------------------------------
-
-
-DONE 16.03.14 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
-DONE 16.03.14 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
--
-Following Processes must follow a flow
--------------------------------------
---Payment
-
-    so what u hv done is very fine
-    we have to add a few more things
-    first of all
-
-DONE 16.03.14 when u click the process payments..we should have a list of requests for payments
-DONE 16.03.14 then when every client is clicked..we are say presented with the ledger
-DONE 16.03.14 the ledger will be the different entries..deposits by client,payments,terminations etc
-    i will build a new table for that to mk it easy so dont worry..just providing the view will help
-DONE 16.03.14 so with the ledger..we have the entries and at the bottom some kind of balance that is cash at hand which is all deposits - invested
-    if the balance is less than client has requested then some investment has to be terminated
-    so there has to be a button at the top or bottom somewhere
-    *NB: Payment can only be made if client account has specified cash that is after termination or maturity
-	 Also when cash is invested..it is subtracted from account available balance.
-
-
-    so this is just a payment request
-    so that is supposing a client payment is due
-DONE 16.03.14    so it will have the ledger and some radios to reject,approve and default pending approval
-    so when its approved, there will be a different page for listing all approved and unprocessed payments
-    there they can have the daily maturity report
-    t  his can be a page or a tab or submenu of the payments menu
-    so from here they can make requests for payments which will lead to the process mentioned above
-    
+ 
 
 Termination
 -------------------
@@ -168,3 +126,46 @@ DONE 10.03.15 *Allow for selection of multiple equities instead of one
 DONE 10.03.15 *Add currency sub-module from settings in Suame POS
 DONE by Kwaku *Change purchase price inputs to min and max inputs(this is an order page and so client will want purchase if market price stays in given max - min range)
 DONE by Kwaku *Input must be provided for management fee[as disccused above in elsie's notes] 
+Payment Flow
+ -----------
+ Done 14.03.14 1. Put in request
+ Done 14.03.14 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+ Done 14.03.14 3. If money in account,approve payment,else consider terminate investment.
+
+ Done 14.03.14 4. Offer page for re-investment of remaining funds and probably new instructions
+ Done 14.03.14 5. Make payment page available
+
+ Notes FROM REVIEW 04 MARCH, 2015
+---------------------------------
+
+
+DONE 16.03.14 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
+DONE 16.03.14 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
+-
+Following Processes must follow a flow
+-------------------------------------
+--Payment
+
+    so what u hv done is very fine
+    we have to add a few more things
+    first of all
+
+DONE 16.03.14 when u click the process payments..we should have a list of requests for payments
+DONE 16.03.14 then when every client is clicked..we are say presented with the ledger
+DONE 16.03.14 the ledger will be the different entries..deposits by client,payments,terminations etc
+    i will build a new table for that to mk it easy so dont worry..just providing the view will help
+DONE 16.03.14 so with the ledger..we have the entries and at the bottom some kind of balance that is cash at hand which is all deposits - invested
+    if the balance is less than client has requested then some investment has to be terminated
+    so there has to be a button at the top or bottom somewhere
+    *NB: Payment can only be made if client account has specified cash that is after termination or maturity
+	 Also when cash is invested..it is subtracted from account available balance.
+
+
+    so this is just a payment request
+    so that is supposing a client payment is due
+DONE 16.03.14    so it will have the ledger and some radios to reject,approve and default pending approval
+    so when its approved, there will be a different page for listing all approved and unprocessed payments
+    there they can have the daily maturity report
+    t  his can be a page or a tab or submenu of the payments menu
+    so from here they can make requests for payments which will lead to the process mentioned above
+    
