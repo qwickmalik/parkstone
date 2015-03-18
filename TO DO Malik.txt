@@ -99,8 +99,8 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 --New Invesment
  Purchase price will be confirmed under Re-investments
-*There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
-*A label same blue column to display balances after part of total amount above is used
+DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+DONE by Kwaku *A label same blue column to display balances after part of total amount above is used
 
 *Copy and use investment contract report under report to summarize a new investment instead of certificates(these are old school)
 *MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
@@ -117,7 +117,7 @@ NOTES FROM REVIEW 24TH FEB.2015
 *Client statements must resemble client statements as in tech_specs folder
 *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 *Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
-
+*Then Pages for accepted termination requests and payment requests
 
 
 --Re-investments(PROCESS INVESTMENTS)
