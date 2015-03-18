@@ -110,8 +110,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'process_indv'), "inputDefaults" => array('div' => false)));
                     ?>
                     <div class="row" style="background: #99ccff;">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-
+                        <div class="col-lg-6 col-md-6 col-sm-12"> 
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investor_type_id', array('value' => 2));
@@ -120,9 +119,44 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
 
-                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
                             ?>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <?php
+                                if ($this->Session->check('investtemp1.investment_date') == true) {
+
+                                    $dob_string = $this->Session->read('investtemp1.investment_date');
+                                    $month = date('m', strtotime($dob_string));
+                                    $day = date('d', strtotime($dob_string));
+                                    $Year = date('Y', strtotime($dob_string));
+                                } else {
+
+                                    $month = date('m');
+                                    $day = date('d');
+                                    $Year = date('Y');
+                                }
+                                ?>
+                                <input type="hidden" id="month" value="<?php echo $month; ?>"/>
+                                <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                                <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
+                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("selected" => $day)); ?>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("selected" => $month)); ?>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
+                            </div>
+                            <script>
+                                var day = $("#day").val();
+                                var month = $("#month").val();
+                                var year = $("#year").val();
+                                $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
+                                $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
+                                $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                            </script>
+
                         </div>
+                        
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <?php
                             echo $this->Form->input('paymentschedule_id', array('label' => 'Payment Schedule', 'empty' => "--Please Select--", 'value' => ($this->Session->check('investtemp1.paymentschedule_id') == true ? $this->Session->read('investtemp1.paymentschedule_id') : '' )));
@@ -161,42 +195,33 @@ if ($this->Session->check('shopCurrency_investment')) {
                              ?>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12"> 
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <?php
-                                if ($this->Session->check('investtemp1.investment_date') == true) {
+                        <div class="col-lg-6 col-md-6 col-sm-12">
 
-                                    $dob_string = $this->Session->read('investtemp1.investment_date');
-                                    $month = date('m', strtotime($dob_string));
-                                    $day = date('d', strtotime($dob_string));
-                                    $Year = date('Y', strtotime($dob_string));
-                                } else {
+                            
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                            <?php
+                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
+                            ?>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 ">
+                                 <?php 
+                               echo $this->Form->input('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' => 
+                                       ($this->Session->check('investtemp1.cash_athand') == true ?
+                                       $this->Session->read('investtemp1.cash_athand') : '' )));
 
-                                    $month = date('m');
-                                    $day = date('d');
-                                    $Year = date('Y');
-                                }
-                                ?>
-                                <input type="hidden" id="month" value="<?php echo $month; ?>"/>
-                                <input type="hidden" id="day" value="<?php echo $day; ?>"/>
-                                <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("selected" => $day)); ?>
+                                ?> 
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("selected" => $month)); ?>
+                             <div class="col-lg-4 col-md-4 col-sm-12">
+                           <?php 
+                           echo $this->Form->hidden('total_invested', array( 'label' => 'Total Invested', 'value' => 
+                                       ($this->Session->check('investtemp1.total_invested') == true ?
+                                       $this->Session->read('investtemp1.total_invested') : '' )));
+                           
+                           echo $this->Form->input('total_invested2', array('disabled','label' => 'Total Invested', 'value' => 
+                                       ($this->Session->check('investtemp1.total_invested') == true ?
+                                       $this->Session->read('investtemp1.total_invested') : '' )));
+                             ?>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
-                            </div>
-                            <script>
-                                var day = $("#day").val();
-                                var month = $("#month").val();
-                                var year = $("#year").val();
-                                $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                                $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                                $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
-                            </script>
-
                         </div>
                     </div>
 
@@ -228,21 +253,22 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo $this->Form->input('duration',array('required','label' => 'Duration*', 
                                         'value' => ($this->Session->check('investtemp.duration') == true ? 
-                                            $this->Session->read('investtemp.duration') : '' ),'width' => '50px'));
+                                            $this->Session->read('investtemp.duration') : 0 ),'width' => '50px'));
                                     
                                     ?>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12">  <?php
                                     
                                     echo $this->Form->hidden('investment_period',array('value' => 'Day(s)'));
-                                    echo $this->Form->input('investment_period2', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
+                                    echo $this->Form->input('investment_period2', array('required','label' => 'Inv. Period*', 'empty' => "--Please Select--",
                                         'options'=> array('Day(s)' => 'Day(s)'),
                                         'default' => 'Day(s)','value' => 'Day(s)','disabled')); ?>
                                      
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
-                                    <?php echo $this->Form->input('custom_rate', array('required','label' => 'Benchmark(%)*', 'value' => ($this->Session->check('investtemp.interest_rate') == true ? $this->Session->read('reinvesttemp.interest_rate') : '' ))); ?>
+                                    <?php echo $this->Form->input('custom_rate', array('required','label' => 'Benchmark(%)*', 
+                                        'value' => ($this->Session->check('investtemp.custom_rate') == true ? $this->Session->read('investtemp.custom_rate') : 0 ))); ?>
                                     
                                 </div>
                             </div>
@@ -483,20 +509,20 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray; background: #C6F19F;">
 
 
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+<!--                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Equity:</span><br>";
-                                    if (isset($equity)) {
-                                        echo $equity;
-                                    } else {
-                                        echo '';
-                                    }
+//                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Equity:</span><br>";
+//                                    if (isset($equity)) {
+//                                        echo $equity;
+//                                    } else {
+//                                        echo '';
+//                                    }
                                     ?>
 
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                </div>-->
+                                <div class="col-lg-5 col-md-5 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Share Price:</span><br>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Equity Purchased:</span><br>";
                                     if (isset($share_price)) {
                                         echo $shopCurrency . ' ' . number_format($share_price, 2, '.', ',');
                                     } else {
@@ -506,9 +532,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 </div>
                                 
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="col-lg-5 col-md-5 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span><br>";
                                     if (isset($totalamt)) {
                                         echo $shopCurrency . ' ' . number_format($totalamt, 2, '.', ',');
                                     } else {
