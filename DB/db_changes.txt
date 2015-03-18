@@ -793,3 +793,18 @@ CREATE TABLE IF NOT EXISTS `reinvestor_equities` (
 --
 -- Truncate table before insert `reinvestor_equities`
 --
+
+
+MARCH 17,2015
+--------------------
+ALTER TABLE `investments` CHANGE `status` `status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Invested';
+ALTER TABLE `investments` CHANGE `old_status` `old_status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+ALTER TABLE `investments` CHANGE `status` `status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured', 'Termination_Requested', 'Payment_Requested' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Invested';
+ALTER TABLE `investments` CHANGE `old_status` `old_status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured', 'Termination_Requested', 'Payment_Requested' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+
+MARCH 18,2015
+-------------------
+ALTER TABLE `investments` ADD `duration` INT( 6 ) NULL AFTER `due_date` ,
+ADD `investment_period` VARCHAR( 10 ) NULL AFTER `duration` ;
+ALTER TABLE `investments` ADD `cash_athand` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `earned_balance` ;
+ALTER TABLE `investments` ADD `total_invested` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `cash_athand` ;
