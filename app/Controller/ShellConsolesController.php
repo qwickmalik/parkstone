@@ -35,13 +35,10 @@ class ShellConsolesController extends AppController {
         $this->autoRender = false;
         //$this->__defaultDaily();
         $this->__dailyInterests();
+        $this->__dailyMatured();
     }
 
-    public function endOFDAY() {
-        $this->autoRender = false;
-        $this->__EOD();
-        $this->__EOM();
-    }
+   
 
     public function sms() {
         $this->autoRender = false;
@@ -50,9 +47,27 @@ class ShellConsolesController extends AppController {
         $this->__xmasSMS();
     }
 
-
+function __dailyMatured(){
+    $this->autoRender = false;
+    $data = $this->Investment->find('all',['recursive' => -1,
+        'conditions' => ['status' => array('Invested','Rolled_over'),'due_date <=' => date('Y-m-d')]]);
+    
+    if($data){
+        foreach($data as $each){
+            $cash_athand = $each['Investment']['cash_athand'];
+            $earned_balance = $each['Investment']['earned_balance'];
+            $new_cashathand = $cash_athand + $earned_balance;
+            $total_invested = $each['Investment']['total_invested'] - $each['Investment']['investment_amount'];
+            $each_array = array('id' => $each['Investment']['id'],
+                'status' => 'Matured','old_status' => $each['Investment']['status'],'cash_athand' => $new_cashathand,
+                'earned_balance' => 0.00,'total_invested' => $total_invested);
+            $this->Investment->save($each_array);
+        }
+    }
+}
 
 function __invEOD(){
+    $this->autoRender = false;
     $fixed_total = 0.00;
     $data_fixed = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
         array('InvestmentCash.investment_type' => 'fixed',
@@ -158,10 +173,10 @@ function __dailyInterests(){
 
         $investment_amount1 = $value['Investment']['total_amount_earned'];
         $investment_amount = $value['Investment']['earned_balance'];
-        
+        $principal_amount  = $value['Investment']['investment_amount'];
         $rate = $value['Investment']['custom_rate'];
         $date = date('Y-m-d');
-        $yearly_interest = ($rate / 100) * $investment_amount;
+        $yearly_interest = ($rate / 100) * $principal_amount;
         $daily_interest = $yearly_interest/365;
         $old_accrued_interest = $value['Investment']['interest_accrued'];
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
@@ -171,7 +186,7 @@ function __dailyInterests(){
                             $statemt_array = array(
                                 'investment_id' => $value['Investment']['id'],
                                 'investor_id' => $value['Investment']['investor_id'],
-                                'principal' => $investment_amount,
+                                'principal' => $principal_amount,
                                 'interest' => $daily_interest,
                                 'date' => $date,
                                 'total' => $new_balanced_earned);

@@ -36,6 +36,9 @@
                 <?php echo $this->Html->link('Manage Investments', '/Investments/clearManageSessions', array('escape' => false)); ?>
             </li>
             <li>
+                <?php echo $this->Html->link('Maturity List', '/Investments/maturityList', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('Approve Terminations', '/Investments/approveTerminations', array('escape' => false)); ?>
             </li>
             <li>
