@@ -3583,6 +3583,8 @@ class InvestmentsController extends AppController {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
             $this->set('data', $data);
             
+            $inv_type = $this->InvestorType->find('first', array('conditions' => array('InvestorType.id' => $data['Investor']['investor_type_id'])));
+            $this->set('inv_type', $inv_type);
             $equity = $this->InvestorEquity->find('all', array('conditions' => array('InvestorEquity.investment_id' => $investment_id)));
             $this->set('equity', $equity);
             

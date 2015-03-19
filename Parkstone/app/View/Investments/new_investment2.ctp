@@ -565,7 +565,8 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                     &nbsp;&nbsp;
                     <?php 
-                    
+                    // Edit this to lead to a function that will send the data to db and pass the investment_id to  newInvestmentCert()
+                    // Same investment contract/cert to be used for all investor types
                     echo $this->Html->link('Next', "/Investments/newInvestmentCert/14", array("class" => 'btn btn-lg btn-primary')); 
                     ?>
                 </td>
