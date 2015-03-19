@@ -42,12 +42,12 @@ echo $this->Html->script('notification.js');
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Edit</b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Details</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Rate(%)'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
@@ -66,12 +66,7 @@ echo $this->Html->script('notification.js');
                             echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id']);
                         }
                         ?></td>
-                <td align="left"><?php
-                        if(isset($each_item['Portfolio']['payment_name'])){
-                            echo $each_item['Portfolio']['payment_name'];
-                        }
-                        
-                        ?></td>
+                
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_date'])){
                             echo $each_item['Investment']['investment_date'];
@@ -85,8 +80,8 @@ echo $this->Html->script('notification.js');
                         
                         ?></td>
                 <td align="center"><?php
-                        if(isset($each_item['Portfolio']['interest_rate'])){
-                            echo $each_item['Portfolio']['interest_rate'];
+                        if(isset($each_item['Investment']['interest_rate'])){
+                            echo $each_item['Investment']['interest_rate'];
                         }
                         
                         ?></td>
@@ -96,23 +91,38 @@ echo $this->Html->script('notification.js');
                         }
                         
                         ?></td>
-                <td align="right"><?php
+                <td align="center"><?php
                         if(isset($each_item['Investment']['amount_due'])){
                             echo $each_item['Investment']['amount_due'];
                         }
                         ?></td>
+                <td align="left"><?php if($each_item['Instruction']['id'] != 5){
+                                    echo $each_item['Instruction']['instruction_name'];
+                                }else{
+                                   echo $each_item['Investment']['instruction_details']; 
+                                } ?></td>
                 <td align="center">
                     
                     <?php 
                     
                     if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Cancelled'){
                          echo $this->Html->Link('Re-instate', '/Investments/ReinstateInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
-                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid'){
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid' || $each_item['Investment']['status'] == 'Payment_Requested' || $each_item['Investment']['status'] == 'Termination_Requested'){
                    echo "No-Action Necessary";
                     
-                    }else{
-//                    echo $this->Html->Link('Pay', '/Investments/payInvestor/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape'=>false));?> <!--|--> <?php echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));?> | <?php echo $this->Html->Link('Terminate', '/Investments/cancelInvestment/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape'=>false));
-                    
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured'){
+                     echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));?> 
+                    | <?php 
+                      echo $this->Html->Link('Request Paymt', '/Investments/requestPayment4managefixedinvestments/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ).'/'. (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false));
+                              
+                        
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
+                    echo $this->Html->Link('Request Termination', '/Investments/cancelInvestment/'."/".
+                            (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )
+                        ."/".(isset($each_item['Investment']['investor_id']) ? 
+                            $each_item['Investment']['investor_id'] : '' )."/".
+                            (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),
+                            array('escape'=>false));
                     }
                     
                     

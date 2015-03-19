@@ -124,6 +124,14 @@ class Investor extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+            'ClientLedger' => array(
+            'className' => 'ClientLedger',
+            'foreignKey' => 'investor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
             );
 }
