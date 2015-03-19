@@ -808,3 +808,39 @@ ALTER TABLE `investments` ADD `duration` INT( 6 ) NULL AFTER `due_date` ,
 ADD `investment_period` VARCHAR( 10 ) NULL AFTER `duration` ;
 ALTER TABLE `investments` ADD `cash_athand` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `earned_balance` ;
 ALTER TABLE `investments` ADD `total_invested` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `cash_athand` ;
+
+
+MARCH 19,2015
+-------------
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `qwickfu1_parkst_inv`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_ledgers`
+--
+
+DROP TABLE IF EXISTS `client_ledgers`;
+CREATE TABLE IF NOT EXISTS `client_ledgers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `investor_id` int(11) DEFAULT NULL,
+  `voucher_no` decimal(11,2) DEFAULT NULL,
+  `debit` decimal(11,2) DEFAULT NULL,
+  `credit` varchar(25) DEFAULT NULL,
+  `description` varchar(70) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
