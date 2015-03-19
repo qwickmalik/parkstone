@@ -145,6 +145,15 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        
+        'ClientLedger' => array(
+            'className' => 'ClientLedger',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     

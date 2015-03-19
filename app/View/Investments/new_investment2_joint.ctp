@@ -181,8 +181,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     array('No Fee' => 'No Fee', 'Management Fee' => 'Management Fee', 'Performance Fee' => 'Performance Fee',
                                         'Management & Performance Fee' => 'Management & Performance Fee'),
                                     'empty' => '--Select Fee Type--', 'selected' =>
-                                    ($this->Session->check('investtemp1.management_fee') == true ?
-                                            $this->Session->read('investtemp1.management_fee') : '' )]);
+                                    ($this->Session->check('investtemp1.management_fee_type') == true ?
+                                            $this->Session->read('investtemp1.management_fee_type') : '' )]);
                                 ?>
                             </div> 
 
