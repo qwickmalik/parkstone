@@ -13,14 +13,18 @@
                     echo "<p><b>INVESTOR CONTRACT</b></p>";  
                 ?>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Client Name: <?php echo $data['Investor']['fullname']; ?></p>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Client Number: <?php echo $data['Investor']['id']; ?></p>
             </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <p>Client Type: <?php echo $inv_type['InvestorType']['investor_type']; ?></p>
+            </div>
+            
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
+                <hr>
                 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

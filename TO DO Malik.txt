@@ -1,5 +1,5 @@
 
---We need summary pages for new investments..These as I said should not be certificates but look like the investment contracts(similar to investment contracts in the reports module)
+DONE 19.03.15 --We need summary pages for new investments..These as I said should not be certificates but look like the investment contracts(similar to investment contracts in the reports module)
 	 
  
 
@@ -35,7 +35,7 @@ let me know if u hv any questions pls
 
 
 
-DONE 16.03.14--Termination/Cancel Investment Flow
+DONE 16.03.15--Termination/Cancel Investment Flow
 1. Put in request
 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
 3. Approve or reject termination
