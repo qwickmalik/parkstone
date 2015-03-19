@@ -564,7 +564,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
 
                     &nbsp;&nbsp;
-                    <?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
+                    <?php 
+                    
+                    echo $this->Html->link('Next', "/Investments/newInvestmentCert/14", array("class" => 'btn btn-lg btn-primary')); 
+                    ?>
                 </td>
             </tr>
         </table>
