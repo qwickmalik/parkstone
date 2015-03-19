@@ -5,48 +5,7 @@
 
         <!-- Content start here -->
         <div class="row">
-<!--            <?php 
-//            echo $this->Form->create('InvestorContract', array('url' => array('controller' => 'Investments', 'action' => 'newInvestmentCert')));
-            ?>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <?php
-//                echo $this->Form->input('client_name', array('label' => 'Client Name*'));
-                ?>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">Date</p>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <?php
-//                    $month = date('m');
-//                    $day = date('d');
-//                    $Year = date('Y');
-                    ?>
-                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
-                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
-                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-<?php // echo $this->Form->day('report_date', array("selected" => $day)); ?>&nbsp;
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12">
-<?php // echo $this->Form->month('report_date', array("selected" => $month)); ?>&nbsp;
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12">
-<?php // echo $this->Form->year('report_date', 2003, date('Y'), array("selected" => $Year)); ?>
-                </div>
-                <script>
-                    var day = $("#day").val();
-                    var month = $("#month").val();
-                    var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
-                </script>
-            <?php
-//            echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-info', 'style' => 'float: right;'));
-            ?>
 
-            </div>
-            
-            <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <?php 
                     echo $this->Element('logo_reports');
@@ -55,49 +14,92 @@
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p>Client Name: Adwoa Serwaa</p>
+                <p>Client Name: <?php echo $data['Investor']['fullname']; ?></p>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p>Client Number: 21001</p>
+                <p>Client Number: <?php echo $data['Investor']['id']; ?></p>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
+                <p><b>Fixed Investment</b></p>
+                <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
                     <tr>
-                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Date</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Period</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal Amt. GHS</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest Rate</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest GHS</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Maturity Amt. GHS</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Maturity Date</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Instructions A/c</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Date</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment No.</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment Period</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Principal Amt. GHS</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Interest Rate</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Interest GHS</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Maturity Amt. GHS</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Maturity Date</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Instructions A/c</b></td>
                     </tr>
                     <tr>
-                        <td align="left" valign="top">12-01-2014</td>
-                        <td align="left" valign="top">IC/2/14/0004</td>
-                        <td align="right" valign="top">365</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">22%</td>
-                        <td align="right" valign="top">440</td>
-                        <td align="right" valign="top">2,440.00</td>
-                        <td align="right" valign="top">12/01/2015</td>
-                        <td align="left" valign="top">ROLL</td>
+                        <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
+                        <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['investment_period']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['investment_amount']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['custom_rate']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['interest_earned']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['amount_due']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['due_date']; ?></td>
+                        <td align="left" valign="top"><?php echo $data['Instruction']['instruction_name']; ?></td>
+                    </tr>
+                </table>
+            </div>
+            <p>&nbsp;</p>
+            <?php if (isset($equity)) {
+                        ?>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <p><b>Equity Investment</b></p>
+                <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
+                    <tr>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Date</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment No.</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Equity Name</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Equity Code</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>No. of Shares</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Purchase Price</b></td>
+                    </tr>
+                    <?php
+                    foreach ($equity as $each_item) { 
+                        ?>
+                    <tr>
+                        <td align="left" valign="top"><?php echo $each_item['InvestorEquity']['purchase_date']; ?></td>
+                        <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
+                        <td align="left" valign="top"><?php echo $each_item['EquitiesList']['equity_name']; ?></td>
+                        <td align="left" valign="top"><?php echo $each_item['EquitiesList']['equity_abbrev']; ?></td>
+                        <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['numb_shares']; ?></td>
+                        <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['purchase_price']; ?></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </table>
+            </div>
+            <?php
+               }
+            ?>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <p><b>Management Fees</b></p>
+                <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
+                    <tr>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Fee Type</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Base Fees</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Benchmark Rate</b></td>
+                        
                     </tr>
                     <tr>
-                        <td align="left" valign="top">05-04-2014</td>
-                        <td align="left" valign="top">IC/4/14/0016</td>
-                        <td align="right" valign="top">365</td>
-                        <td align="right" valign="top">1,000.00</td>
-                        <td align="right" valign="top">21%</td>
-                        <td align="right" valign="top">210</td>
-                        <td align="right" valign="top">1,210.00</td>
-                        <td align="right" valign="top">05/04/2015</td>
-                        <td align="left" valign="top">PIM</td>
+                        <td align="left" valign="top"><?php echo $data['Investment']['management_fee_type']; ?></td>
+                        <td align="left" valign="top"><?php echo $data['Investment']['base_fees']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['benchmark_rate']; ?></td>
+                        
                     </tr>
                 </table>
             </div>
