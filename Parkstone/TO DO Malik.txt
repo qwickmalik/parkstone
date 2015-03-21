@@ -1,6 +1,31 @@
 
-DONE 19.03.15 --We need summary pages for new investments..These as I said should not be certificates but look like the investment contracts(similar to investment contracts in the reports module)
-	 
+--NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
+1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order
+   and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
+   or when Elsie confirms.
+2. (Malik)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted
+   initially or accrued like management but will be used to determine income of parkstone. The difference between this and 
+   performance of investment on the market will be parkstone's income.
+3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
+4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called
+   ledger_transactions. This will list all credit and debit so ledger has total cash, total debit and total credit.
+5. (Kwaku)Create ledger record when investor is created.
+6. (Kwaku)Investor contract must show price Range(min price - max price) instead of purchase price.
+7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity
+   after purchase in reinvestments
+8. (Malik)Add "Pay Principal & Interest" to investment instructions
+9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown
+   lets also notify of new payment/termination requests.
+10. (Kwaku)Consider adding available cash, new deposit amt, investment amt in ledger
+11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too
+12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
+13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
+14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not
+15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few
+    relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date
+	of topup to due date.
+16. (Kwaku)Add topup invesment table 
+ 
  
 
 Termination
