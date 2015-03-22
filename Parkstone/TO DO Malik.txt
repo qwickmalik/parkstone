@@ -1,53 +1,35 @@
 
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
-1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order
-   and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
-   or when Elsie confirms.
-2. (Malik)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted
-   initially or accrued like management but will be used to determine income of parkstone. The difference between this and 
-   performance of investment on the market will be parkstone's income.
+
+
+7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity after purchase in reinvestments [ investment deposit receipt]
+8. (Malik)Add "Pay Principal & Interest" to investment instructions
+9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown lets also notify of new payment/termination requests.
+11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too [add years to period dropdown. create new field for total_tenure in years]
+14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not   [newInvestment2()]
+14b. add new field deposit amount and then make available cash disabled
+15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date of topup to due date.
+
+
+
+
+
+1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
+2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.
 3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
 4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called
    ledger_transactions. This will list all credit and debit so ledger has total cash, total debit and total credit.
 5. (Kwaku)Create ledger record when investor is created.
 6. (Kwaku)Investor contract must show price Range(min price - max price) instead of purchase price.
-7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity
-   after purchase in reinvestments
-8. (Malik)Add "Pay Principal & Interest" to investment instructions
-9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown
-   lets also notify of new payment/termination requests.
 10. (Kwaku)Consider adding available cash, new deposit amt, investment amt in ledger
-11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too
 12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
 13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
-14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not
-15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few
-    relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date
-	of topup to due date.
+
 16. (Kwaku)Add topup invesment table 
  
  
 
-Termination
--------------------
-    hope this is clear
-    just trying to pick out the process better
-ok so for terminations that will just start from manage investment or manage processed investments
-    so he clicks terminate investment and a request is sent
-    so on ther page listing termination requests, it can be approved or not
-when approved it comes back to the list of approved terminations
-when the approved termination requests are granted.
-the user clicks on the investment terminates and has a button to pay some amount or all and reinvest the rest
-dont know if this will better beserver with a wizard
-to prevent replication of these processes
-take terminate for instance
-we can have an action link for for as a column on the listing of approved terminatoins..that will say pay and link to the a copy of current payment page we hvhave
-then a button to reinvest after sucessful payment
-we can look at doing same for the payment process
-otherwise instead of copies we can just hv re-investment button on the payment receipt or summary page that allows to go to a reinvestment page to reinvest what is left
-that will alow for a good workflow in the app. That is the trend in current softwares now so we will do well to follow
-we can try and have flows in all our modules in our softwares from hence forth so more use of wizards or buttons/menu to help direct flow
-let me know if u hv any questions pls
+
 
 
 
@@ -62,7 +44,7 @@ let me know if u hv any questions pls
 
 DONE 16.03.15--Termination/Cancel Investment Flow
 1. Put in request
-2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+2. On request review page have button to see client ledGer(elsie is sending in example of client ledger)
 3. Approve or reject termination
 4. Make payment page available
 
@@ -85,20 +67,21 @@ NOTES FROM REVIEW 24TH FEB.2015
 DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
 DONE by Kwaku *A label same blue column to display balances after part of total amount above is used
 
-*Copy and use investment contract report under report to summarize a new investment instead of certificates(these are old school)
-*MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
-*he above means it will also have the exchange rates submodule in settings
+DONE *Copy and use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+DONE *MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
+DONE *The above means it will also have the exchange rates submodule in settings
 
 --Manage Investments
 *Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
 
 *add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
 *Cancel/terminate investment contract is subject to approval and fee 
-*Workflow must be implemented for payments
-*Payments can be made only if status is set to cancel or investment is due
-*Approval must be made before payments are confirmed ..add status to show approval status
-*Client statements must resemble client statements as in tech_specs folder
+DONE *Workflow must be implemented for payments
+DONE *Payments can be made only if status is set to cancel or investment is due
+DONE *Approval must be made before payments are confirmed ..add status to show approval status
+DONE *Client statements must resemble client statements as in tech_specs folder
 *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
+
 *Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
 *Then Pages for accepted termination requests and payment requests
 
@@ -117,11 +100,9 @@ DONE by Kwaku *A label same blue column to display balances after part of total 
 
 T0 D0
 -------
-Check Investment Statements especially for equities. 
-    
 --pls look at format for /mask.js for validation and implement in new investor pages
 
-+ Please review new investor edit and details page for indv,joint,group and corp 
+
  Extras
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
 +Kwaku: Payment terms to be calculated in days
@@ -132,15 +113,19 @@ Check Investment Statements especially for equities.
 
 #########   BUGS    ###########
 =============================================
-Update Edit Investors to pick bank details etc.
 
-19. Information on investment date and term should be added to investment certificates.
 21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
    and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
-22. Update InvestorDetails to pull out all details from the db
+
+
 
 DONE
 -----
+DONE Check Investment Statements especially for equities. 
+DONE 21.03.15 + Please review new investor edit and details page for indv,joint,group and corp 
+DONE Update Edit Investors to pick bank details etc.
+DONE 19. Information on investment date and term should be added to investment certificates.
+DONE 22. Update InvestorDetails to pull out all details from the db
 DONE by Kwaku *Change name "Reinvestments to Manage Investments[this conflicts with manage investments under investment module..do we propose different name?]"
 DONE by Kwaku *Divide Reinvestments into two.
 DONE by Kwaku 1.Fund Management [Re-investor submodules..and cash deposit submodules..The two divisions might have to share destination 
@@ -153,33 +138,26 @@ DONE by Kwaku *Change purchase price inputs to min and max inputs(this is an ord
 DONE by Kwaku *Input must be provided for management fee[as disccused above in elsie's notes] 
 Payment Flow
  -----------
- Done 14.03.14 1. Put in request
- Done 14.03.14 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
- Done 14.03.14 3. If money in account,approve payment,else consider terminate investment.
+ Done 14.03.15 1. Put in request
+ Done 14.03.15 2. On request review page have button to see client legder(elsie is sending in example of client ledger)
+ Done 14.03.15 3. If money in account,approve payment,else consider terminate investment.
 
- Done 14.03.14 4. Offer page for re-investment of remaining funds and probably new instructions
- Done 14.03.14 5. Make payment page available
+ Done 14.03.15 4. Offer page for re-investment of remaining funds and probably new instructions
+ Done 14.03.15 5. Make payment page available
 
  Notes FROM REVIEW 04 MARCH, 2015
 ---------------------------------
-
-
-DONE 16.03.14 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
-DONE 16.03.14 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
+DONE 16.03.15 -Daily Maturity list report with following columns (Client Name, Amt on Maturity, Instruction, Action,Tenure[eg. 91 days,182 days])
+DONE 16.03.15 -From above, must offer page/input for rolling over. This can be like a new investment page but will have limited fields like instructions and amount to rollover
 -
 Following Processes must follow a flow
 -------------------------------------
 --Payment
-
-    so what u hv done is very fine
-    we have to add a few more things
-    first of all
-
-DONE 16.03.14 when u click the process payments..we should have a list of requests for payments
-DONE 16.03.14 then when every client is clicked..we are say presented with the ledger
-DONE 16.03.14 the ledger will be the different entries..deposits by client,payments,terminations etc
+DONE 16.03.15 when u click the process payments..we should have a list of requests for payments
+DONE 16.03.15 then when every client is clicked..we are say presented with the ledger
+DONE 16.03.15 the ledger will be the different entries..deposits by client,payments,terminations etc
     i will build a new table for that to mk it easy so dont worry..just providing the view will help
-DONE 16.03.14 so with the ledger..we have the entries and at the bottom some kind of balance that is cash at hand which is all deposits - invested
+DONE 16.03.15 so with the ledger..we have the entries and at the bottom some kind of balance that is cash at hand which is all deposits - invested
     if the balance is less than client has requested then some investment has to be terminated
     so there has to be a button at the top or bottom somewhere
     *NB: Payment can only be made if client account has specified cash that is after termination or maturity
@@ -188,7 +166,7 @@ DONE 16.03.14 so with the ledger..we have the entries and at the bottom some kin
 
     so this is just a payment request
     so that is supposing a client payment is due
-DONE 16.03.14    so it will have the ledger and some radios to reject,approve and default pending approval
+DONE 16.03.15    so it will have the ledger and some radios to reject,approve and default pending approval
     so when its approved, there will be a different page for listing all approved and unprocessed payments
     there they can have the daily maturity report
     t  his can be a page or a tab or submenu of the payments menu

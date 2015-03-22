@@ -844,3 +844,10 @@ CREATE TABLE IF NOT EXISTS `client_ledgers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
+
+
+
+
+MARCH 21 2015
+---------------------------------
+ALTER TABLE `investors` ADD `approved` TINYINT(1) NOT NULL DEFAULT '0' AFTER `modified`;

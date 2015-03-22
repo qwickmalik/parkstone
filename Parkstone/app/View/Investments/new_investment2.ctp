@@ -82,7 +82,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         }
                                         ?>
                                     </td>
--                                    <td align="left">
+                                    <td align="left">
                                         <?php
                                         if (isset($investor['email'])) {
                                             echo $investor['email'];

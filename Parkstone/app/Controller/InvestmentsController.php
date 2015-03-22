@@ -11,7 +11,7 @@ class InvestmentsController extends AppController {
         'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover',
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
         'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
-        'InvestmentCash', 'DailyInterestStatement','ClientLedger'/* 'ReinvestorEquity'*/, 'InvestorEquity');
+        'InvestmentCash', 'DailyInterestStatement','ClientLedger'/*, 'ReinvestorEquity'*/, 'InvestorEquity');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -540,6 +540,26 @@ class InvestmentsController extends AppController {
         }
     }
 
+    function approveInvestors() {
+        /*        $this->__validateUserType(); */
+        
+        $data = $this->paginate('Investor');
+        $this->set('investor', $data);
+    }
+    
+    function approveInvestors2() {
+        /*        $this->__validateUserType(); */
+        
+        if($this->request->data('Investor')){
+            
+        }
+        else{
+            $message = 'Failed to receive request';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'approveInvestors'));
+        }
+    }
+    
     function listInvestor() {
         /*        $this->__validateUserType(); */
         $data = $this->paginate('Investor');
