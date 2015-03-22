@@ -41,6 +41,22 @@ class Investor extends AppModel{
             'limit' => '',
             'dependent' => true
         ),
+        'InstitutionType' => array(
+            'className' => 'InstitutionType',
+            'foreignKey' => 'institution_type_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+        ),
+        'GrossRevenue' => array(
+            'className' => 'GrossRevenue',
+            'foreignKey' => 'gross_revenue_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+        ),
 		'GrossIncome' => array(
             'className' => 'GrossIncome',
             'foreignKey' => 'gross_income_id',

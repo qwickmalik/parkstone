@@ -8,7 +8,7 @@ class InstitutionType extends AppModel{
 	var $hasMany = array(
 		'Investor' => array(
 			'className' => 'Investor',
-            'foreignKey' => 'inst_type_id',
+            'foreignKey' => 'institution_type_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

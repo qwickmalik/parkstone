@@ -11,28 +11,28 @@
  *
  * @author kwaku.afreh-nuamah
  */
-class Bank extends AppModel {
+class ClientLedger extends AppModel {
 
-    var $name = "Bank";
-    var $usesTable = "banks";
-     var $displayField = "bank_name";
-       var $hasMany = array(
-            'Investor' => array(
-            'className' => 'Investor',
-            'foreignKey' => 'bank_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-           'BankAccount' => array(
-            'className' => 'BankAccount',
-            'foreignKey' => 'bank_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        );
+    var $name = "ClientLedger";
+    var $usesTable = "client_ledgers";
+     var $displayField = "voucher_no";
+//       var $hasMany = array(
+//            'Investor' => array(
+//            'className' => 'Investor',
+//            'foreignKey' => 'bank_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//           'BankAccount' => array(
+//            'className' => 'BankAccount',
+//            'foreignKey' => 'bank_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//        );
     
 }

@@ -18,6 +18,9 @@
                 <?php echo $this->Html->link('Add New Investor', '/Investments/newInvestor', array('escape' => false)); ?>
             </li>
             <li>
+                <?php echo $this->Html->link('Approve Investors', '/Investments/approveInvestors', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('List/Edit Investors', '/Investments/listInvestor', array('escape' => false)); ?>
             </li>
         </ul>
