@@ -851,3 +851,16 @@ COMMIT;
 MARCH 21 2015
 ---------------------------------
 ALTER TABLE `investors` ADD `approved` TINYINT(1) NOT NULL DEFAULT '0' AFTER `modified`;
+
+
+MARCH 23 2015 
+----------------------------------
+UPDATE `qwickfu1_parkst_inv`.`instructions` SET `instruction_name` = 'Pay Principal & Interest' WHERE `instructions`.`id` = 5; 
+INSERT INTO `qwickfu1_parkst_inv`.`instructions` (`id`, `instruction_name`) VALUES (NULL, 'Other - provide details');
+
+
+CREATE TABLE IF NOT EXISTS `cash_receipt_modes` ( `id` int(3) NOT NULL AUTO_INCREMENT, `cash_receipt_mode` varchar(10) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+INSERT INTO `cash_receipt_modes` (`id`, `cash_receipt_mode`) VALUES (1, 'Cash'), (2, 'Cheque');
+
+ALTER TABLE `investments` ADD `cashreceiptmode_id` INT(3) NULL AFTER `payment_mode_id`, ADD `cheque_no` VARCHAR(50) NULL AFTER `cashreceiptmode_id`;
+ALTER TABLE `investments` ADD `amount_deposited` DECIMAL(11,2) NULL AFTER `earned_balance`;

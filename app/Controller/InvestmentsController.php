@@ -10,7 +10,7 @@ class InvestmentsController extends AppController {
     var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment',
         'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover',
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
-        'PaymentMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
+        'PaymentMode', 'CashReceiptMode','InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
         'InvestmentCash', 'DailyInterestStatement','ClientLedger'/*, 'ReinvestorEquity'*/, 'InvestorEquity');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
@@ -1445,6 +1445,7 @@ class InvestmentsController extends AppController {
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
         $this->set('equitieslists', $this->EquitiesList->find('list'));
@@ -1510,6 +1511,7 @@ class InvestmentsController extends AppController {
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('instructions', $this->Instruction->find('list'));
         $this->set('equitieslists', $this->EquitiesList->find('list'));
@@ -1636,6 +1638,7 @@ class InvestmentsController extends AppController {
             $this->set('investmentterms', $this->InvestmentTerm->find('list'));
             $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
+            $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
             $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
             $this->set('instructions', $this->Instruction->find('list'));
             $this->set('equitieslists', $this->EquitiesList->find('list'));
@@ -1704,6 +1707,7 @@ class InvestmentsController extends AppController {
             $this->set('investmentterms', $this->InvestmentTerm->find('list'));
             $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
+            $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
             $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
             $this->set('instructions', $this->Instruction->find('list'));
             $this->set('equitieslists', $this->EquitiesList->find('list'));
@@ -4436,6 +4440,10 @@ class InvestmentsController extends AppController {
         }
     }
 
+    function topupInvestment($investment_id = null){
+        
+        
+    }
     
 
     function cancelEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {

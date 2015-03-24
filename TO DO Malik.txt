@@ -1,14 +1,16 @@
 
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
 
-
-7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity after purchase in reinvestments [ investment deposit receipt]
-8. (Malik)Add "Pay Principal & Interest" to investment instructions
 9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown lets also notify of new payment/termination requests.
-11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too [add years to period dropdown. create new field for total_tenure in years]
-14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not   [newInvestment2()]
-14b. add new field deposit amount and then make available cash disabled
-15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date of topup to due date.
+
+
+
+DONE 22.03.15   7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity after purchase in reinvestments [ investment deposit receipt]
+DONE 22.03.15   8. (Malik)Add "Pay Principal & Interest" to investment instructions
+DONE 22.03.15   11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too [add years to period dropdown. create new field for total_tenure in years]
+DONE 22.03.15   14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not   [newInvestment2()]
+DONE 22.03.15   14b. add new field deposit amount and then make available cash disabled
+DONE 22.03.15   15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date of topup to due date.
 
 
 
@@ -24,7 +26,6 @@
 10. (Kwaku)Consider adding available cash, new deposit amt, investment amt in ledger
 12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
 13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
-
 16. (Kwaku)Add topup invesment table 
  
  
