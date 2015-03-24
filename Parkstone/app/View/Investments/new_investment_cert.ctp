@@ -10,7 +10,7 @@
                 <?php 
                     echo $this->Element('logo_reports');
                     echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>"; 
-                    echo "<p><b>INVESTOR CONTRACT</b></p>";  
+                    echo "<p><b>Investment Deposit Receipt</b></p>";  
                 ?>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
