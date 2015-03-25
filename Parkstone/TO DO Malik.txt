@@ -4,51 +4,11 @@
 9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown lets also notify of new payment/termination requests.
 
 
-
-DONE 22.03.15   7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity after purchase in reinvestments [ investment deposit receipt]
-DONE 22.03.15   8. (Malik)Add "Pay Principal & Interest" to investment instructions
-DONE 22.03.15   11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too [add years to period dropdown. create new field for total_tenure in years]
-DONE 22.03.15   14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not   [newInvestment2()]
-DONE 22.03.15   14b. add new field deposit amount and then make available cash disabled
-DONE 22.03.15   15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date of topup to due date.
-
-
-
-
-
-1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
-2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.
-3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
-4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called
-   ledger_transactions. This will list all credit and debit so ledger has total cash, total debit and total credit.
-5. (Kwaku)Create ledger record when investor is created.
-6. (Kwaku)Investor contract must show price Range(min price - max price) instead of purchase price.
-10. (Kwaku)Consider adding available cash, new deposit amt, investment amt in ledger
-12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
-13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
-16. (Kwaku)Add topup invesment table 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-DONE 16.03.15--Termination/Cancel Investment Flow
-1. Put in request
-2. On request review page have button to see client ledGer(elsie is sending in example of client ledger)
-3. Approve or reject termination
-4. Make payment page available
-
+--Re-investments(PROCESS INVESTMENTS)
+*Allow for selection of multiple equities instead of one like in new investments
+*Payment & Termination Process(flow) as described above
+*Administrator Pages for viewing pending terminations and payments as described in flow above
+*Then Pages for accepted termination requests and payment requests
 
 --New Investor
 1. Add investor details
@@ -65,33 +25,18 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 --New Invesment
  Purchase price will be confirmed under Re-investments
-DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
-DONE by Kwaku *A label same blue column to display balances after part of total amount above is used
 
-DONE *Copy and use investment contract report under report to summarize a new investment instead of certificates(these are old school)
-DONE *MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
-DONE *The above means it will also have the exchange rates submodule in settings
 
 --Manage Investments
 *Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
 
 *add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
 *Cancel/terminate investment contract is subject to approval and fee 
-DONE *Workflow must be implemented for payments
-DONE *Payments can be made only if status is set to cancel or investment is due
-DONE *Approval must be made before payments are confirmed ..add status to show approval status
-DONE *Client statements must resemble client statements as in tech_specs folder
 *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 
 *Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
 *Then Pages for accepted termination requests and payment requests
 
-
---Re-investments(PROCESS INVESTMENTS)
-*Allow for selection of multiple equities instead of one
-*Payment & Termination Process(flow) as described above
-*Administrator Pages for viewing pending terminations and payments as described in flow above
-*Then Pages for accepted termination requests and payment requests
 
 ---Company Accounts
 *If using Asset Management, it might have to be used for handle assets in terms of client funds
@@ -122,6 +67,31 @@ T0 D0
 
 DONE
 -----
+
+DONE *Workflow must be implemented for payments
+DONE *Payments can be made only if status is set to cancel or investment is due
+DONE *Approval must be made before payments are confirmed ..add status to show approval status
+DONE *Client statements must resemble client statements as in tech_specs folder
+DONE by Kwaku *There should be a total amount input in top blue column which will be a total of amount client wants to spend on equities and/or fixed investments
+DONE by Kwaku *A label same blue column to display balances after part of total amount above is used
+
+DONE *Copy and use investment contract report under report to summarize a new investment instead of certificates(these are old school)
+DONE *MA, My bad..Currency submodule should rather be like the submodule in qwicktransfer(quick_dcash folder)
+DONE *The above means it will also have the exchange rates submodule in settings
+DONE 22.03.15   7. (Malik)The investor contract should rather be a form of reciept.. current is fine.. but must rename something else. Contract will show for equity after purchase in reinvestments [ investment deposit receipt]
+DONE 22.03.15   8. (Malik)Add "Pay Principal & Interest" to investment instructions
+DONE 22.03.15   11. (Malik)After adding year to inv period, add tenure input which only shows if year is selected,,consider using for days too [add years to period dropdown. create new field for total_tenure in years]
+DONE 22.03.15   14. (Malik)Add cash receipt mode and if cheque add an input for taking cheque not   [newInvestment2()]
+DONE 22.03.15   14b. add new field deposit amount and then make available cash disabled
+DONE 22.03.15   15, (Malik)Add button and pages for topping up an investment in manage investments. could be a popup..just need to take amount and display some few relevant fields. THis is for investments where ppl add more money monthly but due date remains same. so interest is calculated from date of topup to due date.
+
+
+
+DONE 16.03.15--Termination/Cancel Investment Flow
+1. Put in request
+2. On request review page have button to see client ledGer(elsie is sending in example of client ledger)
+3. Approve or reject termination
+4. Make payment page available
 DONE Check Investment Statements especially for equities. 
 DONE 21.03.15 + Please review new investor edit and details page for indv,joint,group and corp 
 DONE Update Edit Investors to pick bank details etc.
