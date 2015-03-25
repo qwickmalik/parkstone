@@ -1381,8 +1381,8 @@ class ReinvestmentsController extends AppController {
                         $date_statemt->add(new DateInterval('P1D'));
                                 $interest_amount2 = $interest_amount1 * (1/365);
                                 $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                                    'investor_id' => $this->request->data['Reinvestment']['investor_id'],
                                     'principal' => $principal,
                                     'interest' => $interest_amount2,
                                     'maturity_date' => $date_statemt->format('Y-m-d'),

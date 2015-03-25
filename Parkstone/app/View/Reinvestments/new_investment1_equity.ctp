@@ -152,7 +152,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             
                             echo "<p><i>Desired equity not listed here?".$this->Html->link('Add to the list', '/Settings/equitiesList') ."</i></p>";
                             
-                            echo $this->Form->input('purchase_price', array('disabled','label' => 'Purchase Price*', 
+                            echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 
                                 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price') 
                                     == true ? $this->Session->read('reeinvesttemp.share_price') : '' ))); 
                             
