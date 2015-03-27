@@ -1,3 +1,17 @@
+--NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
+1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
+2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.
+3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
+4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called
+   ledger_transactions. This will list all credit and debit so main ledger has total cash,available cash,investment amt
+   total debit and total credit.
+5. DONE -(Kwaku)Create ledger record when investor is created.
+6. (Kwaku)Investor contract must show price Range(min price - max price) instead of purchase price.
+10. DONE -(Kwaku)Consider adding available cash, new deposit amt(NOT THIS), investment amt in ledger
+12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
+13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
+16. (Kwaku)Add topup invesment table 
+
 Notes FROM REVIEW 04 MARCH, 2015
 ---------------------------------
 -All backend calculation of interest should translate to days eg(60/365)
@@ -17,20 +31,7 @@ Technically all cash on a client’s ledger is supposed to be invested. And so
  likely keep their cash or money in an investment and for a period too.
 
  
---NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
 
-
-1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
-2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.
-3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
-4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called
-   ledger_transactions. This will list all credit and debit so ledger has total cash, total debit and total credit.
-5. (Kwaku)Create ledger record when investor is created.
-6. (Kwaku)Investor contract must show price Range(min price - max price) instead of purchase price.
-10. (Kwaku)Consider adding available cash, new deposit amt, investment amt in ledger
-12. (Kwaku)from above on maturity list show tenure as tenure left. deduct one after every maturity
-13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
-16. (Kwaku)Add topup invesment table 
 
 On your second question, if the cash requested by a client is above what is in one investment 
 then we will terminate the next running investment and top it up with the first investment and 
