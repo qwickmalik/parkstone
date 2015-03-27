@@ -864,3 +864,34 @@ INSERT INTO `cash_receipt_modes` (`id`, `cash_receipt_mode`) VALUES (1, 'Cash'),
 
 ALTER TABLE `investments` ADD `cashreceiptmode_id` INT(3) NULL AFTER `payment_mode_id`, ADD `cheque_no` VARCHAR(50) NULL AFTER `cashreceiptmode_id`;
 ALTER TABLE `investments` ADD `amount_deposited` DECIMAL(11,2) NULL AFTER `earned_balance`;
+
+MARCH 25,2015
+---------------
+ALTER TABLE `investments` CHANGE `status` `status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured', 'Termination_Requested', 'Payment_Requested', 'Termination_Approved', 'Payment_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Invested';
+ALTER TABLE `investments` CHANGE `old_status` `old_status` ENUM( 'Paid', 'Rolled_over', 'Cancelled', 'Part_payment', 'Invested', 'Matured', 'Termination_Requested', 'Payment_Requested', 'Termination_Approved', 'Payment_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+ALTER TABLE `client_ledgers` CHANGE `debit` `total_debit` DECIMAL( 11, 2 ) NULL DEFAULT NULL ,
+CHANGE `credit` `total_credit` DECIMAL( 11, 2 ) NULL DEFAULT NULL ;
+ALTER TABLE `client_ledgers` ADD `total_cash` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_credit` ,
+ADD `available_cash` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `total_cash` ,
+ADD `invested_amount` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `available_cash` ;
+ALTER TABLE `client_ledgers` CHANGE `voucher_no` `voucher_no` VARCHAR( 25 ) NULL DEFAULT NULL ,
+CHANGE `total_debit` `total_debit` DECIMAL( 11, 2 ) NULL DEFAULT '0.00',
+CHANGE `total_credit` `total_credit` DECIMAL( 11, 2 ) NULL DEFAULT '0.00';
+ALTER TABLE `client_ledgers` DROP `date` ;
+ALTER TABLE `client_ledgers` DROP `description` ;
+CREATE TABLE IF NOT EXISTS `ledger_transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_ledger_id` int(11) DEFAULT NULL,
+  `voucher_no` varchar(25) DEFAULT NULL,
+  `debit` decimal(11,2) DEFAULT '0.00',
+  `credit` decimal(11,2) DEFAULT '0.00',
+  `description` varchar(70) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `ledger_transactions` ADD `cash_receipt_mode_id` INT( 3 ) NULL AFTER `client_ledger_id` ,
+ADD `cheque_no` VARCHAR( 70 ) NULL AFTER `cash_receipt_mode_id` ;
