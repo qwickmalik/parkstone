@@ -63,14 +63,6 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
-        'CashReceiptMode' => array(
-            'className' => 'CashReceiptMode',
-            'foreignKey' => 'cashreceiptmode_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
 	'Instruction' => array(
             'className' => 'Instruction',
             'foreignKey' => 'instruction_id',

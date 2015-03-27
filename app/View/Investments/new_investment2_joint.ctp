@@ -44,13 +44,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                         </tr>
                         <?php
                         if (isset($investors)) {
-                            foreach ($investors as $investor):
                                 ?>
                                 <tr>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['investor_id'])) {
-                                            echo $investor['investor_id'];
+                                        if (isset($investors['investor_id'])) {
+                                            echo $investors['investor_id'];
                                         } else {
                                             echo '';
                                         }
@@ -58,8 +57,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['surname']) && isset($investor['other_names'])) {
-                                            echo $investor['surname'] . ' ' . $investor['other_names'];
+                                        if (isset($investors['surname']) && isset($investors['other_names'])) {
+                                            echo $investors['surname'] . ' ' . $investors['other_names'];
                                         } else {
                                             echo '';
                                         }
@@ -67,8 +66,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['joint_surname']) && isset($investor['joint_other_names'])) {
-                                            echo $investor['joint_surname'] . ' ' . $investor['joint_other_names'];
+                                        if (isset($investors['joint_surname']) && isset($investors['joint_other_names'])) {
+                                            echo $investors['joint_surname'] . ' ' . $investors['joint_other_names'];
                                         } else {
                                             echo '';
                                         }
@@ -76,8 +75,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['in_trust_for'])) {
-                                            echo $investor['in_trust_for'];
+                                        if (isset($investors['in_trust_for'])) {
+                                            echo $investors['in_trust_for'];
                                         } else {
                                             echo '';
                                         }
@@ -85,8 +84,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['phone'])) {
-                                            echo $investor['phone'];
+                                        if (isset($investors['phone'])) {
+                                            echo $investors['phone'];
                                         } else {
                                             echo '';
                                         }
@@ -94,8 +93,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                     <td align="left">
                                         <?php
-                                        if (isset($investor['email'])) {
-                                            echo $investor['email'];
+                                        if (isset($investors['email'])) {
+                                            echo $investors['email'];
                                         } else {
                                             echo '';
                                         }
@@ -103,7 +102,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     </td>
                                 </tr>
                                 <?php
-                            endforeach;
+                            
                         }
                         ?>
                     </table>
@@ -125,7 +124,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                             echo $this->Form->hidden('investor_type_id', array('value' => 2));
                             echo $this->Form->hidden('investor_page', array('value' => 'newInvestment2'));
-                            echo $this->Form->hidden('investor_id', array('value' => (isset($investor['investor_id']) ? $investor['investor_id'] : '')));
+                            echo $this->Form->hidden('investor_id', array('value' => (isset($investors['investor_id']) ? 
+                                    $investors['investor_id'] : '')));
 
                             echo $this->Form->input('investmentproduct_id', array('label' => 'Investment Product', 'empty' => "--Please Select--", 'selected' => ($this->Session->check('investtemp.investmentproduct_id') == true ? $this->Session->read('investtemp.investmentproduct_id') : '' ), 'style' => 'background: lilac;'));
                             ?>
@@ -232,18 +232,18 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo $this->Form->input('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
                                         ($this->Session->check('investtemp1.cash_athand') == true ?
-                                                $this->Session->read('investtemp1.cash_athand') : '' ), 'disabled'));
+                                                $this->Session->read('investtemp1.cash_athand') : $ledger_data['ClientLedger']['available_cash'] ), 'disabled'));
                                     ?> 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->hidden('total_invested', array('label' => 'Total Invested', 'value' =>
                                         ($this->Session->check('investtemp1.total_invested') == true ?
-                                                $this->Session->read('investtemp1.total_invested') : '' )));
+                                                $this->Session->read('investtemp1.total_invested') : $ledger_data['ClientLedger']['invested_amount'] )));
 
                                     echo $this->Form->input('total_invested2', array('disabled', 'label' => 'Total Invested', 'value' =>
                                         ($this->Session->check('investtemp1.total_invested') == true ?
-                                                $this->Session->read('investtemp1.total_invested') : '' )));
+                                                $this->Session->read('investtemp1.total_invested') : $ledger_data['ClientLedger']['invested_amount'] )));
                                     ?>
                                 </div>
                             </div>

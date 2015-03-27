@@ -10,7 +10,8 @@ class FundManagementController extends AppController {
     var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount', 'Investee', 'Currency',
         'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash',
         'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'FundManagementEquity',
-        'ReinvestmentRollover','ReinvestmentStatement','ReinvestmentEquityStatement','ClientLedger','ReinvestorEquity','InvestorEquity');
+        'ReinvestmentRollover','ReinvestmentStatement','ReinvestmentEquityStatement',
+        'ClientLedger','ReinvestorEquity','InvestorEquity','LedgerTransaction');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
