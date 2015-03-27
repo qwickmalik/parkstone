@@ -18,22 +18,14 @@ class CashReceiptMode extends AppModel {
     
     
     var $hasMany = array(
-        'Investment' => array(
-            'className' => 'Investment',
-            'foreignKey' => 'cashreceiptmode_id',
+        'LedgerTransaction' => array(
+            'className' => 'LedgerTransaction',
+            'foreignKey' => 'cash_receipt_mode_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
             ),
-//        'ReinvestorDeposit' => array(
-//            'className' => 'ReinvestorDeposit',
-//            'foreignKey' => 'cashreceiptmode_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            ),
         );
 }
 

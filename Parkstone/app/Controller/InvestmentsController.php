@@ -281,9 +281,10 @@ class InvestmentsController extends AppController {
                 $this->request->data['Investor']['gross_income_id'] = $this->request->data['Investor']['grossincome_id'];
             }
             $this->request->data['Investor']['registration_date'] = $registration_date;
-
+            $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
+                $user_id = $this->Session->read('userDetails.id'); 
                 $user_f = $this->Session->read('userDetails.firstname');
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
@@ -293,6 +294,8 @@ class InvestmentsController extends AppController {
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
             if ($result) {
+                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $this->ClientLedger->save($client_ledger);
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
@@ -423,9 +426,10 @@ class InvestmentsController extends AppController {
 //                $this->Session->write('emsg', $message);
 //                return json_encode(array('status' => 'error'));
 //            }
-
+            $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
+                $user_id = $this->Session->read('userDetails.id');
                 $user_f = $this->Session->read('userDetails.firstname');
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
@@ -435,6 +439,8 @@ class InvestmentsController extends AppController {
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
             if ($result) {
+                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $this->ClientLedger->save($client_ledger);
                 $result['Investor']['full_name'] = $result['Investor']['other_names'] . ' ' . $result['Investor']['surname'];
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
@@ -511,9 +517,10 @@ class InvestmentsController extends AppController {
 //                $this->Session->write('emsg', $message);
 //                return json_encode(array('status' => 'error'));
 //            }
-
+            $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
+                $user_id = $this->Session->read('userDetails.id');
                 $user_f = $this->Session->read('userDetails.firstname');
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
@@ -524,7 +531,8 @@ class InvestmentsController extends AppController {
             //pr($this->request->data);
             if ($result) {
 
-
+                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $this->ClientLedger->save($client_ledger);
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
@@ -1462,9 +1470,16 @@ class InvestmentsController extends AppController {
         $check = $this->get_investors();
 
         if (count($check) > 0) {
-
-
-            $this->set('investors', $check);
+            foreach($check as $investor):
+            $investor_id = $investor['investor_id'];
+            
+            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+            $this->set('investors', $investor);
+            if($ledger_data){
+               $this->set('ledger_data', $ledger_data); 
+            }
+            
+            endforeach;
         } else {
             $message = 'No Investor Selected';
             $this->Session->write('emsg', $message);
@@ -1528,9 +1543,16 @@ class InvestmentsController extends AppController {
         $check = $this->get_investors();
 
         if (count($check) > 0) {
-
-
-            $this->set('investors', $check);
+        foreach($check as $investor):
+            $investor_id = $investor['investor_id'];
+            
+            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+            $this->set('investors', $investor);
+            if($ledger_data){
+               $this->set('ledger_data', $ledger_data); 
+            }
+            
+            endforeach;
         } else {
             $message = 'No Investor Selected';
             $this->Session->write('emsg', $message);
@@ -1654,7 +1676,12 @@ class InvestmentsController extends AppController {
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid)/* , 'recursive' => -1 */));
             if ($investor) {
-                $this->set('investors', $investor);
+                $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investorid]]);
+            $this->set('investors', $investor);
+            if($ledger_data){
+               $this->set('ledger_data', $ledger_data); 
+            }
+            
             } else {
                 $message = 'No Investor Selected';
                 $this->Session->write('emsg', $message);
@@ -1719,7 +1746,13 @@ class InvestmentsController extends AppController {
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), 'recursive' => -1));
             if ($investor) {
-                $this->set('investors', $investor);
+            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investorid]]);
+            $this->set('investors', $investor);
+            if($ledger_data){
+               $this->set('ledger_data', $ledger_data); 
+            }
+            
+            
             }
             $check = $this->Session->check('variabless_fixed');
             if ($check) {
