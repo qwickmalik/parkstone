@@ -173,9 +173,9 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                 <li>
                                     <a href="#" class="info" alt="Support" title="Support">
                                         <i class="fa fa-info"></i>
-                                        <div class="notify">
+<!--                                        <div class="notify">
 
-                                        </div>
+                                        </div>-->
                                     </a>
                                     <ul class="dropdown">
                                         <li><a href="#"><i class="fa fa-pencil-square-o"></i>Contact Support</a></li>
