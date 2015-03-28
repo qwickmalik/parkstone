@@ -46,6 +46,7 @@ class InvestmentsController extends AppController {
 
     function index() {
         
+        
     }
 
     function newInvestor() {

@@ -35,7 +35,7 @@ class PagesController extends AppController {
  *
  * @var array
  */
-	public $uses = array();
+	public $uses = array('Investor');
 
 /**
  * Displays a view
@@ -73,5 +73,8 @@ class PagesController extends AppController {
 			}
 			throw new NotFoundException();
 		}
+                
+                
+                
 	}
 }

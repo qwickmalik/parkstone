@@ -322,6 +322,7 @@
    border-radius: 50%;
    overflow: hidden;
    background-color: #f86868;
+   background-color: red;
    width: 18px;
    height: 18px;
    color: #ffffff;
@@ -339,7 +340,7 @@
  }
 
  ul.right-icons .info {
-   background-color: #a78ed7;
+   background-color: #7E6DCC;
  }
 
  ul.right-icons .settings {
@@ -348,8 +349,22 @@
 
  ul.right-icons .lock {
    background-color: #49617b;
+   background-color: red;
  }
 
+  ul.right-icons .dark {
+   background-color: #343f51;
+ }
+ ul.right-icons .dodgerblue {
+   background-color: #27A5F9;
+ }
+ ul.right-icons .navy {
+   background-color: #3156A3;
+ }
+ ul.right-icons .green {
+   background-color: #109618;
+ }
+ 
  ul.right-icons li:last-child {
    border-right:0px solid #2c3e50;
  }
@@ -1958,6 +1973,26 @@
    color: #ffffff;
  }
 
+ .standalone-title-bar.red {
+  background-color: #EA4C89;
+  color: #ffffff;
+}
+.standalone-title-bar.green {
+  background-color: #149E50;
+  color: #ffffff;
+}
+.standalone-title-bar.navy {
+  background-color: #3156A3;
+  color: #ffffff;
+}
+.standalone-title-bar.dodgerblue {
+  background-color: #27A5F9;
+  color: #ffffff;
+}
+.standalone-title-bar.purple {
+  background-color: #7E6DCC;
+  color: #ffffff;
+}
  /***** Task List *****/
  .task-list {
    margin: 15px 0px;
