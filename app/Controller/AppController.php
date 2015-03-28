@@ -31,4 +31,17 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+    var $uses = array('Investor', 'Investment');
+    
+    public function beforeFilter(){
+        $this->Session->delete('public_unapproved_investors');
+        $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+        
+        $this->Session->delete('public_termination_req');
+        $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+        
+        $this->Session->delete('public_payment_req');
+        $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+    }
+
 }

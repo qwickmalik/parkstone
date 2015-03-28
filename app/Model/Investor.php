@@ -150,6 +150,9 @@ class Investor extends AppModel{
             'dependent' => true
             )
             );
+        
+        
+        
 }
 
 ?>

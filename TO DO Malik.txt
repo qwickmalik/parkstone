@@ -1,22 +1,14 @@
 
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
 
-9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown lets also notify of new payment/termination requests.
 
 
 --Re-investments(PROCESS INVESTMENTS)
 *Allow for selection of multiple equities instead of one like in new investments
 *Payment & Termination Process(flow) as described above
-*Administrator Pages for viewing pending terminations and payments as described in flow above
+DONE    *Administrator Pages for viewing pending terminations and payments as described in flow above
 *Then Pages for accepted termination requests and payment requests
 
---New Investor
-1. Add investor details
-2. Page to list pending new investors
-3. On click investor, open details page.
-4. Approve or reject
-
---------------------------------------------
 
 
 
@@ -67,6 +59,15 @@ T0 D0
 
 DONE
 -----
+--New Investor
+DONE 1. Add investor details
+DONE 2. Page to list pending new investors
+DONE 3. On click investor, open details page.
+DONE 4. Approve or reject
+
+--------------------------------------------
+
+DONE 27.03.15   9. (Malik)Find a way to notify staff of denial requests..with some bubbles or something up in the settings icon..like how new inbox msgs are shown lets also notify of new payment/termination requests.
 
 DONE *Workflow must be implemented for payments
 DONE *Payments can be made only if status is set to cancel or investment is due
