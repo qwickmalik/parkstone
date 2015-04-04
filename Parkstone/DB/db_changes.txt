@@ -895,3 +895,13 @@ CREATE TABLE IF NOT EXISTS `ledger_transactions` (
 
 ALTER TABLE `ledger_transactions` ADD `cash_receipt_mode_id` INT( 3 ) NULL AFTER `client_ledger_id` ,
 ADD `cheque_no` VARCHAR( 70 ) NULL AFTER `cash_receipt_mode_id` ;
+
+APRIL 3, 2015
+------------------------
+ALTER TABLE  `investments` CHANGE  `base_fees`  `base_fees` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `investments` ADD  `base_rate` INT( 3 ) NULL DEFAULT  '0' AFTER  `benchmark_rate` ,
+ADD  `basefee_duedate` DATE NULL AFTER  `base_rate` ,
+ADD  `basefee_accrued` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `basefee_duedate` ;
+ALTER TABLE  `client_ledgers` DROP  `voucher_no` ;
+ALTER TABLE  `client_ledgers` DROP  `user_id` ;
+ALTER TABLE  `investments` ADD  `total_tenure` INT( 6 ) NULL DEFAULT  '0' AFTER  `investment_period` ;
