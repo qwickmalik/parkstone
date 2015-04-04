@@ -1,5 +1,6 @@
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
-1. (Kwaku) Management fee is for only equity. Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued yearly for subtraction when equity is disposed
+1. (Kwaku) Management fee is for only equity. (Cron job to check basefee-duedate,add from base_fee to current accrued and add three months to current date.
+  Will be taken from at beginning of investment order and subtracted from total amount being deposited. And accrued very three months for subtraction when equity is disposed
 2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.
 3. (Kwaku)Add years to Inv. Period in both investment and reinvestments and fund management.
 4. (Kwaku)Let ledger be a bank account like table that will have a unique row for every investor. There will be another table called

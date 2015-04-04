@@ -1,0 +1,6 @@
+===========TO DO=======
+1.  Calculate for years.
+2. Create column for total tenure and subtract when mature
+3. When saving ledgger transaction in summary add client ledger id. check process investment and link equities to investor equity table if necessary
+4
+3. Function to deduct and accrue management fee.// Remember to create ledger debit entry.may rather code ledger entry when the investment is due
