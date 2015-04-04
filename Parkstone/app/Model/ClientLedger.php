@@ -18,14 +18,6 @@ class ClientLedger extends AppModel {
      var $displayField = "voucher_no";
      
        var $belongsTo = array(
-        'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-          ),
             'Investor' => array(
             'className' => 'Investor',
             'foreignKey' => 'investor_id',

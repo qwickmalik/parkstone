@@ -147,15 +147,6 @@ class User extends AppModel {
             'dependent' => true
             ),
         
-        'ClientLedger' => array(
-            'className' => 'ClientLedger',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        
         'LedgerTransaction' => array(
             'className' => 'LedgerTransaction',
             'foreignKey' => 'user_id',

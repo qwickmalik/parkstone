@@ -20,20 +20,22 @@
                 <p>Client Number: <?php echo $data['Investor']['id']; ?></p>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <p>Client Type: <?php echo $inv_type['InvestorType']['investor_type']; ?></p>
+                <p>Client Type: <?php echo $data['InvestorType']['investor_type']; ?></p>
             </div>
             
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <hr>
                 
             </div>
+            <?php if (isset($data) && $data['Investment']['investment_product_id'] == 1 || $data['Investment']['investment_product_id'] == 3) {
+                        ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <p><b>Fixed Investment</b></p>
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
                     <tr>
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Date</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment No.</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment Period</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Investment Tenure</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Principal Amt. GHS</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Interest Rate</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Interest GHS</b></td>
@@ -44,9 +46,9 @@
                     <tr>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['investment_period']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['total_tenure'].' '.$data['Investment']['investment_period']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['investment_amount']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['custom_rate']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['custom_rate'].'%'; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['interest_earned']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['amount_due']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['due_date']; ?></td>
@@ -55,8 +57,9 @@
                 </table>
             </div>
             <p>&nbsp;</p>
-            <?php if (isset($equity)) {
-                        ?>
+            <?php } if (isset($data) && $data['Investment']['investment_product_id'] == 2 || $data['Investment']['investment_product_id'] == 3) {
+                     if(isset($equity)){  
+                ?>
             
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <p><b>Equity Investment</b></p>
@@ -67,7 +70,8 @@
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Equity Name</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Equity Code</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>No. of Shares</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Purchase Price</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Min. Purchase Price</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Max. Purchase Price</b></td>
                     </tr>
                     <?php
                     foreach ($equity as $each_item) { 
@@ -78,7 +82,8 @@
                         <td align="left" valign="top"><?php echo $each_item['EquitiesList']['equity_name']; ?></td>
                         <td align="left" valign="top"><?php echo $each_item['EquitiesList']['equity_abbrev']; ?></td>
                         <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['numb_shares']; ?></td>
-                        <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['purchase_price']; ?></td>
+                        <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['min_share_price']; ?></td>
+                        <td align="right" valign="top"><?php echo $each_item['InvestorEquity']['max_share_price']; ?></td>
                     </tr>
                     <?php
                     }
@@ -87,6 +92,7 @@
             </div>
             <?php
                }
+            }
             ?>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
@@ -95,14 +101,14 @@
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
                     <tr>
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Fee Type</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Base Fees</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Base Rate</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Benchmark Rate</b></td>
                         
                     </tr>
                     <tr>
                         <td align="left" valign="top"><?php echo $data['Investment']['management_fee_type']; ?></td>
-                        <td align="left" valign="top"><?php echo $data['Investment']['base_fees']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['benchmark_rate']; ?></td>
+                         <td align="left" valign="top"><?php echo $data['Investment']['base_rate'].'%'; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['benchmark_rate'].'%'; ?></td>
                         
                     </tr>
                 </table>

@@ -10,8 +10,9 @@ class InvestmentsController extends AppController {
     var $uses = array('Investment', 'Investor', 'InvestorType', 'InvestmentInvestor', 'InvestmentPayment',
         'Currency', 'Marriage', 'Idtype', 'Zone', 'User', 'CustomerCategory', 'Portfolio', 'Rollover',
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
-        'PaymentMode', 'CashReceiptMode','InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
-        'InvestmentCash', 'DailyInterestStatement','ClientLedger'/*, 'ReinvestorEquity'*/, 'InvestorEquity');
+        'PaymentMode', 'CashReceiptMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
+        'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
+        'InvestorEquity', 'LedgerTransaction');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'))
@@ -45,7 +46,6 @@ class InvestmentsController extends AppController {
     }
 
     function index() {
-        
         
     }
 
@@ -285,7 +285,7 @@ class InvestmentsController extends AppController {
             $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
-                $user_id = $this->Session->read('userDetails.id'); 
+                $user_id = $this->Session->read('userDetails.id');
                 $user_f = $this->Session->read('userDetails.firstname');
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
@@ -295,7 +295,7 @@ class InvestmentsController extends AppController {
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
             if ($result) {
-                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $client_ledger = array('investor_id' => $Investorid, 'user_id' => $user_id);
                 $this->ClientLedger->save($client_ledger);
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
@@ -440,7 +440,7 @@ class InvestmentsController extends AppController {
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
             if ($result) {
-                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $client_ledger = array('investor_id' => $Investorid, 'user_id' => $user_id);
                 $this->ClientLedger->save($client_ledger);
                 $result['Investor']['full_name'] = $result['Investor']['other_names'] . ' ' . $result['Investor']['surname'];
                 if ($this->Session->check('investortemp') == true) {
@@ -532,7 +532,7 @@ class InvestmentsController extends AppController {
             //pr($this->request->data);
             if ($result) {
 
-                $client_ledger = array('investor_id' => $Investorid,'user_id' => $user_id);
+                $client_ledger = array('investor_id' => $Investorid, 'user_id' => $user_id);
                 $this->ClientLedger->save($client_ledger);
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
@@ -551,24 +551,23 @@ class InvestmentsController extends AppController {
 
     function approveInvestors() {
         /*        $this->__validateUserType(); */
-        
+
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
     }
-    
+
     function approveInvestors2() {
         /*        $this->__validateUserType(); */
-        
-        if($this->request->data('Investor')){
+
+        if ($this->request->data('Investor')) {
             
-        }
-        else{
+        } else {
             $message = 'Failed to receive request';
             $this->Session->write('emsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'approveInvestors'));
         }
     }
-    
+
     function listInvestor() {
         /*        $this->__validateUserType(); */
         $data = $this->paginate('Investor');
@@ -1107,7 +1106,7 @@ class InvestmentsController extends AppController {
         if ($check) {
             $this->Session->delete('statemt_array_fixed');
         }
-         if ($this->Session->read('investmt_equities')) {
+        if ($this->Session->read('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
     }
@@ -1135,7 +1134,6 @@ class InvestmentsController extends AppController {
             $this->set('investor', $cust);
             $this->Session->delete('ivts');
         }
-        
     }
 
     function newInvestment1Group() {
@@ -1471,21 +1469,36 @@ class InvestmentsController extends AppController {
         $check = $this->get_investors();
 
         if (count($check) > 0) {
-            foreach($check as $investor):
-            $investor_id = $investor['investor_id'];
-            
-            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
-            $this->set('investors', $investor);
-            if($ledger_data){
-               $this->set('ledger_data', $ledger_data); 
-            }
-            
+            foreach ($check as $investor):
+                $investor_id = $investor['investor_id'];
+
+                $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+                $this->set('investors', $investor);
+                if ($ledger_data) {
+                    $this->set('ledger_data', $ledger_data);
+                }
+
             endforeach;
         } else {
             $message = 'No Investor Selected';
             $this->Session->write('emsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
         }
+         $check = $this->Session->check('investtemp1');
+            if ($check) {
+                $check = $this->Session->check('investtemp1.cash_athand');
+                if ($check) {
+                    $this->set('cash_athand', $this->Session->read('investtemp1.cash_athand'));
+                }
+                $check = $this->Session->check('investtemp1.amount_deposited');
+                if ($check) {
+                    $this->set('amount_deposited', $this->Session->read('investtemp1.amount_deposited'));
+                }
+                $check = $this->Session->check('investtemp1.total_invested');
+                if ($check) {
+                    $this->set('total_invested', $this->Session->read('investtemp1.total_invested'));
+                }
+            }
         $check = $this->Session->check('variabless_fixed');
         if ($check) {
             $check = $this->Session->check('variabless_fixed.duedate');
@@ -1544,21 +1557,36 @@ class InvestmentsController extends AppController {
         $check = $this->get_investors();
 
         if (count($check) > 0) {
-        foreach($check as $investor):
-            $investor_id = $investor['investor_id'];
-            
-            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
-            $this->set('investors', $investor);
-            if($ledger_data){
-               $this->set('ledger_data', $ledger_data); 
-            }
-            
+            foreach ($check as $investor):
+                $investor_id = $investor['investor_id'];
+
+                $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+                $this->set('investors', $investor);
+                if ($ledger_data) {
+                    $this->set('ledger_data', $ledger_data);
+                }
+
             endforeach;
         } else {
             $message = 'No Investor Selected';
             $this->Session->write('emsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
         }
+         $check = $this->Session->check('investtemp1');
+            if ($check) {
+                $check = $this->Session->check('investtemp1.cash_athand');
+                if ($check) {
+                    $this->set('cash_athand', $this->Session->read('investtemp1.cash_athand'));
+                }
+                $check = $this->Session->check('investtemp1.amount_deposited');
+                if ($check) {
+                    $this->set('amount_deposited', $this->Session->read('investtemp1.amount_deposited'));
+                }
+                $check = $this->Session->check('investtemp1.total_invested');
+                if ($check) {
+                    $this->set('total_invested', $this->Session->read('investtemp1.total_invested'));
+                }
+            }
         $check = $this->Session->check('variabless_fixed');
         if ($check) {
             $check = $this->Session->check('variabless_fixed.duedate');
@@ -1677,16 +1705,30 @@ class InvestmentsController extends AppController {
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid)/* , 'recursive' => -1 */));
             if ($investor) {
-                $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investorid]]);
-            $this->set('investors', $investor);
-            if($ledger_data){
-               $this->set('ledger_data', $ledger_data); 
-            }
-            
+                $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investorid]]);
+                $this->set('investors', $investor);
+                if ($ledger_data) {
+                    $this->set('ledger_data', $ledger_data);
+                }
             } else {
                 $message = 'No Investor Selected';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
+            }
+             $check = $this->Session->check('investtemp1');
+            if ($check) {
+                $check = $this->Session->check('investtemp1.cash_athand');
+                if ($check) {
+                    $this->set('cash_athand', $this->Session->read('investtemp1.cash_athand'));
+                }
+                $check = $this->Session->check('investtemp1.amount_deposited');
+                if ($check) {
+                    $this->set('amount_deposited', $this->Session->read('investtemp1.amount_deposited'));
+                }
+                $check = $this->Session->check('investtemp1.total_invested');
+                if ($check) {
+                    $this->set('total_invested', $this->Session->read('investtemp1.total_invested'));
+                }
             }
             $check = $this->Session->check('variabless_fixed');
             if ($check) {
@@ -1747,15 +1789,28 @@ class InvestmentsController extends AppController {
 
             $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), 'recursive' => -1));
             if ($investor) {
-            $ledger_data = $this->ClientLedger->find('first',['conditions' => ['ClientLedger.investor_id' => $investorid]]);
-            $this->set('investors', $investor);
-            if($ledger_data){
-               $this->set('ledger_data', $ledger_data); 
+                $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investorid]]);
+                $this->set('investors', $investor);
+                if ($ledger_data) {
+                    $this->set('ledger_data', $ledger_data);
+                }
             }
-            
-            
+          $check = $this->Session->check('investtemp1');
+            if ($check) {
+                $check = $this->Session->check('investtemp1.cash_athand');
+                if ($check) {
+                    $this->set('cash_athand', $this->Session->read('investtemp1.cash_athand'));
+                }
+                $check = $this->Session->check('investtemp1.amount_deposited');
+                if ($check) {
+                    $this->set('amount_deposited', $this->Session->read('investtemp1.amount_deposited'));
+                }
+                $check = $this->Session->check('investtemp1.total_invested');
+                if ($check) {
+                    $this->set('total_invested', $this->Session->read('investtemp1.total_invested'));
+                }
             }
-            $check = $this->Session->check('variabless_fixed');
+                $check = $this->Session->check('variabless_fixed');
             if ($check) {
                 $check = $this->Session->check('variabless_fixed.duedate');
                 if ($check) {
@@ -1792,7 +1847,7 @@ class InvestmentsController extends AppController {
             }
         } else {
             $message = 'No Investor Selected';
-            $this->Session->write('emsg', $message);
+            $this->Session->write('bmsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Group'));
         }
     }
@@ -1814,6 +1869,8 @@ class InvestmentsController extends AppController {
     function process_indv() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
+            $ledger_transactions = array();
+            $cheque_no = '';
             $amount = $this->request->data['Investment']['investment_amount'];
             $page = $this->request->data['Investment']['investor_page'];
             $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
@@ -1821,6 +1878,7 @@ class InvestmentsController extends AppController {
             $custom_rate = $this->request->data['Investment']['custom_rate'];
             $investor_id = $this->request->data['Investment']['investor_id'];
             $investmentproduct_id = $this->request->data['Investment']['investmentproduct_id'];
+            $management_fee_type = $this->request->data['Investment']['management_fee_type'];
             $inv_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($inv_day)) {
                 $inv_month = $this->request->data['Investment']['investment_date']['month'];
@@ -1831,6 +1889,9 @@ class InvestmentsController extends AppController {
             } else {
                 $inv_date = date('Y-m-d');
             }
+            $basefee_duedate = new DateTime($inv_date);
+            $basefee_duedate->add(new DateInterval('P3M'));
+
             $pur_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($pur_day)) {
                 $pur_month = $this->request->data['Investment']['investment_date']['month'];
@@ -1845,6 +1906,9 @@ class InvestmentsController extends AppController {
             $this->request->data['Investment']['purchase_date'] = $pinv_date;
             if ($this->Session->check('investtemp') == true) {
                 $this->Session->delete('investtemp');
+            }
+            if ($this->Session->check('investtemp1') == true) {
+                $this->Session->delete('investtemp1');
             }
             if (isset($currency_id) && !empty($currency_id)) {
                 $currency_array = $this->Currency->find('first', array('conditions' => array('Currency.id' => $currency_id)));
@@ -1867,15 +1931,10 @@ class InvestmentsController extends AppController {
 
 //            $term_id = $this->request->data['Investment']['investmentterm_id'];
 //            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
-            if ($this->request->data['Investment']['cash_athand'] == "" || $this->request->data['Investment']['cash_athand'] == null
-                    || $this->request->data['Investment']['cash_athand'] == 0) {
-                    $message = 'Please Enter Available Cash';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' =>$page));
-                }else{
-                    $amount_available =  $this->request->data['Investment']['cash_athand'];
-                     $cashinvested =  $this->request->data['Investment']['total_invested'];
-                }
+
+            $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
+            $cashinvested = $this->request->data['Investment']['total_invested'];
+            $new_cashinvested = $cashinvested;
             if (isset($this->request->data['fixed_process'])) {
 //                switch ($investmentproduct_id) {
 //                    case 1:
@@ -1888,8 +1947,8 @@ class InvestmentsController extends AppController {
 
                 if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
                     $message = 'Please Select a Currency';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
 
                 if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
@@ -1903,7 +1962,19 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == "" || $this->request->data['Investment']['cashreceiptmode_id'] == null) {
+                    $message = 'Please Select a Cash Receipt Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                }
+                if (($this->request->data['Investment']['cashreceiptmode_id'] == '2') && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
+                    $message = 'Please Supply Cheque No.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == '2') {
+                    $cheque_no = $this->request->data['Investment']['cheque_no'];
+                }
                 if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
                     $message = 'Please Select  an Investment Product';
                     $this->Session->write('bmsg', $message);
@@ -1920,22 +1991,25 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-                 if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
+                if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
                     $message = 'Please Enter Investment Amount';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' =>$page));
-                }else{
-                     $investment_amount = $this->request->data['Investment']['investment_amount'];
-                     
-                     if($investment_amount > $amount_available){
-                     $message = 'Investment Amount cannot be more than investor\'s available cash';
-                    $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                     }
-                    
+                } else {
+                    $investment_amount = $this->request->data['Investment']['investment_amount'];
+
+                    if ($investment_amount > $amount_available) {
+                         //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                       
+                        $message = 'Investment Amount cannot be more than investor\'s available cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                    }
                 }
-               
-                $investment_amount = $this->request->data['Investment']['investment_amount'];
+
                 $first_date = $inv_date;
 //                        break;
             }
@@ -1978,7 +2052,19 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == "" || $this->request->data['Investment']['cashreceiptmode_id'] == null) {
+                    $message = 'Please Select a Cash Receipt Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                }
+                if (($this->request->data['Investment']['cashreceiptmode_id'] == '2') && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
+                    $message = 'Please Supply Cheque No.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == '2') {
+                    $cheque_no = $this->request->data['Investment']['cheque_no'];
+                }
                 if ($this->request->data['Investment']['equities_list_id'] == "" || $this->request->data['Investment']['equities_list_id'] == null) {
                     $message = 'Please Select Equity Purchased';
                     $this->Session->write('bmsg', $message);
@@ -2017,10 +2103,623 @@ class InvestmentsController extends AppController {
                     
                 }
             }
+            $deposit = $this->request->data['Investment']['amount_deposited'];
+            if ($deposit > 0) {
+                $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                    $this->request->data['Investment']['cashreceiptmode_id'],
+                    'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
+                    'date' => $inv_date, 'description' => 'Deposit for investment');
+            }
             $base_fee = 0;
+            $base_rate = 0;
             $benchmark_rate = 0;
             if (isset($this->request->data['Investment']['base_fees'])) {
-                $base_fee = $this->request->data['Investment']['base_fees'];
+                $base_rate = $this->request->data['Investment']['base_fees'];
+            }
+            if (isset($this->request->data['Investment']['benchmark_rate'])) {
+                $benchmark_rate = $this->request->data['Investment']['benchmark_rate'];
+            }
+            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
+
+
+                $date = new DateTime($first_date);
+
+//                switch ($investmentproduct_id) {
+//                    case 1:
+                if (isset($this->request->data['fixed_process'])) {
+//                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
+//
+//                    if ($portfolio) {
+//                        $year = $portfolio['InvestmentTerm']['period'];
+//                        $date->add(new DateInterval('P' . $year . 'Y'));
+//                        $date_statemt = new DateTime($first_date);
+//                        $principal = $investment_amount;
+//                        $statemt_array = array();
+//                        if (isset($custom_rate) && !empty($custom_rate)) {
+//                            $rate = $custom_rate;
+//                        } else {
+//                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
+//                        }
+//                        $interest_amount1 = ($rate / 100) * $investment_amount;
+//                        $interest_amount = $interest_amount1 * $year;
+//                        $amount_due = $interest_amount + $investment_amount;
+//                        for ($n = 1; $n <= $year; $n++) {
+//                            $date_statemt->add(new DateInterval('P1Y'));
+//
+//                            $total = $interest_amount1 + $principal;
+//                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+//                                'principal' => $principal,
+//                                'interest' => $interest_amount1,
+//                                'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                'total' => $total);
+//                            $principal = $total;
+//                        }
+                    $new_cashathand = $amount_available - $investment_amount;
+                    $new_cashinvested = $cashinvested + $investment_amount;
+                    $period = $this->request->data['Investment']['investment_period'];
+                    $duration = $this->request->data['Investment']['duration'];
+                    $year = $duration;
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1D'));
+                                $interest_amount2 = $interest_amount1 * (1 / 365);
+                                $total = $interest_amount2 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount2,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+//                                $principal = $total;
+                            }
+
+                            break;
+                        case 'Year(s)':
+
+                            $finv_date = $inv_date;
+                            $date = new DateTime($finv_date);
+                            $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1Y'));
+                                $interest_amount2 = $interest_amount1 * (365 / 365);
+                                $total = $interest_amount2 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount2,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+//                            $principal = $total;
+                            }
+
+                            break;
+                    }
+                    $check = $this->Session->check('statemt_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+                    $this->Session->write('statemt_array_fixed', $statemt_array);
+                    $total_tenure = $this->request->data['Investment']['total_tenure'];
+                    $description = 'Fixed income investment for ' . $total_tenure . ' ' . $period;
+                    $investment_array = array(
+                        'investment_amount' => $this->request->data['Investment']['investment_amount'],
+//                        'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
+                        'custom_rate' => $rate,
+                        'duration' => $this->request->data['Investment']['duration'],
+                        'investment_period' => $period,
+                        'total_tenure' => $total_tenure,
+                        'instruction_id' => $this->request->data['Investment']['instruction_id'],
+                        'instruction_details' => $this->request->data['Investment']['instruction_details'],
+                        'interest_earned' => $interest_amount,
+                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
+                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                        'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+                    );
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description);
+                    $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_fee / 100) * $investment_amount;
+
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+
+                            break;
+                    }
+
+
+                    $check = $this->Session->check('investment_array_fixed');
+                    if ($check) {
+                        $this->Session->delete('investment_array_fixed');
+                    }
+
+                    $this->Session->write('investment_array_fixed', $investment_array);
+
+                    $check = $this->Session->check('variabless_fixed');
+                    if ($check) {
+                        $this->Session->delete('variabless_fixed');
+                    }
+
+                    $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+                    $this->Session->write('variabless_fixed', $variables);
+                }
+
+
+
+                if (isset($this->request->data['equity_process'])) {
+                    $equity_name = '';
+                    $totalamt = 0;
+                    $total_shares = 0;
+                    $equities_list_id = $this->request->data['Investment']['equities_list_id'];
+                    $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $equities_list_id)));
+                    if ($equity) {
+                        $equity_name = $equity['EquitiesList']['equity_abbrev'];
+                    }
+                    $check = $this->Session->check('variabless_equity');
+                    if ($check) {
+                        $this->Session->delete('variabless_equity');
+                    }
+
+
+
+                    $equities = $this->get_equity();
+                    $equity_data = array($equities_list_id => array(
+                            'equities_list_id' => $equities_list_id,
+                            'purchase_date' => $inv_date,
+                            'purchase_price' => $this->request->data['Investment']['purchase_price'],
+                            'min_share_price' => $this->request->data['Investment']['min_share_price'],
+                            'max_share_price' => $this->request->data['Investment']['max_share_price'],
+                            'numb_shares' => $this->request->data['Investment']['numb_shares'],
+                            'numb_shares_left' => $this->request->data['Investment']['numb_shares'],
+                            'created_by' => $this->request->data['Investment']['user_id'],
+                            'modified_by' => $this->request->data['Investment']['user_id']
+                    ));
+                    $equities+=$equity_data;
+                    $this->set_equity($equities);
+                    $numb0fshares = $this->request->data['Investment']['numb_shares'];
+                    $equity_price = $this->request->data['Investment']['max_share_price'];
+
+                    $totalamt += ($numb0fshares * $equity_price);
+                    $this->request->data['Investment']['total_amount'] = $totalamt;
+                    $total_shares += $numb0fshares;
+                    if ($totalamt > $amount_available) {
+                         //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                       
+                        $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                    }
+                    $x = 2;
+                    while ($x <= 5) {
+                        $equities = $this->get_equity();
+
+                        //equity already exists, add to equity_details
+                        if (isset($this->request->data['Investment']['equities_list_id' . $x]) &&
+                                !empty($this->request->data['Investment']['equities_list_id' . $x])) {
+                            $newequities_list_id = $this->request->data['Investment']['equities_list_id' . $x];
+                            $equity_data = array($newequities_list_id => array(
+                                    'equities_list_id' => $newequities_list_id,
+                                    'purchase_date' => $inv_date,
+                                    'purchase_price' => $this->request->data['Investment']['purchase_price' . $x],
+                                    'min_share_price' => $this->request->data['Investment']['min_share_price' . $x],
+                                    'max_share_price' => $this->request->data['Investment']['max_share_price' . $x],
+                                    'numb_shares' => $this->request->data['Investment']['numb_shares' . $x],
+                                    'numb_shares_left' => $this->request->data['Investment']['numb_shares' . $x],
+                                    'created_by' => $this->request->data['Investment']['user_id'],
+                                    'modified_by' => $this->request->data['Investment']['user_id']
+                            ));
+
+                            $equities+=$equity_data;
+                            $this->set_equity($equities);
+                            $numb0fshares = $this->request->data['Investment']['numb_shares' . $x];
+                            $equity_price = $this->request->data['Investment']['max_share_price' . $x];
+                            $total_shares += $numb0fshares;
+                            $totalamt += ($numb0fshares * $equity_price);
+                            $this->request->data['Investment']['total_amount'] = $totalamt;
+                        }
+                        $x++;
+                    }
+                    if ($totalamt > $amount_available) {
+                        //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                        
+                        $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                    }
+                    $new_cashathand = $amount_available - $totalamt;
+                    $new_cashinvested = $cashinvested + $totalamt;
+
+                    //Ledger transaction entry
+                    $description = 'Equity investment';
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description);
+                    $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_fee / 100) * $totalamt;
+
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_fee / 100) * $totalamt;
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+
+                            break;
+                    }
+
+
+                    $investment_array = array(
+                        'total_amount' => $totalamt
+                    );
+                    $check = $this->Session->check('investment_array_equity');
+                    if ($check) {
+                        $this->Session->delete('investment_array_equity');
+                    }
+
+                    $this->Session->write('investment_array_equity', $investment_array);
+
+//                        break;
+                    $variables = array('totalamt' => $totalamt, 'share_price' => $total_shares);
+                    $this->Session->write('variabless_equity', $variables);
+                }
+
+
+
+//store total_invested and cash at hand in session so can save in investment when storing array in summary view
+//$this->Session->write('investtemp1.cash_athand', $new_cashathand);
+                //$this->Session->write('investtemp1.total_invested', $new_cashinvested);
+                $generic_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                    'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                    'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
+                    'currency_id' => $this->request->data['Investment']['currency_id'],
+                    'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
+                    'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
+                    'base_rate' => $base_rate,
+                    'base_fees' => $base_fee,
+                    'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
+                    'benchmark_rate' => $benchmark_rate,
+                    'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
+                    'investment_date' => $inv_date,
+                    'cash_athand' => $new_cashathand,
+                    'total_invested' => $new_cashinvested);
+
+                $total_cash = $new_cashathand + $new_cashinvested;
+                $description = 'Deposit for investment';
+//move to summary contract function and store in client ledger
+                $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand,
+                    'invested_amount' => $new_cashinvested);
+
+
+                $this->Session->delete('investtemp');
+                $this->Session->delete('investtemp1');
+                $this->Session->write('generic_array', $generic_array);
+                $this->Session->write('client_ledger', $client_ledger);
+                $this->Session->write('ledger_transactions', $ledger_transactions);
+                $this->Session->write('investtemp.investmentproduct_id', $investmentproduct_id);
+                $this->Session->write('investtemp1', $this->request->data['Investment']);
+                $this->Session->write('investtemp1.amount_deposited', 0);
+                $this->Session->write('investtemp1.cash_athand', $new_cashathand);
+                $this->Session->write('investtemp1.total_invested', $new_cashinvested);
+                $message = 'Investment Successfully Processed,Click Next to Save and Print Investment Contract';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+            } else {
+                $message = 'Please Select  an Investment Product';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+            }
+        }
+    }
+
+    function process_comp() {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $ledger_transactions = array();
+            $cheque_no = '';
+            $amount = $this->request->data['Investment']['investment_amount'];
+            $page = $this->request->data['Investment']['investor_page'];
+            $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
+            $currency_id = $this->request->data['Investment']['currency_id'];
+            $custom_rate = $this->request->data['Investment']['custom_rate'];
+
+            $investor_id = $this->request->data['Investment']['investor_id'];
+            $investmentproduct_id = $this->request->data['Investment']['investmentproduct_id'];
+            $management_fee_type = $this->request->data['Investment']['management_fee_type'];
+            $inv_day = $this->request->data['Investment']['investment_date']['day'];
+            if (!empty($inv_day)) {
+                $inv_month = $this->request->data['Investment']['investment_date']['month'];
+                $inv_year = $this->request->data['Investment']['investment_date']['year'];
+                $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
+                $sinv_date = strtotime($finv_date);
+                $inv_date = date('Y-m-d', $sinv_date);
+            } else {
+                $inv_date = date('Y-m-d');
+            }
+            $basefee_duedate = new DateTime($inv_date);
+            $basefee_duedate->add(new DateInterval('P3M'));
+
+            $pur_day = $this->request->data['Investment']['investment_date']['day'];
+            if (!empty($pur_day)) {
+                $pur_month = $this->request->data['Investment']['investment_date']['month'];
+                $pur_year = $this->request->data['Investment']['investment_date']['year'];
+                $pfinv_date = $pur_year . "-" . $pur_month . "-" . $pur_day;
+                $psinv_date = strtotime($pfinv_date);
+                $pinv_date = date('Y-m-d', $psinv_date);
+            } else {
+                $pinv_date = date('Y-m-d');
+            }
+            $this->request->data['Investment']['investment_date'] = $inv_date;
+            $this->request->data['Investment']['purchase_date'] = $pinv_date;
+            if ($this->Session->check('investtemp') == true) {
+                $this->Session->delete('investtemp');
+            }
+            if ($this->Session->check('investtemp1') == true) {
+                $this->Session->delete('investtemp1');
+            }
+            if (isset($currency_id) && !empty($currency_id)) {
+                $currency_array = $this->Currency->find('first', array('conditions' => array('Currency.id' => $currency_id)));
+                if ($currency_array) {
+                    $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
+                }
+            }
+//            if (isset($this->request->data['equity_process'])) {
+//                case 2:
+//                    $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
+//                    $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
+//                    $this->request->data['Investment']['currency2'] = $this->request->data['currency2'];
+//                    $this->request->data['Investment']['paymentmode_id2'] = $this->request->data['paymentmode_id2'];
+//
+//                    $this->request->data['Investment']['paymentschedule_id2'] = $this->request->data['paymentschedule_id2'];
+//                    break;
+//            }
+            $this->Session->write('investtemp', $this->request->data['Investment']);
+
+            $this->Session->write('investtemp1', $this->request->data['Investment']);
+
+//            $term_id = $this->request->data['Investment']['investmentterm_id'];
+//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
+            $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
+            $cashinvested = $this->request->data['Investment']['total_invested'];
+            $new_cashinvested = $cashinvested;
+//            $term_id = $this->request->data['Investment']['investmentterm_id'];
+//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
+            if (isset($this->request->data['fixed_process'])) {
+//                switch ($investmentproduct_id) {
+//                    case 1:
+//                if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
+//                    $message = 'Please Select an Investment Term';
+//                    $this->Session->write('bmsg', $message);
+//                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                }
+
+
+
+                if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
+                    $message = 'Please Select  an Investment Product';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
+                    $message = 'Please Select a Currency';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
+                    $message = 'Please Select a Payment Schedule';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
+                    $message = 'Please Select a Payment Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == "" || $this->request->data['Investment']['cashreceiptmode_id'] == null) {
+                    $message = 'Please Select a Cash Receipt Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if (($this->request->data['Investment']['cashreceiptmode_id'] == '2') && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
+                    $message = 'Please Supply Cheque No.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == '2') {
+                    $cheque_no = $this->request->data['Investment']['cheque_no'];
+                }
+
+                if ($this->request->data['Investment']['instruction_id'] == "" || $this->request->data['Investment']['instruction_id'] == null) {
+                    $message = 'Please Select an Instruction';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                    $message = 'Please State Instruction Details';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
+                    $message = 'Please Enter Investment Amount';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                } else {
+                    $investment_amount = $this->request->data['Investment']['investment_amount'];
+
+                    if ($investment_amount > $amount_available) {
+                         //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                       
+                        $message = 'Investment Amount cannot be more than investor\'s available cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                    }
+                }
+                $first_date = $inv_date;
+//                        break;
+            }
+            if (isset($this->request->data['equity_process'])) {
+//                    case 2:
+                $first_date = $pinv_date;
+
+                $this->request->data['Investment']['investment_date'] = $pinv_date;
+
+//                        if ($this->request->data['instruction_id2'] == "" || $this->request->data['instruction_id2'] == null) {
+//                            $message = 'Please Select an Instruction';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                        }
+//                        if (($this->request->data['instruction_id2'] == 5) && (is_null($this->request->data['instruction_details2']) || $this->request->data['instruction_details2'] == "")) {
+//                            $message = 'Please State Instruction Details';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                        }
+//                        if ($this->request->data['currency'] == "" || $this->request->data['currency'] == null) {
+//                            $message = 'Please Select a Currency';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                        }
+
+                if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
+                    $message = 'Please Select a Currency';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
+                    $message = 'Please Select a Payment Schedule';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
+                    $message = 'Please Select a Payment Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == "" || $this->request->data['Investment']['cashreceiptmode_id'] == null) {
+                    $message = 'Please Select a Cash Receipt Mode';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if (($this->request->data['Investment']['cashreceiptmode_id'] == '2') && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
+                    $message = 'Please Supply Cheque No.';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+                if ($this->request->data['Investment']['cashreceiptmode_id'] == '2') {
+                    $cheque_no = $this->request->data['Investment']['cheque_no'];
+                }
+                if ($this->request->data['Investment']['equities_list_id'] == "" || $this->request->data['Investment']['equities_list_id'] == null) {
+                    $message = 'Please Select Equity Purchased';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['purchase_price'] == "" || $this->request->data['Investment']['purchase_price'] == null) {
+                    $message = 'Please State Equity Purchase Price';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+                if ($this->request->data['Investment']['numb_shares'] == "" || $this->request->data['Investment']['numb_shares'] == null) {
+                    $message = 'Please State number of Shares';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                }
+
+
+//                $numb0fshares = $this->request->data['Investment']['numb_shares'];
+//                $equity_price = $this->request->data['Investment']['purchase_price'];
+//
+//                $totalamt = ($numb0fshares * $equity_price);
+//                $this->request->data['Investment']['total_amount'] = $totalamt;
+                // $this->request->data['Investment']['investment_amount'] = $totalamt;
+//                        break;
+            }
+//                }
+////            }
+            //ask if 
+            if (isset($payment_schedule) && !empty($payment_schedule)) {
+                if ($payment_schedule == 1) {
+                    
+                } elseif ($payment_schedule == 2) {
+                    
+                }
+            }
+             $deposit = $this->request->data['Investment']['amount_deposited'];
+            if ($deposit > 0) {
+                $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                    $this->request->data['Investment']['cashreceiptmode_id'],
+                    'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
+                    'date' => $inv_date, 'description' => 'Deposit for investment');
+            }
+            $base_fee = 0;
+            $base_rate = 0;
+            $benchmark_rate = 0;
+            if (isset($this->request->data['Investment']['base_fees'])) {
+                $base_rate = $this->request->data['Investment']['base_fees'];
             }
             if (isset($this->request->data['Investment']['benchmark_rate'])) {
                 $benchmark_rate = $this->request->data['Investment']['benchmark_rate'];
@@ -2092,19 +2791,76 @@ class InvestmentsController extends AppController {
 
                             break;
 
+//                        case 'Month(s)':
+//
+//                            $date->add(new DateInterval('P' . $duration . 'M'));
+//                            $date_statemt = new DateTime($first_date);
+//                            $principal = $investment_amount;
+//                            $statemt_array = array();
+//                            $rate = $custom_rate;
+//
+//                            $interest_amount1 = ($rate / 100) * $investment_amount;
+//                            $interest_amount = $interest_amount1;
+//                            $amount_due = $interest_amount + $investment_amount;
+//                            for ($n = 1; $n <= $duration; $n++) {
+//                                $date_statemt->add(new DateInterval('P1M'));
+//
+//                                $interest_amount2 = $interest_amount1 * (1 / 365);
+//                                $total = $interest_amount2 + $principal;
+//                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+//                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+//                                    'principal' => $principal,
+//                                    'interest' => $interest_amount2,
+//                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                    'total' => $total);
+////                                $principal = $total;
+//                            }
+//
+//                            break;
+
+                        case 'Year(s)':
+
+                            $finv_date = $inv_date;
+                            $date = new DateTime($finv_date);
+                            $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+                            $YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            for ($n = 1; $n <= $duration; $n++) {
+                                $date_statemt->add(new DateInterval('P1Y'));
+                                $interest_amount2 = $interest_amount1 * (365 / 365);
+                                $total = $interest_amount2 + $principal;
+                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                                    'principal' => $principal,
+                                    'interest' => $interest_amount2,
+                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'total' => $total);
+//                            $principal = $total;
+                            }
+
+                            break;
                     }
                     $check = $this->Session->check('statemt_array_fixed');
                     if ($check) {
                         $this->Session->delete('statemt_array_fixed');
                     }
                     $this->Session->write('statemt_array_fixed', $statemt_array);
+                    $total_tenure = $this->request->data['Investment']['total_tenure'];
+                    $description = 'Fixed income investment for ' . $total_tenure . ' ' . $period;
 
                     $investment_array = array(
                         'investment_amount' => $this->request->data['Investment']['investment_amount'],
 //                        'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
                         'custom_rate' => $rate,
                         'duration' => $this->request->data['Investment']['duration'],
-                        'investment_period' => $this->request->data['Investment']['investment_period'],
+                        'investment_period' => $period,
+                        'total_tenure' => $total_tenure,
                         'instruction_id' => $this->request->data['Investment']['instruction_id'],
                         'instruction_details' => $this->request->data['Investment']['instruction_details'],
                         'interest_earned' => $interest_amount,
@@ -2112,528 +2868,36 @@ class InvestmentsController extends AppController {
                         'earned_balance' => $this->request->data['Investment']['investment_amount'],
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                     );
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description);
+                    $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_fee / 100) * $investment_amount;
 
-
-
-                    $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    }
-
-                    $this->Session->write('investment_array_fixed', $investment_array);
-
-                    $check = $this->Session->check('variabless_fixed');
-                    if ($check) {
-                        $this->Session->delete('variabless_fixed');
-                    }
-
-                    $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
-                    $this->Session->write('variabless_fixed', $variables);
-                }
-                
-                
-                
-                if (isset($this->request->data['equity_process'])) {
-                    $equity_name = '';
-                    $totalamt = 0;
-                    $total_shares = 0;
-                    $equities_list_id = $this->request->data['Investment']['equities_list_id'];
-                    $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $equities_list_id)));
-                    if ($equity) {
-                        $equity_name = $equity['EquitiesList']['equity_abbrev'];
-                    }
-                    $check = $this->Session->check('variabless_equity');
-                    if ($check) {
-                        $this->Session->delete('variabless_equity');
-                    }
-
-                    
-
-                    
-                    $equities = $this->get_equity();
-                    $equity_data = array($equities_list_id => array(
-                            'equities_list_id' => $equities_list_id,
-                            'purchase_date' => $inv_date,
-                            'purchase_price' => $this->request->data['Investment']['purchase_price'],
-                            'min_share_price' => $this->request->data['Investment']['min_share_price'],
-                            'max_share_price' => $this->request->data['Investment']['max_share_price'],
-                            'numb_shares' => $this->request->data['Investment']['numb_shares'],
-                            'numb_shares_left' => $this->request->data['Investment']['numb_shares'],
-                            'created_by' => $this->request->data['Investment']['user_id'],
-                            'modified_by' => $this->request->data['Investment']['user_id']
-                        ));
-                    $equities+=$equity_data;
-                    $this->set_equity($equities);
-                    $numb0fshares = $this->request->data['Investment']['numb_shares'];
-                  $equity_price = $this->request->data['Investment']['max_share_price'];
-
-                $totalamt += ($numb0fshares * $equity_price);
-                $this->request->data['Investment']['total_amount'] = $totalamt;
-                $total_shares += $numb0fshares;
-                
-                    $x = 2;
-                    while ($x <= 5) {
-                        $equities = $this->get_equity();
-
-                        //equity already exists, add to equity_details
-                        if (isset($this->request->data['Investment']['equities_list_id' . $x]) &&
-                                !empty($this->request->data['Investment']['equities_list_id' . $x])) {
-                            $newequities_list_id = $this->request->data['Investment']['equities_list_id' . $x];
-                            $equity_data = array($newequities_list_id => array(
-                                    'equities_list_id' => $newequities_list_id,
-                                    'purchase_date' => $inv_date,
-                                    'purchase_price' => $this->request->data['Investment']['purchase_price' . $x],
-                                    'min_share_price' => $this->request->data['Investment']['min_share_price' . $x],
-                                    'max_share_price' => $this->request->data['Investment']['max_share_price' . $x],
-                                    'numb_shares' => $this->request->data['Investment']['numb_shares' . $x],
-                                    'numb_shares_left' => $this->request->data['Investment']['numb_shares' . $x],
-                                    'created_by' => $this->request->data['Investment']['user_id'],
-                                    'modified_by' => $this->request->data['Investment']['user_id']
-                                ));
-
-                            $equities+=$equity_data;
-                            $this->set_equity($equities);
-                            $numb0fshares = $this->request->data['Investment']['numb_shares'. $x];
-                            $equity_price = $this->request->data['Investment']['max_share_price'. $x];
-                            $total_shares += $numb0fshares;
-                $totalamt += ($numb0fshares * $equity_price);
-                $this->request->data['Investment']['total_amount'] = $totalamt;
-                        }
-                        $x++;
-                    }
-                    if($totalamt > $amount_available){
-                     $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                     }
-                    $new_cashathand = $amount_available - $totalamt;
-                    $new_cashinvested = $cashinvested + $totalamt;
-
-                $investment_array = array(
-                        'total_amount' => $totalamt
-                    );
-                    $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-
-                    $this->Session->write('investment_array_equity', $investment_array);
-
-//                        break;
-                    $variables = array('totalamt' => $totalamt, 'share_price' => $total_shares);
-                    $this->Session->write('variabless_equity', $variables);
-                }
-
-
-
-//store total_invested and cash at hand in session so can save in investment when storing array in summary view
-//$this->Session->write('investtemp1.cash_athand', $new_cashathand);
- //$this->Session->write('investtemp1.total_invested', $new_cashinvested);
-$generic_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                        'investor_id' => $this->request->data['Investment']['investor_id'],
-                        'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                        'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                        'currency_id' => $this->request->data['Investment']['currency_id'],
-                        'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                        'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
-                        'base_fee' => $base_fee,
-                        'benchmark_rate' => $benchmark_rate,
-                        'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                        'investment_date' => $pinv_date,
-                        'cash_athand' => $new_cashathand,
-                        'total_invested' => $new_cashinvested);
-
-                $total_cash = $new_cashathand + $new_cashinvested;
-                $description = 'Deposit for investment';
-//move to summary contract function and store in client ledger
-              $client_ledger = array('investor_id' => $investor_id,'credit' => $total_cash,'description' => $description,
-                  'date' => $pinv_date);
-
-
-                $this->Session->delete('investtemp');
-                $this->Session->delete('investtemp1');
-                $this->Session->delete('generic_array');
-                $this->Session->write('generic_array',$generic_array);
-                $this->Session->write('investtemp.investmentproduct_id', $investmentproduct_id);
-                $this->Session->write('investtemp1', $this->request->data['Investment']);
-                $this->Session->write('investtemp1.cash_athand', $new_cashathand);
-                $this->Session->write('investtemp1.total_invested', $new_cashinvested);
-                $message = 'Investment Successfully Processed,Click Next to Save and Print Investment Contract';
-                $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-            } else {
-                $message = 'Please Select  an Investment Product';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-            }
-        }
-    }
-
-    function process_comp() {
-        $this->autoRender = false;
-        if ($this->request->is('post')) {
-            $amount = $this->request->data['Investment']['investment_amount'];
-            $page = $this->request->data['Investment']['investor_page'];
-            $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
-            $currency_id = $this->request->data['Investment']['currency_id'];
-            $custom_rate = $this->request->data['Investment']['custom_rate'];
-
-            $investor_id = $this->request->data['Investment']['investor_id'];
-            $investmentproduct_id = $this->request->data['Investment']['investmentproduct_id'];
-            $inv_day = $this->request->data['Investment']['investment_date']['day'];
-            if (!empty($inv_day)) {
-                $inv_month = $this->request->data['Investment']['investment_date']['month'];
-                $inv_year = $this->request->data['Investment']['investment_date']['year'];
-                $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
-                $sinv_date = strtotime($finv_date);
-                $inv_date = date('Y-m-d', $sinv_date);
-            } else {
-                $inv_date = date('Y-m-d');
-            }
-            $pur_day = $this->request->data['Investment']['investment_date']['day'];
-            if (!empty($pur_day)) {
-                $pur_month = $this->request->data['Investment']['investment_date']['month'];
-                $pur_year = $this->request->data['Investment']['investment_date']['year'];
-                $pfinv_date = $pur_year . "-" . $pur_month . "-" . $pur_day;
-                $psinv_date = strtotime($pfinv_date);
-                $pinv_date = date('Y-m-d', $psinv_date);
-            } else {
-                $pinv_date = date('Y-m-d');
-            }
-            $this->request->data['Investment']['investment_date'] = $inv_date;
-            $this->request->data['Investment']['purchase_date'] = $pinv_date;
-            if ($this->Session->check('investtemp') == true) {
-                $this->Session->delete('investtemp');
-            }
-            if (isset($currency_id) && !empty($currency_id)) {
-                $currency_array = $this->Currency->find('first', array('conditions' => array('Currency.id' => $currency_id)));
-                if ($currency_array) {
-                    $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
-                }
-            }
-//            if (isset($this->request->data['equity_process'])) {
-//                case 2:
-//                    $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
-//                    $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
-//                    $this->request->data['Investment']['currency2'] = $this->request->data['currency2'];
-//                    $this->request->data['Investment']['paymentmode_id2'] = $this->request->data['paymentmode_id2'];
-//
-//                    $this->request->data['Investment']['paymentschedule_id2'] = $this->request->data['paymentschedule_id2'];
-//                    break;
-//            }
-            $this->Session->write('investtemp', $this->request->data['Investment']);
-
-            $this->Session->write('investtemp1', $this->request->data['Investment']);
-
-//            $term_id = $this->request->data['Investment']['investmentterm_id'];
-//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
-            if ($this->request->data['Investment']['cash_athand'] == "" || $this->request->data['Investment']['cash_athand'] == null
-                    || $this->request->data['Investment']['cash_athand'] == 0) {
-                    $message = 'Please Enter Available Cash';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' =>$page, $investor_id));
-                }else{
-                    $amount_available =  $this->request->data['Investment']['cash_athand'];
-                     $cashinvested =  $this->request->data['Investment']['total_invested'];
-                }
-//            $term_id = $this->request->data['Investment']['investmentterm_id'];
-//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
-            if (isset($this->request->data['fixed_process'])) {
-//                switch ($investmentproduct_id) {
-//                    case 1:
-//                if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
-//                    $message = 'Please Select an Investment Term';
-//                    $this->Session->write('bmsg', $message);
-//                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-//                }
-
-
-                if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
-                    $message = 'Please Select a Currency';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
-                    $message = 'Please Select a Payment Schedule';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
-                    $message = 'Please Select a Payment Mode';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
-                    $message = 'Please Select  an Investment Product';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['instruction_id'] == "" || $this->request->data['Investment']['instruction_id'] == null) {
-                    $message = 'Please Select an Instruction';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
-                    $message = 'Please State Instruction Details';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                 if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
-                    $message = 'Please Enter Investment Amount';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' =>$page));
-                }else{
-                     $investment_amount = $this->request->data['Investment']['investment_amount'];
-                     
-                     if($investment_amount > $amount_available){
-                     $message = 'Investment Amount cannot be more than investor\'s available cash';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                     }
-                }
-                $first_date = $inv_date;
-//                        break;
-            }
-            if (isset($this->request->data['equity_process'])) {
-//                    case 2:
-                $first_date = $pinv_date;
-
-                $this->request->data['Investment']['investment_date'] = $pinv_date;
-
-//                        if ($this->request->data['instruction_id2'] == "" || $this->request->data['instruction_id2'] == null) {
-//                            $message = 'Please Select an Instruction';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if (($this->request->data['instruction_id2'] == 5) && (is_null($this->request->data['instruction_details2']) || $this->request->data['instruction_details2'] == "")) {
-//                            $message = 'Please State Instruction Details';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if ($this->request->data['currency'] == "" || $this->request->data['currency'] == null) {
-//                            $message = 'Please Select a Currency';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-
-                if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
-                    $message = 'Please Select a Currency';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
-                    $message = 'Please Select a Payment Schedule';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
-                    $message = 'Please Select a Payment Mode';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['equities_list_id'] == "" || $this->request->data['Investment']['equities_list_id'] == null) {
-                    $message = 'Please Select Equity Purchased';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['purchase_price'] == "" || $this->request->data['Investment']['purchase_price'] == null) {
-                    $message = 'Please State Equity Purchase Price';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-                if ($this->request->data['Investment']['numb_shares'] == "" || $this->request->data['Investment']['numb_shares'] == null) {
-                    $message = 'Please State number of Shares';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                }
-
-
-//                $numb0fshares = $this->request->data['Investment']['numb_shares'];
-//                $equity_price = $this->request->data['Investment']['purchase_price'];
-//
-//                $totalamt = ($numb0fshares * $equity_price);
-//                $this->request->data['Investment']['total_amount'] = $totalamt;
-                // $this->request->data['Investment']['investment_amount'] = $totalamt;
-//                        break;
-            }
-//                }
-////            }
-            //ask if 
-            if (isset($payment_schedule) && !empty($payment_schedule)) {
-                if ($payment_schedule == 1) {
-                    
-                } elseif ($payment_schedule == 2) {
-                    
-                }
-            }
-            $base_fee = 0;
-            $benchmark_rate = 0;
-            if (isset($this->request->data['Investment']['base_fees'])) {
-                $base_fee = $this->request->data['Investment']['base_fees'];
-            }
-            if (isset($this->request->data['Investment']['benchmark_rate'])) {
-                $benchmark_rate = $this->request->data['Investment']['benchmark_rate'];
-            }
-            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
-
-
-                $date = new DateTime($first_date);
-
-//                switch ($investmentproduct_id) {
-//                    case 1:
-                if (isset($this->request->data['fixed_process'])) {
-//                    $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $term_id), 'recursive' => -1));
-//
-//                    if ($portfolio) {
-//                        $year = $portfolio['InvestmentTerm']['period'];
-//                        $date->add(new DateInterval('P' . $year . 'Y'));
-//                        $date_statemt = new DateTime($first_date);
-//                        $principal = $investment_amount;
-//                        $statemt_array = array();
-//                        if (isset($custom_rate) && !empty($custom_rate)) {
-//                            $rate = $custom_rate;
-//                        } else {
-//                            $rate = $portfolio['InvestmentTerm']['interest_rate'];
-//                        }
-//                        $interest_amount1 = ($rate / 100) * $investment_amount;
-//                        $interest_amount = $interest_amount1 * $year;
-//                        $amount_due = $interest_amount + $investment_amount;
-//                        for ($n = 1; $n <= $year; $n++) {
-//                            $date_statemt->add(new DateInterval('P1Y'));
-//
-//                            $total = $interest_amount1 + $principal;
-//                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-//                                'principal' => $principal,
-//                                'interest' => $interest_amount1,
-//                                'maturity_date' => $date_statemt->format('Y-m-d'),
-//                                'total' => $total);
-//                            $principal = $total;
-//                        }
-                    $new_cashathand = $amount_available - $investment_amount;
-                    $new_cashinvested = $cashinvested + $investment_amount;
-                    $period = $this->request->data['Investment']['investment_period'];
-                    $duration = $this->request->data['Investment']['duration'];
-                    $year = $duration;
-                    switch ($period) {
-                        case 'Day(s)':
-
-                            $date->add(new DateInterval('P' . $duration . 'D'));
-                            $date_statemt = new DateTime($first_date);
-                            $principal = $investment_amount;
-                            $statemt_array = array();
-                            $rate = $custom_rate;
-
-                            $interest_amount1 = ($rate / 100) * $investment_amount;
-                            $interest_amount = $interest_amount1  * ($duration / 365);
-                            $amount_due = $interest_amount + $investment_amount;
-                            for ($n = 1; $n <= $duration; $n++) {
-                                $date_statemt->add(new DateInterval('P1D'));
-                                $interest_amount2 = $interest_amount1 * (1 / 365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                    'investor_id' => $this->request->data['Investment']['investor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
-//                                $principal = $total;
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-
+                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
-
-                        case 'Month(s)':
-
-                            $date->add(new DateInterval('P' . $duration . 'M'));
-                            $date_statemt = new DateTime($first_date);
-                            $principal = $investment_amount;
-                            $statemt_array = array();
-                            $rate = $custom_rate;
-
-                            $interest_amount1 = ($rate / 100) * $investment_amount;
-                            $interest_amount = $interest_amount1;
-                            $amount_due = $interest_amount + $investment_amount;
-                            for ($n = 1; $n <= $duration; $n++) {
-                                $date_statemt->add(new DateInterval('P1M'));
-
-                                $interest_amount2 = $interest_amount1 *(1/365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                    'investor_id' => $this->request->data['Investment']['investor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
-//                                $principal = $total;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-
-                            break;
-
-                        case 'Year(s)':
-                            $date->add(new DateInterval('P' . $duration . 'Y'));
-                            $date_statemt = new DateTime($first_date);
-                            $principal = $investment_amount;
-                            $statemt_array = array();
-                            $rate = $custom_rate;
-
-                            $interest_amount1 = ($rate / 100) * $investment_amount;
-                            $interest_amount = $interest_amount1;
-                            $amount_due = $interest_amount + $investment_amount;
-                            for ($n = 1; $n <= $duration; $n++) {
-                                $date_statemt->add(new DateInterval('P1Y'));
-
-                                $interest_amount2 = $interest_amount1 *(1/365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                    'investor_id' => $this->request->data['Investment']['investor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
-//                                $principal = $total;
-                            }
-
+                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
                     }
-                    $check = $this->Session->check('statemt_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('statemt_array_fixed');
-                    }
-                    $this->Session->write('statemt_array_fixed', $statemt_array);
 
-                    $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                        'investor_id' => $this->request->data['Investment']['investor_id'],
-                        'investment_amount' => $this->request->data['Investment']['investment_amount'],
-//                            'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
-                        'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                        'custom_rate' => $rate,
-                        'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
-                        'base_fee' => $base_fee,
-                        'benchmark_rate' => $benchmark_rate,
-                        'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                        'currency_id' => $this->request->data['Investment']['currency_id'],
-                        'duration' => $this->request->data['Investment']['duration'],
-                        'investment_period' => $this->request->data['Investment']['investment_period'],
-                        'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                        'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                        'instruction_id' => $this->request->data['Investment']['instruction_id'],
-                        'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
-                        'interest_earned' => $interest_amount,
-                        'investment_date' => $inv_date,
-                        'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
-                    );
+
 
 
                     $check = $this->Session->check('investment_array_fixed');
@@ -2674,7 +2938,7 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
 //                    $variables = array('totalamt' => $totalamt, 'share_price' => $this->request->data['Investment']['purchase_price'], 'total_fees' => $this->request->data['Investment']['total_fees'], 'equity' => $equity_name);
 //                    $this->Session->write('variabless_equity', $variables);
 
-                  
+
 
                     $equities = $this->get_equity();
                     $equity_data = array($equities_list_id => array(
@@ -2687,15 +2951,25 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                             'numb_shares_left' => $this->request->data['Investment']['numb_shares'],
                             'created_by' => $this->request->data['Investment']['user_id'],
                             'modified_by' => $this->request->data['Investment']['user_id']
-                        ));
+                    ));
                     $equities+=$equity_data;
                     $this->set_equity($equities);
                     $numb0fshares = $this->request->data['Investment']['numb_shares'];
-                  $equity_price = $this->request->data['Investment']['max_share_price'];
+                    $equity_price = $this->request->data['Investment']['max_share_price'];
 
-                $totalamt += ($numb0fshares * $equity_price);
-                $this->request->data['Investment']['total_amount'] = $totalamt;
-                $total_shares += $numb0fshares;
+                    $totalamt += ($numb0fshares * $equity_price);
+                    $this->request->data['Investment']['total_amount'] = $totalamt;
+                    $total_shares += $numb0fshares;
+                    if ($totalamt > $amount_available) {
+                         //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                       
+                        $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                    }
                     $x = 2;
                     while ($x <= 5) {
                         $equities = $this->get_equity();
@@ -2714,32 +2988,59 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                                     'numb_shares_left' => $this->request->data['Investment']['numb_shares' . $x],
                                     'created_by' => $this->request->data['Investment']['user_id'],
                                     'modified_by' => $this->request->data['Investment']['user_id']
-                                ));
+                            ));
 
                             $equities+=$equity_data;
                             $this->set_equity($equities);
                         }
                         $x++;
                     }
-                    if($totalamt > $amount_available){
-                     $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                     }
+                    if ($totalamt > $amount_available) {
+                         //RESET CASH INPUTS AND RETURN
+                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                       
+                        $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                    }
                     $new_cashathand = $amount_available - $totalamt;
                     $new_cashinvested = $cashinvested + $totalamt;
-                    
-                      $investment_array = array('user_id' => $this->request->data['Investment']['user_id'],
-                        'investor_id' => $this->request->data['Investment']['investor_id'],
-                        'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
-                        'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
-                        'currency_id' => $this->request->data['Investment']['currency_id'],
-                        'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
-                        'base_fee' => $base_fee,
-                        'benchmark_rate' => $benchmark_rate,
-                        'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
-                        'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                        'investment_date' => $pinv_date,
+
+                       //Ledger transaction entry
+                    $description = 'Equity investment';
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description);
+                    $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_fee / 100) * $totalamt;
+
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_fee / 100) * $totalamt;
+                            if ($base_fee > $new_cashathand) {
+                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                            }
+                            $new_cashathand = $new_cashathand - $base_fee;
+
+                            break;
+                    }
+
+
+                    $investment_array = array(
                         'total_amount' => $totalamt
                     );
                     $check = $this->Session->check('investment_array_equity');
@@ -2760,18 +3061,45 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                 $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
 
 
+//store total_invested and cash at hand in session so can save in investment when storing array in summary view
+//$this->Session->write('investtemp1.cash_athand', $new_cashathand);
+                //$this->Session->write('investtemp1.total_invested', $new_cashinvested);
+                $generic_array = array('user_id' => $this->request->data['Investment']['user_id'],
+                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                    'investor_type_id' => $this->request->data['Investment']['investor_type_id'],
+                    'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
+                    'currency_id' => $this->request->data['Investment']['currency_id'],
+                    'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
+                    'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
+                    'base_rate' => $base_rate,
+                    'base_fees' => $base_fee,
+                    'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
+                    'benchmark_rate' => $benchmark_rate,
+                    'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
+                    'investment_date' => $inv_date,
+                    'cash_athand' => $new_cashathand,
+                    'total_invested' => $new_cashinvested);
 
+                $total_cash = $new_cashathand + $new_cashinvested;
+                $description = 'Deposit for investment';
+//move to summary contract function and store in client ledger
+                $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand,
+                    'invested_amount' => $new_cashinvested);
 
 
                 $this->Session->delete('investtemp');
                 $this->Session->delete('investtemp1');
+                $this->Session->write('generic_array', $generic_array);
+                $this->Session->write('client_ledger', $client_ledger);
+                $this->Session->write('ledger_transactions', $ledger_transactions);
                 $this->Session->write('investtemp.investmentproduct_id', $investmentproduct_id);
                 $this->Session->write('investtemp1', $this->request->data['Investment']);
+                $this->Session->write('investtemp1.amount_deposited', 0);
                 $this->Session->write('investtemp1.cash_athand', $new_cashathand);
                 $this->Session->write('investtemp1.total_invested', $new_cashinvested);
                 $message = 'Investment Successfully Processed,Click Next to Save and Print Certificate';
                 $this->Session->write('smsg', $message);
-                
+
                 $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
             } else {
                 $message = 'Please Select  an Investment Product';
@@ -3634,258 +3962,328 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
         }
     }
 
-    function newInvestmentCert($investment_id = null) {
+    function newInvestmentCert() {
         /* $this->__validateUserType(); */
-        
-        if (!is_null($investment_id)) {
-            
-            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+
+//        if (!is_null($investment_id)) {
+//
+//            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+//            $this->set('data', $data);
+//
+//            $inv_type = $this->InvestorType->find('first', array('conditions' =>
+//                array('InvestorType.id' => $data['Investor']['investor_type_id'])));
+//            $this->set('inv_type', $inv_type);
+//            $equity = $this->InvestorEquity->find('all', array('conditions' =>
+//                array('InvestorEquity.investment_id' => $investment_id)));
+//            $this->set('equity', $equity);
+//        } else {
+//
+//            $message = 'Sorry, Investment Not Found';
+//            $this->Session->write('imsg', $message);
+//            $this->redirect(array('controller' => 'Investments', 'action' => '#'));
+//        }
+        $userid = null;
+        $check = $this->Session->check('userDetails');
+        if ($check) {
+            $userid = $this->Session->read('userDetails.id');
+        }
+        $generic_array = $this->Session->check('generic_array');
+        if ($generic_array) {
+            $generic_array = $this->Session->read('generic_array');
+
+
+            $genericresult = $this->Investment->save($generic_array);
+            $investment_id = $this->Investment->id;
+            $investor_id = $genericresult['Investment']['investor_id'];
+            $this->Session->delete('generic_array');
+        } elseif (!($this->Session->check('generic_array'))) {
+            $message = "Sorry No Investment To Display";
+            $this->Session->write('bmsg', $message);
+            $this->redirect('/Investments/');
+        }
+
+        $investment_array = $this->Session->check('investment_array_fixed');
+        if ($investment_array) {
+            $investment_array = $this->Session->read('investment_array_fixed');
+
+            $this->Investment->id = $investment_id;
+            $this->Investment->save($investment_array);
+            $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+            if ($result) {
+
+                $payment_name = '';
+                $paymentmodeid = $result['Investment']['payment_mode_id'];
+                $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+                if ($payment_mode) {
+                    $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
+                }
+                $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
+                    'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
+                    'amount' => $result['Investment']['investment_amount'],
+                    'available_amount' => $result['Investment']['investment_amount'],
+                    'investment_type' => 'fixed', 'payment_mode' => $payment_name,
+                    'investment_date' => $result['Investment']['investment_date']);
+                $this->InvestmentCash->create();
+                $this->InvestmentCash->save($investmentcash_data);
+                $check = $this->get_investors();
+                if (count($check) > 0) {
+                    $this->set('investors', $check);
+                    foreach ($check as $value) {
+
+                        $investor_data = array('investment_id' => $investment_id, 'investor_id' => $value['investor_id']);
+
+                        $this->InvestmentInvestor->saveAll($investor_data);
+                    }
+                } else {
+                    $message = 'No Investor Selected';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment0'));
+                }
+                if (isset($investment_number) && !empty($investment_number)) {
+                    $investment_number = $investment_number;
+                } else {
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
+                $this->set('investment_number', $investment_number);
+                $date = date('Y-m-d H:i:s');
+
+
+
+
+                $rollover_details = $this->Session->check('rollover_details');
+                if ($rollover_details) {
+                    $rollover_details = $this->Session->read('rollover_details');
+                    $this->Rollover->save($rollover_details);
+                    $this->set('rollover_details', $rollover_details);
+                    $this->Session->delete('rollover_details');
+
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
+
+                        $this->InvestmentStatement->saveAll($statemt_array);
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+                } else {
+                    $statemt_array = $this->Session->check('statemt_array_fixed');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array_fixed');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array_fixed');
+                    }
+
+                    $this->request->data = null;
+                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                    $this->Investment->save($investment_updates);
+                }
+                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                if ($data) {
+                    $this->set('investment_array_fixed', $data);
+                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+                    $issued = $this->Session->check('userData');
+                    if ($issued) {
+                        $issued = $this->Session->read('userData');
+                        $this->set('issued', $issued);
+                    }
+                }
+
+                $this->Session->delete('variabless_fixed');
+            } else {
+                $message = "Sorry No Investment To Display";
+                $this->Session->write('imsg', $message);
+                $this->redirect('/Investments/');
+            }
+        }
+
+        $investment_array = $this->Session->check('investment_array_equity');
+        if ($investment_array) {
+            $investment_array = $this->Session->read('investment_array_equity');
+
+            $this->Investment->id = $investment_id;
+            $this->Investment->save($investment_array);
+            $equities = $this->get_equity();
+            if (!empty($equities)) {
+                foreach ($equities as $key => $var) {
+                    $var['investment_id'] = $investment_id;
+                    $this->InvestorEquity->create();
+                    $this->InvestorEquity->save($var);
+                }
+            }
+            $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+            if ($result) {
+
+                $payment_name = '';
+                $paymentmodeid = $result['Investment']['payment_mode_id'];
+                $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+                if ($payment_mode) {
+                    $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
+                }
+                $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
+                    'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
+                    'amount' => $result['Investment']['total_amount'],
+                    'available_amount' => $result['Investment']['total_amount'],
+                    'investment_type' => 'equity', 'payment_mode' => $payment_name,
+                    'investment_date' => $result['Investment']['investment_date']);
+                $this->InvestmentCash->create();
+                $this->InvestmentCash->save($investmentcash_data);
+                $check = $this->get_investors();
+                if (count($check) > 0) {
+                    $this->set('investors', $check);
+                    foreach ($check as $value) {
+
+                        $investor_data = array('investment_id' => $investment_id, 'investor_id' => $value['investor_id']);
+
+                        $this->InvestmentInvestor->saveAll($investor_data);
+                    }
+                } else {
+                    $message = 'No Investor Selected';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment0'));
+                }
+                if (isset($investment_number) && !empty($investment_number)) {
+                    $investment_number = $investment_number;
+                } else {
+                    $investment_number = 'PARKST-INV-00' . $investment_id;
+                }
+                $this->set('investment_number', $investment_number);
+                $date = date('Y-m-d H:i:s');
+
+
+
+
+                $rollover_details = $this->Session->check('rollover_details');
+                if ($rollover_details) {
+                    $rollover_details = $this->Session->read('rollover_details');
+                    $this->Rollover->save($rollover_details);
+                    $this->set('rollover_details', $rollover_details);
+                    $this->Session->delete('rollover_details');
+
+                    $statemt_array = $this->Session->check('statemt_array');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array');
+
+                        $this->InvestmentStatement->saveAll($statemt_array);
+                        $this->Session->delete('statemt_array');
+                    }
+                } else {
+                    $statemt_array = $this->Session->check('statemt_array');
+                    if ($statemt_array) {
+                        $statemt_array = $this->Session->read('statemt_array');
+
+
+                        foreach ($statemt_array as $key => $val) {
+                            $val['investment_id'] = $investment_id;
+
+                            $this->InvestmentStatement->create();
+                            $this->InvestmentStatement->save($val);
+                        }
+                        $this->Session->delete('statemt_array');
+                    }
+
+                    $this->request->data = null;
+                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                    $this->Investment->save($investment_updates);
+                }
+                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                if ($data) {
+                    $this->set('investment_array_equity', $data);
+                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+                    $issued = $this->Session->check('userData');
+                    if ($issued) {
+                        $issued = $this->Session->read('userData');
+                        $this->set('issued', $issued);
+                    }
+                }
+
+
+                $this->Session->delete('variabless_equity');
+            } else {
+                $message = "Sorry No Investment To Display";
+                $this->Session->write('imsg', $message);
+                $this->redirect('/Investments/');
+            }
+        }
+
+
+        if ($this->Session->check('client_ledger')) {
+            $ledger_data = $this->Session->read('client_ledger');
+            $cledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+            if (count($cledger) > 0) {
+                $this->ClientLedger->id = $cledger['ClientLedger']['id'];
+                $this->ClientLedger->save($ledger_data);
+                $cledger_id = $this->ClientLedger->id;
+            } else {
+                $this->ClientLedger->save($ledger_data);
+                $cledger_id = $this->ClientLedger->id;
+            }
+            //if clientledger save successful get id,update transaction and save
+            if ($this->Session->check('ledger_transactions')) {
+                $ledger_transactions = $this->Session->read('ledger_transactions');
+                if (!empty($ledger_transactions)) {
+                    foreach ($ledger_transactions as $key => $val) {
+                        $val['client_ledger_id'] = $cledger_id;
+                        $val['voucher_no'] = $investment_number;
+                        $this->LedgerTransaction->create();
+                        $this->LedgerTransaction->save($val);
+                    }
+                }
+            }
+            $this->Session->delete('client_ledger');
+        }
+        if ($this->Session->check('ledger_transactions')) {
+
+            $this->Session->delete('ledger_transactions');
+        }
+        if ($this->Session->check('investment_array_fixed')) {
+            $this->Session->delete('investment_array_fixed');
+        }
+        if ($this->Session->check('investment_array_equity')) {
+            $this->Session->delete('investment_array_equity');
+        }
+        if ($this->Session->check('investtemp.investmentproduct_id')) {
+            $this->Session->delete('investtemp.investmentproduct_id');
+        }
+        if ($this->Session->check('generic_array')) {
+            $this->Session->delete('generic_array');
+        }
+        if ($this->Session->check('client_ledger')) {
+            $this->Session->delete('client_ledger');
+        }
+        if ($this->Session->check('ledger_transactions')) {
+            $this->Session->delete('ledger_transactions');
+        }
+        if ($this->Session->check('investtemp')) {
+            $this->Session->delete('investtemp');
+        }
+        if ($this->Session->check('investtemp1')) {
+            $this->Session->delete('investtemp1');
+        }
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+
+        if ($data) {
             $this->set('data', $data);
-            
-            $inv_type = $this->InvestorType->find('first', array('conditions' => 
+
+            $inv_type = $this->InvestorType->find('first', array('conditions' =>
                 array('InvestorType.id' => $data['Investor']['investor_type_id'])));
             $this->set('inv_type', $inv_type);
-            $equity = $this->InvestorEquity->find('all', array('conditions' => 
+            $equity = $this->InvestorEquity->find('all', array('conditions' =>
                 array('InvestorEquity.investment_id' => $investment_id)));
             $this->set('equity', $equity);
-            
         } else {
 
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => '#'));
         }
-//        $userid = null;
-//        $check = $this->Session->check('userDetails');
-//        if ($check) {
-//            $userid = $this->Session->read('userDetails.id');
-//        }
-//        $generic_array = $this->Session->check('generic_array');
-//        if ($generic_array) {
-//            $generic_array = $this->Session->read('generic_array');
-//
-//
-//            $this->Investment->save($generic_array);
-//            $investment_id = $this->Investment->id;
-//        }elseif (!($this->Session->check('generic_array'))) {
-//            $message = "Sorry No Investment To Display";
-//            $this->Session->write('bmsg', $message);
-//            $this->redirect('/Investments/');
-//        }
-//        
-//        $investment_array = $this->Session->check('investment_array_fixed');
-//        if ($investment_array) {
-//            $investment_array = $this->Session->read('investment_array_fixed');
-//            
-//            $this->Investment->id = $investment_id;
-//            $this->Investment->save($investment_array);
-//            $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
-//            if ($result) {
-//
-//                $payment_name = '';
-//                $paymentmodeid = $result['Investment']['payment_mode_id'];
-//                $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
-//                if ($payment_mode) {
-//                    $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
-//                }
-//                $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
-//                    'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
-//                    'amount' => $result['Investment']['investment_amount'],
-//                    'available_amount' => $result['Investment']['investment_amount'],
-//                    'investment_type' => 'fixed', 'payment_mode' => $payment_name,
-//                    'investment_date' => $result['Investment']['investment_date']);
-//                $this->InvestmentCash->create();
-//                $this->InvestmentCash->save($investmentcash_data);
-//                $check = $this->get_investors();
-//                if (count($check) > 0) {
-//                    $this->set('investors', $check);
-//                    foreach ($check as $value) {
-//
-//                        $investor_data = array('investment_id' => $investment_id, 'investor_id' => $value['investor_id']);
-//
-//                        $this->InvestmentInvestor->saveAll($investor_data);
-//                    }
-//                } else {
-//                    $message = 'No Investor Selected';
-//                    $this->Session->write('emsg', $message);
-//                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment0'));
-//                }
-//                if (isset($investment_number) && !empty($investment_number)) {
-//                    $investment_number = $investment_number;
-//                } else {
-//                    $investment_number = 'PARKST-INV-00' . $investment_id;
-//                }
-//                $this->set('investment_number', $investment_number);
-//                $date = date('Y-m-d H:i:s');
-//
-//
-//
-//
-//                $rollover_details = $this->Session->check('rollover_details');
-//                if ($rollover_details) {
-//                    $rollover_details = $this->Session->read('rollover_details');
-//                    $this->Rollover->save($rollover_details);
-//                    $this->set('rollover_details', $rollover_details);
-//                    $this->Session->delete('rollover_details');
-//
-//                    $statemt_array = $this->Session->check('statemt_array_fixed');
-//                    if ($statemt_array) {
-//                        $statemt_array = $this->Session->read('statemt_array_fixed');
-//
-//                        $this->InvestmentStatement->saveAll($statemt_array);
-//                        $this->Session->delete('statemt_array_fixed');
-//                    }
-//                } else {
-//                    $statemt_array = $this->Session->check('statemt_array_fixed');
-//                    if ($statemt_array) {
-//                        $statemt_array = $this->Session->read('statemt_array_fixed');
-//
-//
-//                        foreach ($statemt_array as $key => $val) {
-//                            $val['investment_id'] = $investment_id;
-//
-//                            $this->InvestmentStatement->create();
-//                            $this->InvestmentStatement->save($val);
-//                        }
-//                        $this->Session->delete('statemt_array_fixed');
-//                    }
-//
-//                    $this->request->data = null;
-//                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
-//                    $this->Investment->save($investment_updates);
-//                }
-//                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
-//                if ($data) {
-//                    $this->set('investment_array_fixed', $data);
-//                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
-//                    $issued = $this->Session->check('userData');
-//                    if ($issued) {
-//                        $issued = $this->Session->read('userData');
-//                        $this->set('issued', $issued);
-//                    }
-//                }
-//
-//                $this->Session->delete('variabless_fixed');
-//            } else {
-//                $message = "Sorry No Investment To Display";
-//                $this->Session->write('imsg', $message);
-//                $this->redirect('/Investments/');
-//            }
-//        }
-//
-//        $investment_array = $this->Session->check('investment_array_equity');
-//        if ($investment_array) {
-//            $investment_array = $this->Session->read('investment_array_equity');
-//
-//            $this->Investment->id = $investment_id;
-//            $this->Investment->save($investment_array);
-//
-//            $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
-//            if ($result) {
-//
-//                $payment_name = '';
-//                $paymentmodeid = $result['Investment']['payment_mode_id'];
-//                $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
-//                if ($payment_mode) {
-//                    $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
-//                }
-//                $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
-//                    'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
-//                    'amount' => $result['Investment']['total_amount'],
-//                    'available_amount' => $result['Investment']['total_amount'],
-//                    'investment_type' => 'equity', 'payment_mode' => $payment_name,
-//                    'investment_date' => $result['Investment']['investment_date']);
-//                $this->InvestmentCash->create();
-//                $this->InvestmentCash->save($investmentcash_data);
-//                $check = $this->get_investors();
-//                if (count($check) > 0) {
-//                    $this->set('investors', $check);
-//                    foreach ($check as $value) {
-//
-//                        $investor_data = array('investment_id' => $investment_id, 'investor_id' => $value['investor_id']);
-//
-//                        $this->InvestmentInvestor->saveAll($investor_data);
-//                    }
-//                } else {
-//                    $message = 'No Investor Selected';
-//                    $this->Session->write('emsg', $message);
-//                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment0'));
-//                }
-//                if (isset($investment_number) && !empty($investment_number)) {
-//                    $investment_number = $investment_number;
-//                } else {
-//                    $investment_number = 'PARKST-INV-00' . $investment_id;
-//                }
-//                $this->set('investment_number', $investment_number);
-//                $date = date('Y-m-d H:i:s');
-//
-//
-//
-//
-//                $rollover_details = $this->Session->check('rollover_details');
-//                if ($rollover_details) {
-//                    $rollover_details = $this->Session->read('rollover_details');
-//                    $this->Rollover->save($rollover_details);
-//                    $this->set('rollover_details', $rollover_details);
-//                    $this->Session->delete('rollover_details');
-//
-//                    $statemt_array = $this->Session->check('statemt_array');
-//                    if ($statemt_array) {
-//                        $statemt_array = $this->Session->read('statemt_array');
-//
-//                        $this->InvestmentStatement->saveAll($statemt_array);
-//                        $this->Session->delete('statemt_array');
-//                    }
-//                } else {
-//                    $statemt_array = $this->Session->check('statemt_array');
-//                    if ($statemt_array) {
-//                        $statemt_array = $this->Session->read('statemt_array');
-//
-//
-//                        foreach ($statemt_array as $key => $val) {
-//                            $val['investment_id'] = $investment_id;
-//
-//                            $this->InvestmentStatement->create();
-//                            $this->InvestmentStatement->save($val);
-//                        }
-//                        $this->Session->delete('statemt_array');
-//                    }
-//
-//                    $this->request->data = null;
-//                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
-//                    $this->Investment->save($investment_updates);
-//                }
-//                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
-//                if ($data) {
-//                    $this->set('investment_array_equity', $data);
-//                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
-//                    $issued = $this->Session->check('userData');
-//                    if ($issued) {
-//                        $issued = $this->Session->read('userData');
-//                        $this->set('issued', $issued);
-//                    }
-//                }
-//
-//
-//                $this->Session->delete('variabless_equity');
-//            } else {
-//                $message = "Sorry No Investment To Display";
-//                $this->Session->write('imsg', $message);
-//                $this->redirect('/Investments/');
-//            }
-//        }
-//
-//        
-//        if ($this->Session->check('investment_array_fixed')) {
-//            $this->Session->delete('investment_array_fixed');
-//        }
-//        if ($this->Session->check('investment_array_equity')) {
-//            $this->Session->delete('investment_array_equity');
-//        }
-//        if ($this->Session->check('investtemp.investmentproduct_id')) {
-//            $this->Session->delete('investtemp.investmentproduct_id');
-//        }
     }
+
     function newInvestmentCertcompEquity() {
         /* $this->__validateUserType(); */
 
@@ -4153,20 +4551,19 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->Session->delete('mivts');
         }
     }
+
     function approveTerminations() {
         /* $this->__validateUserType(); */
 
         $this->paginate = array(
-                'conditions' => array( 
-                   'status' => array('Termination_Requested'), 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
-            $this->set('data', $data);
-        
-        
+            'conditions' => array(
+                'status' => array('Termination_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');
+        $this->set('data', $data);
     }
-    
+
     function approveTerminations2($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
@@ -4195,19 +4592,19 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
         }
     }
-    
 
     function approvePayments() {
         /* $this->__validateUserType(); */
 
         $this->paginate = array(
-                'conditions' => array( 
-                   'status' => array('Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
-            $this->set('data', $data);
+            'conditions' => array(
+                'status' => array('Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');
+        $this->set('data', $data);
     }
+
     function approvePayments2($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
@@ -4236,31 +4633,29 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
         }
     }
-    
-     function maturityList(){
+
+    function maturityList() {
 //        $this->__validateUserType3();
         $this->paginate = array(
-                'conditions' => array( 
-                   'status' => array('Matured','Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
-            $this->set('data', $data);
+            'conditions' => array(
+                'status' => array('Matured', 'Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');
+        $this->set('data', $data);
     }
-    
+
     function processPayments() {
         /* $this->__validateUserType(); */
         $this->paginate = array(
-                'conditions' => array( 
-                   'status' => array('Payment_Approved'), 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
-            $this->set('data', $data);
-        
-        
+            'conditions' => array(
+                'status' => array('Payment_Approved'), 'Investment.investment_product_id' => array(1, 3)),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');
+        $this->set('data', $data);
     }
-    
+
     function processPayments2($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
@@ -4289,11 +4684,12 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
         }
     }
-      function requestPayment($investment_id = null) {
+
+    function requestPayment($investment_id = null) {
         /* $this->__validateUserType(); */
 
         if (!is_null($investment_id)) {
-            $data = $this->Investment->find('first', array('recursive' => -1,'conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
+            $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
             if ($data) {
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
@@ -4316,11 +4712,11 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
         }
     }
-    
-    function requestPayment4managefixedinvestments($investment_id = null,$investor_id = null, $investor_name = null){
-        
+
+    function requestPayment4managefixedinvestments($investment_id = null, $investor_id = null, $investor_name = null) {
+
         if (!is_null($investment_id)) {
-            $data = $this->Investment->find('first', array('recursive' => -1,'conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
+            $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
             if ($data) {
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
@@ -4328,21 +4724,22 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                 if ($result) {
                     $message = 'Payment Request Successfully Sent';
                     $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor_id, $investor_name));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
                 }
             } else {
 
                 $message = 'Sorry, Investment Not Found';
                 $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor_id, $investor_name));
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor_id, $investor_name));
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
         }
     }
+
     function cancelInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
@@ -4370,7 +4767,7 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
         }
     }
-    
+
     function makePayment() {
 
         //amount being paidout must not be more than $value['Investment']['total_amount_earned'];
@@ -4686,7 +5083,7 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
 
             $this->paginate = array(
-                'conditions' => array('Investment.investor_id' => $investor_id, 
+                'conditions' => array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3)),
                 'limit' => 30,
                 'order' => array('Investment.id' => 'asc'));
@@ -4710,11 +5107,9 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
         }
     }
 
-    function topupInvestment($investment_id = null){
-        
+    function topupInvestment($investment_id = null) {
         
     }
-    
 
     function cancelEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {
         /* $this->__validateUserType(); */
@@ -5043,73 +5438,72 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
 //                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $portfolio_id), 'recursive' => -1));
 //
 //                if ($portfolio) {
-                 $inv_day = $this->request->data['Investment']['investment_date']['day'];
-            if (!empty($inv_day)) {
-                $inv_month = $this->request->data['Investment']['investment_date']['month'];
-                $inv_year = $this->request->data['Investment']['investment_date']['year'];
-                $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
-                $sinv_date = strtotime($finv_date);
-                $inv_date = date('Y-m-d', $sinv_date);
-            } else {
-                $inv_date = date('Y-m-d');
-            }
-            $pur_day = $this->request->data['Investment']['investment_date']['day'];
-            if (!empty($pur_day)) {
-                $pur_month = $this->request->data['Investment']['investment_date']['month'];
-                $pur_year = $this->request->data['Investment']['investment_date']['year'];
-                $pfinv_date = $pur_year . "-" . $pur_month . "-" . $pur_day;
-                $psinv_date = strtotime($pfinv_date);
-                $pinv_date = date('Y-m-d', $psinv_date);
-            } else {
-                $pinv_date = date('Y-m-d');
-            }
-            $this->request->data['Investment']['investment_date'] = $inv_date;
-            $this->request->data['Investment']['purchase_date'] = $pinv_date;
-            if ($this->Session->check('rollovertemp') == true) {
-                $this->Session->delete('rollovertemp');
-            }
-            $this->Session->write('rollovertemp', $this->request->data['Investment']);
-             if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
+                $inv_day = $this->request->data['Investment']['investment_date']['day'];
+                if (!empty($inv_day)) {
+                    $inv_month = $this->request->data['Investment']['investment_date']['month'];
+                    $inv_year = $this->request->data['Investment']['investment_date']['year'];
+                    $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
+                    $sinv_date = strtotime($finv_date);
+                    $inv_date = date('Y-m-d', $sinv_date);
+                } else {
+                    $inv_date = date('Y-m-d');
+                }
+                $pur_day = $this->request->data['Investment']['investment_date']['day'];
+                if (!empty($pur_day)) {
+                    $pur_month = $this->request->data['Investment']['investment_date']['month'];
+                    $pur_year = $this->request->data['Investment']['investment_date']['year'];
+                    $pfinv_date = $pur_year . "-" . $pur_month . "-" . $pur_day;
+                    $psinv_date = strtotime($pfinv_date);
+                    $pinv_date = date('Y-m-d', $psinv_date);
+                } else {
+                    $pinv_date = date('Y-m-d');
+                }
+                $this->request->data['Investment']['investment_date'] = $inv_date;
+                $this->request->data['Investment']['purchase_date'] = $pinv_date;
+                if ($this->Session->check('rollovertemp') == true) {
+                    $this->Session->delete('rollovertemp');
+                }
+                $this->Session->write('rollovertemp', $this->request->data['Investment']);
+                if ($this->request->data['Investment']['paymentschedule_id'] == "" || $this->request->data['Investment']['paymentschedule_id'] == null) {
                     $message = 'Please Select a Payment Schedule';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                 }
 
                 if ($this->request->data['Investment']['paymentmode_id'] == "" || $this->request->data['Investment']['paymentmode_id'] == null) {
                     $message = 'Please Select a Payment Mode';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                 }
 
-                
+
                 if ($this->request->data['Investment']['instruction_id'] == "" || $this->request->data['Investment']['instruction_id'] == null) {
                     $message = 'Please Select an Instruction';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                 }
                 if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                 }
                 if ($this->request->data['Investment']['investment_amount'] == "" || $this->request->data['Investment']['investment_amount'] == null) {
                     $message = 'Please Enter Investment Amount';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
-                }else{
-                     $investment_amount = $this->request->data['Investment']['investment_amount'];
-                     $amount_available =  $data['Investment']['cash_athand'];
-                     $cashinvested =  $this->request->data['Investment']['total_invested'];
-                     if($investment_amount > $amount_available){
-                     $message = 'Investment Amount cannot be more than investor\'s balance';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
-                     }
-                    
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+                } else {
+                    $investment_amount = $this->request->data['Investment']['investment_amount'];
+                    $amount_available = $data['Investment']['cash_athand'];
+                    $cashinvested = $this->request->data['Investment']['total_invested'];
+                    if ($investment_amount > $amount_available) {
+                        $message = 'Investment Amount cannot be more than investor\'s balance';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+                    }
                 }
-               
+
                 $new_cashathand = $amount_available - $investment_amount;
-                 $new_cashinvested = $cashinvested + $investment_amount;
+                $new_cashinvested = $cashinvested + $investment_amount;
                 $first_date = $inv_date;
                 $period = $this->request->data['Investment']['investment_period'];
                 $duration = $this->request->data['Investment']['duration'];
@@ -5117,7 +5511,7 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                 $year = $duration;
                 switch ($period) {
                     case 'Day(s)':
-                        
+
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'D'));
@@ -5127,23 +5521,50 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                         $rate = $custom_rate;
 
                         $interest_amount1 = ($rate / 100) * $investment_amount;
-                        $interest_amount = $interest_amount1  * ($duration / 365);
+                        $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
-                             $date_statemt->add(new DateInterval('P1D'));
-                                $interest_amount2 = $interest_amount1 *(1/365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
-                                    'investor_id' => $this->request->data['Investment']['investor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
+                            $date_statemt->add(new DateInterval('P1D'));
+                            $interest_amount2 = $interest_amount1 * (1 / 365);
+                            $total = $interest_amount2 + $principal;
+                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                'investor_id' => $this->request->data['Investment']['investor_id'],
+                                'principal' => $principal,
+                                'interest' => $interest_amount2,
+                                'maturity_date' => $date_statemt->format('Y-m-d'),
+                                'total' => $total);
 //                            $principal = $total;
                         }
 
                         break;
+                    case 'Year(s)':
 
+                        $finv_date = $inv_date;
+                        $date = new DateTime($finv_date);
+                        $date->add(new DateInterval('P' . $duration . 'Y'));
+                        $date_statemt = new DateTime($first_date);
+                        $principal = $investment_amount;
+                        $statemt_array = array();
+                        $rate = $custom_rate;
+
+                        $YEAR2DAYS = 365 * $duration;
+                        $interest_amount1 = ($rate / 100) * $investment_amount;
+                        $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
+                        $amount_due = $interest_amount + $investment_amount;
+                        for ($n = 1; $n <= $duration; $n++) {
+                            $date_statemt->add(new DateInterval('P1Y'));
+                            $interest_amount2 = $interest_amount1 * (365 / 365);
+                            $total = $interest_amount2 + $principal;
+                            $statemt_array[] = array('user_id' => $this->request->data['Investment']['user_id'],
+                                'investor_id' => $this->request->data['Investment']['investor_id'],
+                                'principal' => $principal,
+                                'interest' => $interest_amount2,
+                                'maturity_date' => $date_statemt->format('Y-m-d'),
+                                'total' => $total);
+//                            $principal = $total;
+                        }
+
+                        break;
                 }
 
 
@@ -5151,8 +5572,8 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
 
 
                 $investment_array = array('id' => $data['Investment']['id'], 'balance' => $amount_due,
-                    'expected_interest' => $interest_amount, 'amount_due' => $amount_due,'cash_athand' =>$new_cashathand,'total_invested' => $new_cashinvested,
-                    'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over','cash_athand' => $new_cashathand);
+                    'expected_interest' => $interest_amount, 'amount_due' => $amount_due, 'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
+                    'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over', 'cash_athand' => $new_cashathand);
 
                 $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
                 $check = $this->Session->check('variabless');
@@ -5183,25 +5604,23 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
 
                 $message = 'Investment details successfully saved';
                 $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
-
+                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
             } else {
 
                 $message = 'Sorry, Investment Details Not Found';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
             }
         } else {
 
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
         }
-        $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$invesmentID,$investor_id));
+        $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
     }
 
-    
-    function rollover($investment_id  = null, $investor_id = null) {
+    function rollover($investment_id = null, $investor_id = null) {
         /* $this->__validateUserType(); */
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -5213,14 +5632,14 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
         $this->set('equitieslists', $this->EquitiesList->find('list'));
 
         if (!is_null($investor_id)) {
-            $investors = $this->Investor->find('first', array('recursive' => -1,'conditions' => array('Investor.id' => $investor_id)));
+            $investors = $this->Investor->find('first', array('recursive' => -1, 'conditions' => array('Investor.id' => $investor_id)));
             $this->set('inv', $investors);
-        }else {
+        } else {
 
-                $message = 'Sorry, Investor Details Not Found';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
-            }
+            $message = 'Sorry, Investor Details Not Found';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
+        }
 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
@@ -5232,12 +5651,12 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
                 $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
             }
-        }else {
+        } else {
 
-                $message = 'Sorry, Investment Not Found';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
-            }
+            $message = 'Sorry, Investment Not Found';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
+        }
         $check = $this->Session->check('variabless_fixed');
         if ($check) {
             $check = $this->Session->check('variabless_fixed.duedate');
@@ -5254,8 +5673,8 @@ $generic_array = array('user_id' => $this->request->data['Investment']['user_id'
             }
         }
     }
-    
-     function statementActiveInv($investor_id = null, $investor_name = null) {
+
+    function statementActiveInv($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
         $issued = $this->Session->check('userData');
         if ($issued) {
