@@ -48,10 +48,10 @@ echo $this->Html->script('notification.js');
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('investment_date', '(Re-)investment Date'); ?></b>
+                    <b><?php echo $this->Paginator->sort('investment_date', 'Investment Date'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
+                    <b><?php echo $this->Paginator->sort('company_name', 'Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('currency_id', 'Currency'); ?></b>

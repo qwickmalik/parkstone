@@ -107,8 +107,8 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top"><?php echo $data['Investment']['management_fee_type']; ?></td>
-                         <td align="left" valign="top"><?php echo $data['Investment']['base_rate'].'%'; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['benchmark_rate'].'%'; ?></td>
+                         <td align="left" valign="top"><?php if(!empty($data['Investment']['base_rate'])){echo $data['Investment']['base_rate'].'%';}else{ echo '0%'; } ?></td>
+                        <td align="right" valign="top"><?php if(!empty($data['Investment']['benchmark_rate'])){echo $data['Investment']['benchmark_rate'].'%';}else{ echo '0%'; } ?></td>
                         
                     </tr>
                 </table>

@@ -158,7 +158,7 @@ echo $this->Html->script('notification.js');
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                 <?php
-                                                echo $this->Form->input('investor_signature', array('type' => 'file', 'value' => $this->webroot . (isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
+//                                                echo $this->Form->input('investor_signature', array('type' => 'file', 'value' => $this->webroot . (isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
                                                 ?>
                                             </div>
                                         </div>

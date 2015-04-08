@@ -11,7 +11,7 @@ class ShellConsolesController extends AppController {
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
          'Equity',  'Customer','InvestmentCash',
-        'ReinvestorCashaccount','DailyInterestStatement','Investment','InvestmentTerm');
+        'ReinvestorCashaccount','DailyInterestStatement','Investment','InvestmentTerm','ClientLedger','LedgerTransaction');
 
     function beforeFilter() {
         
@@ -54,14 +54,43 @@ function __dailyMatured(){
     
     if($data){
         foreach($data as $each){
-            $cash_athand = $each['Investment']['cash_athand'];
+            $ledger_data = $this->ClientLedger->find('first',array('conditions' => array('ClientLedger.investor_id' => 
+                $each['Investment']['investor_id'])));
+            if($ledger_data){
+            $cash_athand = $ledger_data['ClientLedger']['available_cash'];
             $earned_balance = $each['Investment']['earned_balance'];
             $new_cashathand = $cash_athand + $earned_balance;
-            $total_invested = $each['Investment']['total_invested'] - $each['Investment']['investment_amount'];
+            $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
+           $old_tenure = $each['Investment']['total_tenure'];
+           $period = $each_item['Investment']['investment_period'];
+           switch ($period){
+               case 'Year(s)':
+                   $new_tenure = $old_tenure - 1;
+                   break;
+               case 'Day(s)':
+               default:
+                   $new_tenure = 0;
+                   break;
+               
+               
+           }
             $each_array = array('id' => $each['Investment']['id'],
-                'status' => 'Matured','old_status' => $each['Investment']['status'],'cash_athand' => $new_cashathand,
-                'earned_balance' => 0.00,'total_invested' => $total_invested);
+                'status' => 'Matured','old_status' => $each['Investment']['status'],
+                'earned_balance' => 0.00,'total_tenure' => $new_tenure);
             $this->Investment->save($each_array);
+            //Update Ledger data
+            $cledger_id = $ledger_data['ClientLedger']['id'];     
+                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
+                    'invested_amount' => $total_invested);
+               $this->ClientLedger->save($client_ledger);   
+               
+               //enter new ledger transaction
+                $ledger_transactions = array( 'client_ledger_id' =>$cledger_id,'credit' => $earned_balance, 'user_id' => 0,
+                    'date' => date('Y-m-d'),'voucher_no' =>$each['Investment']['investment_no'],
+                    'description' => 'Matured Investment Proceeds for investment no:'.$each['Investment']['investment_no']);
+                    $this->LedgerTransaction->create();
+                     $this->LedgerTransaction->save($ledger_transactions);
+           }
         }
     }
 }
