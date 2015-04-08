@@ -905,3 +905,14 @@ ADD  `basefee_accrued` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `basefee_due
 ALTER TABLE  `client_ledgers` DROP  `voucher_no` ;
 ALTER TABLE  `client_ledgers` DROP  `user_id` ;
 ALTER TABLE  `investments` ADD  `total_tenure` INT( 6 ) NULL DEFAULT  '0' AFTER  `investment_period` ;
+
+
+APRIL 6, 2015
+------------------------
+ALTER TABLE  `investments` CHANGE  `duration`  `duration` INT( 6 ) NULL DEFAULT  '0';
+
+
+APRIL 7, 2015
+------------------------
+ALTER TABLE  `rollovers` ADD  `custom_rate` INT( 3 ) NULL DEFAULT  '0' AFTER  `amount` ,
+ADD  `old_custom_rate` INT( 3 ) NULL DEFAULT  '0' AFTER  `custom_rate` ;
