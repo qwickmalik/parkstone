@@ -214,8 +214,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 ">
                                     <?php
-                                    echo $this->Form->input('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                       echo $this->Form->input('cash_athand2', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
                                         (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash']  ), 'disabled'));
+                                  
+                                       echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                        (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash']  )));
                                     ?> 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -593,7 +596,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php
 // Edit this to lead to a function that will send the data to db and pass the investment_id to  newInvestmentCert()
 // Same investment contract/cert to be used for all investor types
-                    echo $this->Html->link('Next', "/Investments/newInvestmentCert/14", array("class" => 'btn btn-lg btn-primary'));
+                    echo $this->Html->link('Next', "/Investments/newInvestmentCert/", array("class" => 'btn btn-lg btn-primary'));
                     ?>
                 </td>
             </tr>

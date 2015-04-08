@@ -8,7 +8,7 @@
     
 
     <!--    <form id="order_list" action="#" method="post">-->
-    <?php echo $this->Form->create('InvestorList', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => '#'), "inputDefaults" => array('div' => false))); ?>
+    <?php // echo $this->Form->create('InvestorList', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => '#'), "inputDefaults" => array('div' => false))); ?>
     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left" width="300">
@@ -61,8 +61,8 @@
 //                    echo $each_item['Investor']['approved']; 
                     echo $this->Form->hidden('id', array('value' => $each_item['Investor']['id']));
                     
-                    if($each_item['Investor']['approved']=='1'){$checked=true;}else{$checked=false;}
-                    echo $this->Form->input('approved'.$each_item['Investor']['id'], array( 'type' => 'checkbox', 'checked' => $checked, 'label' => false, 'hiddenField' => false));
+                    if($each_item['Investor']['approved']=='1'){$checked='checked'."','";}else{$checked='';}
+                    echo $this->Form->input('approved'.$each_item['Investor']['id'], array( 'type' => 'checkbox',$checked. 'label' => false, 'hiddenField' => false));
                     
                     ?>
                 </td>

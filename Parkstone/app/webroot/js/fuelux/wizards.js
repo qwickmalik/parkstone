@@ -41,6 +41,10 @@ var query = form_data;
                 url: $('#post_url').val(),
                 dataType: 'json',
                 data: query,
+//                data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+//                contentType: false,       // The content type used when sending data to the server.
+//            cache: false, // To unable request pages to be cached
+//            processData: false, 
                 success: function (data) {
                     
                     if(data['status'] == 'error'){

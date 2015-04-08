@@ -309,9 +309,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12"> 
 
-                            <div class="col-lg-5 col-md-5 col-sm-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
-                                echo $this->Form->input('management_fee_type', ['type' => 'select', 'options' =>
+                                echo $this->Form->input('management_fee_type', ['label' => 'Fee Type','type' => 'select', 'options' =>
                                     array('No Fee' => 'No Fee', 'Management Fee' => 'Management Fee', 'Performance Fee' => 'Performance Fee',
                                         'Management & Performance Fee' => 'Management & Performance Fee'),
                                     'empty' => '--Select Fee Type--', 'selected' =>
@@ -320,45 +320,51 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 ?>
                             </div> 
 
-                            <div class="col-lg-3 col-md-3 col-sm-12 hidden-fee">
+                            <div class="col-lg-4 col-md-4 col-sm-12 hidden-fee">
                                 <?php
                                 echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' =>
                                     ($this->Session->check('rollovertemp.base_fees') == true ?
-                                            $this->Session->read('rollovertemp.base_fees').'%' : $data['Investment']['base_fees'].'%'  )));
+                                            $this->Session->read('rollovertemp.base_fees') : $data['Investment']['base_fees']  )));
                                 ?> 
                             </div>  
                             <div class="col-lg-4 col-md-4 col-sm-12 BenchmarkRate">
                                 <?php
-                                echo $this->Form->input('benchmark_rate', array('label' => 'Benchmark Rate(%)', 'value' =>
+                                echo $this->Form->input('benchmark_rate', array('label' => 'Benchmark(%)', 'value' =>
                                     ($this->Session->check('rollovertemp.benchmark_rate') == true ?
-                                            $this->Session->read('rollovertemp.benchmark_rate').'%' : $data['Investment']['benchmark_rate'].'%' )));
+                                            $this->Session->read('rollovertemp.benchmark_rate') : $data['Investment']['benchmark_rate'] )));
                                 ?>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-<?php
-echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 
-    'empty' => '--Please select currency--', 'selected' => ($this->Session->check('rollovertemp.currency_id') == true ? $this->Session->read('rollovertemp.currency_id') : $data['Investment']['currency_id'] )));
-?>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                            <?php
+                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 
+                                'empty' => '--Please select currency--', 'selected' => ($this->Session->check('rollovertemp.currency_id') == true ? $this->Session->read('rollovertemp.currency_id') : $data['Investment']['currency_id'] )));
+                            ?>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
-                                echo $this->Form->input('cash_athand', array('label' => 'Available Cash', 'disabled',
-                                    'value' => $data['Investment']['cash_athand']));
+                                echo $this->Form->input('cash_athand2', array('label' => 'Available Cash', 'disabled',
+                                    'value' => ($this->Session->check('rollovertemp.cash_athand') == true ?
+                                            $this->Session->read('rollovertemp.cash_athand') : $ledger_data['ClientLedger']['available_cash'])));
+                                
+                                echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 
+                                    'value' => ($this->Session->check('rollovertemp.cash_athand') == true ?
+                                            $this->Session->read('rollovertemp.cash_athand') : $ledger_data['ClientLedger']['available_cash'])));
                                 ?>  
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
                                 echo $this->Form->hidden('total_invested', array('label' => 'Total Invested', 'value' =>
                                     ($this->Session->check('rollovertemp.total_invested') == true ?
-                                            $this->Session->read('rollovertemp.total_invested') : $data['Investment']['total_invested'])));
+                                            $this->Session->read('rollovertemp.total_invested') : $ledger_data['ClientLedger']['invested_amount'])));
 
                                 echo $this->Form->input('total_invested2', array('disabled', 'label' => 'Total Invested', 'value' =>
                                     ($this->Session->check('rollovertemp.total_invested') == true ?
-                                            $this->Session->read('rollovertemp.total_invested') : $data['Investment']['total_invested'] )));
+                                            $this->Session->read('rollovertemp.total_invested') :$ledger_data['ClientLedger']['invested_amount'] )));
                                 ?>
                             </div>
+                         
                         </div>
                     </div>
                     <!--</div>-->
@@ -368,12 +374,18 @@ echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $c
 
                         <div class="col-lg-6 col-md-6 col-sm-12" id="fixed">
                             <!--<p style="font-size: 18px; font-weight: bold; color: dodgerblue; margin-top: 20px;">Fixed Investment</p>-->
+                            <div class="row">
+
+                             <div class="col-lg-6 col-md-6 col-sm-12" >
                             <?php
                             echo $this->Form->input('instruction_id', array('label' => 'Instructions',
                                 'empty' => "--Please Select--",
                                 'selected' => ($this->Session->check('rollovertemp.instruction_id') == true ? $this->Session->read('rollovertemp.instruction_id') :
                                         $data['Investment']['instruction_id'] )));
-
+                            ?>
+                                 </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12" >
+                                    <?php
                             echo $this->Form->input('instruction_details', array('label' =>
                                 'Other Instruction Details', 'placeholder' =>
                                 "Complete this ONLY if 'Other' is selected", 'value'
@@ -382,35 +394,45 @@ echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $c
                                         $data['Investment']['instruction_details'])));
                             ?>
 
-
+                                     </div>
+                            </div>
                             <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                  <div class="col-lg-6 col-md-6 col-sm-12">
                                     <?php
                                     echo $this->Form->input('investment_amount', array('label' => 'Investment Amount', 'class' => 'required',
                                         'value' => ($this->Session->check('rollovertemp.investment_amount') == true ? $this->Session->read('rollovertemp.investment_amount') : '' )));
                                     ?>
                                 </div>
-                                <div class="col-lg-3 col-md-2 col-sm-12">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('custom_rate', array('required', 'label' =>
+                                        'Benchmark(%)*', 'value' => ($this->Session->check('rollovertemp.custom_rate') == true ? $this->Session->read('rollovertemp.custom_rate') : $data['Investment']['custom_rate'] )));
+                                    ?>
+
+                                </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->input('duration', array('required', 'label' => 'Inv. Duration*',
                                         'value' => ($this->Session->check('rollovertemp.duration') == true ?
                                                 $this->Session->read('rollovertemp.duration') : $data['Investment']['duration'] ), 'width' => '50px'));
                                     ?>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">  <?php
-                                    echo $this->Form->hidden('investment_period', array('value' => 'Day(s)'));
-                                    echo $this->Form->input('investment_period2', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
-                                        'options' => array('Day(s)' => 'Day(s)'),
-                                        'default' => 'Day(s)', 'value' => 'Day(s)', 'disabled'));
+                                <div class="col-lg-4 col-md-4 col-sm-12">   <?php
+                                   
+                                     echo $this->Form->input('investment_period', array('required', 'label' => 'Inv. Period*', 'empty' => "--Select--",
+                                        'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),'value' => ($this->Session->check('rollovertemp.investment_period') == true ?
+                                                $this->Session->read('rollovertemp.investment_period') : $data['Investment']['investment_period'] )
+                                        ));
                                     ?>
 
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12">
-                                    <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
-                                    <?php
-                                    echo $this->Form->input('custom_rate', array('required', 'label' =>
-                                        'Benchmark(%)*', 'value' => ($this->Session->check('rollovertemp.custom_rate') == true ? $this->Session->read('rollovertemp.custom_rate') : $data['Investment']['custom_rate'] )));
-                                    ?>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                            <?php echo $this->Form->input('total_tenure', array('required','label' =>
+                                'Total Tenure', 'placeholder' => "0", 'value' => 
+                                    ($this->Session->check('rollovertemp.total_tenure') == true ? 
+                                    $this->Session->read('rollovertemp.total_tenure') : $data['Investment']['total_tenure'] ))); ?>
 
                                 </div>
                             </div>

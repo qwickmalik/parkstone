@@ -224,14 +224,17 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 ">
                                     <?php
-                                    echo $this->Form->input('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                       echo $this->Form->input('cash_athand2', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
                                         (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash']  ), 'disabled'));
+                                  
+                                    echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                        (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash']  )));
                                     ?> 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->hidden('total_invested', array('label' => 'Total Invested', 'value' =>
-                                        (isset($total_invested) ? $total_invested : '' )));
+                                        (isset($total_invested) ? $total_invested : $ledger_data['ClientLedger']['invested_amount'] )));
 
                                     echo $this->Form->input('total_invested2', array('disabled', 'label' => 'Total Invested', 'value' =>
                                         (isset($total_invested) ? $total_invested : $ledger_data['ClientLedger']['invested_amount']  )));
@@ -296,10 +299,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">  <?php
-                                    echo $this->Form->hidden('investment_period', array('value' => 'Day(s)'));
-                                    echo $this->Form->input('investment_period2', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
-                                        'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),
-                                        'default' => 'Day(s)', 'value' => 'Day(s)'));
+                                   echo $this->Form->input('investment_period', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
+                                        'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),'value' => ($this->Session->check('investtemp.investment_period') == true ?
+                                                $this->Session->read('investtemp.investment_period') : '' )
+                                        ));
                                     ?>
 
                                 </div>
