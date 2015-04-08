@@ -8,7 +8,7 @@ echo $this->Html->script('notification.js');
     <div class="inner">
         <div id="clearer"></div>
 <?php
-$this->Form->create('ApproveInvestments', array('controller' => 'Investments', 'action' => "processPayments2"));
+echo $this->Form->create('Investment', array('controller' => 'Investments', 'action' => "processPayments2"));
 ?>
         <table border="0" width="100%" cellspacing="5" cellpadding="0" align="left">
 
@@ -18,6 +18,10 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
                         if (isset($investor_id)) {
                             echo $investor_id;
                         }
+                        echo $this->Form->hidden('investor_id',array('value' =>(isset($investor_id)?$investor_id : '')));
+                        
+                        echo $this->Form->hidden('investment_id',array('value' =>(isset($investment_id)?$investment_id : '')));
+                       
                         ?></p></td>
             </tr>
             <tr>
@@ -34,20 +38,18 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
         <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
             <tr>
     <!--<td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php // echo $this->Paginator->sort('id', 'ID');   ?></b></td>-->
-                <td style="border-bottom: solid 2px dodgerblue" width="60" align="right" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
-                <td style="border-bottom: solid 2px dodgerblue" width="60" align="right" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
+                 <td style="border-bottom: solid 2px dodgerblue" align="right" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('date', 'Date'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left" style="border-bottom: solid 2px Gray;"><b>Voucher Number</b></td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left" style="border-bottom: solid 2px Gray;"><b>Description</b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="right" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('debit', 'Debit'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="right" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('credit', 'Credit'); ?></b></td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
-                <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
-
+              
+                <td style="border-bottom: solid 2px dodgerblue;" align="left" style="border-bottom: solid 2px Gray;"><b>Description</b></td>
+                
 
 
             </tr>
-            <?php if (isset($data)) {
-                foreach ($data as $each_item) {
+              <?php if (isset($transactions)) {
+                foreach ($transactions as $each_item) {
                     ?>
                     <tr>
         <!--                <td align="left"><?php
@@ -57,65 +59,41 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
                         ?></td>-->
 
                         <td align="right" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['investment_date'])) {
-                                echo $each_item['Investment']['investment_date'];
+                            if (isset($each_item['LedgerTransaction']['date'])) {
+                                echo date('d/m/Y',srtotime($each_item['LedgerTransaction']['date']));
                             }
                             ?></td>
                         <td align="right" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['due_date'])) {
-                                echo $each_item['Investment']['due_date'];
+                            if (isset($each_item['LedgerTransaction']['voucher'])) {
+                                echo $each_item['LedgerTransaction']['voucher'];
                             }
                             ?></td>
                         <td align="left" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Portfolio']['voucher'])) {
-                                echo $each_item['Portfolio']['voucher'];
+                            if (isset($each_item['LedgerTransaction']['debit'])) {
+                                echo $each_item['LedgerTransaction']['debit'];
                             }
                             ?></td>
                         <td align="left" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Portfolio']['payment_name'])) {
-                                echo $each_item['Portfolio']['payment_name'];
+                            if (isset($each_item['LedgerTransaction']['credit'])) {
+                                echo $each_item['LedgerTransaction']['credit'];
                             }
                             ?></td>
 
                         <td align="right" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['amount_due'])) {
-                                echo $each_item['Investment']['amount_due'];
+                            if (isset($each_item['LedgerTransaction']['description'])) {
+                                echo $each_item['LedgerTransaction']['description'];
                             }
                             ?></td>
-                        <td align="right" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['amount_due'])) {
-                                echo $each_item['Investment']['amount_due'];
-                            }
-                            ?></td>
-                        <td align="center" style="border-bottom: solid 1px Gray;">
-
-                            <?php
-                            if (isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Cancelled') {
-                                echo $this->Html->Link('Re-instate', '/Investments/ReinstateInvestment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false));
-                            } elseif (isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid') {
-                                echo "No-Action Necessary";
-                            } 
-//                            else {
-//                                echo $this->Html->Link('Pay', '/Investments/payInvestor/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
-//                                ?><!-- | --><?php // echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false)); ?><!-- | --><?php
-//                                echo $this->Html->Link('Terminate', '/Investments/cancelInvestment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) . "/" . (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ), array('escape' => false));
-//                            }
-                            ?></td>
-                        <td align="center" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['status'])) {
-                                echo $each_item['Investment']['status'];
-                            }
-                            ?></td>
-                        
 
 
 
                     <?php }
                 }
+                
                 ?>
             </tr>
             <tr style="border-bottom: solid 1px Gray;">
-                <td align="right" colspan="4">Cash at hand</td>
+<!--                <td align="right" colspan="4">Cash at hand</td>
                 <td align="right">0000.00</td>
                 <td align="right"></td>
                 <td align="right" colspan="3">
@@ -129,6 +107,22 @@ $this->Form->create('ApproveInvestments', array('controller' => 'Investments', '
                                 <label for="ApproveInvestmentsApprovals2">Pending Approval</label>
                             </fieldset>
                     
+                </td>-->
+                    <td align="right" colspan="2"><p><b>Approve Payments</b></p>
+                    <fieldset>
+                                <legend style="display: none;">Approvals</legend>
+                                <input id="ApproveInvestmentsApprovals0" type="radio" value="0" name="data[ApproveInvestments][approvals]">
+                                <label for="ApproveInvestmentsApprovals0">Reject</label>
+                                <input id="ApproveInvestmentsApprovals1" type="radio" value="1" name="data[ApproveInvestments][approvals]">
+                                <label for="ApproveInvestmentsApprovals1">Approve</label>
+                                <input id="ApproveInvestmentsApprovals2" type="radio" value="2" name="data[ApproveInvestments][approvals]" checked="checked">
+                                <label for="ApproveInvestmentsApprovals2">Pending Approval</label>
+                            </fieldset></td>
+                <td align="right"></td>
+                <td align="right">Closing Balance</td>
+                <td align="right" colspan="2">
+                    
+                    <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GH$ '.number_format($data['ClientLedger']['available_cash']); } ?>
                 </td>
             </tr>
         </table>
