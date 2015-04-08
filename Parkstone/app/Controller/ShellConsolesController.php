@@ -194,7 +194,7 @@ function __invEOD(){
 function __dailyInterests(){
     
     $investment_data = $this->Investment->find('all',['recursive' => -1,
-        'conditions' => ['Investment.status' => array('Rolled_over','Invested')]]);
+        'conditions' => ['Investment.status' => array('Rolled_over','Invested','Termination_Requested')]]);
     if($investment_data){
         foreach($investment_data as $value){
         $term_id = $value['Investment']['investment_term_id'];

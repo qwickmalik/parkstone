@@ -11,34 +11,41 @@
 
                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
                     <tr>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="90" align="left"><b><?php echo $this->Paginator->sort('id', 'Client Code'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('investment_term_id', 'Inv. Period'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity Date'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal Amt.'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Int. Rate'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
+                 
+                                <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
+                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', ' Rate'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
+
+                   
                     </tr>
                     <?php if (isset($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;">
-                                <td align="left"><?php echo $each_item['Investor']['id']; ?></td>
-                                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/processPayments2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] : '' ),array());  ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
+                                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/payInvestor/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array());  ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
-                                <td align="left"><?php echo $each_item['InvestmentTerm']['period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
-                                <td align="left"><?php 
-                                
-                                ?></td>
+                                <td align="left"><?php if($each_item['Instruction']['id'] != 5){
+                                    echo $each_item['Instruction']['instruction_name'];
+                                }else{
+                                   echo $each_item['Investment']['instruction_details']; 
+                                }?></td>
+                               <td align="center" style="border-bottom: solid 1px Gray;"><?php
+                            if (isset($each_item['Investment']['status'])) {
+                                echo $each_item['Investment']['status'];
+                            }
+                            ?></td>
                             </tr>
     <?php }
 } ?>

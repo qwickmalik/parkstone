@@ -2105,7 +2105,7 @@ class InvestmentsController extends AppController {
 
                     if ($investment_amount > $amount_available) {
                         //RESET CASH INPUTS AND RETURN
-                       
+
                         $message = 'Investment Amount cannot be more than investor\'s available cash';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => $page));
@@ -2323,7 +2323,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('statemt_array_fixed', $statemt_array);
                     $total_tenure = $this->request->data['Investment']['total_tenure'];
                     $description = 'Fixed income investment for ' . $total_tenure . ' ' . $period;
-                    
+
                     $investment_array = array(
                         'investment_amount' => $this->request->data['Investment']['investment_amount'],
 //                        'investment_term_id' => $this->request->data['Investment']['investmentterm_id'],
@@ -4314,7 +4314,7 @@ class InvestmentsController extends AppController {
 
 
         if ($this->Session->check('ledger_data')) {
-            
+
             $ledger_data = $this->Session->read('ledger_data');
             $cledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
             if (count($cledger) > 0) {
@@ -4342,15 +4342,15 @@ class InvestmentsController extends AppController {
                     }
                 }
             }
-           $check = $this->Session->check('client_ledger');
+            $check = $this->Session->check('client_ledger');
             if ($check) {
-               $this->Session->delete('client_ledger');
+                $this->Session->delete('client_ledger');
             }
         }
-        
-        
+
+
         if ($this->Session->check('rledger_data')) {
-            
+
             $ledger_data = $this->Session->read('rledger_data');
             $cledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
             if (count($cledger) > 0) {
@@ -4707,32 +4707,198 @@ class InvestmentsController extends AppController {
         $this->set('data', $data);
     }
 
-    function approveTerminations2($investor_id = null, $investor_name = null) {
+    function approveTerminations2($investor_id = null, $investor_name = null, $investment_id = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+            $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
 
-            $this->paginate = array(
-                'conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
 
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
-
+            $this->set('investment_id', $investment_id);
             if ($data) {
+//               $transactions = $this->LedgerTransaction->find('all',['conditions' => [
+//                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
+                $this->paginate = array(
+                    'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
+                    'order' => array('LedgerTransaction.id' => 'asc'));
+                $transactions = $this->paginate('LedgerTransaction');
+                if ($transactions) {
+                    $this->set('transactions', $transactions);
+                }
                 $this->set('data', $data);
             } else {
-                $message = 'Sorry, No Fixed Investments Found';
-                $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                $message = 'Sorry, ledger information not found for investor. Try again.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
             }
         } else {
 
-            $message = 'Sorry, Investor Not Found';
-            $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+            $message = 'Sorry, investor not found';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+        }
+    }
+
+    function processTerminations() {
+
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+                $approval_status = $this->request->data['ApproveInvestments']['approvals'];
+                $investment_id = $this->request->data['Investment']['investment_id'];
+                $investor_id = $this->request->data['Investment']['investor_id'];
+                $userid = null;
+                $check = $this->Session->check('userDetails');
+                if ($check) {
+                    $userid = $this->Session->read('userDetails.id');
+                }
+                $data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+                switch ($approval_status) {
+                    case "0":
+                        if ($data) {
+                            $update_array = array('id' => $investment_id, 'status' =>
+                                $data['Investment']['old_status']);
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_termination_req');
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+
+                            $message = 'Termination request successfully rejected';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        } else {
+                            $message = 'Termination request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        }
+                        break;
+
+                    case "1":
+                        if ($data) {
+                            $ledger_data = $this->ClientLedger->find('first', ['conditions' =>
+                                ['ClientLedger.investor_id' => $investor_id]]);
+
+                            $period = $data['Investment']['investment_period'];
+                            $first_date = $data['Investment']['investment_date'];
+                            $inv_date = new DateTime($first_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $duration = date_diff($inv_date, $to_date);
+                            $duration = $duration->format("%a");
+                            $year = $duration;
+                            $custom_rate = $data['Investment']['custom_rate'] - 5;
+                            $investment_amount = $data['Investment']['investment_amount'];
+
+                            switch ($period) {
+                                case 'Day(s)':
+                                    
+                                    $date = new DateTime($finv_date);
+                                    $date->add(new DateInterval('P' . $duration . 'D'));
+                                    $date_statemt = new DateTime($first_date);
+                                    $principal = $investment_amount;
+                                    $statemt_array = array();
+                                    $rate = $custom_rate;
+
+                                    $interest_amount1 = ($rate / 100) * $investment_amount;
+                                    $interest_amount = $interest_amount1 * ($duration / 365);
+                                    $amount_due = $interest_amount + $investment_amount;
+                                    for ($n = 1; $n <= $duration; $n++) {
+                                        $date_statemt->add(new DateInterval('P1D'));
+                                        $interest_amount2 = $interest_amount1 * (1 / 365);
+                                        $total = $interest_amount2 + $principal;
+                                        $statemt_array[] = array('user_id' => $userid,
+                                            'investor_id' => $this->request->data['Investment']['investor_id'],
+                                            'principal' => $principal,
+                                            'interest' => $interest_amount2,
+                                            'maturity_date' => $date_statemt->format('Y-m-d'),
+                                            'total' => $total);
+//                                $principal = $total;
+                                    }
+
+                                    break;
+                                case 'Year(s)':
+
+                                    $finv_date = $inv_date;
+                                    $date = new DateTime($finv_date);
+                                    $date->add(new DateInterval('P' . $duration . 'D'));
+                                    $date_statemt = new DateTime($first_date);
+                                    $principal = $investment_amount;
+                                    $statemt_array = array();
+                                    $rate = $custom_rate;
+
+                                    //$YEAR2DAYS = 365 * $duration;
+                                    $interest_amount1 = ($rate / 100) * $investment_amount;
+                                    $interest_amount = $interest_amount1 * ($duration / 365);
+                                    $amount_due = $interest_amount + $investment_amount;
+                                    for ($n = 1; $n <= $duration; $n++) {
+                                        $date_statemt->add(new DateInterval('P1D'));
+                                        $interest_amount2 = $interest_amount1 * (365 / 365);
+                                        $total = $interest_amount2 + $principal;
+                                        $statemt_array[] = array('user_id' => $userid,
+                                            'investor_id' => $this->request->data['Investment']['investor_id'],
+                                            'principal' => $principal,
+                                            'interest' => $interest_amount2,
+                                            'maturity_date' => $date_statemt->format('Y-m-d'),
+                                            'total' => $total);
+//                            $principal = $total;
+                                    }
+
+                                    break;
+                            }
+
+                            $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due,'amount_due' => $amount_due,
+                                'interest_earned' => $interest_amount, 'total_amount_earned' => $amount_due,'duration' => $duration,
+                                'status' => "Termination_Approved");
+                            if ($ledger_data) {
+                                $cash_athand = $ledger_data['ClientLedger']['available_cash'];
+                                $new_cashathand = $cash_athand + $amount_due;
+                                $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $amount_due;
+                                $cledger_id = $ledger_data['ClientLedger']['id'];
+                                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
+                                    'invested_amount' => $total_invested);
+                                $this->ClientLedger->save($client_ledger);
+
+
+                                //Ledger transaction entry
+                                $description = 'Discounting of ' . $data['Investment']['investment_no'];
+                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'credit' => $amount_due, 'user_id' => $userid,
+                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
+                                    , 'description' => $description);
+                                $this->LedgerTransaction->create();
+                                $this->LedgerTransaction->save($ledger_transactions);
+                            }
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_termination_req');
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+
+                            $message = 'Termination request successfully approved';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        } else {
+                            $message = 'Termination request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        }
+                        break;
+                    case "2":
+                        if ($data) {
+                            $update_array = array('id' => $investment_id, 'status' => "Termination_Requested");
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_termination_req');
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+
+                            $message = 'Termination request successfully updated';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        } else {
+                            $message = 'Termination request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations'));
+                        }
+                        break;
+                }
+            }
         }
     }
 
@@ -4748,32 +4914,37 @@ class InvestmentsController extends AppController {
         $this->set('data', $data);
     }
 
-    function approvePayments2($investor_id = null, $investor_name = null) {
+    function approvePayments2($investor_id = null, $investor_name = null, $investment_id = null) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+            $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
 
-            $this->paginate = array(
-                'conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
 
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
-
+            $this->set('investment_id', $investment_id);
             if ($data) {
+//               $transactions = $this->LedgerTransaction->find('all',['conditions' => [
+//                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
+                $this->paginate = array(
+                    'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
+                    'order' => array('LedgerTransaction.id' => 'asc'));
+                $transactions = $this->paginate('LedgerTransaction');
+                if ($transactions) {
+                    $this->set('transactions', $transactions);
+                }
                 $this->set('data', $data);
             } else {
-                $message = 'Sorry, No Fixed Investments Found';
-                $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                $message = 'Sorry, ledger information not found for investor. Try again.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
             }
         } else {
 
             $message = 'Sorry, Investor Not Found';
-            $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
         }
     }
 
@@ -4792,39 +4963,82 @@ class InvestmentsController extends AppController {
         /* $this->__validateUserType(); */
         $this->paginate = array(
             'conditions' => array(
-                'status' => array('Payment_Approved'), 'Investment.investment_product_id' => array(1, 3)),
+                'status' => array('Payment_Approved', 'Termination_Approved'), 'Investment.investment_product_id' => array(1, 3)),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
         $this->set('data', $data);
     }
 
-    function processPayments2($investor_id = null, $investor_name = null) {
-        /* $this->__validateUserType(); */
-        if (!is_null($investor_id) && !is_null($investor_name)) {
-//            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+    function processPayments2() {
+        /* $this->__validateUserType(); */$this->autoRender = false;
+        if ($this->request->is('post')) {
+            if (!empty($this->request->data)) {
+                $approval_status = $this->request->data['ApproveInvestments']['approvals'];
+                $investment_id = $this->request->data['Investment']['investment_id'];
+                $investor_id = $this->request->data['Investment']['investor_id'];
+                $userid = null;
+                $check = $this->Session->check('userDetails');
+                if ($check) {
+                    $userid = $this->Session->read('userDetails.id');
+                }
+                $data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+                switch ($approval_status) {
+                    case "0":
+                        if ($data) {
+                            $update_array = array('id' => $investment_id, 'status' =>
+                                $data['Investment']['old_status']);
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_payment_req');
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
 
-            $this->paginate = array(
-                'conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)),
-                'limit' => 30,
-                'order' => array('Investment.id' => 'asc'));
-            $data = $this->paginate('Investment');
+                            $message = 'Payment request successfully rejected';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        } else {
+                            $message = 'Payment request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        }
+                        break;
 
-            $this->set('investor_id', $investor_id);
-            $this->set('investor_name', $investor_name);
+                    case "1":
+                        if ($data) {
 
-            if ($data) {
-                $this->set('data', $data);
-            } else {
-                $message = 'Sorry, No Fixed Investments Found';
-                $this->Session->write('imsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                            $update_array = array('id' => $investment_id,
+                                'status' => "Payment_Approved");
+
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_payment_req');
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+
+                            $message = 'Payment request successfully approved';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        } else {
+                            $message = 'Payment request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        }
+                        break;
+                    case "2":
+                        if ($data) {
+                            $update_array = array('id' => $investment_id, 'status' => "Payment_requested");
+                            $this->Investment->save($update_array);
+                            $this->Session->delete('public_payment_req');
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+
+                            $message = 'Payment request successfully updated';
+                            $this->Session->write('smsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        } else {
+                            $message = 'Payment request processing failure. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approvePayments'));
+                        }
+                        break;
+                }
             }
-        } else {
-
-            $message = 'Sorry, Investor Not Found';
-            $this->Session->write('imsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
         }
     }
 
@@ -4893,6 +5107,9 @@ class InvestmentsController extends AppController {
 
                 $result = $this->Investment->save($new_investmentdetails);
                 if ($result) {
+                    $this->Session->delete('public_termination_req');
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+
                     $message = 'Investment Termination Successfully Sent';
                     $this->Session->write('smsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
@@ -5652,7 +5869,7 @@ class InvestmentsController extends AppController {
                         $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                     }
                 }
-                 $base_fee = 0;
+                $base_fee = 0;
                 $base_rate = 0;
                 $benchmark_rate = 0;
                 if (isset($this->request->data['Investment']['base_fees'])) {
@@ -5729,49 +5946,49 @@ class InvestmentsController extends AppController {
 
 
 
-                    $total_tenure = $this->request->data['Investment']['total_tenure'];
-                    $description = 'Reinvestment of '. $data["Investment"]["investment_no"].' for ' . $duration . ' ' . $period;
-                    //'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
-                $investment_array = array( 'balance' => $amount_due,
-                    'expected_interest' => $interest_amount, 'amount_due' => $amount_due, 
+                $total_tenure = $this->request->data['Investment']['total_tenure'];
+                $description = 'Reinvestment of ' . $data["Investment"]["investment_no"] . ' for ' . $duration . ' ' . $period;
+                //'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
+                $investment_array = array('balance' => $amount_due,
+                    'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
                     'custom_rate' => $custom_rate,
-                    'total_tenure' => $total_tenure,'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                    'total_tenure' => $total_tenure, 'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
+                    'earned_balance' => $this->request->data['Investment']['investment_amount'],
                     'interest_earned' => $interest_amount,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
 
-                $ledger_transactions[] = array( 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description);
-                
-                $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'], 
+                $ledger_transactions[] = array('debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
+                    'date' => $inv_date, 'description' => $description);
+
+                $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'],
                     'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount,
-                    'custom_rate' => $custom_rate ,'old_custom_rate' => $data["Investment"]["custom_rate"],'rollover_date' => $date->format('Y-m-d'));
-                
-                 $base_fee = 0;
-                    $benchmark_fee = 0;
-                    switch ($management_fee_type) {
-                        case 'Management Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
+                    'custom_rate' => $custom_rate, 'old_custom_rate' => $data["Investment"]["custom_rate"], 'rollover_date' => $date->format('Y-m-d'));
 
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-                            }
-                            $new_cashathand = $new_cashathand - $base_fee;
-                            break;
-                        case 'Management & Performance Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-                            }
-                            $new_cashathand = $new_cashathand - $base_fee;
+                $base_fee = 0;
+                $benchmark_fee = 0;
+                switch ($management_fee_type) {
+                    case 'Management Fee':
+                        $base_fee = ($base_fee / 100) * $investment_amount;
 
-                            break;
-                    }
-$generic_array = array('id' => $data['Investment']['id'],'investor_id' => $data['Investment']['investor_id'],
+                        if ($base_fee > $new_cashathand) {
+                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+                        }
+                        $new_cashathand = $new_cashathand - $base_fee;
+                        break;
+                    case 'Management & Performance Fee':
+                        $base_fee = ($base_fee / 100) * $investment_amount;
+                        if ($base_fee > $new_cashathand) {
+                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+                        }
+                        $new_cashathand = $new_cashathand - $base_fee;
+
+                        break;
+                }
+                $generic_array = array('id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'],
                     'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
                     'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
@@ -5784,7 +6001,7 @@ $generic_array = array('id' => $data['Investment']['id'],'investor_id' => $data[
                 $total_cash = $new_cashathand + $new_cashinvested;
                 $description = 'Deposit for investment';
 //move to summary contract function and store in client ledger
-                
+
                 $client_ledger = array('available_cash' => $new_cashathand,
                     'invested_amount' => $new_cashinvested);
 
@@ -5813,7 +6030,7 @@ $generic_array = array('id' => $data['Investment']['id'],'investor_id' => $data[
                 $this->Session->write('variabless_fixed', $variables);
                 $this->Session->write('rollover_details', $rollover_details);
                 $this->Session->write('investment_array_fixed', $investment_array);
-                
+
                 $this->Session->write('generic_array', $generic_array);
                 $this->Session->write('rledger_data', $client_ledger);
                 $this->Session->write('ledger_transactions', $ledger_transactions);
