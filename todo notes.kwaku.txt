@@ -2,5 +2,6 @@
 1.  Calculate for years.
 2. Create column for total tenure and subtract when mature
 3. When saving ledgger transaction in summary add client ledger id. check process investment and link equities to investor equity table if necessary
-4
+4. Work on manage investments..dispose equities..flow is to request disposal..
+5. When making payments dont forget to check whether amount is more or less than available ledger amount. pay from ledger instead of investment
 3. Function to deduct and accrue management fee.// Remember to create ledger debit entry.may rather code ledger entry when the investment is due
