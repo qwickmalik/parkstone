@@ -1713,65 +1713,65 @@ class InvestmentsController extends AppController {
         }
     }
 
-    function newInvestment2_comp_OLD($investorid = null) {
-        /* $this->__validateUserType(); */
-
-        if (!is_null($investorid)) {
-            $this->set('portfolios', $this->Portfolio->find('list'));
-            $this->set('currencies', $this->Currency->find('list'));
-            $this->set('investmentterms', $this->InvestmentTerm->find('list'));
-            $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
-            $this->set('paymentmodes', $this->PaymentMode->find('list'));
-            $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
-            $this->set('instructions', $this->Instruction->find('list'));
-            $this->set('equitieslists', $this->EquitiesList->find('list'));
-
-
-            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), /* 'recursive' => -1 */));
-            if ($investor) {
-                $this->set('investors', $investor);
-            }
-            $check = $this->Session->check('variabless_fixed');
-            if ($check) {
-                $check = $this->Session->check('variabless_fixed.duedate');
-                if ($check) {
-                    $this->set('duedate', $this->Session->read('variabless_fixed.duedate'));
-                }
-                $check = $this->Session->check('variabless_fixed.interest');
-                if ($check) {
-                    $this->set('interest', $this->Session->read('variabless_fixed.interest'));
-                }
-                $check = $this->Session->check('variabless_fixed.totaldue');
-                if ($check) {
-                    $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
-                }
-            }
-
-            $check = $this->Session->check('variabless_equity');
-            if ($check) {
-                $check = $this->Session->check('variabless_equity.totalamt');
-                if ($check) {
-                    $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
-                }
-                $check = $this->Session->check('variabless_equity.share_price');
-                if ($check) {
-                    $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
-                }
-                $check = $this->Session->check('variabless_equity.total_fees');
-                if ($check) {
-                    $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
-                }
-                $check = $this->Session->check('variabless_equity.equity');
-                if ($check) {
-                    $this->set('equity', $this->Session->read('variabless_equity.equity'));
-                }
-            }
-        } else {
-            $message = 'No Investor Selected';
-            $this->Session->write('emsg', $message);
-            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
-        }
-    }
+//    function newInvestment2_comp_OLD($investorid = null) {
+//        /* $this->__validateUserType(); */
+//
+//        if (!is_null($investorid)) {
+//            $this->set('portfolios', $this->Portfolio->find('list'));
+//            $this->set('currencies', $this->Currency->find('list'));
+//            $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+//            $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+//            $this->set('paymentmodes', $this->PaymentMode->find('list'));
+//            $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+//            $this->set('instructions', $this->Instruction->find('list'));
+//            $this->set('equitieslists', $this->EquitiesList->find('list'));
+//
+//
+//            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorid), /* 'recursive' => -1 */));
+//            if ($investor) {
+//                $this->set('investors', $investor);
+//            }
+//            $check = $this->Session->check('variabless_fixed');
+//            if ($check) {
+//                $check = $this->Session->check('variabless_fixed.duedate');
+//                if ($check) {
+//                    $this->set('duedate', $this->Session->read('variabless_fixed.duedate'));
+//                }
+//                $check = $this->Session->check('variabless_fixed.interest');
+//                if ($check) {
+//                    $this->set('interest', $this->Session->read('variabless_fixed.interest'));
+//                }
+//                $check = $this->Session->check('variabless_fixed.totaldue');
+//                if ($check) {
+//                    $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
+//                }
+//            }
+//
+//            $check = $this->Session->check('variabless_equity');
+//            if ($check) {
+//                $check = $this->Session->check('variabless_equity.totalamt');
+//                if ($check) {
+//                    $this->set('totalamt', $this->Session->read('variabless_equity.totalamt'));
+//                }
+//                $check = $this->Session->check('variabless_equity.share_price');
+//                if ($check) {
+//                    $this->set('share_price', $this->Session->read('variabless_equity.share_price'));
+//                }
+//                $check = $this->Session->check('variabless_equity.total_fees');
+//                if ($check) {
+//                    $this->set('total_fees', $this->Session->read('variabless_equity.total_fees'));
+//                }
+//                $check = $this->Session->check('variabless_equity.equity');
+//                if ($check) {
+//                    $this->set('equity', $this->Session->read('variabless_equity.equity'));
+//                }
+//            }
+//        } else {
+//            $message = 'No Investor Selected';
+//            $this->Session->write('emsg', $message);
+//            $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Comp'));
+//        }
+//    }
 
     function newInvestment2_comp($investorid = null) {
         /* $this->__validateUserType(); */
@@ -1800,7 +1800,7 @@ class InvestmentsController extends AppController {
                     $ledger_data = $this->Session->read('ledger_data');
                     $this->set('ledger_data', $ledger_data);
                 } else {
-                    $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+                    $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investorid]]);
 
                     if ($ledger_data) {
                         $this->Session->write('ledger_data', $ledger_data);
@@ -2072,7 +2072,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-                if (($this->request->data['Investment']['cashreceiptmode_id'] == '2') && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
+                if (($this->request->data['Investment']['cashreceiptmode_id'] == 2) && (is_null($this->request->data['Investment']['cheque_no']) || $this->request->data['Investment']['cheque_no'] == "")) {
                     $message = 'Please Supply Cheque No.';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
@@ -2091,7 +2091,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                if (($this->request->data['Investment']['instruction_id'] == 6) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
