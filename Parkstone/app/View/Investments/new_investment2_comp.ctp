@@ -7,6 +7,10 @@ $shopCurrency = "GH$";
 if ($this->Session->check('shopCurrency_investment')) {
     $shopCurrency = $this->Session->read('shopCurrency_investment');
 }
+if ($this->Session->check('ledger_data')) {
+    $ledger_data = $this->Session->read('ledger_data');
+}
+
 ?>
 <!-- Content starts here -->
 <h3>New Investment - Step 2</h3>
