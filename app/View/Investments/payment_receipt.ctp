@@ -70,7 +70,7 @@ echo $this->Html->css('template.css');
             </td>
             <td align="left" valign="top" width="50%">
 <!--                <b>Warehouse: Warehouse name</b><br></br>-->
-                <b>Investment No.: <?php if(isset($payment['Investment']['investment_no'])){echo $payment['Investment']['investment_no'];} ?></b><br></br>
+                <b>Receipt No.: <?php if(isset($voucher_no)){echo $voucher_no; } ?></b><br></br>
                 <b>Date: </b><?php $check = $this->Session->check('payment_date');
             if ($check) {
                 $pdate = $this->Session->read('payment_date');
@@ -96,19 +96,19 @@ echo $this->Html->css('template.css');
             <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
         </tr>
         <tr>
-        <td align="left" valign="top" width="50%">
-            <table width="100%" cellspacing="10" cellpadding="0" border="0">
+        <td align="left" valign="top" width="50%">     <table width="100%" cellspacing="10" cellpadding="0" border="0">
 
                 <tr>
-                    <td><b align="right">Investment Term:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($payment['InvestmentTerm']['term_name'])) {
-    echo $payment['InvestmentTerm']['term_name'];
+                   <td><b align="right">Total Amount Invested:</b></td>
+                    <td><span id="xxxxxx"><?php if (isset($payment['ClientLedger']['invested_amount'])) {
+    echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['invested_amount']);
 } ?></span></td>
                 </tr>
                 <tr>
-                    <td><b align="right">Investment Rate:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($payment['Investment']['custom_rate'])) {
-    echo $payment['Investment']['custom_rate'].'%';
+                  <td><b align="right">Closing Balance:</b></td>
+                    <td><span id="xxxxxx"><?php  if (isset($payment['ClientLedger']['available_cash'])) {
+  
+                    echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['available_cash']);
 } ?></span></td>
                 </tr>
                 
@@ -116,49 +116,31 @@ echo $this->Html->css('template.css');
                     <td><b align="right">&nbsp;</b></td>
                     <td><span id="xxxxxx">&nbsp;</span></td>
                 </tr>
-            </table>
-        </td>
+            </table></td>
         <td align="left" valign="top" width="50%">
             <table width="100%" cellspacing="10" cellpadding="0" border="0">
                 <tr>
-                    <td><b align="right">Amount Invested:</b></td>
-                    <td><span id="xxxxxx"><?php if (isset($payment['Investment']['investment_amount'])) {
-    echo $shopCurrency. ' ' .$payment['Investment']['investment_amount'];
-} ?></span></td>
-                </tr>
-<!--                <tr>
-                    <td><b align="right">Rate:</b></td>
-                    <td><span id="xxxxxx"><?php //if (isset($payment['Rate']['interest_rate'])) {
-   // echo $payment['Rate']['interest_rate'].'%';
-//} ?></span></td>
--->                </tr>
-                <tr>
-                    <td><b align="right">Interest Earned:</b></td>
-                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['interest_accrued'])) {
-  
-                    echo $shopCurrency. ' ' .$payment['Investment']['interest_accrued'];
-} ?></span></td>
-                </tr>
-                <tr>
-                    <td><b align="right">Amount Due:</b></td>
-                    <td><span id="xxxxxx"><?php  if (isset($payment['Investment']['total_amount_earned'])) {
-  
-                    echo $shopCurrency. ' ' .$payment['Investment']['total_amount_earned'];
-} ?></span></td>
-                </tr>
-                
-                <tr>
-                    <td><b align="right">Amount Paid:</b></td>
+                 <td><b align="right">Amount Paid:</b></td>
                     <td><span id="xxxxxx"><b><?php if (isset($payment_amt)) {
-    echo $shopCurrency. ' ' .$payment_amt;
+    echo $shopCurrency. ' ' .number_format($payment_amt, 2, '.', ',');
+} ?></b></span></td>
+                </tr>      
+          
+                <tr>
+                   <td><b align="right">Check No.:</b></td>
+                    <td><span id="xxxxxx"><b><?php if (isset($check_nos)) {
+    echo $check_nos;
 } ?></b></span></td>
                 </tr>
                 
                 <tr>
-                    <td><b align="right">Outstanding Balance:</b></td>
-                    <td><span id="xxxxxx"><b><?php if (isset($payment['Investment']['earned_balance'])) {
-    echo $shopCurrency. ' ' .$payment['Investment']['earned_balance'];
-} ?></b></span></td>
+                    <td><b align="right">&nbsp;</b></td>
+                    <td><span id="xxxxxx">&nbsp;</span></td>
+                </tr>
+                
+                <tr>
+                    <td><b align="right">&nbsp;</b></td>
+                    <td><span id="xxxxxx">&nbsp;</span></td>
                 </tr>
             </table>
         </td>
@@ -200,7 +182,7 @@ echo $this->Html->css('template.css');
             <td align="left" valign="top" width="50%">&nbsp;</td>
             <td align="right" valign="top" width="50%">
                  <?php 
-               echo  $this->Html->link('Return',"/Investments/manageClientInvestments/".(isset($payment['Investor']['id']) ? $payment['Investor']['id'] : '' )."/".(isset($payment['Investor']['fullname']) ? $payment['Investor']['fullname'] : '' ),array('style' =>'font-size: 14px;')); 
+               echo  $this->Html->link('Return',"/Investments/manageFixedInvestments/".(isset($payment['Investor']['id']) ? $payment['Investor']['id'] : '' )."/".(isset($payment['Investor']['fullname']) ? $payment['Investor']['fullname'] : '' ),array('style' =>'font-size: 14px;')); 
                 echo $this->Html->link('Print Receipt',"javascript:void(0)",array("class" => 'button_red',"id" => "print_receipt")); 
            // echo $this->Form->button('Print Receipt',array("type" => "submit","class" => "button_red","id"=>"print_receipt"));
                 ?>

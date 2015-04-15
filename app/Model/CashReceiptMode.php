@@ -26,6 +26,14 @@ class CashReceiptMode extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+        'Topup' => array(
+            'className' => 'Topup',
+            'foreignKey' => 'cash_receipt_mode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
 }
 
