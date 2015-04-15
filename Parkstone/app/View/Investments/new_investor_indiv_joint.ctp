@@ -9,9 +9,9 @@ echo $this->Html->script('notification.js');
         <div id="clearer"></div>
         <?php
         echo $this->Html->css('prettify.css');
-        echo $this->Html->script('jquery.bootstrap.wizard.js');
-        echo $this->Html->script('jquery.bootstrap.wizard.min.js');
-        echo $this->Html->script('prettify.js');
+echo $this->Html->script('bootstrap.min.js');
+//echo $this->Html->script('fuelux/wizards.js');
+//        echo $this->Html->script('prettify.js');
         echo $this->Html->css('fuelux/style.css');
         echo $this->Html->css('icheck/flat/_all.css');
         echo $this->Html->script('icheck/icheck.js');
@@ -295,8 +295,9 @@ echo $this->Html->script('notification.js');
                 margin-top: 2px;
             }
         </style>
-        <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
-        <?php
-        echo $this->Html->script('prettify.js');
-        echo $this->Html->script('fuelux/wizards.js');
-        ?>
+               <!--<script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>-->
+<?php
+echo $this->Html->script('fuelux/fuelux2/loader.min.js');
+echo $this->Html->script('prettify.js');
+echo $this->Html->script('fuelux/wizards.js');
+?>

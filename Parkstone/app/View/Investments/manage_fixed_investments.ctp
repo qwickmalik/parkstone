@@ -41,11 +41,11 @@ echo $this->Html->script('notification.js');
         </tr>
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Edit</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b>Edit</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="140" align="right"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Rate(%)'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="140" align="right"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
@@ -76,7 +76,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_amount'])){
-                            echo $each_item['Investment']['investment_amount'];
+                            echo number_format($each_item['Investment']['investment_amount']);
                         }
                         
                         ?></td>
@@ -94,7 +94,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="center"><?php
                         if(isset($each_item['Investment']['amount_due'])){
-                            echo $each_item['Investment']['amount_due'];
+                            echo number_format($each_item['Investment']['amount_due']);
                         }
                         ?></td>
                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){
@@ -135,28 +135,112 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementDailyInterest'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
-                <td align="left"><?php echo $this->Html->Link('Top-up', '#topUpForm'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array('escape'=>false, 'class' => 'btn btn-xs btn-success', 'data-toggle' => 'modal', 'data-target' => '#topUpForm'));?>
+                <td align="center"><?php if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
+                   
+                    echo $this->Html->Link('Top-up', '#topUpForm'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array('escape'=>false, 'class' => 'btn btn-xs btn-success topup','data-id' => (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),'data-toggle' => 'modal', 'data-target' => '#topUpForm'));
                 
+                    }else{
+                        echo "N/A";
+                    }
                     
+                    ?>
                     <!-- Pop-up form -->
+                            
                     <div class="modal fade" id="topUpForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
+                      <!--<form class="basic-form" action="/parkstone_online/Investments/topupInvestment" method="post">-->
+                      <?php echo $this->Form->create('Topup', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'topupInvestment'), 'class'=> 'basic-form')); ?> 
+                                
+                        <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myModalLabel">Top-up Investment</h4>
                           </div>
                           <div class="modal-body">
+                              <div class="row">
+                                  
+                    <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
+                               <table border="0" width="100%" cellspacing="10" cellpadding="5" align="left">
+                        <tr>
+                            <td style="border-bottom: solid 2px dodgerblue;" align="left">
+                                <b>ID</b>
+                            </td>
+                            <td style="border-bottom: solid 2px dodgerblue;" width="170" align="left">
+                                <b>Name</b>
+                            </td>
 
-                            <form class="basic-form" action="#" method="post">
-                             <?php // echo $this->Form->create('Topup', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'topupInvestment'), 'class'=> 'basic-form')); ?> 
-                                <div class="row">
-                                    <p style='width: 100%; font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Top-up Date*:</p>
+                            <td style="border-bottom: solid 2px dodgerblue" width="170" align="left">
+                                <b>ITF</b>
+                            </td>
+                            <td style="border-bottom: solid 2px dodgerblue"  align="left">
+                                <b>Invested Amount</b>
+                            </td>
+                            <td style="border-bottom: solid 2px dodgerblue"  align="left">
+                                <b>Available Cash</b>
+                        </tr>
+                        <?php
+                        if (isset($inv)) {
+                            ?>
+                            <tr>
+                                <td align="left">
+                                    <?php
+                                    if (!empty($inv['Investor']['id'])) {
+                                        echo $inv['Investor']['id'];
+                                    } else {
+                                        echo 'N/A';
+                                    }
+                                    ?>
+                                </td>
+                                <td align="left">
+                                    <?php
+                                    if (!empty($inv['Investor']['surname']) && !empty($inv['Investor']['other_names'])) {
+                                        echo $inv['Investor']['surname'] . ' ' . $inv['Investor']['other_names'];
+                                    } else {
+                                        echo 'N/A';
+                                    }
+                                    ?>
+                                </td>
+
+                                <td align="left">
+                                    <?php
+                                    if (!empty($inv['Investor']['in_trust_for'])) {
+                                        echo $inv['Investor']['in_trust_for'];
+                                    } else {
+                                        echo 'N/A';
+                                    }
+                                    ?>
+                                </td>
+                                <td align="left">
+                                    <?php
+                                    if (!empty($inv['ClientLedger']['invested_amount'])) {
+                                        echo 'GH$ '.number_format($inv['ClientLedger']['invested_amount']);
+                                    } else {
+                                        echo 'GH$ 0.00';
+                                    }
+                                    ?>
+                                </td>
+                                <td align="left">
+                                    <?php
+                                    if (!empty($inv['ClientLedger']['available_cash'])) {
+                                        echo 'GH$ '.number_format($inv['ClientLedger']['available_cash']);
+                                    } else {
+                                        echo 'GH$ 0.00';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        
+                        ?></table>
+                              </div>
+                               
+                            <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-12">
                                         <?php
-                                        if ($this->Session->check('investtemp1.investment_date') == true) {
+                                        if ($this->Session->check('topuptemp.investment_date') == true) {
 
-                                            $dob_string = $this->Session->read('investtemp1.investment_date');
+                                            $dob_string = $this->Session->read('topuptemp.investment_date');
                                             $month = date('m', strtotime($dob_string));
                                             $day = date('d', strtotime($dob_string));
                                             $Year = date('Y', strtotime($dob_string));
@@ -170,39 +254,62 @@ echo $this->Html->script('notification.js');
                                         <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                                         <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                                         <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                                        <?php echo $this->Form->day('investment_date', array("selected" => $day)); ?>
+                                        <?php echo "<p style='width: 100%;float:left; font-size: 14px;font-weight: bold;line-height: 0px; padding: 60px 0px 0px 0px;'>Top-up Date*:</p>
+                               ".$this->Form->day('investment_date', array("selected" => $day,)); ?>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <?php echo $this->Form->month('investment_date', array("selected" => $month)); ?>
+                                        <?php echo "<p style='width: 100%;float:left; font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</p>
+                               ".$this->Form->month('investment_date', array("selected" => $month)); ?>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <?php echo $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
+                                        <?php echo "<p style='width: 100%;float:left; font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</p>
+                               ".$this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
                                     </div>
                                     <script>
                                         var day = $("#day").val();
                                         var month = $("#month").val();
                                         var year = $("#year").val();
-                                        $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                                        $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                                        $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                                        $("#TopupInvestmentDateDay option[value=" + day + "]").attr('selected', true);
+                                        $("#TopupInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
+                                        $("#TopupInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                     </script>
                             </div>
-                                <?php echo $this->Form->input('topup_amount', array('label' => 'Top-up Amount', 'class' => 'required', 'placeholder' => '0.00')); ?> 
-                            
+                            <div class="row">
+                             <div class="col-lg-4 col-md-4 col-sm-12">
+<?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => "--Please Select--")); ?>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+<?php echo $this->Form->input('cheque_no', array('disabled', 'label' => 'Cheque No.', 'placeholder' => "Cheque number(s)")); ?>
+                                </div>
+                             <div class="col-lg-4 col-md-4 col-sm-12">
+                                <?php 
+                                 echo $this->Form->hidden('topupinvestment_id',array('class' => 'invest_id'));
+                                 
+                                 echo $this->Form->hidden('topupinvestor_id',array('value' => (isset($inv['ClientLedger']['investor_id']) 
+                                        ? $inv['ClientLedger']['investor_id'] : '')));
+                                 echo $this->Form->hidden('topupinvestor_name',array('value' => (isset($inv['Investor']['fullname']) 
+                                        ? $inv['Investor']['fullname'] : '')));
+                                echo $this->Form->hidden('topupavailable_cash',array('value' => (isset($inv['ClientLedger']['available_cash']) 
+                                        ? $inv['ClientLedger']['available_cash'] : 0)));
+                                echo $this->Form->input('topup_amount', array('label' => 'Top-up Amount', 'class' => 'required', 'placeholder' => '0.00','value' => 0)); ?> 
+                            </div>
+                                 </div>
                             </form>
-                            <?php // $this->Form->end(); ?>
+                            
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
                            
                           </div>
-                            
                         </div>
                       </div>
+                          <!--</form>-->
+                          
+                            <?php $this->Form->end(); ?>
                     </div>
                     <!-- Pop-up form Ends -->
-                
+               
                 </td>
                 
                 
@@ -222,3 +329,37 @@ echo $this->Html->script('notification.js');
 
 </div>
 <!-- Content ends here -->
+    <script lang="javascript">
+        jQuery(document).ready(function($) {
+            $(".topup").click(function () {
+            var myid = $(this).data('id');
+
+//            alert(myid);
+            $(".invest_id").attr('value', myid);
+//            return false;
+        });
+  function hide_chequeno() {
+                var cashmode = $("#TopupCashreceiptmodeId").val();
+                if (cashmode == '2') {
+                    $("#TopupChequeNo").prop('disabled',false);
+                    return false;
+                }
+                if (cashmode != '2') {
+                    $("#TopupChequeNo").prop('disabled', true);
+                    return false;
+                }
+            }
+            
+            
+           
+
+            
+            //DISABLE CHEQUENO if CASH
+            hide_chequeno();
+            $("#TopupCashreceiptmodeId").change(function() {
+                hide_chequeno();
+            });
+           
+            
+            });
+    </script>

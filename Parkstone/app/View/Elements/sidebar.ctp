@@ -39,7 +39,10 @@
                 <?php echo $this->Html->link('Manage Investments', '/Investments/clearManageSessions', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Maturity List', '/Investments/maturityList', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Daily Maturity List', '/Investments/maturityList', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Monthly Maturity List', '/Investments/monthlyMaturityList', array('escape' => false)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link('Approve Terminations', '/Investments/approveTerminations', array('escape' => false)); ?>

@@ -609,80 +609,13 @@ if ($this->Session->check('shopCurrency_investment')) {
     </div>
     <!-- Content ends here -->
     <?php
-    $this->Session->delete('investtemp1');
+//    $this->Session->delete('investtemp1');
     ?>
     <script lang="javascript">
         jQuery(document).ready(function ($) {
-            var prod_val = $("#InvestmentInvestmentproductId").val();
-//             $(".hidden-fee").hide();
-            if (prod_val == "1") {
-
-                $("#fixed").show("slow");
-                $("#equity").hide("slow");
-            }
-
-            if (prod_val == "2") {
-
-                $("#equity").show(5000);
-                $("#fixed").hide("slow");
-            }
-
-            if (prod_val == "3") {
-                $("#fixed").show("slow");
-                $("#equity").show("slow");
-            }
-
-            if (prod_val == "") {
-                $("#fixed").show("slow");
-                $("#equity").show("slow");
-            }
-
-//$("#InvestmentTotalFeesChk").click(function(){
-//    
-//        var fee_check = $(this).val();
-//       
-//    if(fee_check == "1"){
-//        $(".hidden-fee").show();
-//        return false;
-//    }
-//    if(fee_check == "0"){
-//        $(".hidden-fee").hide();
-//        return false;
-//    }
-//    
-//});
-
-            //hide or show fixed income and equity columns
-            $("#InvestmentInvestmentproductId").change(function () {
-
-
-                var investmentproduct = $(this).val();
-                if (investmentproduct == "1") {
-
-                    $("#fixed").show("slow");
-                    $("#equity").hide("slow");
-                }
-
-                if (investmentproduct == "2") {
-
-                    $("#equity").show(5000);
-                    $("#fixed").hide("slow");
-                }
-
-                if (investmentproduct == "3") {
-                    $("#fixed").show("slow");
-                    $("#equity").show("slow");
-                }
-
-                if (investmentproduct == "") {
-                    $("#fixed").show("slow");
-                    $("#equity").show("slow");
-                }
-
-            });
-            //hide benchmark if management fee is chosen
-            $("#InvestmentManagementFeeType").change(function () {
-                var fee_type = $(this).val();
+          
+           function hide_benchmark(){
+              var fee_type = $("#InvestmentManagementFeeType").val();
                 $(".BenchmarkRate").show();
                 $(".hidden-fee").show();
                 if (fee_type == "Performance Fee") {
@@ -692,7 +625,64 @@ if ($this->Session->check('shopCurrency_investment')) {
                 if (fee_type == "Management Fee") {
                     $(".BenchmarkRate").hide();
                     return false;
+                }  
+           }
+            function hide_investcolumn() {
+                var prod_val = $("#InvestmentInvestmentproductId").val();
+//             $(".hidden-fee").hide();
+                if (prod_val == "1") {
+
+                    $("#fixed").show("slow");
+                    $("#equity").hide("slow");
                 }
+
+                if (prod_val == "2") {
+
+                    $("#equity").show(5000);
+                    $("#fixed").hide("slow");
+                }
+
+                if (prod_val == "3") {
+                    $("#fixed").show("slow");
+                    $("#equity").show("slow");
+                }
+
+                if (prod_val == "") {
+                    $("#fixed").show("slow");
+                    $("#equity").show("slow");
+                }
+            }
+       function hide_chequeno() {
+                var cashmode = $("#InvestmentCashreceiptmodeId").val();
+                if (cashmode == '2') {
+                    $("#InvestmentChequeNo").prop('disabled',false);
+                    return false;
+                }
+                if (cashmode != '2') {
+                    $("#InvestmentChequeNo").prop('disabled', true);
+                    return false;
+                }
+            }
+            
+            
+           
+
+            
+            //hide tenure if no
+            hide_chequeno();
+            $("#InvestmentCashreceiptmodeId").change(function() {
+                hide_chequeno();
+            });
+            //hide or show fixed income and equity columns
+            hide_investcolumn();
+            $("#InvestmentInvestmentproductId").change(function() {
+
+                hide_investcolumn();
+            });
+            //hide benchmark if management fee is chosen
+            hide_benchmark();
+            $("#InvestmentManagementFeeType").change(function () {
+               hide_benchmark();
             });
             //get current equity share price
             jQuery(".equity_id").change(function () {

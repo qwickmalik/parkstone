@@ -154,6 +154,15 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        
+        'Topup' => array(
+            'className' => 'Topup',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     

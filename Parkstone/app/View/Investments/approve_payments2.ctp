@@ -60,7 +60,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
 
                         <td align="right" style="border-bottom: solid 1px Gray;"><?php
                             if (isset($each_item['LedgerTransaction']['date'])) {
-                                echo date('d/m/Y',srtotime($each_item['LedgerTransaction']['date']));
+                                echo date('d/m/Y',strtotime($each_item['LedgerTransaction']['date']));
                             }
                             ?></td>
                         <td align="right" style="border-bottom: solid 1px Gray;"><?php

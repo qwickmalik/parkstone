@@ -28,7 +28,7 @@
                                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/approveTerminations2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] : '' )."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array());  ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
+                                <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate']; ?></td>

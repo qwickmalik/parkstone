@@ -87,7 +87,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     if ($public_unapproved_investors > 0) {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
+                                            <a href="/parkstone_online/Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
                                                 <i class="fa fa-users"></i>
                                                 <div class="notify">
                                                     <?php echo $public_unapproved_investors; ?>
@@ -98,7 +98,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
+                                            <a href="/parkstone_online/Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
                                                 <i class="fa fa-users"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_unapproved_investors; ?>
@@ -117,7 +117,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     if ($public_termination_req > 0) {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
+                                            <a href="/parkstone_online/Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
                                                 <i class="fa fa-times"></i>
                                                 <div class="notify">
                                                     <?php echo $public_termination_req; ?>
@@ -128,7 +128,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
+                                            <a href="/parkstone_online/Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
                                                 <i class="fa fa-times"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_termination_req; ?>
@@ -147,7 +147,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     if ($public_payment_req > 0) {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
+                                            <a href="/parkstone_online/Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
                                                 <i class="fa fa-money"></i>
                                                 <div class="notify">
                                                     <?php echo $public_payment_req; ?>
@@ -158,7 +158,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="../Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
+                                            <a href="/parkstone_online/Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
                                                 <i class="fa fa-money"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_payment_req; ?>

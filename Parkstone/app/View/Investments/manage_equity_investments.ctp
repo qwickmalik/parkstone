@@ -44,7 +44,7 @@ echo $this->Html->script('notification.js');
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" width="40" align="left"><b><?php echo "Edit"; ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b><?php echo $this->Paginator->sort('date', 'Inv. Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="120" align="right"><b><?php echo $this->Paginator->sort('date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="120" align="right"><b><?php echo $this->Paginator->sort('total_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue"  width="220" align="center"><b><?php echo $this->Paginator->sort('equity_id', 'Equity'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="120" align="right"><b><?php echo $this->Paginator->sort('purchase_price', 'Purchase Price'); ?></b></td>
@@ -83,7 +83,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="right"><?php
                         if(isset($each_item['Investment']['total_amount'])){
-                            echo $each_item['Investment']['total_amount'];
+                            echo number_format($each_item['Investment']['total_amount']);
                         }
                         
                         ?></td>
@@ -96,7 +96,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="right"><?php
                         if(isset($each_item['Investment']['purchase_price'])){
-                            echo $each_item['Investment']['purchase_price'];
+                            echo number_format($each_item['Investment']['purchase_price']);
                         }
                         ?></td>
                 <td align="center">
