@@ -916,3 +916,83 @@ APRIL 7, 2015
 ------------------------
 ALTER TABLE  `rollovers` ADD  `custom_rate` INT( 3 ) NULL DEFAULT  '0' AFTER  `amount` ,
 ADD  `old_custom_rate` INT( 3 ) NULL DEFAULT  '0' AFTER  `custom_rate` ;
+
+
+APRIL 11, 2015
+-----------------------
+ALTER TABLE  `ledger_transactions` ADD  `payment_mode_id` INT( 3 ) NULL AFTER  `cash_receipt_mode_id` ;
+
+APRIL 14, 2015
+----------------------
+
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `qwickfu1_parkst_inv`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `topups`
+--
+
+CREATE TABLE IF NOT EXISTS `topups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `investment_id` int(11) DEFAULT NULL,
+  `cash_receipt_mode_id` int(3) DEFAULT NULL,
+  `topup_amount` decimal(11,2) DEFAULT NULL,
+  `investment_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
+
+
+
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `qwickfu1_parkst_inv`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cash_receipt_modes`
+--
+
+DROP TABLE IF EXISTS `cash_receipt_modes`;
+CREATE TABLE IF NOT EXISTS `cash_receipt_modes` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `cash_receipt_mode` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `cash_receipt_modes`
+--
+
+INSERT INTO `cash_receipt_modes` (`id`, `cash_receipt_mode`) VALUES
+(1, 'Cash'),
+(2, 'Cheque'),
+(3, 'Ledger Balance');
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
+
+ALTER TABLE  `topups` ADD  `old_investmentamt` DECIMAL( 11, 2 ) NULL AFTER  `topup_amount` ,
+ADD  `oldinterest_earned` DECIMAL( 11, 2 ) NULL AFTER  `old_investmentamt` ,
+ADD  `oldtotal_amount_earned` DECIMAL( 11, 2 ) NULL AFTER  `oldinterest_earned` ,
+ADD  `oldearned_balance` DECIMAL( 11, 2 ) NULL AFTER  `oldtotal_amount_earned` ,
+ADD  `oldamount_due` DECIMAL( 11, 2 ) NULL AFTER  `oldearned_balance` ;
