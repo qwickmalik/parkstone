@@ -996,3 +996,30 @@ ADD  `oldinterest_earned` DECIMAL( 11, 2 ) NULL AFTER  `old_investmentamt` ,
 ADD  `oldtotal_amount_earned` DECIMAL( 11, 2 ) NULL AFTER  `oldinterest_earned` ,
 ADD  `oldearned_balance` DECIMAL( 11, 2 ) NULL AFTER  `oldtotal_amount_earned` ,
 ADD  `oldamount_due` DECIMAL( 11, 2 ) NULL AFTER  `oldearned_balance` ;
+
+APRIL 15, 2015
+--------------------------------
+ALTER TABLE  `reinvestments` CHANGE  `status`  `status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested', 'Termination_Requested',  'Payment_Requested',  'Termination_Approved',  'Payment_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT  'Invested',
+CHANGE  `old_status`  `old_status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested',  'Termination_Requested', 'Payment_Requested',  'Termination_Approved',  'Payment_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+
+DROP TABLE IF EXISTS `daily_reinvestinterest_statements`;
+CREATE TABLE IF NOT EXISTS `daily_reinvestinterest_statements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `reinvestor_id` int(11) DEFAULT NULL,
+  `principal` decimal(11,2) DEFAULT '0.00',
+  `interest` decimal(11,2) DEFAULT '0.00',
+  `total` decimal(11,2) DEFAULT '0.00',
+  `date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+APRIL 16, 2015
+------------------------
+ALTER TABLE  `investments` CHANGE  `custom_rate`  `custom_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00',
+CHANGE  `benchmark_rate`  `benchmark_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00',
+CHANGE  `base_rate`  `base_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `reinvestments` CHANGE  `interest_rate`  `interest_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';

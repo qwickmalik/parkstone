@@ -27,7 +27,8 @@ Notes FROM REVIEW 04 MARCH, 2015
 * Purchase price will be confirmed under Re-investments
 
 --Re-investments
-*Purchase price input under new reinvestments should be editable not disabled.
+- Add column in ReinvestorCashaacounts to record aggregate of matured reinvestments
+DONE -*Purchase price input under new reinvestments should be editable not disabled.
 --FundManagement should have its own controller and view folder
 
 TO DO
