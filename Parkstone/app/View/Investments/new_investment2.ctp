@@ -176,7 +176,7 @@ echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 BenchmarkRate">
 <?php
-echo $this->Form->input('benchmark_rate', array('label' => 'Benchmark Rate(%)', 'value' =>
+echo $this->Form->input('benchmark_rate', array('label' => 'Benchmark(%)', 'value' =>
     ($this->Session->check('investtemp1.benchmark_rate') == true ?
             $this->Session->read('investtemp1.benchmark_rate') : 0 )));
 ?>

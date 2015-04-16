@@ -98,9 +98,9 @@ echo $this->Html->script('notification.js');
                     echo $this->Html->link('Equity', "/Investments/manageEquityInvestments/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ));
                 ?></td>
                 <td align="left"><?php 
-                echo $this->Html->Link('Active', '/Investments/statementActiveInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ), array('escape' => false)); 
-                echo " | ";
-                echo $this->Html->Link('All', '/Investments/statementAllInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ), array('escape' => false)); 
+                echo $this->Html->Link('Client Ledger', '/Investments/clientLedger' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
+//                echo " | ";
+//                echo $this->Html->Link('All', '/Investments/statementAllInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ), array('escape' => false)); 
                 ?></td>
             </tr>
     <?php }

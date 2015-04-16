@@ -83,6 +83,14 @@ class Reinvestment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'DailyReinvestinterestStatement' => array(
+            'className' => 'DailyReinvestinterestStatement',
+            'foreignKey' => 'reinvestment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
          );
     

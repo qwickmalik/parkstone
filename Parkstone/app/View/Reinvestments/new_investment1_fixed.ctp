@@ -141,10 +141,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">  <?php
-                                    echo $this->Form->hidden('investment_period',array('value' => 'Day(s)'));
-                                    echo $this->Form->input('investment_period2', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
-                                        'options'=> array('Day(s)' => 'Day(s)'),
-                                        'default' => 'Day(s)','value' => 'Day(s)','disabled')); ?>
+                                    
+                                    echo $this->Form->input('investment_period', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
+                                        'options'=> array('Day(s)' => 'Day(s)','Year(s)'=>'Year(s)'),
+                                        'value' => ($this->Session->check('reinvesttemp.investment_period') == true ? 
+                                            $this->Session->read('reinvesttemp.investment_period') : '' )
+                                       )); ?>
                                      
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">

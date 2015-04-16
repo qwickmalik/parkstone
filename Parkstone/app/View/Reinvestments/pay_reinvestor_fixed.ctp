@@ -161,7 +161,7 @@ echo $this->Html->script('notification.js');
                                     $("#PaymentFixedInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
             <div class="col-lg-12 col-md-12 col-sm-12" >
-                <?php echo $this->Form->input('paymentmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => '--Please Select--')); ?>
+                <?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => '--Please Select--')); ?>
             </div>
             
             </div>
@@ -182,7 +182,7 @@ echo $this->Html->script('notification.js');
             <?php
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Back', "/Reinvestments/manageInvFixed", array("class" => 'btn btn-lg btn-info'));
-            echo $this->Html->button('Make Payment',array("type" => "submit", "class" => 'btn btn-lg btn-success'));
+            echo $this->Html->link('Make Payment', "/Reinvestments/makePayment", array("class" => 'btn btn-lg btn-success'));
 //            echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
             ?>
         </div>

@@ -60,10 +60,10 @@ echo $this->Html->script('bootstrap.min.js');
                                                 <span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px; '>Date of Incorporation*:</span>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->day('date_incorp', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('d', strtotime($investor['Investor']['date_incorp'])) : '--Select Day--' ), 'empty' => '--Select Day--', 'class' => 'required')); ?>&nbsp;
+                                                <?php echo $this->Form->day('date_incorp', array('required','size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('d', strtotime($investor['Investor']['date_incorp'])) : '--Select Day--' ), 'empty' => '--Select Day--', 'class' => 'required')); ?>&nbsp;
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
-                                                <?php echo $this->Form->month('date_incorp', array('size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('m', strtotime($investor['Investor']['date_incorp'])) : '--Select Month--'), 'empty' => '--Select Month--', 'class' => 'required')); ?>&nbsp;
+                                                <?php echo $this->Form->month('date_incorp', array('required','size' => 1, 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('m', strtotime($investor['Investor']['date_incorp'])) : '--Select Month--'), 'empty' => '--Select Month--', 'class' => 'required')); ?>&nbsp;
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12">
                                                 <?php echo $this->Form->year('date_incorp', 1890, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y', 'size' => 1, "style" => "margin-right: 10px;", 'label' => false, 'value' => (isset($investor['Investor']['date_incorp']) ? date('Y', strtotime($investor['Investor']['date_incorp'])) : '--Select Year--' ), 'empty' => '--Select Year--', 'class' => 'required')); ?>
@@ -71,7 +71,7 @@ echo $this->Html->script('bootstrap.min.js');
                                         </div>
 
                                         <?php
-                                        echo $this->Form->input('physical_address', array('size' => 30, 'value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address'));
+                                        echo $this->Form->input('physical_address', array('required','size' => 30, 'value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address'));
                                         echo $this->Form->input('postal_address', array('size' => 30, 'value' => (isset($investor['Investor']['postal_address']) ? $investor['Investor']['postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
                                         ?>
                                     </div>
@@ -139,9 +139,9 @@ echo $this->Html->script('bootstrap.min.js');
     margin-top: 2px;
 }
 </style>
-           <!--<script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>-->
+           <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
 <?php
-echo $this->Html->script('fuelux/fuelux2/loader.min.js');
+//echo $this->Html->script('fuelux/fuelux2/loader.min.js');
 echo $this->Html->script('prettify.js');
 echo $this->Html->script('fuelux/wizards.js');
 ?>

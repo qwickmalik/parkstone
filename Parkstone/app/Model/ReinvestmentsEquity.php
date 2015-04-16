@@ -57,16 +57,16 @@ class ReinvestmentsEquity extends AppModel{
             )
         );
     
-    var $hasMany = array(
-        'ReinvestmentEquityStatement' => array(
-            'className' => 'ReinvestmentEquityStatement',
-            'foreignKey' => 'reinvestment_equity_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )
-         );
+//    var $hasMany = array(
+//        'ReinvestmentEquityStatement' => array(
+//            'className' => 'ReinvestmentEquityStatement',
+//            'foreignKey' => 'reinvestment_equity_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            )
+//         );
     
     
 }
