@@ -11,7 +11,8 @@ class ShellConsolesController extends AppController {
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
          'Equity',  'Customer','InvestmentCash',
-        'ReinvestorCashaccount','DailyInterestStatement','Investment','InvestmentTerm','ClientLedger','LedgerTransaction');
+        'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment',
+        'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement');
 
     function beforeFilter() {
         
@@ -35,7 +36,9 @@ class ShellConsolesController extends AppController {
         $this->autoRender = false;
         //$this->__defaultDaily();
         $this->__dailyInterests();
+        $this->__dailyReinvestmentInterests();
         $this->__dailyMatured();
+        $this->__dailyReinvestmentMatured();
     }
 
    
@@ -94,7 +97,32 @@ function __dailyMatured(){
         }
     }
 }
+function __dailyReinvestmentMatured(){
+    $this->autoRender = false;
+    $data = $this->Reinvestment->find('all',['recursive' => -1,
+        'conditions' => ['status' => array('Invested','Rolled_over'),'due_date <=' => date('Y-m-d')]]);
+    
+    if($data){
+        foreach($data as $each){
+            $reinvestor_id = $each['Reinvestment']['reinvestor_id']; 
+            //subtract from reinvestoraacount fixed balance and probably deposit
+            $reinvestment_data = $this->ReinvestorCashaccount->find('first', ['recursive' => -1, 'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
+            if ($reinvestment_data) {
+                $id = $reinvestment_data['ReinvestorCashaccount']['id'];
+                $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
+                $earned_balance = $each['Reinvestment']['earned_balance'];
+                $new_balance = $old_balance - $earned_balance;
 
+                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance);
+                $this->ReinvestorCashaccount->save($fixed_data);
+            }
+           $each_array = array('id' => $each['Reinvestment']['id'],
+                'status' => 'Matured','old_status' => $each['Reinvestment']['status'],
+                'earned_balance' => 0.00);
+            $this->Reinvestment->save($each_array);
+        }
+    }
+}
 function __invEOD(){
     $this->autoRender = false;
     $fixed_total = 0.00;
@@ -199,7 +227,7 @@ function __dailyInterests(){
         foreach($investment_data as $value){
         $term_id = $value['Investment']['investment_term_id'];
         
-
+        
         $investment_amount1 = $value['Investment']['total_amount_earned'];
         $investment_amount = $value['Investment']['earned_balance'];
         $principal_amount  = $value['Investment']['investment_amount'];
@@ -236,7 +264,52 @@ function __dailyInterests(){
     }
     
 }
+function __dailyReinvestmentInterests(){
+    
+    $investment_data = $this->Reinvestment->find('all',['recursive' => -1,
+        'conditions' => ['Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested')]]);
+    if($investment_data){
+        foreach($investment_data as $value){
+//        $term_id = $value['Reinvestment']['investment_term_id'];
+        
+        
+        $investment_amount1 = $value['Reinvestment']['total_amount_earned'];
+        $investment_amount = $value['Reinvestment']['earned_balance'];
+        $principal_amount  = $value['Reinvestment']['investment_amount'];
+        $rate = $value['Reinvestment']['interest_rate'];
+        $date = date('Y-m-d');
+        $yearly_interest = ($rate / 100) * $principal_amount;
+        $daily_interest = $yearly_interest/365;
+        $old_accrued_interest = $value['Reinvestment']['interest_accrued'];
+        $new_accrued_interest = $old_accrued_interest + $daily_interest;
+        $new_balanced_earned = $investment_amount + $daily_interest;
+        $new_total_earned = $investment_amount1 + $daily_interest;
 
+
+                            $statemt_array = array(
+                                'reinvestment_id' => $value['Reinvestment']['id'],
+                                'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
+                                'principal' => $principal_amount,
+                                'interest' => $daily_interest,
+                                'date' => $date,
+                                'total' => $new_balanced_earned);
+                            
+                             $investment_array = array(
+                                 'id' => $value['Reinvestment']['id'],
+                                 'earned_balance' => $new_balanced_earned,
+                             'total_amount_earned' => $new_total_earned,
+                            'interest_accrued' => $new_accrued_interest
+                        );
+                    $this->DailyReinvestinterestStatement->create();       
+                    $this->DailyReinvestinterestStatement->save($statemt_array);
+                    
+                     $this->Reinvestment->save($investment_array);
+                    
+        }
+                    
+    }
+    
+}
 
     function defaultersMail(){
         

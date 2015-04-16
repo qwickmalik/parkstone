@@ -76,7 +76,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_amount'])){
-                            echo number_format($each_item['Investment']['investment_amount']);
+                            echo number_format($each_item['Investment']['investment_amount'],2);
                         }
                         
                         ?></td>
@@ -94,7 +94,7 @@ echo $this->Html->script('notification.js');
                         ?></td>
                 <td align="center"><?php
                         if(isset($each_item['Investment']['amount_due'])){
-                            echo number_format($each_item['Investment']['amount_due']);
+                            echo number_format($each_item['Investment']['amount_due'],2);
                         }
                         ?></td>
                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){

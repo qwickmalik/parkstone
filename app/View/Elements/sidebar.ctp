@@ -70,6 +70,12 @@
                 <?php echo $this->Html->link('Manage Processed Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
             <li>
+                <?php echo $this->Html->link('Daily Maturity List', '/Reinvestments/maturityList', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Monthly Maturity List', '/Reinvestments/monthlyMaturityList', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('New/Edit Inv. Destination', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
             </li>
             <li>

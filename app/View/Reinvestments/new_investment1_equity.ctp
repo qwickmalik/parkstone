@@ -262,7 +262,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     (isset($equitydetails['Investment']['investment_date']) ? 
                                     $equitydetails['Investment']['investment_date'] : '' )));
                             
-                            
+                             echo $this->Form->hidden('cash_receipt_mode_id', array('value' => 
+                                    (isset($equitydetails['Investment']['cash_receipt_mode_id']) ? 
+                                    $equitydetails['Investment']['cash_receipt_mode_id'] : '' )));
+                             
                                echo $this->Form->hidden('available_amount', array('value' => 
                                     (isset($equitydetails['InvestmentCash']['available_amount']) ? 
                                     $equitydetails['InvestmentCash']['available_amount'] : 0 )));
@@ -277,14 +280,14 @@ if ($this->Session->check('shopCurrency_investment')) {
      <!--background: #E3F8FD;-->
                             <div class="row" style=" margin-bottom: 5px; border: solid 1px #A7D2F4;">
                              
-                            <div class="col-lg-5 col-md-7 col-sm-12" style="background: #E3F8FD; margin-right: 5px;  border-right: solid 1px #A7D2F4;">
+                            <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD; margin-right: 0px;  border-right: solid 1px #A7D2F4;">
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
                                     echo $this->Form->input('equities_list_id', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
                                         , 'selected' => ($this->Session->check('reeinvesttemp.equities_list_id') == true ?
-                                            $this->Session->read('reeinvesttemp.equities_list_id') : (isset($equitydetails['Investment']['equities_list_id']) ? 
-                                    $equitydetails['Investment']['equities_list_id'] : '' ) )]);
+                                            $this->Session->read('reeinvesttemp.equities_list_id') : (isset($equity_array[1]) ? 
+                                    $equity_array[1]['InvestorEquity']['equities_list_id'] : '' ) )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -294,8 +297,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo $this->Form->input('numb_shares', array('label' => 'No. of Shares*', 'class' => 'required', 
                                         'value' => ($this->Session->check('reeinvesttemp.numb_shares') == true ?
-                                            $this->Session->read('reeinvesttemp.numb_shares') : (isset($equitydetails['Investment']['numb_shares_left']) ? 
-                                    $equitydetails['Investment']['numb_shares_left'] : 0 ) )));
+                                            $this->Session->read('reeinvesttemp.numb_shares') : (isset($equity_array[1]) ? 
+                                    $equity_array[1]['InvestorEquity']['numb_shares_left'] : 0 ) )));
                                     ?>
 
                                 </div>
@@ -303,31 +306,46 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('share_price', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price') == true ? $this->Session->read('reeinvesttemp.share_price') : '' )));
-                                    echo $this->Form->hidden('purchase_price', array('value' => ($this->Session->check('reeinvesttemp.purchase_price') == true ? $this->Session->read('reeinvesttemp.purchase_price') : '' )));
+                                    echo $this->Form->input('purchase_price', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reeinvesttemp.purchase_price') == true ? $this->Session->read('reeinvesttemp.purchase_price') : '' )));
+                                    
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('min_share_price', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price') == true ? $this->Session->read('reeinvesttemp.min_share_price') : '' )));
+                                    echo $this->Form->input('min_share_price', array('label' => 'Min Price', 'class'
+                                        => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price') ==
+                                            true ? $this->Session->read('reeinvesttemp.min_share_price') : (isset($equity_array[1]) ? 
+                                    $equity_array[1]['InvestorEquity']['min_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('max_share_price', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price') == true ? $this->Session->read('reeinvesttemp.max_share_price') : '' )));
+                                    echo $this->Form->input('max_share_price', array('label' => 'Max Price', 'class' =>
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price') 
+                                            == true ? $this->Session->read('reeinvesttemp.max_share_price') : (isset($equity_array[1]) ? 
+                                    $equity_array[1]['InvestorEquity']['max_share_price'] : 0 ) )));
                                     ?>
                                 </div> 
                             </div>
 
-                            <div class="col-lg-5 col-md-7 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
+                            <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
                                  <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id2', ['class' => 'equity_id', 'id' => '2', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--', 'selected' => ($this->Session->check('reeinvesttemp.equities_list_id2') == true ? $this->Session->read('reeinvesttemp.equities_list_id2') : '' )]);
+                                    echo $this->Form->input('equities_list_id2', ['class' => 'equity_id', 'id' => '2', 'type' =>
+                                        'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' =>
+                                        '--Please choose desired equity--', 'selected' => 
+                                        ($this->Session->check('reeinvesttemp.equities_list_id2') == true ? 
+                                            $this->Session->read('reeinvesttemp.equities_list_id2') : (isset($equity_array[2]) ? 
+                                    $equity_array[2]['InvestorEquity']['equities_list_id'] : 0 ) )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares2', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares2') == true ? $this->Session->read('reeinvesttemp.numb_shares2') : '' )));
+                                    echo $this->Form->input('numb_shares2', array('label' => 'No. of Shares*', 'class' => 'required', 'value' =>
+                                        ($this->Session->check('reeinvesttemp.numb_shares2') == true ? 
+                                            $this->Session->read('reeinvesttemp.numb_shares2') : (isset($equity_array[2]) ? 
+                                    $equity_array[2]['InvestorEquity']['numb_shares_left'] : 0 ) )));
                                     ?>
 
                                 </div>
@@ -335,18 +353,24 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('share_price2', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price2') == true ? $this->Session->read('reeinvesttemp.share_price2') : '' )));
-                                    echo $this->Form->hidden('purchase_price2', array('value' => ($this->Session->check('reeinvesttemp.purchase_price2') == true ? $this->Session->read('reeinvesttemp.purchase_price2') : '' )));
+                                    echo $this->Form->input('purchase_price2', array( 'label' => 'Purchase Price*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reeinvesttemp.purchase_price2') == true ? $this->Session->read('reeinvesttemp.purchase_price2') : '' )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('min_share_price2', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price2') == true ? $this->Session->read('reeinvesttemp.min_share_price2') : '' )));
+                                    echo $this->Form->input('min_share_price2', array('label' => 'Min Price', 'class' => 
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price2') == true ? 
+                                            $this->Session->read('reeinvesttemp.min_share_price2') : (isset($equity_array[2]) ? 
+                                    $equity_array[2]['InvestorEquity']['min_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('max_share_price2', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price2') == true ? $this->Session->read('reeinvesttemp.max_share_price2') : '' )));
+                                    echo $this->Form->input('max_share_price2', array('label' => 'Max Price', 'class' => 
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price2') == 
+                                            true ? $this->Session->read('reeinvesttemp.max_share_price2') : (isset($equity_array[2]) ? 
+                                    $equity_array[2]['InvestorEquity']['max_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 
@@ -354,16 +378,22 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                             <div class="row" style=" margin-bottom: 5px; border: solid 1px #A7D2F4;">
                              
-                            <div class="col-lg-5 col-md-7 col-sm-12" style="background: #E3F8FD; margin-right: 5px;  border-right: solid 1px #A7D2F4;">
+                            <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD; margin-right: 0px;  border-right: solid 1px #A7D2F4;">
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id3', ['class' => 'equity_id', 'selected' => ($this->Session->check('reeinvesttemp.equities_list_id3') == true ? $this->Session->read('reeinvesttemp.equities_list_id3') : '' ), 'id' => '3', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id3', ['class' => 'equity_id', 'selected' => 
+                                        ($this->Session->check('reeinvesttemp.equities_list_id3') == true ? 
+                                            $this->Session->read('reeinvesttemp.equities_list_id3') : (isset($equity_array[3]) ? 
+                                    $equity_array[3]['InvestorEquity']['equities_list_id'] : 0 ) ), 'id' => '3', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares3', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares3') == true ? $this->Session->read('reeinvesttemp.numb_shares3') : '' )));
+                                    echo $this->Form->input('numb_shares3', array('label' => 'No. of Shares*', 'class' => 
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares3') == 
+                                            true ? $this->Session->read('reeinvesttemp.numb_shares3') : (isset($equity_array[3]) ? 
+                                    $equity_array[3]['InvestorEquity']['numb_shares_left'] : 0 ) )));
                                     ?>
 
                                 </div>
@@ -371,32 +401,45 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('share_price3', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price3') == true ? $this->Session->read('reeinvesttemp.share_price3') : '' )));
-                                    echo $this->Form->hidden('purchase_price3', array('value' => ($this->Session->check('reeinvesttemp.purchase_price3') == true ? $this->Session->read('reeinvesttemp.purchase_price3') : '' )));
+                                    echo $this->Form->input('purchase_price3', array( 'label' => 'Purchase Price*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reeinvesttemp.purchase_price3') == true ?
+                                            $this->Session->read('reeinvesttemp.purchase_price3') : '' )));
+                                   ?>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('min_share_price3', array('label' => 'Min Price', 'class' => 
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price3') 
+                                            == true ? $this->Session->read('reeinvesttemp.min_share_price3') : (isset($equity_array[3]) ? 
+                                    $equity_array[3]['InvestorEquity']['min_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('min_share_price3', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price3') == true ? $this->Session->read('reeinvesttemp.min_share_price3') : '' )));
-                                    ?>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php
-                                    echo $this->Form->input('max_share_price3', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price3') == true ? $this->Session->read('reeinvesttemp.max_share_price3') : '' )));
+                                    echo $this->Form->input('max_share_price3', array('label' => 'Max Price', 'class' =>
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price3') == 
+                                            true ? $this->Session->read('reeinvesttemp.max_share_price3') : (isset($equity_array[3]) ? 
+                                    $equity_array[3]['InvestorEquity']['max_share_price'] : 0 ) )));
                                     ?>
                                 </div> 
                             </div>
 
-     <div class="col-lg-5 col-md-7 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
+     <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
                                 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id4', ['class' => 'equity_id', 'selected' => ($this->Session->check('reeinvesttemp.equities_list_id4') == true ? $this->Session->read('reeinvesttemp.equities_list_id4') : '' ), 'id' => '4', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id4', ['class' => 'equity_id', 'selected' => 
+                                        ($this->Session->check('reeinvesttemp.equities_list_id4') == true ? 
+                                            $this->Session->read('reeinvesttemp.equities_list_id4') : (isset($equity_array[4]) ? 
+                                    $equity_array[4]['InvestorEquity']['equities_list_id'] : 0 ) ), 'id' => '4', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares4', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares4') == true ? $this->Session->read('reeinvesttemp.numb_shares4') : '' )));
+                                    echo $this->Form->input('numb_shares4', array('label' => 'No. of Shares*', 'class' =>
+                                        'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares4') == true ? 
+                                            $this->Session->read('reeinvesttemp.numb_shares4') : (isset($equity_array[4]) ? 
+                                    $equity_array[4]['InvestorEquity']['numb_shares_left'] : 0 ) )));
                                     ?>
 
                                 </div>
@@ -404,33 +447,47 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('share_price4', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price4') == true ? $this->Session->read('reeinvesttemp.share_price4') : '' )));
-                                    echo $this->Form->hidden('purchase_price4', array('value' => ($this->Session->check('reeinvesttemp.purchase_price4') == true ? $this->Session->read('reeinvesttemp.purchase_price4') : '' )));
+                                    echo $this->Form->input('purchase_price4', array('label' => 'Purchase Price*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reeinvesttemp.purchase_price4') == true ? $this->Session->read('reeinvesttemp.purchase_price4') 
+                                            : '' )));
+                                   
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('min_share_price4', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price4') == true ? $this->Session->read('reeinvesttemp.min_share_price4') : '' )));
+                                    echo $this->Form->input('min_share_price4', array('label' => 'Min Price', 'class' => 'required',
+                                        'value' => ($this->Session->check('reeinvesttemp.min_share_price4') == true ?
+                                            $this->Session->read('reeinvesttemp.min_share_price4') : (isset($equity_array[4]) ? 
+                                    $equity_array[4]['InvestorEquity']['min_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('max_share_price4', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price4') == true ? $this->Session->read('reeinvesttemp.max_share_price4') : '' )));
+                                    echo $this->Form->input('max_share_price4', array('label' => 'Max Price', 'class' => 'required',
+                                        'value' => ($this->Session->check('reeinvesttemp.max_share_price4') == true ?
+                                            $this->Session->read('reeinvesttemp.max_share_price4') : (isset($equity_array[4]) ? 
+                                    $equity_array[4]['InvestorEquity']['max_share_price'] : 0 ) )));
                                     ?>
                                 </div> 
                             </div>
                                 </div>
                             <div class="row" style=" margin-bottom: 5px; border: solid 1px #A7D2F4;">
-                                <div class="col-lg-5 col-md-7 col-sm-12" style=" background: #E3F8FD;margin-right: 5px;  border-right: solid 1px #A7D2F4;">
+                                <div class="col-lg-5 col-md-6 col-sm-12" style=" background: #E3F8FD;margin-right: 0px;  border-right: solid 1px #A7D2F4;">
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id5', ['class' => 'equity_id', 'selected' => ($this->Session->check('reeinvesttemp.equities_list_id5') == true ? $this->Session->read('reeinvesttemp.equities_list_id5') : '' ), 'id' => '5', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id5', ['class' => 'equity_id', 'selected' => 
+                                        ($this->Session->check('reeinvesttemp.equities_list_id5') == true ?
+                                            $this->Session->read('reeinvesttemp.equities_list_id5') : (isset($equity_array[5]) ? 
+                                    $equity_array[5]['InvestorEquity']['min_share_price'] : 0 ) ), 'id' => '5', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares5', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.numb_shares5') == true ? $this->Session->read('reeinvesttemp.numb_shares5') : '' )));
+                                    echo $this->Form->input('numb_shares5', array('label' => 'No. of Shares*', 'class' => 'required', 'value' => 
+                                            ($this->Session->check('reeinvesttemp.numb_shares5') == true ?
+                                            $this->Session->read('reeinvesttemp.numb_shares5') : (isset($equity_array[5]) ? 
+                                    $equity_array[5]['InvestorEquity']['numb_shares_left'] : 0 ) )));
                                     ?>
 
                                 </div>
@@ -438,26 +495,32 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('share_price5', array('disabled', 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.share_price5') == true ? $this->Session->read('reeinvesttemp.share_price5') : '' )));
-                                    echo $this->Form->hidden('purchase_price5', array('value' => ($this->Session->check('reeinvesttemp.purchase_price5') == true ? $this->Session->read('reeinvesttemp.purchase_price5') : '' )));
+                                    echo $this->Form->input('purchase_price5', array( 'label' => 'Purchase Price*', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.purchase_price5') == true ? $this->Session->read('reeinvesttemp.purchase_price5') : '' )));
+                                    
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('min_share_price5', array('label' => 'Min Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.min_share_price5') == true ? $this->Session->read('reeinvesttemp.min_share_price5') : '' )));
+                                    echo $this->Form->input('min_share_price5', array('label' => 'Min Price', 'class' => 'required',
+                                        'value' => ($this->Session->check('reeinvesttemp.min_share_price5') == true ? 
+                                            $this->Session->read('reeinvesttemp.min_share_price5') : (isset($equity_array[5]) ? 
+                                    $equity_array[5]['InvestorEquity']['min_share_price'] : 0 ) )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class' => 'required', 'value' => ($this->Session->check('reeinvesttemp.max_share_price5') == true ? $this->Session->read('reeinvesttemp.max_share_price5') : '' )));
+                                    echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class' => 'required', 
+                                        'value' => ($this->Session->check('reeinvesttemp.max_share_price5') == true ? 
+                                            $this->Session->read('reeinvesttemp.max_share_price5') : (isset($equity_array[5]) ? 
+                                    $equity_array[5]['InvestorEquity']['max_share_price'] : 0 ) )));
                                     ?>
                                 </div> 
                             </div>
-<div class="col-lg-5 col-md-7 col-sm-12" style="background: #E3F8FD;float:right;border-left: solid 1px #A7D2F4;">
+<div class="col-lg-5 col-md-6 col-sm-12" style="padding-bottom: 2px; background: #E3F8FD;float:right;border-left: solid 1px #A7D2F4;">
                                 
                            <div class="col-lg-12 col-md-12 col-sm-12">
                                     <?php 
-                                    echo "<p>&nbsp;</p>";
+//                                    echo "<p>&nbsp;</p>";
                                     echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px;'>Reinvestment Date</span>";
                                     
                                     ?>
@@ -487,7 +550,6 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php echo $this->Form->year('reinvestment_date', 1950, date('Y'), array("selected" => $Year, "class" => "large")); ?>
-                                </div>
                                 <script>
                                     var day = $("#day").val();
                                     var month = $("#month").val();
@@ -496,12 +558,19 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     $("#ReinvestmentReinvestmentDateMonth option[value=" + month + "]").attr('selected', true);
                                     $("#ReinvestmentReinvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
-                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                </div>
+                                
+                                
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
-                                    echo "<p>&nbsp;</p>";
+//                                    echo "<p>&nbsp;</p>";
+                                     echo $this->Form->input('total_fees', array('label' => 'Total Fees*', 'class' => 'required',
+                                 'value' => ($this->Session->check('reeinvesttemp.total_fees') == true ? 
+                                     $this->Session->read('reeinvesttemp.total_fees') : 0 ))); 
                                     ?>
                                 </div>
                                 
+                                    
                             </div>
                            
                             </div>
@@ -619,46 +688,46 @@ if ($this->Session->check('shopCurrency_investment')) {
 //            });
 //    }
           //get current equity share price
-            jQuery(".equity_id").change(function () {
-                var class_no = jQuery(this).prop('id');
-
-
-                var equity_id = jQuery(this).val();
-                if (equity_id == "") {
-
-                    jQuery('#ReinvestmentSharePrice' + class_no).val("");
-                    jQuery('#ReinvestmentPurchasePrice' + class_no).val("");
-                }
-                if (equity_id != "") {
-                    var query = "action=getPurchasePrice&ID=" + equity_id;
-                    jQuery.ajax({
-                        url: "../../getPurchasePrice",
-                        data: query,
-                        dataType: 'json',
-                        type: 'POST',
-                        success: function (data) {
-
-                            if (data && data.error) {
-
-                                jQuery(".errormsg").show();
-                                jQuery(".errormsg").html(data.error).show('slow');
-                                jQuery(".errormsg").hide();
-                            } else {
-                                //jquery("midleveltype").
-                                jQuery('#ReinvestmentSharePrice' + class_no).val(data['EquitiesList']['share_price']);
-                                jQuery('#ReinvestmentPurchasePrice' + class_no).val(data['EquitiesList']['share_price']);
-
-                                return false;
-                            }
-                        },
-                        error: function () {
-                            jQuery(".errormsg").show();
-                            jQuery(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
-                            jQuery(".errormsg").hide();
-                        }
-                    });
-                }
-            });
+//            jQuery(".equity_id").change(function () {
+//                var class_no = jQuery(this).prop('id');
+//
+//
+//                var equity_id = jQuery(this).val();
+//                if (equity_id == "") {
+//
+////                    jQuery('#ReinvestmentSharePrice' + class_no).val("");
+////                    jQuery('#ReinvestmentPurchasePrice' + class_no).val("");
+//                }
+//                if (equity_id != "") {
+//                    var query = "action=getPurchasePrice&ID=" + equity_id;
+//                    jQuery.ajax({
+//                        url: "../../getPurchasePrice",
+//                        data: query,
+//                        dataType: 'json',
+//                        type: 'POST',
+//                        success: function (data) {
+//
+//                            if (data && data.error) {
+//
+//                                jQuery(".errormsg").show();
+//                                jQuery(".errormsg").html(data.error).show('slow');
+//                                jQuery(".errormsg").hide();
+//                            } else {
+//                                //jquery("midleveltype").
+////                                jQuery('#ReinvestmentSharePrice' + class_no).val(data['EquitiesList']['share_price']);
+////                                jQuery('#ReinvestmentPurchasePrice' + class_no).val(data['EquitiesList']['share_price']);
+//
+//                                return false;
+//                            }
+//                        },
+//                        error: function () {
+//                            jQuery(".errormsg").show();
+//                            jQuery(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+//                            jQuery(".errormsg").hide();
+//                        }
+//                    });
+//                }
+//            });
 //             jQuery("#ReinvestmentEquitiesListId").change(function(){
 //
 //    var equity_id = jQuery(this).val();

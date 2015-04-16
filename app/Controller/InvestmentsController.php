@@ -363,19 +363,19 @@ class InvestmentsController extends AppController {
                 return json_encode(array('status' => 'error'));
             }
 
-            if ($dob == date('Y-m-d')) {
-                $message = 'Please Supply The Investor\'s Date of Birth';
-                $this->Session->write('bmsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
+//            if ($dob == date('Y-m-d')) {
+//                $message = 'Please Supply The Investor\'s Date of Birth';
+//                $this->Session->write('bmsg', $message);
+//                return json_encode(array('status' => 'error'));
+//            }
             if (is_null($this->request->data['Investor']['id_issue']['day']) || is_null($this->request->data['Investor']['id_issue']['month']) || is_null($this->request->data['Investor']['id_issue']['year'])) {
                 $message = 'Please Supply The Investor\'s ID Issue Date';
                 $this->Session->write('bmsg', $message);
-                return json_encode(array('status' => 'error'));
+//                return json_encode(array('status' => 'error'));
             } elseif ($this->request->data['Investor']['id_issue']['day'] == "" || $this->request->data['Investor']['id_issue']['month'] == "" || $this->request->data['Investor']['id_issue']['year'] == "") {
                 $message = 'Please Supply The Investor\'s ID Issue Date';
                 $this->Session->write('bmsg', $message);
-                return json_encode(array('status' => 'error'));
+//                return json_encode(array('status' => 'error'));
             } else {
 
                 $issue_day = $this->request->data['Investor']['id_issue']['day'];
@@ -428,34 +428,34 @@ class InvestmentsController extends AppController {
 //                $this->Session->write('emsg', $message);
 //                return json_encode(array('status' => 'error'));
 //            data[Investor][investor_photo]
-            if (isset($_FILES["investor_photo"]["type"])) {
-                $validextensions = array("jpeg", "jpg", "png", "gif");
-                $temporary = explode(".", $_FILES["investor_photo"]["name"]);
-                $file_extension = end($temporary);
-                if ((($_FILES["investor_photo"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/jpg") || ($_FILES["file"]["type"] == "image/jpeg")
-                        ) && ($_FILES["investor_photo"]["size"] < 900000)//Approx. 100kb files can be uploaded.
-                        && in_array($file_extension, $validextensions)) {
-                    if ($_FILES["file"]["error"] > 0) {
-                        echo "Return Code: " . $_FILES["file"]["error"] . "<br/><br/>";
-                    } else {
-                        if (file_exists($this->webroot . "files/uploads/" . $_FILES["investor_photo"]["name"])) {
-                            echo $_FILES["investor_photo"]["name"] . " <span id='invalid'><b>already exists.</b></span> ";
-                        } else {
-                            $sourcePath = $_FILES['investor_photo']['tmp_name']; // Storing source path of the file in a variable
-                            $targetPath = $this->webroot . "files/uploads/" . $_FILES['investor_photo']['name']; // Target path where file is to be stored
-                            move_uploaded_file($sourcePath, $targetPath); // Moving Uploaded file
-                            $this->request->data['Investor']['investor_photo'] = $targetPath;
-//                            echo "<span id='success'>Image Uploaded Successfully...!!</span><br/>";
-//                            echo "<br/><b>File Name:</b> " . $_FILES["file"]["name"] . "<br>";
-//                            echo "<b>Type:</b> " . $_FILES["file"]["type"] . "<br>";
-//                            echo "<b>Size:</b> " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-//                            echo "<b>Temp file:</b> " . $_FILES["file"]["tmp_name"] . "<br>";
-                        }
-                    }
-                } else {
-                    echo "<span id='invalid'>***Invalid file Size or Type***<span>";
-                }
-            }
+//            if (isset($_FILES["investor_photo"]["type"])) {
+//                $validextensions = array("jpeg", "jpg", "png", "gif");
+//                $temporary = explode(".", $_FILES["investor_photo"]["name"]);
+//                $file_extension = end($temporary);
+//                if ((($_FILES["investor_photo"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/jpg") || ($_FILES["file"]["type"] == "image/jpeg")
+//                        ) && ($_FILES["investor_photo"]["size"] < 900000)//Approx. 100kb files can be uploaded.
+//                        && in_array($file_extension, $validextensions)) {
+//                    if ($_FILES["file"]["error"] > 0) {
+//                        echo "Return Code: " . $_FILES["file"]["error"] . "<br/><br/>";
+//                    } else {
+//                        if (file_exists($this->webroot . "files/uploads/" . $_FILES["investor_photo"]["name"])) {
+//                            echo $_FILES["investor_photo"]["name"] . " <span id='invalid'><b>already exists.</b></span> ";
+//                        } else {
+//                            $sourcePath = $_FILES['investor_photo']['tmp_name']; // Storing source path of the file in a variable
+//                            $targetPath = $this->webroot . "files/uploads/" . $_FILES['investor_photo']['name']; // Target path where file is to be stored
+//                            move_uploaded_file($sourcePath, $targetPath); // Moving Uploaded file
+//                            $this->request->data['Investor']['investor_photo'] = $targetPath;
+////                            echo "<span id='success'>Image Uploaded Successfully...!!</span><br/>";
+////                            echo "<br/><b>File Name:</b> " . $_FILES["file"]["name"] . "<br>";
+////                            echo "<b>Type:</b> " . $_FILES["file"]["type"] . "<br>";
+////                            echo "<b>Size:</b> " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+////                            echo "<b>Temp file:</b> " . $_FILES["file"]["tmp_name"] . "<br>";
+//                        }
+//                    }
+//                } else {
+//                    echo "<span id='invalid'>***Invalid file Size or Type***<span>";
+//                }
+//            }
             $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
@@ -2483,23 +2483,23 @@ class InvestmentsController extends AppController {
                     }
                     if ($totalamt > $amount_available) {
                         //RESET CASH INPUTS AND RETURN
-                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
-                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
-                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+//                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
+//                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
+//                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
 
                         $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => $page));
                     }
-                    $new_cashathand = $amount_available - $totalamt;
-                    $new_cashinvested = $cashinvested + $totalamt;
+//                    $new_cashathand = $amount_available - $totalamt;
+//                    $new_cashinvested = $cashinvested + $totalamt;
 
                     //Ledger transaction entry
-                    $description = 'Equity investment';
-                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
-                        $this->request->data['Investment']['cashreceiptmode_id'],
-                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description);
+//                    $description = 'Equity investment';
+//                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+//                        $this->request->data['Investment']['cashreceiptmode_id'],
+//                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+//                        'date' => $inv_date, 'description' => $description);
                     $base_fee = 0;
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
@@ -2553,6 +2553,7 @@ class InvestmentsController extends AppController {
                     'currency_id' => $this->request->data['Investment']['currency_id'],
                     'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
+                    'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
                     'base_fees' => $base_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
@@ -3442,12 +3443,12 @@ class InvestmentsController extends AppController {
                     $new_cashathand = $amount_available - $totalamt;
                     $new_cashinvested = $cashinvested + $totalamt;
 
-                    //Ledger transaction entry
-                    $description = 'Equity investment';
-                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
-                        $this->request->data['Investment']['cashreceiptmode_id'],
-                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description);
+//                    //Ledger transaction entry
+//                    $description = 'Equity investment';
+//                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
+//                        $this->request->data['Investment']['cashreceiptmode_id'],
+//                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+//                        'date' => $inv_date, 'description' => $description);
                     $base_fee = 0;
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
@@ -3505,6 +3506,7 @@ class InvestmentsController extends AppController {
                     'currency_id' => $this->request->data['Investment']['currency_id'],
                     'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
+                    'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
                     'base_fees' => $base_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
@@ -4674,7 +4676,7 @@ class InvestmentsController extends AppController {
                         $this->LedgerTransaction->save($val);
                         if (isset($val['edit'])) {
                             $lt_result = $this->LedgerTransaction->find('first', ['conditions' =>
-                                ['LedgerTransaction.debit' => $val['edit']], 'order' => ['Order.customer_id' => 'desc'],
+                                ['LedgerTransaction.debit' => $val['edit']], 'order' => ['LedgerTransaction.id' => 'desc'],
                                 'recursive' => -1]);
                             if ($lt_result) {
                                 $lt_id = $lt_result['LedgerTransaction']['id'];
@@ -5294,7 +5296,7 @@ class InvestmentsController extends AppController {
 //        $this->__validateUserType3();
         $this->paginate = array(
             'conditions' => array(
-                'status' => array('Matured', 'Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+                'Investment.status' => array('Matured', 'Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
@@ -5309,7 +5311,7 @@ class InvestmentsController extends AppController {
         $date_end =$date->format('Y-m-d');
         $this->paginate = array(
             'conditions' => array(
-                'status' => array('Invested', 'Rolled_over'), 
+                'Investment.status' => array('Invested', 'Rolled_over'), 
                 'Investment.investment_product_id' => array(1, 3),
                 'AND' => array(array('Investment.due_date >=' => $first_date),array('Investment.due_date <=' => $date_end))),
             'limit' => 30,
@@ -5933,6 +5935,7 @@ class InvestmentsController extends AppController {
                     $to_date = new DateTime($end_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
+                    pr($duration);
                     $year = $duration;
                     $investment_amount = $amount;
 
@@ -5973,10 +5976,10 @@ class InvestmentsController extends AppController {
                             $statemt_array = array();
                             $rate = $custom_rate;
 
-                            $YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
-                            $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
+                            $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
+                            
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1Y'));
                                 $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -6765,7 +6768,39 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
+function clientLedger($investor_id = null, $investor_name = null) {
+        /* $this->__validateUserType(); */
+        if (!is_null($investor_id) && !is_null($investor_name)) {
+//            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
+            $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
 
+
+            $this->set('investor_id', $investor_id);
+            $this->set('investor_name', $investor_name);
+//            $this->set('investment_id', $investment_id);
+            if ($data) {
+//               $transactions = $this->LedgerTransaction->find('all',['conditions' => [
+//                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
+                $this->paginate = array(
+                    'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
+                    'order' => array('LedgerTransaction.id' => 'asc'));
+                $transactions = $this->paginate('LedgerTransaction');
+                if ($transactions) {
+                    $this->set('transactions', $transactions);
+                }
+                $this->set('data', $data);
+            } else {
+                $message = 'Sorry, ledger information not found for investor. Try again.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        } else {
+
+            $message = 'Sorry, investor not found';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
+    }
     public function statementAllInv($investor_id = null, $investor_name = null) {
         /* $this->__validateUserType(); */
 
