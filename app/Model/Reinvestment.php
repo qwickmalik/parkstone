@@ -91,6 +91,14 @@ class Reinvestment extends AppModel{
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'InvestmentReturn' => array(
+            'className' => 'InvestmentReturn',
+            'foreignKey' => 'reinvestment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
          );
     

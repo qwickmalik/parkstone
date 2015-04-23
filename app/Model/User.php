@@ -163,6 +163,15 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        
+        'InvestmentReturn' => array(
+            'className' => 'InvestmentReturn',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     
