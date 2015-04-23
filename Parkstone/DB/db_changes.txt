@@ -1023,3 +1023,55 @@ ALTER TABLE  `investments` CHANGE  `custom_rate`  `custom_rate` DECIMAL( 6, 2 ) 
 CHANGE  `benchmark_rate`  `benchmark_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00',
 CHANGE  `base_rate`  `base_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';
 ALTER TABLE  `reinvestments` CHANGE  `interest_rate`  `interest_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';
+
+
+APRIL 18, 2015
+-----------------------
+DROP TABLE IF EXISTS `cash_receipt_modes`;
+CREATE TABLE IF NOT EXISTS `cash_receipt_modes` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `cash_receipt_mode` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `cash_receipt_modes`
+--
+
+INSERT INTO `cash_receipt_modes` (`id`, `cash_receipt_mode`) VALUES
+(1, 'Cash'),
+(2, 'Cheque'),
+(3, 'Bank Transfer'),
+(4, 'Ledger Balance'),
+(5, 'Standing order');
+
+
+APRIL 20, 2015
+----------------------------
+ALTER TABLE  `reinvestments` CHANGE  `status`  `status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested', 'Termination_Requested',  'Payment_Requested',  'Termination_Approved',  'Payment_Approved',  'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT  'Invested',
+CHANGE  `old_status`  `old_status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested',  'Termination_Requested', 'Payment_Requested',  'Termination_Approved',  'Payment_Approved',  'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+
+APRIL 21, 2015
+-----------------------
+ALTER TABLE  `reinvestments` ADD  `penalty` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00' AFTER  `interest_rate` ;
+
+ALTER TABLE  `reinvestor_cashaccounts` ADD  `fixed_inv_returns` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER `fixed_amount_paidout` ,
+ADD  `equity_inv_returns` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `fixed_inv_returns` ;
+
+APRIL 22, 2015
+--------------------
+
+CREATE TABLE IF NOT EXISTS `investment_returns` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `principal` decimal(11,2) DEFAULT '0.00',
+  `interest` decimal(11,2) DEFAULT '0.00',
+  `rate` decimal(6,2) DEFAULT '0.00',
+  `penalty` decimal(6,2) DEFAULT '0.00',
+  `return_type` enum('Matured','Rolled_over','Terminated') DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

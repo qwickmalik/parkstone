@@ -1,3 +1,21 @@
+--REVIEW 16TH APRIL, 2015--
+--Add a table to store processed  investment returns  including the type of return..that is termination,etc
+-cHANGE pAYMENT PAGE UNDER process to Receipt or something similar
+- Consider manual input of invesment proceeds under process investments
+-Allow termination page but give input for penalty which will be preset to zero
+-No more call backs but they will be treated as terminations so investment is stopped and rolledover  if need be
+-Review add investor process. esp corporate and group. check all compulsory fields
+-Set currency fields to cedi by default
+-Give function to check for duplicate investor page entry
+-Add * to CEO and all compulsory inputs
+-Add input to take receipt number in investment
+-Add * to investment amt
+- Add reset button to new investment page to clear all sessions set on page
+- Add inv statements for
+-Add Add page to edit ledger entries or better delete investments,topups,etc which will automatically be deleted from ledger..add foreign key ids of all entry models to transaction id so it can be deleted easily
+ and remember to delete from available or invested amts if necessary
+---------------------------------
+
 --NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
 - In cash deposit receipt, change tenure to show for a yeat and show
    total tenure below client type
@@ -7,6 +25,7 @@
 - restore client statement and modify with sample from Grace
 - Add topup to process inv and fund management
 - Replicate roll over fixed invsetment for process investments and fund management
+
 - Allow to be able o callback money from investment in process invs. 
   This will worklike a termination but without penalty. 
   Will also continue invs with balance as new pricipal and date from current till original due date
