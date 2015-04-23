@@ -80,14 +80,12 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                                 || $each_item['Reinvestment']['status'] == 'Part_payment'){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Callback","/Reinvestments/manageInvFixedCancel/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);  
-                            
-                            if($each_item['Reinvestment']['due_date'] <= date('Y-m-d')){
-                            }
+                            echo $this->Html->link("Terminate","/Reinvestments/terminateFixedInvestment/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);  
+//                           
                         }elseif($each_item['Reinvestment']['status'] == 'Cancelled'){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+                            echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
                         }elseif($each_item['Reinvestment']['status'] == 'Paid'){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                       
@@ -95,7 +93,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                             echo " | ";
                             echo $this->Html->link("Roll-over","/Reinvestments/rolloverReinvestorFixed/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
                             echo " | ";
-                            echo $this->Html->link("Pay","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
                             }else{
                             echo $each_item['Reinvestment']['status'];
                         }
