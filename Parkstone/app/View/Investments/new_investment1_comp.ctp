@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <h3>New Corporate Investment - Step 1</h3>
 <div class="boxed">
@@ -108,3 +106,4 @@
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

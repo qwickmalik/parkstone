@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <h3>SETTINGS: User Types</h3>
 <div class="boxed">
@@ -190,3 +188,4 @@ echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showin
 <?php echo $this->Form->end(); ?>
 
         <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

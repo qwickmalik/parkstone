@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Edit Investor</h3>
 <div class="boxed">
 	<div class="inner">
@@ -126,3 +127,6 @@
             </div>
           </div>
           <!-- Form Elements End --> 
+        </div>
+    <!-- content ends here -->
+<?php echo $this->element('footer'); ?>

@@ -1,5 +1,6 @@
+<?php echo $this->element('header'); ?>
 <?php
-echo $this->Html->script('notification.js');
+
 ?>
 
 <?php
@@ -132,3 +133,4 @@ echo $this->Html->script('notification.js');
     </div>
     <!-- Content ends here -->
     
+<?php echo $this->element('footer'); ?>

@@ -1,5 +1,6 @@
+<?php echo $this->element('header'); ?>
 <?php
-//echo $this->Html->script('notification.js');
+//
 ?>
 
 <?php
@@ -220,3 +221,4 @@ if ($this->Session->check('shopCurrency_investment')) {
 
         });
     </script>
+<?php echo $this->element('footer'); ?>

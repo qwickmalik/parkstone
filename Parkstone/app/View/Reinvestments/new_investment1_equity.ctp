@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <?php
 $shopCurrency = "GH$";
@@ -628,7 +626,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
 
                         </div>
-                </div>
+                
                  <!--end test --> 
                 <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right;">
@@ -649,6 +647,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>
+    
+    
     <script type="text/javascript" language="javascript">
         $(document).ready(function ()
         {

@@ -1,7 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-//echo $this->element('header');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Manage Investments</h3>
@@ -133,3 +130,4 @@ echo $this->Html->script('notification.js');
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

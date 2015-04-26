@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Pay Investor</h3>
@@ -201,6 +199,9 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>
+    
+    
     <script type="text/javascript" language="javascript">
         $(document).ready(function()
         {

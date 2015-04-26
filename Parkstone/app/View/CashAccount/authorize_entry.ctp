@@ -1,5 +1,5 @@
 <?php
-echo $this->Html->script('notification.js');
+
 
 $num = 0;
 if ($this->Session->check('shopCurrency')) {

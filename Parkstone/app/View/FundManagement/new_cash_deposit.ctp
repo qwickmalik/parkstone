@@ -1,5 +1,6 @@
+<?php echo $this->element('header'); ?>
 <?php
-echo $this->Html->script('notification.js');
+
 ?>
 
 <h3 style="color: red;">New Re-Investor Cash Deposit - Step 1</h3>
@@ -108,3 +109,5 @@ echo $this->Html->script('notification.js');
 
     </div>
     <!-- Content ends here -->
+
+<?php echo $this->element('footer'); ?>

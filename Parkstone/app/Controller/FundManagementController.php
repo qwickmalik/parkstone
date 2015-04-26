@@ -23,11 +23,11 @@ class FundManagementController extends AppController {
 //    var $helpers = array('AjaxMultiUpload.Upload');
 
     function beforeFilter() {
-        //$this->__validateLoginStatus();
+        $this->__validateLoginStatus();
         $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
     }
 
-    /*
+    
       function __validateLoginStatus() {
       if ($this->action != 'login' && $this->action != 'logout') {
       if ($this->Session->check('userData') == false) {
@@ -43,7 +43,7 @@ class FundManagementController extends AppController {
       $this->redirect('/Information/');
       }
       }
-     */
+     
 
     function index() {
         
@@ -489,7 +489,7 @@ class FundManagementController extends AppController {
     }
 
     function newReinvestor() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Reinvestor');
         $this->set('data', $data);
 
@@ -571,7 +571,7 @@ class FundManagementController extends AppController {
     }
 
     public function newCashDeposit() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $check = $this->Session->check('ivt');
         if ($check) {
@@ -636,7 +636,7 @@ class FundManagementController extends AppController {
     }
 
     function newCashDeposit2($reinvestorid = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
@@ -655,7 +655,7 @@ class FundManagementController extends AppController {
     }
 
     function listCashDeposits() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
 
         $check = $this->Session->check('ivt');
         if ($check) {
@@ -736,7 +736,7 @@ class FundManagementController extends AppController {
     }
 
     function newDepositCert($product_type = null, $fixed_id = null, $equity_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $data_fixed = array();
         $data_equity = array();
         $company_name = '';
@@ -804,7 +804,7 @@ class FundManagementController extends AppController {
     }
 
     function editCashDeposit($deposit_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
         $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
@@ -995,7 +995,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestmentDestination() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('InvestmentDestination');
         $this->set('data', $data);
 
@@ -1097,7 +1097,7 @@ class FundManagementController extends AppController {
     }
 
     function invDestProduct($company_id = null, $product_id = null) {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         if ($company_id != null || $company_id != "") {
             $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
             $this->set('invdestproducts', $this->InvDestProduct->find('list'));
@@ -1165,7 +1165,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('reinvestors', $this->Reinvestor->find('list'));
         $check = $this->Session->check('reinvesttemp');
         if ($check) {
@@ -1231,7 +1231,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment0Fixed($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 
@@ -1243,7 +1243,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment0Equity($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
         if ($this->Session->check('reinvesttemp') == true) {
@@ -1262,7 +1262,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment1Fixed($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $check = $this->Session->check('variabless_refixed');
@@ -1496,7 +1496,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment1Fixed1($reinvestor_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $check = $this->Session->check('investment_array_refixed');
         if (!$check) {
             $message = 'Process before submitting';
@@ -1549,7 +1549,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment1Equity($reinvestor_id = null, $investmentcash_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $check = $this->Session->check('variabless_reequity');
         if ($check) {
             $check = $this->Session->check('variabless_reequity.totalamt');
@@ -1714,7 +1714,7 @@ class FundManagementController extends AppController {
     }
 
     function newInvestment1Equity1($reinvestor_id = null, $investcash_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
         $this->set('reinvestments', $this->Reinvestment->find('list'));
         if ($this->Session->check('reinvesttemp') == true) {
             $this->Session->delete('reinvesttemp');
@@ -2055,7 +2055,7 @@ class FundManagementController extends AppController {
     }
 
     function manageInv() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('reinvestors', $this->Reinvestor->find('list'));
 
         if ($this->request->is('post')) {
@@ -2081,7 +2081,7 @@ class FundManagementController extends AppController {
     }
 
     function manageInvFixed($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
@@ -2094,7 +2094,7 @@ class FundManagementController extends AppController {
     }
 
     function manageInvEquity($reinvestor_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
 
@@ -2106,7 +2106,7 @@ class FundManagementController extends AppController {
     }
 
     function manageInvFixedDetails($reinvestment_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
@@ -2114,7 +2114,7 @@ class FundManagementController extends AppController {
     }
 
     function manageInvEquityDetails($reinvestment_id = NULL) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
@@ -2307,7 +2307,8 @@ class FundManagementController extends AppController {
             $this->redirect(array('controller' => 'FundManagement', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
-            function payReinvestorFixed($reinvestment_id = NULL) {
+            
+    function payReinvestorFixed($reinvestment_id = NULL) {
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
         $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
@@ -2328,7 +2329,7 @@ class FundManagementController extends AppController {
     }
 
     function processPayments() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         $data = $this->paginate('Investment');
 
@@ -2494,7 +2495,7 @@ class FundManagementController extends AppController {
     }
 
     function manageClientInvestments(/* $investor_id = null, $investor_name = null */) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         if (!is_null($investor_id) && !is_null($investor_name) && $investor_id != '' && $investor_name != '') {
             $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id), 'order' => array('Investment.id')));
             $this->set('investor_id', $investor_id);
@@ -2512,7 +2513,7 @@ class FundManagementController extends AppController {
     }
 
     function cancelInvestment($investment_id = null, $investor = null, $investor_name = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
@@ -2540,7 +2541,7 @@ class FundManagementController extends AppController {
     }
 
     function ReinstateInvestment($investment_id = null, $investor = null, $investor_name = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
@@ -2568,7 +2569,7 @@ class FundManagementController extends AppController {
     }
 
     function payInvestor($investment_id = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
             if ($data) {
@@ -2583,7 +2584,7 @@ class FundManagementController extends AppController {
     }
 
     public function paymentReceipt($investment_id = null, $payment_amt = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
         $Investment_data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
         //  $check = $this->Session->check('payment_receipt');
         if ($Investment_data) {
@@ -2603,15 +2604,15 @@ class FundManagementController extends AppController {
     }
 
     public function listPayments() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
     }
 
     public function editPayment() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType(); 
     }
 
 //    public function rollover($invesmentID = null, $investor_id = null, $investor_name = null) {
-//        /* $this->__validateUserType(); */
+//        $this->__validateUserType();
 //        if (!is_null($invesmentID)) {
 //            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
 //            if ($data) {
@@ -2698,7 +2699,7 @@ class FundManagementController extends AppController {
     }
 
     public function statementActiveInv() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
         $issued = $this->Session->check('userData');
         if ($issued) {
             $issued = $this->Session->read('userData');
@@ -2707,7 +2708,7 @@ class FundManagementController extends AppController {
     }
 
     public function statementAllInv() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
 
         $issued = $this->Session->check('userData');
         if ($issued) {
@@ -2717,7 +2718,7 @@ class FundManagementController extends AppController {
     }
 
     public function statementInvDetail($invesmentID = null, $investor_id = null, $investor_name = null) {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
         if (!is_null($invesmentID)) {
             $data = $this->InvestmentStatement->find('all', array('conditions' => array('InvestmentStatement.investment_id' => $invesmentID)));
             $issued = $this->Session->check('userData');
@@ -2751,7 +2752,7 @@ class FundManagementController extends AppController {
     }
 
     public function payments() {
-        /* $this->__validateUserType(); */
+        $this->__validateUserType();
     }
 
 }

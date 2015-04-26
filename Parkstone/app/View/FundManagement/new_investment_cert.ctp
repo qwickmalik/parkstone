@@ -1,7 +1,8 @@
+<?php echo $this->element('header'); ?>
 <?php
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-echo $this->Html->script('notification.js');
+
 ?>
 <h3>New Reinvestment Summary</h3>
 <div class="boxed">
@@ -194,3 +195,4 @@ echo $this->Html->script('notification.js');
 		</td>
 	</tr>
 </table>
+<?php echo $this->element('footer'); ?>

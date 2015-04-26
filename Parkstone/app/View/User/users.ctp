@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <h3>SETTINGS: User Setup</h3>
 <div class="boxed">
@@ -91,3 +89,4 @@ echo $this->Html->link("Delete", "/Users/delUser/" . $each_item['User']['id'], a
         <?php echo $this->Form->end(); ?>
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

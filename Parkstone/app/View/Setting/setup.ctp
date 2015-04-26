@@ -1,7 +1,5 @@
-<?php 
-echo $this->Html->script('notification.js');
-?>
-            
+<?php echo $this->element('header'); ?>
+
 <!-- Content starts here -->
 <h3>Settings: Company Setup</h3>
 <div class="boxed">
@@ -123,3 +121,4 @@ echo $this->Form->button('Save Details',array("type" => "submit","class" => "btn
 			
 </div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

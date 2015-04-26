@@ -30,11 +30,11 @@ class InformationController extends AppController {
     }
     
     function aboutUs() {
-      //  $this->__validateUserType();
+      $this->__validateUserType();
     }
     
     function myHelp() {
-      //  $this->__validateUserType();
+      $this->__validateUserType();
     }
 }
 ?>

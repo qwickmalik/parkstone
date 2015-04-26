@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Approve Terminations Step 2: Client Ledger</h3>
@@ -129,3 +127,4 @@ $this->Form->end();
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

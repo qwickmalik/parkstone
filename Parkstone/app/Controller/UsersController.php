@@ -72,137 +72,121 @@ class UsersController extends AppController {
         $this->__EOD();
         $this->__EOM();
     }
-    function login(){
-        
-    }
-//    function login() {
+    
+    function login() {
 //        $this->autoRender = false;
-//        if ($this->request->is('post')) {
-//            
-//            if (empty($_POST['username']) && empty($_POST['password'])) {
-////                $error = array("error" => "Please enter Username and Password");
-////                echo json_encode($error);
-////                return;
-//                                $message = "Please enter Username and Password";
-//                $this->Session->write('upemsg', $message);
-//               $this->redirect('/');
+        if ($this->request->is('post')) {
+            
+            if (empty($_POST['username']) && empty($_POST['password'])) {
+                $message = "Please enter Username and Password";
+                $this->Session->write('upemsg', $message);
+               $this->redirect('/');
+               
+            } 
+            else {
+
+                $username = $_POST['username'];
+                $password = md5($_POST['password']);
+                $result = $this->User->getUserByUsername($username);
+                $settings = $this->Setting->getSettings();
+
+
+                $currency = $this->Currency->getCurrency($settings['Setting']['currency_id']);
 //                
-//
-//           // Router::connect('/', array('controller' => 'users', 'action' => 'index'));
-//               
-//            } else {
-//
-//                $username = $_POST['username'];
-//                $password = md5($_POST['password']);
-//                $result = $this->User->getUserByUsername($username);
-//                $settings = $this->Setting->getSettings();
-//
-//
-//                $currency = $this->Currency->getCurrency($settings['Setting']['currency_id']);
-////                
-//                $check = $this->Session->check('userData');
-//                if($check){
-//                    $this->Session->delete('userData');
-//                }
-//                $check = $this->Session->check('userDetails');
-//                if($check){
-//                    $this->Session->delete('userDetails');
-//                }
-//                $check = $this->Session->check('shopCurrency');
-//                   if($check){
-//                    $this->Session->delete('shopCurrency');
-//                }
-//                $check = $this->Session->check('shopCurrencyname');
-//                   if($check){
-//                    $this->Session->delete('shopCurrencyname');
-//                }
-//                $check = $this->Session->check('shopName');
-//                   if($check){
-//                    $this->Session->delete('shopName');
-//                }
-//                $check = $this->Session->check('shopAddress');
-//                   if($check){
-//                    $this->Session->delete('shopAddress');
-//                }
-//                $check = $this->Session->check('shopMobile');
-//                   if($check){
-//                    $this->Session->delete('shopMobile');
-//                }
-//                $check = $this->Session->check('shopPosttown');
-//                   if($check){
-//                    $this->Session->delete('shopPosttown');
-//                }
-//                $check = $this->Session->check('shopPostCity');
-//                   if($check){
-//                    $this->Session->delete('shopPostCity');
-//                }
-//                $check = $this->Session->check('shopPostCount');
-//                   if($check){
-//                    $this->Session->delete('shopPostCount');
-//                }
-//                $check = $this->Session->check('accYear');
-//                   if($check){
-//                    $this->Session->delete('accYear');
-//                }
-//                $check = $this->Session->check('owner');
-//                   if($check){
-//                    $this->Session->delete('owner');
-//                }
-//                $check = $this->Session->check('userInfo');
-//                   if($check){
-//                    $this->Session->delete('userInfo');
-//                }
-//
-//                $this->Session->write('userData', $result['User']['username']);
-//                $this->Session->write('userDetails', $result['User']);
-//                $this->Session->write('shopCurrency', $currency['Currency']['symbol']);
-//                $this->Session->write('shopCurrencyname', $currency['Currency']['currency_name']);
-//                $this->Session->write('shopName', $settings['Setting']['company_name']);
-//                $this->Session->write('shopAddress', $settings['Setting']['postal_address']);
-//                $this->Session->write('shopMobile', $settings['Setting']['mobile']);
-//                $this->Session->write('shopPosttown', $settings['Setting']['postal_town_suburb']);
-//                $this->Session->write('shopPostCity', $settings['Setting']['postal_city']);
-//                $this->Session->write('shopPostCount', $settings['Setting']['postal_country']);
-//                $this->Session->write('accYear', $settings['Setting']['accounting_month']);
-//                $this->Session->write('owner', $settings['Setting']['owner_name']);
-//                $this->Session->write('userInfo', $result);
-//
-//                if (count($result['User']['username']) != 0) {
-//                    $jsonData = json_encode($result['User']['username']);
-//                } else {
-////                    $error = array("error" => "Username Not Valid");
-////                    //print_r($result);
-////
-////                    return json_encode($error);
-//                                    $message = "Username Not Valid";
-//                $this->Session->write('uemsg', $message);
-//                $this->redirect('/');
-//                }
-//
-//                if ($password == $result['User']['password']) {
-////                    $data = array("status" => "ok");
-////                    return json_encode($data);
-//                    //$val = $this->__EOD();
-//                    //if($val == '')
-//                   // $this->__EOM();
-//                    // return $jsonData;
-//                     $message = "Welcome ".$result['User']['username']." !!!";
-//                $this->Session->write('smsg', $message);
-//                  $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
-//
-//                } else {
-////                    $error = array("error" => "Password Not Valid");
-////                    return json_encode($error);
-//                                       $message = "Password Not Valid";
-//                $this->Session->write('pemsg', $message);
-//                $this->redirect('/');
-//                }
-//            }
-//        }
-//    }
+                $check = $this->Session->check('userData');
+                if($check){
+                    $this->Session->delete('userData');
+                }
+                $check = $this->Session->check('userDetails');
+                if($check){
+                    $this->Session->delete('userDetails');
+                }
+                $check = $this->Session->check('shopCurrency');
+                   if($check){
+                    $this->Session->delete('shopCurrency');
+                }
+                $check = $this->Session->check('shopCurrencyname');
+                   if($check){
+                    $this->Session->delete('shopCurrencyname');
+                }
+                $check = $this->Session->check('shopName');
+                   if($check){
+                    $this->Session->delete('shopName');
+                }
+                $check = $this->Session->check('shopAddress');
+                   if($check){
+                    $this->Session->delete('shopAddress');
+                }
+                $check = $this->Session->check('shopMobile');
+                   if($check){
+                    $this->Session->delete('shopMobile');
+                }
+                $check = $this->Session->check('shopPosttown');
+                   if($check){
+                    $this->Session->delete('shopPosttown');
+                }
+                $check = $this->Session->check('shopPostCity');
+                   if($check){
+                    $this->Session->delete('shopPostCity');
+                }
+                $check = $this->Session->check('shopPostCount');
+                   if($check){
+                    $this->Session->delete('shopPostCount');
+                }
+                $check = $this->Session->check('accYear');
+                   if($check){
+                    $this->Session->delete('accYear');
+                }
+                $check = $this->Session->check('owner');
+                   if($check){
+                    $this->Session->delete('owner');
+                }
+                $check = $this->Session->check('userInfo');
+                   if($check){
+                    $this->Session->delete('userInfo');
+                }
+
+                $this->Session->write('userData', $result['User']['username']);
+                $this->Session->write('userDetails', $result['User']);
+                $this->Session->write('shopCurrency', $currency['Currency']['symbol']);
+                $this->Session->write('shopCurrencyname', $currency['Currency']['currency_name']);
+                $this->Session->write('shopName', $settings['Setting']['company_name']);
+                $this->Session->write('shopAddress', $settings['Setting']['postal_address']);
+                $this->Session->write('shopMobile', $settings['Setting']['mobile']);
+                $this->Session->write('shopPosttown', $settings['Setting']['postal_town_suburb']);
+                $this->Session->write('shopPostCity', $settings['Setting']['postal_city']);
+                $this->Session->write('shopPostCount', $settings['Setting']['postal_country']);
+                $this->Session->write('accYear', $settings['Setting']['accounting_month']);
+                $this->Session->write('owner', $settings['Setting']['owner_name']);
+                $this->Session->write('userInfo', $result);
+
+                if (count($result['User']['username']) != 0) {
+                    $jsonData = json_encode($result['User']['username']);
+                } else {
+
+                $message = "Username Not Valid";
+                $this->Session->write('uemsg', $message);
+                $this->redirect('/');
+                }
+
+                if ($password == $result['User']['password']) {
+
+                $message = "Welcome ".$result['User']['username']." !!!";
+                $this->Session->write('smsg', $message);
+                  $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+
+                } else {
+
+                $message = "Password Not Valid";
+                $this->Session->write('pemsg', $message);
+                $this->redirect('/');
+                }
+            }
+        }
+    }
 
     public function users() {
-        //$this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('User');
         $this->set('data', $data);
         $this->set('userdepartments', $this->Userdepartment->find('list'));
@@ -294,7 +278,7 @@ class UsersController extends AppController {
     }
 
     public function userTypes() {
-       // $this->__validateUserType();
+        $this->__validateUserType();
 //        $data = $this->paginate('Usertype');
 //         $data = $this->Paginator->settings = array(
         $this->UserPrivilege->recursive = 0;
@@ -379,7 +363,7 @@ class UsersController extends AppController {
     }
 
     public function userDepartments() {
-       // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Userdepartment');
         $this->set('data', $data);
         if ($this->request->is('post')) {

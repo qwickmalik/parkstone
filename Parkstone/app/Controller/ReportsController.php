@@ -14,7 +14,7 @@ class ReportsController extends AppController {
         'Supplierinvoice' => array('limit' => 25),
         'Customer' => array('limit' => 500)
     );
-/*
+
     function beforeFilter() {
         $this->__validateLoginStatus();
     }
@@ -41,9 +41,9 @@ class ReportsController extends AppController {
             $this->redirect('/Dashboard/');
         }
     }
-*/
+
     function index() {
-/*        $this->__validateUserType3();*/
+        $this->__validateUserType3();
     }
 
     protected function loadEssentials() {
@@ -439,7 +439,7 @@ class ReportsController extends AppController {
         $this->__validateUserType3();
         $data = $this->paginate('Customer');
         $this->set('customer', $data);
-//        
+   
         $check = $this->Session->check('cscust');
         if ($check) {
             $cust = $this->Session->read('cscust');

@@ -1,6 +1,5 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
 <h3>Add New Investor</h3>
 <div class="boxed">
     <div class="inner">
@@ -133,6 +132,10 @@ echo $this->Html->script('bootstrap.min.js');
 
         </div>
         <!-- Row End -->
+    </div>
+    
+<?php echo $this->element('footer'); ?>
+    
 <style type="text/css">
     label.error{
     color: #B94A48;

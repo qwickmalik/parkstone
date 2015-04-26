@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Approve Payments: Maturity List</h3>
 <div class="boxed">
     <div class="inner">
@@ -72,3 +73,4 @@
             ?>
         </div>
         <!-- Content end here -->
+<?php echo $this->element('footer'); ?>

@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <?php
 $shopCurrency = "GH$";
@@ -617,6 +615,8 @@ echo $this->Form->end();
 
     </div>
     <!-- Content ends here -->
+    <?php echo $this->element('footer'); ?>
+    
 <?php
 //$this->Session->delete('investtemp1');
 ?>

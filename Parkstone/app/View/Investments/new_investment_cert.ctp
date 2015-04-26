@@ -1,3 +1,5 @@
+<?php echo $this->element('header'); ?>
+
 <h3>Investor Contract</h3>
 <div class="boxed">
     <div class="inner">
@@ -121,3 +123,4 @@
             ?>
         </div>
         <!-- Content end here -->
+<?php echo $this->element('footer'); ?>

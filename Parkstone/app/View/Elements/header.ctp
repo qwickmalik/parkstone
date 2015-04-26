@@ -40,13 +40,26 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
         echo $this->Html->script('bootstrap.min.js');
         echo $this->Html->script('all-pages.js');
         echo $this->Html->script('jquery.validate.js');
+        echo $this->Html->script('notification.js');
 
         echo $this->fetch('meta');
         echo $this->fetch('css');
         echo $this->fetch('script');
         ?>
     </head>
+<?php
+$username = "Unknown";
+if ($this->Session->check('userData')) {
+    $username = $this->Session->read('userData');
+    $username = ucwords(strtolower($username));
+} else {
+    $username = "Unknown";
+    $username = ucwords(strtolower($username));
+}
 
+date_default_timezone_set('Africa/Accra');
+$date = date('g:ia');
+?>
 
     <body>
         <section class="content">
@@ -64,9 +77,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                 <!-- Sidebar User Profile Start -->
                 <div class="sidebar-profile">
                     <div class="user-avatar">
-                        <!-- <img src="img/parkstone_logo.png" width="60" height="60" alt="Parkstone Capital" /> -->
                         <?php
-                        //echo $this->Html->image('parkstone_logo.png', array('align'=>'center')); 
                         echo $this->Element('logo');
                         ?>
                     </div>
@@ -198,16 +209,16 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                 ?>
 
                                 <li>
-                                    <a href="#" class="info" alt="Support" title="Support">
+                                    <a href="#" class="user" alt="Support" title="Support">
                                         <i class="fa fa-info"></i>
-                                        <!--                                        <div class="notify">
+                                        <!--    <div class="notify">
                                         
-                                                                                </div>-->
+                                                </div>-->
                                     </a>
                                     <ul class="dropdown">
                                         <li><a href="#"><i class="fa fa-pencil-square-o"></i>Contact Support</a></li>
-                                        <li><a href="#"><i class="fa fa-info"></i>About Us</a></li>
-                                        <li><a href="#"><i class="fa fa-question"></i>Help</a></li>
+                                        <li><a href="/Parkstone/Information/aboutUs"><i class="fa fa-info"></i>About Us</a></li>
+                                        <li><a href="/Parkstone/Information/myHelp"><i class="fa fa-question"></i>Help</a></li>
                                     </ul>
                                 </li>
 
@@ -244,7 +255,11 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
                                                                     <a href="#" class="settings" alt="Settings" title="Settings"><i class="fa fa-cog"></i></a>
                                                                 </li>-->
                                 <li>
-                                    <a href="#" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
+                                    <a href="Users/logout" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
+                                    
+                                </li>
+                                <li>
+                                    <?php echo '<span style="font-size: 10px;"><b>'. $username .'</b> is logged in</span>'; ?>
                                 </li>
                             </ul>
                         </div>

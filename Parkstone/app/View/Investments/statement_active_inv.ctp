@@ -1,7 +1,8 @@
+<?php echo $this->element('header'); ?>
 <?php
 //echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-//echo $this->Html->script('notification.js');
+//
 
 ?>
 <h3>Statement of Active Investments</h3>
@@ -206,3 +207,6 @@ echo $this->Html->link('Print Receipt', "javascript:void(0)", array("class" => '
             </td>
         </tr>
     </table>
+        </div>
+    
+<?php echo $this->element('footer'); ?>

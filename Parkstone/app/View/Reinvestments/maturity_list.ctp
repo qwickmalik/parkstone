@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Daily Maturity List</h3>
 <div class="boxed">
     <div class="inner">
@@ -82,3 +83,5 @@
             ?>
         </div>
         <!-- Content end here -->
+
+<?php echo $this->element('footer'); ?>

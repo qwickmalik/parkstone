@@ -19,12 +19,17 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
         echo $this->Html->css('responsive.css');
         echo $this->Html->css('animate.css');
         echo $this->Html->css('style.css');
+        
+        echo $this->Html->script('jquery-1.9.1.min.js');
+        echo $this->Html->script('jquery.min.js');
+        echo $this->Html->script('bootstrap.min.js');
+        echo $this->Html->script('jquery.flippy.min.js');
 
-//        echo $this->Html->meta('icon');
+        echo $this->Html->meta('icon');
 
-//        echo $this->fetch('meta');
-//        echo $this->fetch('css');
-//        echo $this->fetch('script');
+        echo $this->fetch('meta');
+        echo $this->fetch('css');
+        echo $this->fetch('script');
         ?>
   <!-- Google Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
@@ -35,7 +40,6 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
   <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
   <![endif]-->
   
-
 </head>
 
 <body class="login-page">
@@ -57,20 +61,27 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
                 <h5>Login to your account</h5>
               </div>
 
+              <?php echo $this->Form->create('login', array('url' => array('controller' => 'Users', 'action' => 'login'),'name' => 'login')); ?>	
+                        
               <div class="input-group">
                 <span class="input-group-addon"><i></i></span>
-                <input type="text" class="form-control" placeholder="Username" />
+                <!--<input type="text" class="form-control" placeholder="Username" />-->
+                <?php echo $this->Form->input('username', array('label' => false, 'name' => 'username', 'placeholder'=>'Username', 'class' => 'form-control')); ?>
               </div>
 
               <div class="input-group">
                 <span class="input-group-addon"><i></i></span>
-                <input type="password" class="form-control" placeholder="Password" />
+                <!--<input type="password" class="form-control" placeholder="Password" />-->
+                <?php echo $this->Form->input('password', array('label' => false, 'name' => 'password', 'placeholder'=>'Password', 'class' => 'form-control')); ?>
               </div>
 
-              <input type="submit" class="btn btn-lg btn-success" value="Login to your account" name="submit" id="submit" />
-
+              <!--<input type="submit" class="btn btn-lg btn-success" value="Login to your account" name="submit" id="submit" />-->
+                <?php echo $this->Form->button('Proceed',array("type" => "submit","class" => "btn btn-lg btn-success","id" => "login-link", "escape"=>false, 'style' => 'float: right;')); ?>
+                
+                    <?php echo $this->Form->end(); ?>
+                
               <p class="footer">&nbsp;</p>
-
+              
             </div>
           </div>
 
@@ -85,9 +96,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
 
 <!-- Javascript -->
 <?php
-echo $this->Html->script('jquery.min.js');
-echo $this->Html->script('bootstrap.min.js');
-echo $this->Html->script('jquery.flippy.min.js');
+
 ?>
 
 

@@ -1,5 +1,6 @@
+<?php echo $this->element('header'); ?>
 <?php
-echo $this->Html->script('notification.js');
+
 if ($this->Session->check('shopCurrency')) {
     $shopCurrency = $this->Session->read('shopCurrency');
 } else {
@@ -187,3 +188,4 @@ if ($this->Session->check('shopCurrency')) {
 </div>
 <!-- Content ends here -->
 
+<?php echo $this->element('footer'); ?>

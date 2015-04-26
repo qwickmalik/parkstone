@@ -152,6 +152,9 @@
             <!-- General Stats End -->	
 
         </div>
+        
+        
+        
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
             <!-- Important DAtes Start -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
@@ -165,7 +168,7 @@
                                             </div>
                                         </div>-->
                     <div class="standalone-title-bar purple">
-                        <i class="fa fa-user"></i>
+                        <i class="fa fa-clock-o"></i>
                         Important Dates
                     </div>
                     <!-- Title Bar End -->
@@ -180,6 +183,29 @@
                 </div>
             </div>
             <!-- Important DAtes End -->
-        </div>
+            
+            
+            <!-- Demo Start -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                <div class="box tasks">
 
+                    <!-- Title Bar Start -->
+                    <div class="standalone-title-bar orange">
+                        <i class="fa fa-user"></i>
+                        Demo
+                    </div>
+                    <!-- Title Bar End -->
+
+                    <!-- Stats List Start -->
+                    <ul>
+                        <li>Monthly payments due on <span>Jan 7th, 2014</span></li>
+                        <li>Financial year starts <span>1st July</span></li>
+                    </ul>
+                    <!-- Stats List End -->
+
+                </div>
+            </div>
+            <!-- Demo End -->
+        </div>
+    </div>
 <?php echo $this->element('footer'); ?>

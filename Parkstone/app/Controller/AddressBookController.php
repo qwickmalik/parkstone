@@ -29,8 +29,12 @@ public $components = array('RequestHandler','Session');
             $this->redirect('/Dashboard/');
         }
     }
+    
+    
+    
+    
     public function index(){
-       // $this->__validateUserType();
+       $this->__validateUserType();
         $data = $this->paginate('Customer');
         $this->set('customer', $data);
         

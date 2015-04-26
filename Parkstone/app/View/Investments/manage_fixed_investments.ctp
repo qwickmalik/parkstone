@@ -1,7 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
-
+<?php echo $this->element('header'); ?>
 <!-- Content starts here -->
 <h3>Manage Fixed Investments</h3>
 <div class="boxed">
@@ -329,6 +326,9 @@ echo $this->Html->script('notification.js');
 
 </div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>
+
+
     <script lang="javascript">
         jQuery(document).ready(function($) {
             $(".topup").click(function () {
