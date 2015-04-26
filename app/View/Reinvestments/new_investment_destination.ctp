@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3 style="color: red;">New Investment Destination</h3>
@@ -86,4 +84,6 @@ echo $this->Html->script('notification.js');
             
             
             </script>
+    </div>
         <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

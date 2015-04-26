@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Reports: Discounting of Investment</h3>
 <div class="boxed">
     <div class="inner">
@@ -5,7 +6,7 @@
 
         <!-- Content start here -->
         <div class="row">
-            
+
             <?php
             echo $this->Form->create('DiscountInvestment', array('url' => array('controller' => 'Reports', 'action' => 'discountInvestment')));
             ?>
@@ -21,8 +22,6 @@
                     $month = date('m');
                     $day = date('d');
                     $Year = date('Y');
-                    
-                    
                     ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
@@ -46,15 +45,15 @@
                 <?php
                 echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-info', 'style' => 'float: right;'));
                 ?>
-                
+
             </div>
-            
+
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
-                <?php 
-                    echo $this->Element('logo_reports');
-                    echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>"; 
-                    echo "<p><b>DISCOUNT ON INVESTMENT</b></p>";  
+                <?php
+                echo $this->Element('logo_reports');
+                echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>";
+                echo "<p><b>DISCOUNT ON INVESTMENT</b></p>";
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -100,12 +99,14 @@
                     </tr>
                 </table>
             </div>
-            <?php 
+            <?php
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
-            
-            echo $this->Form->end(); 
+
+            echo $this->Form->end();
             ?>
         </div>
-        <!-- Content end here -->
+    </div>
+    <!-- Content end here -->
+<?php echo $this->element('footer'); ?>

@@ -1,7 +1,3 @@
-<?php
-echo $this->Html->script('notification.js');
-echo $this->element('header');
-?>
 
 <!-- Content starts here -->
 <h3 style="color: red;">Manage Investments</h3>
@@ -56,3 +52,4 @@ echo $this->element('header');
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

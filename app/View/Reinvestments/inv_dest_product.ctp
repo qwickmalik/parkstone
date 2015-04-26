@@ -1,6 +1,5 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
 
 <!-- Content starts here -->
 <h3 style="color: red;">Investment Destination Products</h3>
@@ -77,5 +76,6 @@ echo $this->Html->script('notification.js');
             </tr>
         </table>
         <?php echo $this->Form->end(); ?>		
-
+    </div>
         <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

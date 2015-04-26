@@ -1,13 +1,14 @@
 <?php
-//echo $this->element('header');
-echo $this->Html->script('notification.js');
+echo $this->element('header');
+
 ?>
 
 <!-- Content starts here -->
-<div id="content">
-    <h2>About Us</h2>
+<h3>About Us</h3>
+<div class="boxed">
+    <div class="inner">
+        <div id="clearer"></div>
 
-    <div id="clearer"></div>
     <table width="100%" align="left" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td align="left" valign="top">
@@ -35,16 +36,5 @@ echo $this->Html->script('notification.js');
     
 
 </div>
-<!-- Content ends here -->
-
-<!-- Sidebar starts here -->
-<div id="sidebar">
-    <?php
-    echo $this->element('logo');
-    echo $this->element('sidebar_info');
-    ?>
-</div>
-<!-- Sidebar starts here -->
-<!-- Footer starts here -->
+    <!-- Content ends here -->
 <?php echo $this->element('footer'); ?>
-<!-- Footer starts here -->

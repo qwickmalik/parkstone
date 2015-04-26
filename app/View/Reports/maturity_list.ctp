@@ -1,3 +1,5 @@
+<?php echo $this->element('header'); ?>
+
 <h3>Reports: Maturity List</h3>
 <div class="boxed">
     <div class="inner">
@@ -6,32 +8,32 @@
         <!-- Content start here -->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
-                <?php 
-                    echo $this->Element('logo_reports');
-                    echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>"; 
-                    echo "<p style='color: red;'><i>Shop address not loading from db</i></p>";
-                    $postaladd = 'Postal Address: ';
+                <?php
+                echo $this->Element('logo_reports');
+                echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>";
+                echo "<p style='color: red;'><i>Shop address not loading from db</i></p>";
+                $postaladd = 'Postal Address: ';
 
-                    if ($this->Session->check('shopAddress')) {
-                        $shopAddress = $this->Session->read('shopAddress');
-                        $postaladd .=$shopAddress;
-                        if ($this->Session->check('shopPosttown')) {
-                            $shopPosttown = $this->Session->read('shopPosttown');
+                if ($this->Session->check('shopAddress')) {
+                    $shopAddress = $this->Session->read('shopAddress');
+                    $postaladd .=$shopAddress;
+                    if ($this->Session->check('shopPosttown')) {
+                        $shopPosttown = $this->Session->read('shopPosttown');
 
-                            // $postaladd .= ', '.$shopPosttown;
-                        }
-                        if ($this->Session->check('shopPostCity')) {
-                            $shopPostCity = $this->Session->read('shopPostCity');
-                            $postaladd .= ', ' . $shopPostCity;
-                        }
-                        if ($this->Session->check('shopPostCount')) {
-                            $shopPostCount = $this->Session->read('shopPostCount');
-                            $postaladd .= ', ' . $shopPostCount;
-                        }
-                        echo "<p>".$postaladd."</p>";
+                        // $postaladd .= ', '.$shopPosttown;
                     }
-                            
-                    echo "<p><b>MATURITY LIST</b></p>";  
+                    if ($this->Session->check('shopPostCity')) {
+                        $shopPostCity = $this->Session->read('shopPostCity');
+                        $postaladd .= ', ' . $shopPostCity;
+                    }
+                    if ($this->Session->check('shopPostCount')) {
+                        $shopPostCount = $this->Session->read('shopPostCount');
+                        $postaladd .= ', ' . $shopPostCount;
+                    }
+                    echo "<p>" . $postaladd . "</p>";
+                }
+
+                echo "<p><b>MATURITY LIST</b></p>";
                 ?>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -77,11 +79,12 @@
                     </tr>
                 </table>
             </div>
-            <?php 
+            <?php
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
-            
             ?>
         </div>
-        <!-- Content end here -->
+    </div>
+    <!-- Content end here -->
+    <?php echo $this->element('footer'); ?>

@@ -1,6 +1,5 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
 
 <h3 style="color: red;">New Re-investment</h3>
 <div class="boxed">
@@ -110,3 +109,5 @@ echo $this->Html->script('notification.js');
 
     </div>
     <!-- Content ends here -->
+
+<?php echo $this->element('footer'); ?>

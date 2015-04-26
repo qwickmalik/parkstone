@@ -1,6 +1,5 @@
-<?php 
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
             
 <!-- Content starts here -->
 <h3>Settings: Create Transaction Names</h3>
@@ -76,3 +75,4 @@ echo $this->Html->script('notification.js');
 			</form>
 		</div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

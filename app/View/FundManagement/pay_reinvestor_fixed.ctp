@@ -1,7 +1,8 @@
+<?php echo $this->element('header'); ?>
 <?php
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-echo $this->Html->script('notification.js');
+
 ?>
 
 <?php
@@ -218,4 +219,5 @@ function hide_chequeno() {
                 hide_chequeno();
             });
              });
- </script>           
+ </script>
+<?php echo $this->element('footer'); ?>

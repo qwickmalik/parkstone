@@ -1,6 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Settings: Subsidiary Companies</h3>
@@ -166,3 +164,4 @@ echo $this->Form->create('', array("url" => array('controller' => 'Subsidiary', 
 <?php echo $this->Form->end(); ?>		
 
         <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

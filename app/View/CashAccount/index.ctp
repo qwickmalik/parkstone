@@ -1,6 +1,6 @@
 <?php
 echo $this->element('header');
-echo $this->Html->script('notification.js');
+
 
 $username = "Unknown";
 if ($this->Session->check('userData')) {

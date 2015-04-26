@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Process Payments</h3>
@@ -99,3 +97,4 @@
 
 </div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

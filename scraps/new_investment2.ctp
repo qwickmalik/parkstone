@@ -1,5 +1,5 @@
 <?php
-echo $this->Html->script('notification.js');
+
 ?>
 
 <?php

@@ -1,9 +1,5 @@
-<?php
+<?php echo $this->element('header'); ?>
 
-//echo $this->element('header');
-echo $this->Html->script('notification.js');
-
-?>
 <!-- Content starts here -->
 <div id="content">
     <h3>Add New Investor</h3>
@@ -292,7 +288,8 @@ echo $this->Html->script('icheck/icheck.js');
             <!-- Row End -->
         </div>
         <!-- Content ends here -->
-
+<?php echo $this->element('footer'); ?>
+        
         <style type="text/css">
             label.error{
                 color: #B94A48;

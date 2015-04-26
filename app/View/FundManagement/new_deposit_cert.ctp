@@ -1,7 +1,8 @@
+<?php echo $this->element('header'); ?>
 <?php
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
-echo $this->Html->script('notification.js');
+
 
 
 ?>
@@ -208,3 +209,4 @@ echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-
             </tr>
         </table>
     </div>
+<?php echo $this->element('footer'); ?>

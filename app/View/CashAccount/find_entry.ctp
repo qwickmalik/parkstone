@@ -1,6 +1,6 @@
 <?php
 echo $this->element('header');
-echo $this->Html->script('notification.js');
+
 echo $this->Html->script('jquery.printElement.js');
 
 if ($this->Session->check('shopCurrency')) {

@@ -25,7 +25,7 @@ class SettingsController extends AppController {
         'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
     );
 
-    /*
+    
       function beforeFilter() {
       $this->__validateLoginStatus();
       }
@@ -47,14 +47,14 @@ class SettingsController extends AppController {
       $this->redirect('/Dashboard/');
       }
       }
-     */
+     
 
     function index() {
-        /*  $this->__validateUserType(); */
+        $this->__validateUserType(); 
     }
 
     function equitiesList() {
-        //  $this->__validateUserType();
+        $this->__validateUserType();
         if (!empty($this->request->data)) {
             $result = $this->EquitiesList->save($this->request->data);
             if ($result) {
@@ -91,7 +91,7 @@ class SettingsController extends AppController {
     }
 
     function createExpenses() {
-        //  $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Expense');
         $this->set('data', $data);
     }
@@ -164,7 +164,7 @@ class SettingsController extends AppController {
     }
 
     function setup() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
 
         $this->set('currencies', $this->Currency->find('list'));
 
@@ -216,7 +216,7 @@ class SettingsController extends AppController {
     }
 
     function subsidiaries() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Subsidiary');
         $this->set('data', $data);
         $this->set('currencies', $this->Currency->find('list'));
@@ -302,7 +302,7 @@ class SettingsController extends AppController {
     }
 
     function itemsList() {
-        //  $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Item');
         $this->set('data', $data);
 
@@ -388,7 +388,7 @@ class SettingsController extends AppController {
     }
 
     public function clientsList() {
-        //$this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Client');
         $this->set('data', $data);
 
@@ -412,7 +412,7 @@ class SettingsController extends AppController {
     }
 
     public function customerCategories() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('CustomerCategory');
         $this->set('data', $data);
 
@@ -500,7 +500,7 @@ class SettingsController extends AppController {
 //    }
 
     public function taxesList() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Tax');
         $this->set('data', $data);
 
@@ -562,7 +562,7 @@ class SettingsController extends AppController {
     }
 
     function paymentTerms() {
-        //$this->__validateUserType();
+        $this->__validateUserType();
 
         if ($this->request->is('post')) {
             if (!empty($this->request->data)) {
@@ -607,7 +607,7 @@ class SettingsController extends AppController {
     }
 
     function investmentPortfolios() {//please work on this. i just copied the whole function for payment terms
-        // $this->__validateUserType();
+        $this->__validateUserType();
         if ($this->request->is('post')) {
             if (!empty($this->request->data)) {
                 if ($this->request->data['Portfolio']['payment_name'] == "" || $this->request->data['Portfolio']['payment_name'] == null) {
@@ -756,15 +756,15 @@ class SettingsController extends AppController {
     }
 
     function hirePurchaseRates() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
     }
 
     function notifications() {
-        //   $this->__validateUserType();
+        $this->__validateUserType();
     }
 
     function defaultingRates() {
-        //   $this->__validateUserType();
+        $this->__validateUserType();
         //     
         $data = $this->paginate('DefaultingRate');
         $this->set('data', $data);
@@ -819,7 +819,7 @@ class SettingsController extends AppController {
     }
 
     public function warehouses() {
-        //   $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Warehouse');
         $this->set('data', $data);
 
@@ -859,7 +859,7 @@ class SettingsController extends AppController {
     }
 
     function zones() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('Zone');
         $this->set('data', $data);
         if ($this->request->is('post')) {
@@ -898,7 +898,7 @@ class SettingsController extends AppController {
     }
 
     public function banks() {
-        //$this->__validateUserType();
+        $this->__validateUserType();
 
         if ($this->request->is('post')) {
             if (!empty($this->request->data)) {
@@ -966,7 +966,7 @@ class SettingsController extends AppController {
     }
 
     function bankAccounts() {
-        //$this->__validateUserType();
+        $this->__validateUserType();
         $this->set('banks', $this->Bank->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
 
@@ -1136,7 +1136,7 @@ class SettingsController extends AppController {
 
     function exchangeRates() {
 
-//          $this->__validateUserType2();
+        $this->__validateUserType2();
         $this->set('currencies', $this->Currency->find('list', array('conditions' => array('Currency.is_local' => 0))));
         $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.is_local' => 1]]));
         $data = $this->paginate('ExchangeRate');

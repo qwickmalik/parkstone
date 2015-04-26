@@ -1,7 +1,4 @@
-<?php
-echo $this->element('header');
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 <!-- Content starts here -->
 
 <h3>Edit Investor</h3>
@@ -290,15 +287,16 @@ echo $this->Html->script('notification.js');
         <!-- Row End -->
 
         <!-- Content ends here -->
-
-        <style type="text/css">
-            label.error{
-                color: #B94A48;
-                margin-top: 2px;
-            }
-        </style>
-        <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
-        <?php
-        echo $this->Html->script('prettify.js');
-        echo $this->Html->script('fuelux/wizards.js');
-        ?>
+<?php echo $this->element('footer'); ?>
+        
+<style type="text/css">
+    label.error{
+        color: #B94A48;
+        margin-top: 2px;
+    }
+</style>
+<script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
+<?php
+echo $this->Html->script('prettify.js');
+echo $this->Html->script('fuelux/wizards.js');
+?>

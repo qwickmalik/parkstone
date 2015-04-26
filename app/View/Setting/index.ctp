@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Settings</h3>
 <div class="boxed">
     <div class="inner2">
@@ -141,3 +142,4 @@
 				</div>', '/Users/userDepartments', array('escape' => false)); ?>
 
         <!-- Panels end here -->
+<?php echo $this->element('footer'); ?>

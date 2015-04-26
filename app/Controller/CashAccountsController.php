@@ -9,48 +9,48 @@ class CashAccountsController extends AppController {
         'TempcashAccount' => array('limit' => 25, 'order' => array('TempcashAccount.id' => 'desc'))
     );
 
-//    function beforeFilter() {
-//        $this->__validateLoginStatus();
-//    }
-//
-//    function __validateLoginStatus() {
-//        if ($this->action != 'login' && $this->action != 'logout') {
-//            if ($this->Session->check('userData') == false) {
-//
-//                $this->redirect('/');
-//            }
-//        }
-//    }
-//
-//    function __validateUserType() {
-//
-//        $userType = $this->Session->read('userDetails.usertype_id');
-//        if ($userType != 1) {
-//            $message = 'Not enough privileges to view this resource!!';
-//            $this->Session->write('bmsg', $message);
-//            $this->redirect('/Dashboard/');
-//        }
-//    }
-//    
-//    function __validateUserType2() {
-//
-//        $userType = $this->Session->read('userDetails.usertype_id');
-//        switch($userType){
-//            case 1:
-//            case 7:
-//            case 8:
-//                
-//                break;
-//            default:
-//            $message = 'Not enough privileges to view this resource!!';
-//            $this->Session->write('bmsg', $message);
-//            $this->redirect('/Dashboard/');
-//                break;
-//        }
-//    }
+    function beforeFilter() {
+        $this->__validateLoginStatus();
+    }
+
+    function __validateLoginStatus() {
+        if ($this->action != 'login' && $this->action != 'logout') {
+            if ($this->Session->check('userData') == false) {
+
+                $this->redirect('/');
+            }
+        }
+    }
+
+    function __validateUserType() {
+
+        $userType = $this->Session->read('userDetails.usertype_id');
+        if ($userType != 1) {
+            $message = 'Not enough privileges to view this resource!!';
+            $this->Session->write('bmsg', $message);
+            $this->redirect('/Dashboard/');
+        }
+    }
+    
+    function __validateUserType2() {
+
+        $userType = $this->Session->read('userDetails.usertype_id');
+        switch($userType){
+            case 1:
+            case 7:
+            case 8:
+                
+                break;
+            default:
+            $message = 'Not enough privileges to view this resource!!';
+            $this->Session->write('bmsg', $message);
+            $this->redirect('/Dashboard/');
+                break;
+        }
+    }
 
     function index() {
-        // $this->__validateUserType();
+        $this->__validateUserType();
         $data = $this->paginate('CashAccount');
 
         $this->set('data', $data);
@@ -1092,7 +1092,7 @@ class CashAccountsController extends AppController {
 
     public function findEntry() {
 
-       // $this->__validateUserType();
+       $this->__validateUserType();
         $data = $this->paginate('CashAccount');
         if ($this->request->is('post')) {
 
@@ -1135,7 +1135,7 @@ class CashAccountsController extends AppController {
 
    
     public function authoriseEntry() {
-       // $this->__validateUserType();
+       $this->__validateUserType();
         $data = $this->paginate('TempcashAccount');
         $this->set('zones', $this->Zone->find('list'));
 

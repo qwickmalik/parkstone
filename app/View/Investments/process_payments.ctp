@@ -1,3 +1,5 @@
+<?php echo $this->element('header'); ?>
+
 <h3>Payments: Approved Payments</h3>
 <div class="boxed">
     <div class="inner">
@@ -59,4 +61,6 @@
 //            echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
             ?>
         </div>
+    </div>
         <!-- Content end here -->
+<?php echo $this->element('footer'); ?>

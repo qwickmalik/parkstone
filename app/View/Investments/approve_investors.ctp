@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Approve Investors</h3>
 <div class="boxed">
 	<div class="inner">
@@ -93,4 +94,5 @@
     <?php
     echo $this->Form->end();
     ?>
-
+        </div>
+<?php echo $this->element('footer'); ?>

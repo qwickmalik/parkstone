@@ -5,7 +5,7 @@ class DashboardController extends AppController {
     var $name = 'Dashboard';
     var $uses = array('Dashboard','Investor','InvestmentCash', 'Investment');
     
-/*
+
     function beforeFilter() {
         $this->__validateLoginStatus();
     }
@@ -45,9 +45,9 @@ class DashboardController extends AppController {
                 break;
         }
     }
-*/
+
     function index() {
-        // $this->__validateUserType();
+         $this->__validateUserType();
         $this->set('clients',$this->Investor->find('count'));
         $this->set('investments',$this->InvestmentCash->find('all',['fields' => ['SUM(InvestmentCash.amount) As amt'],'conditions' => ['InvestmentCash.status' => array('Invested','Processed')]]));
         

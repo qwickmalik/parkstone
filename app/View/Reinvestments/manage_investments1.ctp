@@ -1,7 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-echo $this->element('header');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <div id="content">
@@ -107,14 +104,6 @@ echo $this->element('header');
 </div>
 <!-- Content ends here -->
 
-<!-- Sidebar starts here -->
-    <div id="sidebar">
-         <?php 
-         echo $this->element('logo');
-         echo $this->element('sidebar_investments'); //Mini Dashboard
-          ?>
-    </div>
-<!-- Sidebar starts here -->
 <!-- Footer starts here -->
 <?php echo $this->element('footer'); ?>
 <!-- Footer starts here -->

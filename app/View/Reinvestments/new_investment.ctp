@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 
 <!-- Content starts here -->
@@ -62,6 +60,8 @@
 
     </div>
     <!-- Content ends here -->
+    <?php echo $this->element('footer'); ?>
+
 <script type="text/javascript" language="javascript">
 //$(document).ready(function()
 //{

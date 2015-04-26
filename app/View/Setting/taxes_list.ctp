@@ -1,14 +1,12 @@
-            <?php 
-          //   echo $this->element('header'); 
-            echo $this->Html->script('notification.js');
-           
-            ?>
+<?php echo $this->element('header'); ?>
+
             
-            <!-- Content starts here -->
-                <div id="content">
-                    <h2>Settings: Tax Rates</h2>
-                    
-                    <div id="clearer"></div>
+<!-- Content starts here -->
+<h3>SETTINGS: Tax Rates</h3>
+<div class="boxed">
+	<div class="inner">
+            <div id="clearer"></div>
+		
                     <?php echo $this->Form->create('Tax',array("url" => array('controller' => 'Settings', 'action' => 'taxesList'),"inputDefaults" => array('label' => false,'div' => false)));?>
                     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
                             
@@ -72,16 +70,5 @@
                     </form>
                 </div>
             <!-- Content ends here -->
-               
-            <!-- Sidebar starts here -->
-<!--                  <div id="sidebar">
-                     <?php 
-                   //  echo $this->element('logo');
-                   //  echo $this->element('settings_sidebar'); //Settings menu
-                     
-                      ?>
-                </div> -->
-            <!-- Sidebar starts here -->
-            <!-- Footer starts here -->
-                <?php //echo $this->element('footer'); ?>
-            <!-- Footer starts here -->
+
+<?php echo $this->element('footer'); ?>

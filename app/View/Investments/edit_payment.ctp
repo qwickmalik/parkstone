@@ -1,8 +1,4 @@
-<?php
-echo $this->element('header');
-echo $this->Html->script('notification.js');
-
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Edit Payment</h3>
@@ -174,3 +170,4 @@ echo $this->Html->script('notification.js');
 
 </div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

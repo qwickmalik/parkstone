@@ -1,5 +1,6 @@
+<?php echo $this->element('header'); ?>
 <?php
-echo $this->Html->script('notification.js');
+
 ?>
 
 <h3 style="color: red;">Manage Re-investments</h3>
@@ -116,3 +117,5 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
 
     </div>
     <!-- Content ends here -->
+
+<?php echo $this->element('footer'); ?>

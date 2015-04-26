@@ -1,6 +1,5 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
 
 <!-- Content starts here -->
 <h3>SETTINGS: Payment Terms</h3>
@@ -78,3 +77,4 @@ echo $this->Html->script('notification.js');
     </form>
 </div>
 <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

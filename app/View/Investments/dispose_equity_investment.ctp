@@ -1,6 +1,4 @@
-<?php
-//echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3>Pay Investor</h3>
@@ -239,3 +237,4 @@
     });
         
         </script>
+<?php echo $this->element('footer'); ?>

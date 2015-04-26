@@ -46,7 +46,7 @@ class PagesController extends AppController {
  *	or MissingViewException in debug mode.
  */
 	public function display() {
-        $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+        $this->redirect(array('controller' => 'Users', 'action' => 'login'));
 		$path = func_get_args();
 
 		$count = count($path);

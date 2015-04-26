@@ -1,6 +1,5 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
+<?php echo $this->element('header'); ?>
+
 
 <!-- Content starts here -->
 <h3>Settings: Equities List</h3>
@@ -91,4 +90,6 @@ echo $this->Html->script('notification.js');
             </table>
         </form>
     </div>
+    </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>

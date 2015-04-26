@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>INVESTMENTS MANAGEMENT</h3>
 <div class="boxed">
 	<div class="inner">
@@ -44,4 +45,4 @@
     <!-- Panels end here -->
 
     
-    
+<?php echo $this->element('footer'); ?>

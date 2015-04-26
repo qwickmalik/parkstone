@@ -1,3 +1,4 @@
+<?php echo $this->element('header'); ?>
 <h3>Reports</h3>
 <div class="boxed">
     <div class="inner">

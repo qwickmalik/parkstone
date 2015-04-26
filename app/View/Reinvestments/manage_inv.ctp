@@ -1,7 +1,4 @@
-<?php
-echo $this->Html->script('notification.js');
-?>
-
+<?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
 <h3 style="color: red;">Manage Processed Investments</h3>
@@ -62,6 +59,10 @@ echo $this->Html->script('notification.js');
 
     </div>
     <!-- Content ends here -->
+    
+<?php echo $this->element('footer'); ?>
+    
+    
 <script type="text/javascript" language="javascript">
 //$(document).ready(function()
 //{
