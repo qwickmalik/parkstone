@@ -1,3 +1,5 @@
+<?php echo $this->element('header'); ?>
+
 <h3>DASHBOARD</h3>
 <div class="boxed">
     <div class="nothing">
@@ -180,3 +182,4 @@
             <!-- Important DAtes End -->
         </div>
 
+<?php echo $this->element('footer'); ?>

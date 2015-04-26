@@ -1803,7 +1803,7 @@ class InvestmentsController extends AppController {
                     $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investorid]]);
 
                     if ($ledger_data) {
-                        $this->Session->write('ledger_data', $ledger_data);
+//                        $this->Session->write('ledger_data', $ledger_data);
                         $this->set('ledger_data', $ledger_data);
                     }
                 }
