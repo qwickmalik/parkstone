@@ -65,7 +65,7 @@ function __dailyMatured(){
             $new_cashathand = $cash_athand + $earned_balance;
             $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
            $old_tenure = $each['Investment']['total_tenure'];
-           $period = $each_item['Investment']['investment_period'];
+           $period = $each['Investment']['investment_period'];
            switch ($period){
                case 'Year(s)':
                    $new_tenure = $old_tenure - 1;
@@ -108,17 +108,16 @@ function __dailyReinvestmentMatured(){
             //subtract from reinvestoraacount fixed balance and probably deposit
             $reinvestment_data = $this->ReinvestorCashaccount->find('first', ['recursive' => -1, 'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
             if ($reinvestment_data) {
-                $id = $reinvestment_data['ReinvestorCashaccount']['id'];
-                $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
-                $earned_balance = $each['Reinvestment']['earned_balance'];
-                $new_balance = $old_balance - $earned_balance;
-
-                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance);
-                $this->ReinvestorCashaccount->save($fixed_data);
+//                $id = $reinvestment_data['ReinvestorCashaccount']['id'];
+//                $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_returns'];
+//                $earned_balance = $each['Reinvestment']['earned_balance'];
+//                $new_balance = $old_balance + $earned_balance;
+//
+//                $fixed_data = array('id' => $id, 'fixed_inv_returns' => $new_balance);
+//                $this->ReinvestorCashaccount->save($fixed_data);
             }
            $each_array = array('id' => $each['Reinvestment']['id'],
-                'status' => 'Matured','old_status' => $each['Reinvestment']['status'],
-                'earned_balance' => 0.00);
+                'status' => 'Matured','old_status' => $each['Reinvestment']['status']);
             $this->Reinvestment->save($each_array);
         }
     }
@@ -243,16 +242,16 @@ function __dailyInterests(){
                             $statemt_array = array(
                                 'investment_id' => $value['Investment']['id'],
                                 'investor_id' => $value['Investment']['investor_id'],
-                                'principal' => $principal_amount,
-                                'interest' => $daily_interest,
+                                'principal' => round($principal_amount,2),
+                                'interest' => round($daily_interest,2),
                                 'date' => $date,
-                                'total' => $new_balanced_earned);
+                                'total' => round($new_balanced_earned,2));
                             
                              $investment_array = array(
                                  'id' => $value['Investment']['id'],
-                                 'earned_balance' => $new_balanced_earned,
-                             'total_amount_earned' => $new_total_earned,
-                            'interest_accrued' => $new_accrued_interest
+                                 'earned_balance' => round($new_balanced_earned,2),
+                             'total_amount_earned' => round($new_total_earned,2),
+                            'interest_accrued' => round($new_accrued_interest,2)
                         );
                     $this->DailyInterestStatement->create();       
                     $this->DailyInterestStatement->save($statemt_array);
@@ -280,12 +279,12 @@ function __dailyReinvestmentInterests(){
         $date = date('Y-m-d');
         $yearly_interest = ($rate / 100) * $principal_amount;
         $daily_interest = $yearly_interest/365;
-        $old_accrued_interest = $value['Reinvestment']['interest_accrued'];
+        $old_accrued_interest = $value['Reinvestment']['interest_earned'];
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
         $new_balanced_earned = $investment_amount + $daily_interest;
         $new_total_earned = $investment_amount1 + $daily_interest;
 
-
+       
                             $statemt_array = array(
                                 'reinvestment_id' => $value['Reinvestment']['id'],
                                 'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
@@ -296,10 +295,12 @@ function __dailyReinvestmentInterests(){
                             
                              $investment_array = array(
                                  'id' => $value['Reinvestment']['id'],
-                                 'earned_balance' => $new_balanced_earned,
-                             'total_amount_earned' => $new_total_earned,
-                            'interest_accrued' => $new_accrued_interest
+                                 'earned_balance' => round($new_balanced_earned,2),
+                             'total_amount_earned' => round($new_total_earned,2),
+                            'interest_earned' => round($new_accrued_interest,2)
                         );
+                             pr($investment_array);
+                             
                     $this->DailyReinvestinterestStatement->create();       
                     $this->DailyReinvestinterestStatement->save($statemt_array);
                     

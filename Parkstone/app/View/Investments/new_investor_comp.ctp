@@ -112,9 +112,7 @@ echo $this->Html->script('bootstrap.min.js');
                             <!-- Step 2 Bank Details End -->
 
 
-                            <!--</form>-->
-                            
-            <?php $this->Form->end(); ?>
+                           
                         </div>
 
 
@@ -129,7 +127,9 @@ echo $this->Html->script('bootstrap.min.js');
                 </div>
             </div>
             <!-- Form End -->
-
+ <!--</form>-->
+                            
+            <?php $this->Form->end(); ?>
         </div>
         <!-- Row End -->
     </div>

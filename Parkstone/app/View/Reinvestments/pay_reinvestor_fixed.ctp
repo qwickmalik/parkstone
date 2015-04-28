@@ -113,7 +113,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b>Total Amount Due:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['earned_balance']) ? number_format($reinvestments['Reinvestment']['earned_balance'] , 2, '.', ',') : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['earned_balance']) ? number_format($reinvestments['Reinvestment']['earned_balance'] , 2) : '' ); ?>
                     </div>
                 </div>
                 <div class="row">

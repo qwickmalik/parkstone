@@ -113,7 +113,7 @@ echo $this->Html->script('icheck/icheck.js');
 					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->month('id_issue', array('required','size' => 1, 'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('m',strtotime($investor['Investor']['id_issue'])) : '--Select Month--' ),'empty' => '--Select Month--', 'class' => 'required')); ?>&nbsp;
                                                 </div>
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
-					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('required','id_issue', date('Y')-10, date('Y'), array("id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('Y',strtotime($investor['Investor']['id_issue'])) : '--Select Year--' ),'empty' => '--Select Year--', 'class' => 'required')); ?>
+					  <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 20px; padding: 10px 0px 10px 0px;'>&nbsp;</span>".$this->Form->year('id_issue', date('Y')-10, date('Y'), array('required',"id" => "is_year", 'type' => 'date', 'dateFormat' => 'Y','size' => 1, "style" => "margin-right: 10px;",'label'=>false,'value' => (isset($investor['Investor']['id_issue']) ? date('Y',strtotime($investor['Investor']['id_issue'])) : '--Select Year--' ),'empty' => '--Select Year--', 'class' => 'required')); ?>
                                                 </div>
                                             </div>
 
@@ -261,9 +261,7 @@ echo $this->Html->script('icheck/icheck.js');
                                         </div>
                                     </div>
                                 </div>
-                                <?php $this->Form->end(); ?>
-
-                                <!-- Form End -->
+                               
                             </div>
 
 
@@ -283,7 +281,9 @@ echo $this->Html->script('icheck/icheck.js');
 
 
                 <!--</form>-->
+ <?php $this->Form->end(); ?>
 
+                                <!-- Form End -->
             </div>
             <!-- Row End -->
         </div>
@@ -296,9 +296,9 @@ echo $this->Html->script('icheck/icheck.js');
                 margin-top: 2px;
             }
         </style>
-       <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
+       <!--<script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>-->
 <?php
-//echo $this->Html->script('fuelux/fuelux2/loader.min.js');
+echo $this->Html->script('fuelux/fuelux2/loader.min.js');
 echo $this->Html->script('prettify.js');
 echo $this->Html->script('fuelux/wizards.js');
 ?>
