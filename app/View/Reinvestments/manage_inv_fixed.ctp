@@ -89,8 +89,9 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                       
                         }elseif($each_item['Reinvestment']['status'] == 'Matured'){
-                            echo " | ";
-                            echo $this->Html->link("Roll-over","/Reinvestments/rolloverReinvestorFixed/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
+                           
+                            echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
+                            //rolloverReinvestorFixed
                             echo " | ";
                             echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
                             }else{
