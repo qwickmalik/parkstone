@@ -1075,3 +1075,25 @@ CREATE TABLE IF NOT EXISTS `investment_returns` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+APRIL 23, 2015
+-----------------------
+ALTER TABLE  `reinvestments` CHANGE  `status`  `status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment', 'Invested',  'Termination_Requested',  'Payment_Requested',  'Terminated',  'Payment_Processed',  'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT  'Invested';
+ALTER TABLE  `reinvestments` CHANGE  `payment_status`  `payment_status` ENUM(  'paid',  'unpaid', 'part_payment' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT  'unpaid';
+ALTER TABLE  `reinvestments` CHANGE  `old_status`  `old_status` ENUM(  'Paid',  'Rolled_over',  'Cancelled', 'Part_payment',  'Invested',  'Termination_Requested',  'Payment_Requested',  'Terminated',  'Payment_Processed', 'Matured' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;
+ALTER TABLE  `rollovers` CHANGE  `custom_rate`  `custom_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `rollovers` CHANGE  `old_custom_rate`  `old_custom_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `reinvestment_rollovers` ADD  `old_interest_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00' AFTER  `amount` ,
+ADD  `interest_rate` DECIMAL( 6, 2 ) NULL DEFAULT  '0.00' AFTER  `old_interest_rate` ;
+
+
+APRIL 29,2015
+---------------
+ALTER TABLE  `gross_incomes` ENGINE = INNODB;
+ALTER TABLE  `gross_revenues` ENGINE = INNODB;
+ALTER TABLE  `currencies` ENGINE = INNODB;
+ALTER TABLE  `investment_returns` ADD  `total` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `interest` ;
+ALTER TABLE  `investment_returns` CHANGE  `total`  `return` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `investment_returns` ADD  `cash_receipt_mode_id` INT( 3 ) NULL AFTER  `reinvestment_id` ;
+ALTER TABLE  `investment_returns` ADD  `cheque_nos` VARCHAR( 30 ) NULL AFTER  `penalty` ;
+
