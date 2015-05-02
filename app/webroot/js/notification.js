@@ -885,6 +885,9 @@ var user = {
             $("#UserLastname").val(data['User']['lastname']);
             $("#UserUsertype").val(data['User']['usertype']);
             $("#UserId").val(data['User']['id']);
+                    $("#UserConfirmPassword").val("");
+                    $("#UserPass").val("");
+                    $("#UserEmail").val(data['User']['email']);
             $("#UserUserdepartmentId").val(data['User']['userdepartment_id']); 
             $("#UserUsertypeId").val(data['User']['usertype_id']);
                  
@@ -956,6 +959,7 @@ var user = {
                     $("#UserUsername").val("");
                     $("#UserConfirmPassword").val("");
                     $("#UserPass").val("");
+                    $("#UserEmail").val("");
                     $("#UserFirstname").val("");
                     $("#UserLastname").val("");
                     $("#UserUsertype").val("");

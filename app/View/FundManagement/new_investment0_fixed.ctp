@@ -1,7 +1,5 @@
 <?php echo $this->element('header'); ?>
-<?php
 
-?>
 
 <h3 style="color: red;">New Re-investment</h3>
 <div class="boxed">

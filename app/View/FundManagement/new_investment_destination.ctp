@@ -1,7 +1,4 @@
 <?php echo $this->element('header'); ?>
-<?php
-
-?>
 
 <!-- Content starts here -->
 <h3 style="color: red;">New Investment Destination</h3>
@@ -87,5 +84,6 @@
             
             
             </script>
+    </div>
         <!-- Content ends here -->
 <?php echo $this->element('footer'); ?>

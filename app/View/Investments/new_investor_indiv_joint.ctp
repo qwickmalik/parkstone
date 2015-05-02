@@ -294,9 +294,46 @@
             margin-top: 2px;
         }
     </style>
-    <script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>
+    <!--<script type="text/javascript" src="https://fuelcdn.com/fuelux/2.3/loader.min.js"></script>-->
     <?php
-//echo $this->Html->script('fuelux/fuelux2/loader.min.js');
+echo $this->Html->script('fuelux/fuelux2/loader.min.js');
     echo $this->Html->script('prettify.js');
     echo $this->Html->script('fuelux/wizards.js');
     ?>
+<script type="text/javascript" language="javascript">
+        $(document).ready(function ()
+        {
+             $("#InvestorOtherNames").mouseout(function () {
+                 var name = $(this).val();
+                 var url = '../checkDuplicate';
+                 var query = "action=checkDuplicate&name=" + name;
+                 if (name != ""){
+                      $.ajax({
+                    url: url,
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    
+                    if(data['status'] == 'error'){
+                        window.location.reload();
+                        $(this).focus();
+                         $(this).attr('border-color','red');
+                         return false;
+                    }
+                     $(this).attr('border-color','#c6ced0');
+                     
+                    },
+                    error: function () {
+                        $(".errormsg").show();
+                            $(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            $(".errormsg").hide();
+                  }
+            });
+                 }
+                 
+             });
+             
+             });
+ </script>     

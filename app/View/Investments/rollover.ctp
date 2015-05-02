@@ -213,7 +213,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         <td width="30%"><b align="right">Amount Due:</b></td>
                                         <td><span id="xxxxxx"><?php
                                                 if (isset($data['Investment']['amount_due'])) {
-                                                    echo $data['Investment']['amount_due'];
+                                                    echo number_format($data['Investment']['amount_due'],2);
                                                 }
                                                 ?></span></td>
                                     </tr>

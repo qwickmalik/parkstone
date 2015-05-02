@@ -1,7 +1,7 @@
 <?php echo $this->element('header'); ?>
 <?php
-echo $this->Html->script('jquery.js');
-echo $this->Html->script('jquery.printElement.js');
+//echo $this->Html->script('jquery.js');
+//echo $this->Html->script('jquery.printElement.js');
 
 ?>
 
@@ -17,14 +17,17 @@ echo $this->Html->script('jquery.printElement.js');
     <div class="inner">
         <div id="clearer"></div>
 
-        <?php echo $this->Form->create('PaymentFixed', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'makePayment'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'makePayment'), "inputDefaults" => array('div' => false))); ?>
 
         <div class="row" >
             <br>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Investment Company:</b></p>"; ?>
+                        <?php 
+                          echo $this->Form->hidden('id',['value' => (isset($reinvestments['Reinvestment']['id']) ? $reinvestments['Reinvestment']['id'] : '' )]);
+
+                        echo "<p><b>Investment Company:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestor']['company_name']) ? $reinvestments['Reinvestor']['company_name'] : '' ); ?>
@@ -135,8 +138,7 @@ echo $this->Html->script('jquery.printElement.js');
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    
-
+                                  
                                         $month = date('m');
                                         $day = date('d');
                                         $Year = date('Y');
@@ -157,9 +159,9 @@ echo $this->Html->script('jquery.printElement.js');
                                     var day = $("#day").val();
                                     var month = $("#month").val();
                                     var year = $("#year").val();
-                                    $("#PaymentFixedInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                                    $("#PaymentFixedInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                                    $("#PaymentFixedInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                                    $("#ReinvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
+                                    $("#ReinvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
+                                    $("#ReinvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
             <div class="col-lg-12 col-md-12 col-sm-12" >
                 <?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => '--Please Select--')); ?>
@@ -170,7 +172,7 @@ echo $this->Html->script('jquery.printElement.js');
         
             <div class="col-lg-6 col-md-6 col-sm-12" >
             <?php
-        echo $this->Form->input('amount', array('size' => 17, 'class' => 'input1', 'label' => 'Amount being Paid'));
+        echo $this->Form->input('amount_paidout', array('required','size' => 17, 'class' => 'input1', 'label' => 'Amount being Paid'));
         echo $this->Form->input('cheque_nos', array('size' => 5, 'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;', 'label' => 'Cheque Nos.'));
         ?>
            
@@ -179,12 +181,13 @@ echo $this->Html->script('jquery.printElement.js');
 
 
         
-        <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-12" style="float: right;">
             <?php
             echo "<p>&nbsp;</p>";
-            echo $this->Html->link('Back', "/Reinvestments/manageInvFixed", array("class" => 'btn btn-lg btn-info'));
-            echo $this->Html->link('Make Payment', "/Reinvestments/makePayment", array("class" => 'btn btn-lg btn-success'));
-//            echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
+            echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".(isset($reinvestments['Reinvestment']['reinvestor_id']) ? $reinvestments['Reinvestment']['reinvestor_id'] : ''), array("style"=>"float: right;","class" => 'btn btn-lg btn-info'));
+//            echo $this->Html->link('Make Payment', "/Reinvestments/makePayment", array("class" => 'btn btn-lg btn-success'));
+           echo $this->Form->button('Submit', array("style"=>"float: right;","type" => "submit", "class" => "btn btn-lg btn-success"));
+//                    echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
             ?>
         </div>
 </div>
@@ -198,15 +201,18 @@ echo $this->Html->script('jquery.printElement.js');
 <?php echo $this->element('footer'); ?>
     
      <script lang="javascript">
-        jQuery(document).ready(function($) {
+        $(document).ready(function() {
 function hide_chequeno() {
-                var cashmode = $("#PaymentFixedCashreceiptmodeId").val();
+    
+                var cashmode = $("#ReinvestmentCashreceiptmodeId").val();
                 if (cashmode == '2') {
-                    $("#PaymentFixedChequeNos").prop('disabled',false);
+                    
+                    $("#ReinvestmentChequeNos").prop('disabled',false);
                     return false;
                 }
                 if (cashmode != '2') {
-                    $("#PaymentFixedChequeNos").prop('disabled', true);
+                     
+                    $("#ReinvestmentChequeNos").prop('disabled',true);
                     return false;
                 }
             }
@@ -217,7 +223,7 @@ function hide_chequeno() {
             
             //DISABLE CHEQUENO if CASH
             hide_chequeno();
-            $("#PaymentFixedCashreceiptmodeId").change(function() {
+            $("#ReinvestmentCashreceiptmodeId").change(function() {
                 hide_chequeno();
             });
              });

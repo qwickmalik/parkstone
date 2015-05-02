@@ -195,4 +195,6 @@ echo $this->Html->script('jquery.printElement.js');
 		</td>
 	</tr>
 </table>
+        </div>
+    
 <?php echo $this->element('footer'); ?>

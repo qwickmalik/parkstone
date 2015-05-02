@@ -1,6 +1,7 @@
-
 <?php
 $cakeDescription = __d('cake_dev', 'Parkstone Capital');
+        $userType = $this->Session->read('userDetails.usertype_id');
+    
 ?>
 <!DOCTYPE html>
 <html class="fuelux" lang="en">
@@ -11,7 +12,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
         <?php echo $this->Html->charset(); ?>
         <title>
             <?php echo $cakeDescription ?>:
-            <?php echo $title_for_layout; ?>
+            <?php // echo $title_for_layout; ?>
         </title>
         <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>-->
         <?php
@@ -119,6 +120,9 @@ $date = date('g:ia');
                                                                     </ul>
                                                                 </li>-->
                                 <?php
+                                if ($userType == 1) {
+            
+        
                                 if ($this->Session->check('public_unapproved_investors')) {
                                     $public_unapproved_investors = $this->Session->read('public_unapproved_investors');
 
@@ -206,6 +210,7 @@ $date = date('g:ia');
                                         <?php
                                     }
                                 }
+                                }
                                 ?>
 
                                 <li>
@@ -255,7 +260,7 @@ $date = date('g:ia');
                                                                     <a href="#" class="settings" alt="Settings" title="Settings"><i class="fa fa-cog"></i></a>
                                                                 </li>-->
                                 <li>
-                                    <a href="Users/logout" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
+                                    <a href="/parkstone_online/Users/logout" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
                                     
                                 </li>
                                 <li>

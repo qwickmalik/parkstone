@@ -4,7 +4,7 @@
 ?>
 
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-Investor</h3>
+<h3 style="color: red;">New Investor</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -45,7 +45,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
+                    <b><?php echo $this->Paginator->sort('company_name', 'Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('manager_name', 'Manager'); ?></b>

@@ -7,30 +7,6 @@ class User extends AppModel {
     var $displayField = "username";
     
     var $hasMany = array(
-        'Sale' => array(
-            'className' => 'Sale',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'TempSale' => array(
-            'className' => 'TempSale',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'Customer' => array(
-            'className' => 'Customer',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
         'Payment' => array(
             'className' => 'Payment',
             'foreignKey' => 'user_id',
@@ -65,14 +41,6 @@ class User extends AppModel {
              'limit' => '',
              'dependent' => true
          ),
-        'SalesItem' => array(
-            'className' => 'SalesItem',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
         'InvestmentPayment' => array(
             'className' => 'InvestmentPayment',
             'foreignKey' => 'user_id',

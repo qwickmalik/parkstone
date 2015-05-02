@@ -1,4 +1,5 @@
 <?php echo $this->element('header'); ?>
+
 <h3>Monthly Maturity List</h3>
 <div class="boxed">
     <div class="inner">
@@ -13,52 +14,42 @@
                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
                     <tr >
                         
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
-                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('id', 'Inv. No.'); ?></b></td>
+                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('company_name', 'Name'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', ' Rate'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_rate', ' Rate'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('total_tenure', 'Tenure Left'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
+                       
+                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('payment_status', 'Payment Status'); ?></b></td>
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
                     <?php if (isset($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
-                                <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
-                                <td align="left"><?php echo $this->Html->link((!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : $each_item['Investor']['comp_name'] ),"/Investments/approvePayments2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] : '' ),array());  ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
+                                <td align="left"><?php echo $this->Html->link((!empty($each_item['Reinvestor']['company_name']) ? $each_item['Reinvestor']['company_name'] : '' ),"/Reinvestments/approvePayments2/".(isset($each_item['Reinvestor']['id']) ? $each_item['Reinvestor']['id']."/".$each_item['Reinvestor']['company_name'] : '' ),array());  ?></td>
                             
-                                <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>
-                                <td align="left"><?php if($each_item['Instruction']['id'] != 5){
-                                    echo $each_item['Instruction']['instruction_name'];
-                                }else{
-                                   echo $each_item['Investment']['instruction_details']; 
-                                }?></td>
-                                <td align="center" style="border-bottom: solid 1px Gray;"><?php
-                            if (isset($each_item['Investment']['status'])) {
-                                echo $each_item['Investment']['status'];
-                            }
-                            ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['interest_rate'].'%'; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['interest_earned']; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['amount_due']; ?></td>
+                                <td align="left"><?php echo $each_item['Reinvestment']['duration'].' '.$each_item['Reinvestment']['investment_period']; ?></td>
+                                
+                                <td align="left"><?php echo $each_item['Reinvestment']['payment_status']; ?></td>
                                 <td align="center" style="border-bottom: solid 1px Gray;">
 
                             <?php
                             
-                                echo $this->Html->Link('Request Paymt', '/Investments/requestPayment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
-                              ?> | <?php
-                                echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) , array('escape' => false));
+                               echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+                         ?> | <?php
+                                echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
                             ?></td>
                             </tr>
     <?php }

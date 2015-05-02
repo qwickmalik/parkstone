@@ -1,7 +1,4 @@
 <?php echo $this->element('header'); ?>
-<?php
-//
-?>
 
 <?php
 $shopCurrency = "GH$";
@@ -63,15 +60,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                               
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="row">
+<!--                            <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Equity:</b></p>";?>
+                                    <?php // echo "<p><b>Equity:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                <?php echo (isset($reinvestments['EquitiesList']['equity_abbrev']) ? 
-                                                $reinvestments['EquitiesList']['equity_abbrev'] : '' );?>
+                                <?php // echo (isset($reinvestments['EquitiesList']['equity_abbrev']) ? 
+//                                                $reinvestments['EquitiesList']['equity_abbrev'] : '' );?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     <?php echo "<p><b>Purchase Price:</b></p>";?>
@@ -139,6 +136,8 @@ if ($this->Session->check('shopCurrency_investment')) {
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>
+    
     <script type="text/javascript" language="javascript">
         $(document).ready(function ()
         {
@@ -216,4 +215,3 @@ if ($this->Session->check('shopCurrency_investment')) {
 
         });
     </script>
-<?php echo $this->element('footer'); ?>

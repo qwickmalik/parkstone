@@ -141,5 +141,5 @@ echo $this->Html->script('jquery.printElement.js');
 
     </div>
     <!-- Content ends here -->
-  
 <?php echo $this->element('footer'); ?>
+  

@@ -25,7 +25,7 @@ echo $this->Html->script('icheck/icheck.js');
                         <div class="inner">
 
                             <div class="wizard-form-success">
-                                <h2>Thank you! Your submission has been received!</h2>
+                                <h2>Thank you! Your submission has been received! </h2>
                             </div>
 
                             <div id="wizard-form" class="wizard">
@@ -302,3 +302,40 @@ echo $this->Html->script('fuelux/fuelux2/loader.min.js');
 echo $this->Html->script('prettify.js');
 echo $this->Html->script('fuelux/wizards.js');
 ?>
+<script type="text/javascript" language="javascript">
+        $(document).ready(function ()
+        {
+             $("#InvestorCompName").mouseout(function () {
+                 var name = $(this).val();
+                 var url = '../checkDuplicate';
+                 var query = "action=checkDuplicate&name=" + name;
+                 if (name != ""){
+                      $.ajax({
+                    url: url,
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    
+                    if(data['status'] == 'error'){
+                        window.location.reload();
+                        $(this).focus();
+                         $(this).attr('border-color','red');
+                         return false;
+                    }
+                     $(this).attr('border-color','#c6ced0');
+                     
+                    },
+                    error: function () {
+                        $(".errormsg").show();
+                            $(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            $(".errormsg").hide();
+                  }
+            });
+                 }
+                 
+             });
+             
+             });
+ </script>     

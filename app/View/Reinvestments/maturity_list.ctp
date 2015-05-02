@@ -45,11 +45,10 @@
                                 <td align="center" style="border-bottom: solid 1px Gray;">
 
                             <?php
-                            echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']);  
-                           
-//                                echo $this->Html->Link('Request Paymt', '/Reinvestments/requestPayment/' . "/" . (isset($each_item['Reinvestment']['id']) ? $each_item['Reinvestment']['id'] : '' ), array('escape' => false));
-                              ?> | <?php
-                                echo $this->Html->Link('Rollover', '/Reinvestments/rollover/' . "/" . (isset($each_item['Reinvestment']['id']) ? $each_item['Reinvestment']['id'] : '' ) . "/" . (isset($each_item['Reinvestment']['investor_id']) ? $each_item['Reinvestment']['investor_id'] : '' ) , array('escape' => false));
+                            
+                               echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+                         ?> | <?php
+                                echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
                             ?></td>
                             </tr>
     <?php }
