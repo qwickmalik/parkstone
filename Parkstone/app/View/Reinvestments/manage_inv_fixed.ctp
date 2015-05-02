@@ -71,12 +71,12 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
                     <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
+                    <td align="left"><?php echo number_format( $each_item['Reinvestment']['investment_amount'], 2) ?></td>
                     <td align="left"><?php echo $each_item['Reinvestment']['interest_rate']; ?></td>
                     <td align="left">
                         <?php if($each_item['Reinvestment']['status'] == 'Invested' || 
                                 $each_item['Reinvestment']['status']=='Rolled_over'
-                                || $each_item['Reinvestment']['status'] == 'Part_payment'){
+                                ){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                             echo " | ";
                             echo $this->Html->link("Terminate","/Reinvestments/terminateFixedInvestment/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);  
@@ -88,7 +88,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                         }elseif($each_item['Reinvestment']['status'] == 'Paid'){
                             echo $this->Html->link("Details","/Reinvestments/manageInvFixedDetails/".$each_item['Reinvestment']['id']);  
                       
-                        }elseif($each_item['Reinvestment']['status'] == 'Matured'){
+                        }elseif($each_item['Reinvestment']['status'] == 'Matured' || $each_item['Reinvestment']['status'] == 'Part_payment'){
                            
                             echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
                             //rolloverReinvestorFixed

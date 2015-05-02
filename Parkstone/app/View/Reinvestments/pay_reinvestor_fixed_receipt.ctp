@@ -12,7 +12,7 @@ echo $this->Html->script('jquery.printElement.js');
 //}
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">Re-investor Payment - Fixed - Receipt</h3>
+<h3 style="color: red;"> Fixed Investment - Returns - Summary</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -24,7 +24,7 @@ echo $this->Html->script('jquery.printElement.js');
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Re-investor Company:</b></p>"; ?>
+                        <?php echo "<p><b>Company:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestor']['company_name']) ? $reinvestments['Reinvestor']['company_name'] : '' ); ?>
@@ -56,7 +56,7 @@ echo $this->Html->script('jquery.printElement.js');
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Inv. Dest. Company/Fund:</b></p>"; ?>
+                        <?php echo "<p><b>Dest. Company/Fund:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['InvestmentDestination']['company_name']) ? $reinvestments['InvestmentDestination']['company_name'] : '' ); ?>
@@ -81,7 +81,7 @@ echo $this->Html->script('jquery.printElement.js');
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Re-investment Date:</b></p>"; ?>
+                        <?php echo "<p><b>Investment Date:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestment']['investment_date']) ? $reinvestments['Reinvestment']['investment_date'] : '' ); ?>
@@ -93,14 +93,6 @@ echo $this->Html->script('jquery.printElement.js');
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestment']['custom_rate']) ? $reinvestments['Reinvestment']['custom_rate'] : '' ); ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Re-investment Date:</b></p>"; ?>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['investment_date']) ? $reinvestments['Reinvestment']['investment_date'] : '' ); ?>
                     </div>
                 </div>
 
@@ -142,7 +134,7 @@ echo $this->Html->script('jquery.printElement.js');
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Payment Mode:</b></p>"; ?>
+                        <?php echo "<p><b> Mode:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestment']['payment_mode']) ? $reinvestments['Reinvestment']['payment_mode'] : '' ); ?>
@@ -150,7 +142,7 @@ echo $this->Html->script('jquery.printElement.js');
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Amount Paid:</b></p>"; ?>
+                        <?php echo "<p><b>Amount Received:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestment']['amount_paid']) ? number_format($reinvestments['Reinvestment']['amount_paid'] , 2, '.', ',') : '' ); ?>

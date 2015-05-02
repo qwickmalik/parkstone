@@ -334,3 +334,40 @@ echo $this->Html->script('icheck/icheck.js');
 echo $this->Html->script('prettify.js');
 echo $this->Html->script('fuelux/wizards.js');
 ?>
+<script type="text/javascript" language="javascript">
+        $(document).ready(function ()
+        {
+             $("#InvestorOtherNames").mouseout(function () {
+                 var name = $(this).val();
+                 var url = '../checkDuplicate';
+                 var query = "action=checkDuplicate&name=" + name;
+                 if (name != ""){
+                      $.ajax({
+                    url: url,
+                    data: query,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        
+                    
+                    if(data['status'] == 'error'){
+                        window.location.reload();
+                        $(this).focus();
+                         $(this).attr('border-color','red');
+                         return false;
+                    }
+                     $(this).attr('border-color','#c6ced0');
+                     
+                    },
+                    error: function () {
+                        $(".errormsg").show();
+                            $(".errormsg").html("Server Error. Check Server and Database Configurations").show('slow');
+                            $(".errormsg").hide();
+                  }
+            });
+                 }
+                 
+             });
+             
+             });
+ </script>     

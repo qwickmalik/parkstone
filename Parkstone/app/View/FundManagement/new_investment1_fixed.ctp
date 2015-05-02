@@ -1,7 +1,5 @@
 <?php echo $this->element('header'); ?>
-<?php
-//
-?>
+
 
 <?php
 $shopCurrency = "GH$";
@@ -10,7 +8,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 }
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">Process Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -26,7 +24,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <p></p>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Re-investor Company:</b></p>";?>
+                                    <?php echo "<p><b>Company:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccounts['Reinvestor']['company_name']) ? 
@@ -104,7 +102,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
                              echo $this->Form->hidden('reinvestorcashaccount_id', array('value' => (isset($reinvestorcashaccounts['ReinvestorCashaccount']['id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['id'] : '' )));
                              echo $this->Form->hidden('reinvestor_id', array('value' => (isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' )));
-
+                             
                             echo $this->Form->input('investmentdestination_id', 
                                     array('required','empty' => '--Please Select--', 
                                         'value' => ($this->Session->check('reinvesttemp.investmentdestination_id') 
@@ -144,9 +142,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">  <?php
                                     
                                     echo $this->Form->input('investment_period', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
-                                        'options'=> array('Day(s)' => 'Day(s)','Month(s)' => 'Month(s)','Year(s)'=>'Year(s)'),
-                                        'selected' => ($this->Session->check('reinvesttemp.investment_period') == true ? 
-                                            $this->Session->read('reinvesttemp.investment_period') : '' ))); ?>
+                                        'options'=> array('Day(s)' => 'Day(s)','Year(s)'=>'Year(s)'),
+                                        'value' => ($this->Session->check('reinvesttemp.investment_period') == true ? 
+                                            $this->Session->read('reinvesttemp.investment_period') : '' )
+                                       )); ?>
                                      
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
@@ -157,7 +156,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
                             <div class="row"> 
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px;'>Reinvestment Date</span>";?>
+                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px;'>Investment Date</span>";?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
@@ -273,6 +272,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 
     </div>
     <!-- Content ends here -->
+<?php echo $this->element('footer'); ?>
+    
+    
     <script type="text/javascript" language="javascript">
         $(document).ready(function ()
         {
@@ -421,4 +423,3 @@ if ($this->Session->check('shopCurrency_investment')) {
 
         });
     </script>
-<?php echo $this->element('footer'); ?>

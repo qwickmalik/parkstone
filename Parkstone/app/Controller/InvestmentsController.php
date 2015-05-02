@@ -15,7 +15,7 @@ class InvestmentsController extends AppController {
         'InvestorEquity', 'LedgerTransaction', 'Topup');
     var $paginate = array(
         'Investment' => array('limit' => 50, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
-        'Investor' => array('limit' => 50, 'order' => array('Investor.investor_type_id' => 'asc'),
+        'Investor' => array('limit' => 8, 'order' => array('Investor.investor_type_id' => 'asc'),
             'conditions' => array('Investor.approved' => 1))
     );
 
@@ -23,12 +23,12 @@ class InvestmentsController extends AppController {
 
     function beforeFilter() {
         // App::uses('Sanitize', 'Utility');
-        //$this->__validateLoginStatus();
+        $this->__validateLoginStatus();
         $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
         //   $this->request->data = Sanitize::clean($this->request->data, array('remove_html'=>true,'encode'=>false,'unicode'=>false,'backslash'=>true, 'escape'=>true,'dollar'=> true));
     }
 
-    /*
+    
       function __validateLoginStatus() {
       if ($this->action != 'login' && $this->action != 'logout') {
       if ($this->Session->check('userData') == false) {
@@ -36,14 +36,14 @@ class InvestmentsController extends AppController {
       }
       }
       }
-     */
+     
 
     function __validateUserType() {
 
         $userType = $this->Session->read('userDetails.usertype_id');
-        if ($userType != 1) {
-            $this->redirect('/Information/');
-        }
+//        if ($userType != 1) {
+//            $this->redirect('/Information/');
+//        }
     }
 
     function index() {
@@ -186,7 +186,21 @@ class InvestmentsController extends AppController {
             }
         }
     }
-
+public function checkDuplicate(){
+    $this->autoLayout = $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $name = $_POST['name'];
+            $check = $this->Investor->find('count',['recursive' => -1,
+                'conditions' =>['OR' => ['Investor.fullname' => $name,'Investor.comp_name' =>$name]]]);
+            if($check > 0){
+                $message = 'Investor already exists. Please check and try again';
+                $this->Session->write('bmsg', $message);
+                return json_encode(array('status' => 'error'));
+            }else{
+                return json_encode(array('status' => 'ok'));
+            }
+        }
+}
     public function commit_group() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
@@ -301,6 +315,9 @@ class InvestmentsController extends AppController {
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
+                 $this->Session->delete('public_unapproved_investors');
+               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
                 $this->Session->write('smsg', $message);
@@ -475,6 +492,9 @@ class InvestmentsController extends AppController {
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
+                $this->Session->delete('public_unapproved_investors');
+               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
                 $this->Session->write('smsg', $message);
@@ -566,6 +586,9 @@ class InvestmentsController extends AppController {
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
+                 $this->Session->delete('public_unapproved_investors');
+               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
                 $this->Session->write('smsg', $message);

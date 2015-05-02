@@ -24,11 +24,11 @@ class ReinvestmentsController extends AppController {
 //    var $helpers = array('AjaxMultiUpload.Upload');
 
     function beforeFilter() {
-        //$this->__validateLoginStatus();
+        $this->__validateLoginStatus();
         $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
     }
 
-    /*
+   
       function __validateLoginStatus() {
       if ($this->action != 'login' && $this->action != 'logout') {
       if ($this->Session->check('userData') == false) {
@@ -40,11 +40,11 @@ class ReinvestmentsController extends AppController {
       function __validateUserType() {
 
       $userType = $this->Session->read('userDetails.usertype_id');
-      if ($userType != 1) {
-      $this->redirect('/Information/');
+//      if ($userType != 1) {
+//      $this->redirect('/Information/');
+//      }
       }
-      }
-     */
+    
 
     function index() {
         
@@ -2273,9 +2273,9 @@ function get_equity() {
 
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
-
+//'Reinvestment.payment_status' => 'unpaid'
         $this->paginate = array(
-            'conditions' => array('Reinvestment.investment_type' => 'fixed', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
+            'conditions' => array('Reinvestment.investment_type' => 'fixed', 'Reinvestment.reinvestor_id' => $reinvestor_id),
             'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
         $data = $this->paginate('Reinvestment');
         $this->set('data', $data);
@@ -2477,7 +2477,7 @@ function get_equity() {
                 $reinvestment_array = array(
                     'id' => $reinvest_data['Reinvestment']['id'],
                     'expected_interest' => $interest_amount,
-                    'interest_rate' => $custom_rate,
+                    'interest_rate' => $custom_rate,'investment_amount' => $investment_amount,
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
                     'balance' => $amount_due,'earned_balance' => $this->request->data['Investment']['investment_amount'],
                     'interest_earned' => $interest_amount,
@@ -2575,48 +2575,42 @@ function get_equity() {
 
         $this->autoRender = false;
         if ($this->request->is('post')) {
-            $balance;
-            $total_paid;
-            $hp_price;
-            $old_total_paid;
-            $old_balance;
-            $payment;
-            $order_id;
-            $cheque_numbers = "";
+            
+            $userid = null;
+                $check = $this->Session->check('userDetails');
+                if ($check) {
+                    $userid = $this->Session->read('userDetails.id');
+                }
+       
+          
             $new_cheque_numbers = "";
             $payment = 0;
-            $investment_id = $_POST['hid_investid'];
+            $investment_id = $this->request->data['Reinvestment']['id'];
 
 
-            if ($this->request->data['InvestmentPayment']['payment_mode'] == "" || $this->request->data['InvestmentPayment']['payment_mode'] == null) {
+            if ($this->request->data['Reinvestment']['cashreceiptmode_id'] == "" || $this->request->data['Reinvestment']['cashreceiptmode_id'] == null) {
                 $message = 'Please Select A Mode of Payment.';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'payReinvestorFixed', $investment_id));
             }
 
-            if ($this->request->data['InvestmentPayment']['payment_mode'] == "Post-dated chq" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
-                $message = 'Please Supply a Cheque No.';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
-            }
-
-
-            if ($this->request->data['InvestmentPayment']['payment_mode'] == "Cheque" && ($this->request->data['InvestmentPayment']['cheque_nos'] == "" || $this->request->data['InvestmentPayment']['cheque_nos'] == null )) {
-                $message = 'Please Supply a Cheque No.';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
-            }
-
-            if ($this->request->data['InvestmentPayment']['amount'] == "" || $this->request->data['InvestmentPayment']['amount'] == null || $this->request->data['InvestmentPayment']['amount'] == 0) {
+if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->request->data['Reinvestment']['amount_paidout'] == null || $this->request->data['Reinvestment']['amount_paidout'] == 0) {
                 $message = 'Amount Not Entered.';
                 $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investment_id));
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'payReinvestorFixed', $investment_id));
+            }
+            if ($this->request->data['Reinvestment']['cashreceiptmode_id'] == "2" && ($this->request->data['Reinvestment']['cheque_nos'] == "" || $this->request->data['Reinvestment']['cheque_nos'] == null )) {
+                $message = 'Please Supply a Cheque No.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'payReinvestorFixed', $investment_id));
             }
 
+            
 
-            if (isset($this->request->data['InvestmentPayment']['cheque_nos'])) {
-                if ($this->request->data['InvestmentPayment']['cheque_nos'] != "" || $this->request->data['InvestmentPayment']['cheque_nos'] != null) {
-                    $cheque_numbers = $this->request->data['InvestmentPayment']['cheque_nos'];
+  $cheque_numbers = "";
+            if (isset($this->request->data['Reinvestment']['cheque_nos'])) {
+                if ($this->request->data['Reinvestment']['cheque_nos'] != "" || $this->request->data['Reinvestment']['cheque_nos'] != null) {
+                    $cheque_numbers = $this->request->data['Reinvestment']['cheque_nos'];
                 }
             }
 
@@ -2636,9 +2630,9 @@ function get_equity() {
             }
             $this->Session->write('payment_date', $session_date);
 
-            $payment += $this->request->data['InvestmentPayment']['amount'];
-            $sms_amount = $this->request->data['InvestmentPayment']['amount'];
-            $payment_mode = $this->request->data['InvestmentPayment']['payment_mode'];
+            $payment += $this->request->data['Reinvestment']['amount_paidout'];
+//            $sms_amount = $this->request->data['Reinvestment']['amount_paidout'];
+//            $payment_mode = $this->request->data['Reinvestment']['payment_mode'];
 
             $balance = 0;
             $total_paid = 0;
@@ -2648,49 +2642,83 @@ function get_equity() {
 
 
             $date = date('Y-m-d H:i:s');
+            $to_date = new DateTime($payment_date);
             //use id to retrieve Investment info
-            $investment_details = $this->Reinvestment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            $investment_details = $this->Reinvestment->find('first', array('conditions' => 
+                array('Reinvestment.id' => $investment_id)));
             if ($investment_details) {
+                $reinvestor_id = $investment_details['Reinvestment']['reinvestor_id'];
+                $cashacct_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
+                                ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
+               
                 $status = $investment_details['Reinvestment']['status'];
                 $old_balance = $investment_details['Reinvestment']['balance'];
+                $old_earnedbalance = $investment_details['Reinvestment']['earned_balance'];
                 $old_total_paid = $investment_details['Reinvestment']['amount_paidout'];
                 $amount_due = $investment_details['Reinvestment']['amount_due'];
                 $reinvestor = $investment_details['Reinvestment']['reinvestor_id'];
-                $investment_no = $investment_details['Reinvestment']['investment_no'];
+//                $investment_no = $investment_details['Reinvestment']['investment_no'];
                 $investor_name = $investment_details['Reinvestor']['fullname'];
-                if($status != 'Matured'){
-                     $message = 'Investment is yet to mature';
+                if($status != 'Matured' && $status != 'Paid' && $status != 'Part_payment'){
+                    
+                  
+                           $message = 'Investment is yet to mature'; 
+                   
+                    
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor));
                     
                 }
-                
+                if($status == 'Paid' ){   $message = 'Full payment made for investment';
+                    }
 
                 $total_paid = $old_total_paid + $payment;
                 $balance = $amount_due - $total_paid;
+                $earned_balance = $old_earnedbalance - $payment;
 //print_r('balance: '.$balance.'--'.'amount_due: '.$amount_due.'--'.'totalpaid: '.$total_paid);
 //exit;
-
+                if($earned_balance <= 0){
+                  $status = 'Paid';  
+                  $old_status = $investment_details['Reinvestment']['status'];
+                }elseif($earned_balance > 0 && $earned_balance < $old_earnedbalance){
+                  $status = "Part_payment";  
+                  $old_status = $investment_details['Reinvestment']['status'];
+                }elseif($earned_balance == $old_earnedbalance){
+                    $status = $investment_details['Reinvestment']['status'];
+                    $old_status = $investment_details['Reinvestment']['old_status'];
+                }
+                
                 if ($balance <= 0) {
-                    $payment_status = "Paid";
+                    $payment_status = "paid";
+                    
                 } elseif ($balance > 0 && $balance < $amount_due) {
 
-                    $payment_status = "Part_payment";
+                    $payment_status = "part_payment";
                 } elseif ($balance == $amount_due) {
 
-                    $payment_status = "Invested";
+                    $payment_status = "unpaid";
                 }
 
-                $new_investmentdetails = array('id' => $investment_id, 'balance' => $balance, 'amount_paidout' => $total_paid, 'status' => $payment_status, 'lastpaidout_date' => $payment_date);
+                $new_investmentdetails = array('id' => $investment_id, 'balance' => $balance, 'earned_balance' => $earned_balance,
+                    'amount_paidout' => $total_paid, 'status' => $status,'payment_status' =>  $payment_status,'lastpaidout_date' => $payment_date);
 
-                $result = $this->Investment->save($new_investmentdetails);
+                $result = $this->Reinvestment->save($new_investmentdetails);
                 if ($result) {
 //                      print_r($result);
 //            exit;
-                    $investment_paymentdetails =  array('investment_id' => $investment_id, 'investor_id' => $investor, 'amount' => $payment, 'payment_mode' => $this->request->data['InvestmentPayment']['payment_mode'], 'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date);
-                    $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
+                     if ($cashacct_data) {
+                                $cash_athand = $cashacct_data['ReinvestorCashaccount']['fixed_inv_returns'];
+                                $new_cashathand = $cash_athand + $payment;
+                                $cashacct_id = $cashacct_data['ReinvestorCashaccount']['id'];
+                                $cashacct_array = array('id' => $cashacct_id, 'fixed_inv_returns' => $new_cashathand);
+                             }
+                           $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,'return' => $payment,
+                               'return_type' => 'Matured','date' => $to_date->format('Y-m-d'),'cheque_nos' =>$cheque_numbers,
+                               'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
+                           
+                    $result2 = $this->InvestmentReturn->save($return_array);
                     if ($result2) {
-
+                        $this->ReinvestorCashaccount->save($cashacct_array);
                         $check = $this->Session->check('ipayment_receipt');
                         if ($check) {
                             $this->Session->delete('ipayment_receipt');
@@ -2702,23 +2730,33 @@ function get_equity() {
 
                         $message = 'Investment Payout Successful';
                         $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => 'paymentReceipt', $investment_id, $payment));
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'payReinvestorFixedReceipt', $investment_id));
 
                         //$this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments',$investor,$investor_name));
                     } else {
 
-                        $message = 'Investment Payout Saved With Errors';
+                        $message = 'Investment Returns Saved With Errors';
                         $this->Session->write('bmsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor));
                     }
                 } else {
 
-                    $message = 'Investment Payout Unsuccessful';
+                    $message = 'Investment Payout Unsuccessful. Please Try Again';
                     $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageClientInvestments', $investor, $investor_name));
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor));
                 }
-            }
-        }
+            }else {
+
+                    $message = 'Investment details not found. Please check and try again';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+                }
+        }else {
+
+                    $message = 'Invalid selection';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInv'));
+                }
     }
  function maturityList() {
 //        $this->__validateUserType3();
@@ -2740,7 +2778,7 @@ function get_equity() {
         $this->paginate = array(
             'conditions' => array(
                 'Reinvestment.status' => array('Invested', 'Rolled_over'), 
-                'Reinvestment.payment_status' => array('unpaid'),
+                
                 'Reinvestment.investment_type' => array('fixed'),
                 'AND' => array(array('Reinvestment.due_date >=' => $first_date),array('Reinvestment.due_date <=' => $date_end))),
             'limit' => 30,
@@ -3018,6 +3056,9 @@ function get_equity() {
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+        
+        $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list', []));
+        
         $check = $this->Session->check('variabless_terminated');
         if ($check) {
             $check = $this->Session->check('variabless_terminated.receivedamt');
@@ -3068,18 +3109,30 @@ function get_equity() {
              if ($this->Session->check('reinvesttemp') == true) {
                 $this->Session->delete('reinvesttemp');
             }
-            
+             if ($this->request->data['Reinvestment']['cashreceiptmode_id'] == "2" && ($this->request->data['Reinvestment']['cheque_nos'] == "" || $this->request->data['Reinvestment']['cheque_nos'] == null )) {
+                $message = 'Please Supply a Cheque No.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' =>  'terminateFixedInvestment',$investment_id, $investor_id));
+            }
+           $cheque_numbers = "";
+            if (isset($this->request->data['Reinvestment']['cheque_nos'])) {
+                if ($this->request->data['Reinvestment']['cheque_nos'] != "" || $this->request->data['Reinvestment']['cheque_nos'] != null) {
+                    $cheque_numbers = $this->request->data['Reinvestment']['cheque_nos'];
+                }
+            }
+
                 $data = $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $investment_id]]);
                 
                         if ($data) {
                             $ledger_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
                                 ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]);
 
+                            $to_date = new DateTime($date);
                             $period = $data['Reinvestment']['investment_period'];
                             $first_date = $data['Reinvestment']['investment_date'];
                             $inv_date = new DateTime($first_date);
                             
-                            $to_date = new DateTime($date);
+                            
                             $duration = date_diff($inv_date, $to_date);
                             $duration = $duration->format("%a");
                             $year = $duration;
@@ -3160,8 +3213,9 @@ function get_equity() {
 
                             }
                            $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,
-                               'principal' => $investment_amount,'rate' => $custom_rate,'interest' => $interest_amount,
-                               'penalty' => $penalty,'return_type' => 'Terminated','date' => $to_date->format('Y-m-d'));
+                               'principal' => $investment_amount,'rate' => $custom_rate,'return' => $received_amt,'interest' => $interest_amount,
+                               'penalty' => $penalty,'return_type' => 'Terminated','date' => $to_date->format('Y-m-d'),'cheque_nos' =>$cheque_numbers,
+                               'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
                                  $check = $this->Session->check('cashaccts');
                             if ($check) {
                                 $this->Session->delete('cashaccts');

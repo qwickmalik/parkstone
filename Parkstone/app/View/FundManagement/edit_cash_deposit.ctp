@@ -7,7 +7,7 @@
 //}
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">Edit Re-investor Cash Deposit</h3>
+<h3 style="color: red;">Edit Company Cash Deposit</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -15,7 +15,7 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 
             <tr>
-                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Re-investor Details</td>
+                <td align="left" valign="top" colspan="3" style="font-size: 18px; color: red; font-weight: bold;">Company Details</td>
             </tr>
             <tr>
                 <td align="left" valign="top" colspan="3">
@@ -114,7 +114,7 @@
             <tr>
                 <td align="left" valign="top">&nbsp;</td>
                 <td align="right" valign="middle" colspan="2">
-                    <?php echo $this->Html->link('Back', "/Reinvestments/listCashDeposits", array("class" => 'btn btn-lg btn-info')); ?>
+                    <?php echo $this->Html->link('Back', "/FundManagement/listCashDeposits", array("class" => 'btn btn-lg btn-info')); ?>
 
                     &nbsp;&nbsp;
                     <?php echo $this->Form->button('Save', array("type" => "submit", "id" => "save", "class" => "btn btn-lg btn-success")); ?> 

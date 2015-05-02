@@ -4,7 +4,7 @@ class UsersController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'User';
-    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'Zone', 'DailyDefault', 'Order', 'ClosingBalance','Usertype','Module','UserPrivilege');
+    var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 'Eod', 'Eom', 'BalanceSheet', 'IncomeStatement', 'Equity', 'Zone', 'DailyDefault',  'ClosingBalance','Usertype','Module','UserPrivilege');
     var $paginate = array(
         'User' => array('limit' => 100, 'order' => array('User.id' => 'asc')),
         'Usertype' => array('limit' => 25, 'order' => array('Usertype.id' => 'asc')),
@@ -12,7 +12,7 @@ class UsersController extends AppController {
     );
 
     function beforeFilter() {
-       // $this->__validateLoginStatus();
+        $this->__validateLoginStatus();
     }
 
     function __validateLoginStatus() {
@@ -194,7 +194,7 @@ class UsersController extends AppController {
 //        pr($result);
 //        exit;
         if ($this->request->is('ajax')) {
-            $this->autoRender = false;
+            
             if (!empty($this->request->data)) {
 
 

@@ -1,4 +1,5 @@
-<?php echo $this->element('header'); ?>
+<?php echo $this->element('header');
+?>
 
 <h3>SETTINGS: User Setup</h3>
 <div class="boxed">
