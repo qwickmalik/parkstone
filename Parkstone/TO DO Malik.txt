@@ -1,3 +1,36 @@
+--NOTES FRM REVIEW WITH PARKSTONE (30TH APRIL, 2015)
+*Reports
+NB. All reports will have from date - to date filter options
+
+1. Active Investments Report
+   #fields
+   ------
+   Investor (Name)
+   Start Date
+   Total Amt Invested(Principal)
+   Rate
+   Maturity Date
+   Current Date
+   Accrued Interest
+   Total(Principal + Accrued)
+
+2. Investor Deposits Report
+   #fields
+   ------
+   Investor (Name)
+   Deposit Date
+   Amount Deposited
+   Investment Date
+   Rate
+   Tenure/Period
+   User/Staff
+   Receipt No
+ ------------
+  Total Amt Deposit
+
+3. RollOver/Disinvestment Report
+   (refer to technical_specs/reports/Report.xlsx - tab 2)
+
 --NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
 - Add from - to date search ranges to Report Module/Maturity List.
 - Create Monthly maturity List Page
