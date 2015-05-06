@@ -9,11 +9,6 @@ each point in time (usually the end of the month).
 
 
 --REVIEW 16TH APRIL, 2015--
---Add a table to store processed  investment returns  including the type of return..that is termination,etc
--cHANGE pAYMENT PAGE UNDER process to Receipt or something similar
-- Consider manual input of invesment proceeds under process investments
--Allow termination page but give input for penalty which will be preset to zero
--No more call backs but they will be treated as terminations so investment is stopped and rolledover  if need be
 -Review add investor process. esp corporate and group. check all compulsory fields
 -Set currency fields to cedi by default
 -Give function to check for duplicate investor page entry
@@ -156,7 +151,16 @@ We will get income from the following sources:
 	   You will also need benchmark rate if the rate is not displayed on the page.
 
        I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
---NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
+	   
+	   
+
+--REVIEW 16TH APRIL, 2015--
+DONE--Add a table to store processed  investment returns  including the type of return..that is termination,etc
+DONE--cHANGE pAYMENT PAGE UNDER process to Receipt or something similar
+DONE-- Consider manual input of invesment proceeds under process investments
+DONE--Allow termination page but give input for penalty which will be preset to zero
+DONE--No more call backs but they will be treated as terminations so investment is stopped and rolledover  if need be
+	   ---NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
 	DONE - 1. (Kwaku) Management fee is for only equity. (Cron job to check basefee-duedate,add from base_fee to current accrued and add three months to current date.
   Will be taken from at beginning of investment order and subtracted from total amount being deposited.
   DONE - 2. (Kwaku)Performance fee is a benchmark rate same as interest for calculation of investment. This will not be subtracted initially or accrued like management but will be used to determine income of parkstone. The difference between this and performance of investment on the market will be parkstone's income.

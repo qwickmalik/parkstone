@@ -1097,3 +1097,6 @@ ALTER TABLE  `investment_returns` CHANGE  `total`  `return` DECIMAL( 11, 2 ) NUL
 ALTER TABLE  `investment_returns` ADD  `cash_receipt_mode_id` INT( 3 ) NULL AFTER  `reinvestment_id` ;
 ALTER TABLE  `investment_returns` ADD  `cheque_nos` VARCHAR( 30 ) NULL AFTER  `penalty` ;
 
+MAY 06, 2015
+--------------------
+ALTER TABLE  `investment_returns` CHANGE  `return`  `returns` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
