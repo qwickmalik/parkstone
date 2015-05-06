@@ -1,3 +1,13 @@
+Please find attached the reports we talked about. At the end of the meeting,
+1.We agreed that all Clients will be put in a pool and charged a 6%p.a management fee. 
+Once management fees are deducted from total income gained, the remaining income will be spread to all 
+the clients according to weights that will be assigned to their amounts (based on their investment contributions) on a daily basis.
+2.Income calculation will be done daily on investments we have made. Client statements will reflect the weighted average rate at 
+each point in time (usually the end of the month).
+3.Moneys must be pooled into one column both reinvestor fixed balance and returns
+ when it is rolledover it must be subtracted from pool
+
+
 --REVIEW 16TH APRIL, 2015--
 --Add a table to store processed  investment returns  including the type of return..that is termination,etc
 -cHANGE pAYMENT PAGE UNDER process to Receipt or something similar
