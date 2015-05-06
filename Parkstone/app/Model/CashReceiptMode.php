@@ -33,6 +33,14 @@ class CashReceiptMode extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'InvestmentReturn' => array(
+            'className' => 'InvestmentReturn',
+            'foreignKey' => 'cash_receipt_mode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
 }

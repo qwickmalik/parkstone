@@ -29,7 +29,7 @@
     <li class="parent cream">
         <a href="#">
             <span class="menu-icon"><i class="fa fa-money"></i></span>
-            <span class="menu-text">Investments</span>
+            <span class="menu-text">Inbound Investments</span>
         </a>
         <ul class="child">
             <li>
@@ -59,7 +59,7 @@
     <li class="parent cream">
         <a href="#">
             <span class="menu-icon"><i class="fa fa-money"></i></span>
-            <span class="menu-text">Process Investments</span>
+            <span class="menu-text">Outbound Investments</span>
         </a>
         <ul class="child">
            
@@ -67,7 +67,7 @@
                 <?php echo $this->Html->link('Process Investment', '/Reinvestments/newInvestment', array('escape' => false)); ?>
             </li>
             <li>
-                <?php echo $this->Html->link('Manage Processed Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Manage Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link('Daily Maturity List', '/Reinvestments/maturityList', array('escape' => false)); ?>

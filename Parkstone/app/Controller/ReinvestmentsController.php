@@ -2368,7 +2368,7 @@ function get_equity() {
         if ($this->request->is('post')) {
             $reinvestment_id = $this->request->data['Reinvestment']['id'];
             $reinvestor_id = $this->request->data['Reinvestment']['reinvestor_id'];
-            $reinvest_data = $this->Reinvestment->find('first', ['Reinvestment.id' => $reinvestment_id]);
+            $reinvest_data = $this->Reinvestment->find('first', ['conditions' =>['Reinvestment.id' => $reinvestment_id]]);
             if ($reinvest_data) {
                 $inv_day = $this->request->data['Reinvestment']['investment_date']['day'];
                 if (!empty($inv_day)) {
@@ -2385,7 +2385,7 @@ function get_equity() {
                     $this->Session->delete('rollreinvesttemp');
                 }
                 $this->Session->write('rollovertemp', $this->request->data['Reinvestment']);
-                $amount_available = $this->request->data['Reinvestment']['earned_balance'];
+                $amount_available = $reinvest_data['Reinvestment']['earned_balance'];
                 $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
                 
                 if($investment_amount > $amount_available){
@@ -2479,7 +2479,7 @@ function get_equity() {
                     'expected_interest' => $interest_amount,
                     'interest_rate' => $custom_rate,'investment_amount' => $investment_amount,
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
-                    'balance' => $amount_due,'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                    'balance' => $amount_due,'earned_balance' => $investment_amount,
                     'interest_earned' => $interest_amount,
                     'modified_by' => ($this->Session->check('userDetails.id') == true ?
                             $this->Session->read('userDetails.id') : '' ),
@@ -2491,7 +2491,7 @@ function get_equity() {
                             $this->Session->read('userDetails.id') : '' ),
                     'reinvestment_id' => $reinvest_data['Reinvestment']['id'],
                     'reinvestor_id' => $reinvest_data['Reinvestment']['reinvestor_id'],
-                    'interest_rate' => $custom_rate, 'old_interest_rate' => $data["Investment"]["custom_rate"], 
+                    'interest_rate' => $custom_rate, 'old_interest_rate' => $reinvest_data["Reinvestment"]["interest_rate"], 
                     'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
                 
                
@@ -2539,8 +2539,11 @@ function get_equity() {
 
     function payReinvestorFixedReceipt($reinvestment_id = NULL) {
         $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        $this->set('returns', $this->InvestmentReturn->find('first', ['conditions' => ['InvestmentReturn.reinvestment_id' => $reinvestment_id],
+            'order' => ['InvestmentReturn.id' => 'DESC']]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
-        $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list', [])); 
+        
     }
 
     function payReinvestorEquityReceipt($reinvestment_id = NULL) {
@@ -2616,9 +2619,9 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
 
 
 
-            $payment_day = $this->request->data['InvestmentPayment']['payment_date']['day'];
-            $payment_month = $this->request->data['InvestmentPayment']['payment_date']['month'];
-            $payment_year = $this->request->data['InvestmentPayment']['payment_date']['year'];
+            $payment_day = $this->request->data['Reinvestment']['investment_date']['day'];
+            $payment_month = $this->request->data['Reinvestment']['investment_date']['month'];
+            $payment_year = $this->request->data['Reinvestment']['investment_date']['year'];
             $fpayment_date = $payment_year . "-" . $payment_month . "-" . $payment_day;
             $spayment_date = strtotime($fpayment_date);
             $payment_date = date('Y-m-d', $spayment_date);
@@ -2658,7 +2661,7 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
                 $amount_due = $investment_details['Reinvestment']['amount_due'];
                 $reinvestor = $investment_details['Reinvestment']['reinvestor_id'];
 //                $investment_no = $investment_details['Reinvestment']['investment_no'];
-                $investor_name = $investment_details['Reinvestor']['fullname'];
+                $investor_name = $investment_details['Reinvestor']['company_name'];
                 if($status != 'Matured' && $status != 'Paid' && $status != 'Part_payment'){
                     
                   
@@ -2712,8 +2715,9 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
                                 $cashacct_id = $cashacct_data['ReinvestorCashaccount']['id'];
                                 $cashacct_array = array('id' => $cashacct_id, 'fixed_inv_returns' => $new_cashathand);
                              }
-                           $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,'return' => $payment,
-                               'return_type' => 'Matured','date' => $to_date->format('Y-m-d'),'cheque_nos' =>$cheque_numbers,
+                             
+                           $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,'returns' => $payment,
+                               'return_type' => 'Matured','date' => $payment_date,'cheque_nos' =>$cheque_numbers,
                                'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
                            
                     $result2 = $this->InvestmentReturn->save($return_array);
@@ -3103,6 +3107,7 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
                 $finv_date = $inv_year . "-" . $inv_month . "-" . $inv_day;
                 $sinv_date = strtotime($finv_date);
                 $date = date('Y-m-d', $sinv_date);
+                $termdate = date('Y-m-d', $sinv_date);
             } else {
                 $date = date('Y-m-d');
             }
@@ -3213,8 +3218,8 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
 
                             }
                            $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,
-                               'principal' => $investment_amount,'rate' => $custom_rate,'return' => $received_amt,'interest' => $interest_amount,
-                               'penalty' => $penalty,'return_type' => 'Terminated','date' => $to_date->format('Y-m-d'),'cheque_nos' =>$cheque_numbers,
+                               'principal' => $investment_amount,'rate' => $custom_rate,'returns' => $received_amt,'interest' => $interest_amount,
+                               'penalty' => $penalty,'return_type' => 'Terminated','date' => $$termdate,'cheque_nos' =>$cheque_numbers,
                                'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
                                  $check = $this->Session->check('cashaccts');
                             if ($check) {

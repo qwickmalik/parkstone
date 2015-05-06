@@ -1,7 +1,8 @@
-<?php echo $this->element('header'); ?>
-<?php
+<?php echo $this->element('header'); 
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
+
+echo $this->Html->script('print.js');
 ?>
 <!-- Content starts here -->
 <h3>New Investment - Step 2</h3>

@@ -1,12 +1,12 @@
-
-<?php 
-
+<?php
+ echo $this->element('header');
+ 
 echo $this->Html->script('jquery.js');
- echo $this->Html->script('jquery.printElement.js');
+echo $this->Html->script('jquery.printElement.js');
 
-echo $this->Html->css('template.css');
-
+echo $this->Html->script('print.js');
 ?>
+
 <div>
 <table id="payment_receipt" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 1px Gray;">
     <?php  $shopCurrency =""; if ($this->Session->check('shopCurrency')) {

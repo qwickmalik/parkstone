@@ -1,8 +1,8 @@
-<?php echo $this->element('header'); ?>
-<?php
+<?php echo $this->element('header'); 
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 
+echo $this->Html->script('print.js');
 ?>
 <h3>New Reinvestment Summary</h3>
 <div class="boxed">

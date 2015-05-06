@@ -1,4 +1,8 @@
-<?php echo $this->element('header'); ?>
+<?php echo $this->element('header');
+echo $this->Html->script('jquery.js');
+echo $this->Html->script('jquery.printElement.js');
+
+echo $this->Html->script('print.js'); ?>
 
 <h3>Reports: Maturity List</h3>
 <div class="boxed">
