@@ -1,8 +1,10 @@
-<?php echo $this->element('header'); ?>
 <?php
+ echo $this->element('header');
+
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 
+echo $this->Html->script('print.js');
 ?>
 
 <?php
@@ -76,7 +78,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b>Interest Rate:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['custom_rate']) ? $reinvestments['Reinvestment']['custom_rate'] : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'].'%' : '0%' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -85,14 +87,6 @@ echo $this->Html->script('jquery.printElement.js');
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php echo (isset($reinvestments['Reinvestment']['investment_date']) ? $reinvestments['Reinvestment']['investment_date'] : '' ); ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Interest Rate:</b></p>"; ?>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['custom_rate']) ? $reinvestments['Reinvestment']['custom_rate'] : '' ); ?>
                     </div>
                 </div>
 
@@ -129,7 +123,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b>Payment Date:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['payment_date']) ? $reinvestments['Reinvestment']['payment_date'] : '' ); ?>
+                        <?php echo (isset($returns['InvestmentReturn']['date']) ? $returns['InvestmentReturn']['date'] : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -137,7 +131,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b> Mode:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['payment_mode']) ? $reinvestments['Reinvestment']['payment_mode'] : '' ); ?>
+                        <?php echo (isset($returns['CashReceiptMode']['cash_receipt_mode']) ? $returns['CashReceiptMode']['cash_receipt_mode'] : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -145,7 +139,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b>Amount Received:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['amount_paid']) ? number_format($reinvestments['Reinvestment']['amount_paid'] , 2, '.', ',') : '' ); ?>
+                        <?php echo (isset($returns['InvestmentReturn']['returns']) ? number_format($returns['InvestmentReturn']['returns'] , 2, '.', ',') : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -153,7 +147,7 @@ echo $this->Html->script('jquery.printElement.js');
                         <?php echo "<p><b>Cheque Nos.:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['cheque_nos']) ? $reinvestments['Reinvestment']['cheque_nos'] : '' ); ?>
+                        <?php echo (isset($returns['InvestmentReturn']['cheque_nos']) ? (!empty($returns['InvestmentReturn']['cheque_nos']) ? $returns['InvestmentReturn']['cheque_nos'] : 'N/A' ) : '' ); ?>
                     </div>
                 </div>
             </div>
@@ -163,6 +157,8 @@ echo $this->Html->script('jquery.printElement.js');
         <div class="col-lg-12 col-md-12 col-sm-12" >
             <?php
             echo "<p>&nbsp;</p>";
+            echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".(isset($reinvestments['Reinvestment']['reinvestor_id']) ? $reinvestments['Reinvestment']['reinvestor_id'] : ''), array("style"=>"float: right;","class" => 'btn btn-lg btn-info'));
+
             echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement", 'style' => 'float: right;'));
             ?>
         </div>

@@ -317,7 +317,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
                             <!--<p>&nbsp;</p>-->
                             <div class="col-lg-12 col-md-12 col-sm-12">
-<?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success", 'name' => "fixed_process")); ?>
+<?php echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success", 'name' => "fixed_process"));
+
+echo $this->Form->button('Reset', array("type" => "submit", "class" => "btn btn-lg btn-warning", 'name' => "fixed_reset"));
+?>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12" style="border-top: dotted 1px gray; background: #C6F19F;">
 
@@ -538,10 +541,12 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             <div class="row">
 
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <?php
                                     echo "<p>&nbsp;</p>";
                                     echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success", 'name' => "equity_process"));
+                                    
+echo $this->Form->button('Reset', array("type" => "submit", "class" => "btn btn-lg btn-warning", 'name' => "equity_reset"));
                                     ?>
                                 </div>
                             </div>
@@ -605,7 +610,13 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <td align="right" valign="middle" colspan="2">
 <?php echo $this->Html->link('Back', "/Investments/newInvestment0", array("class" => 'btn btn-lg btn-info')); ?>
 
-                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;        
+<?php
+// Edit this to lead to a function that will send the data to db and pass the investment_id to  newInvestmentCert()
+// Same investment contract/cert to be used for all investor types
+echo $this->Form->button('Reset', array("type" => "submit", "class" => "btn btn-lg btn-warning", 'name' => "reset"));
+?>
+                     &nbsp;&nbsp;
                     <?php
 // Edit this to lead to a function that will send the data to db and pass the investment_id to  newInvestmentCert()
 // Same investment contract/cert to be used for all investor types

@@ -1,7 +1,8 @@
-<?php echo $this->element('header'); ?>
-<?php
-//echo $this->Html->script('jquery.js');
+<?php echo $this->element('header'); 
+echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
+
+echo $this->Html->script('print.js');
 //
 ?>
 <!-- Content starts here -->
