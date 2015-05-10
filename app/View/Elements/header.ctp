@@ -11,7 +11,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital');
 
         <?php echo $this->Html->charset(); ?>
         <title>
-            <?php echo $cakeDescription ?>:
+            <?php echo $cakeDescription; ?>
             <?php // echo $title_for_layout; ?>
         </title>
         <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>-->
@@ -126,12 +126,12 @@ $date = date('g:ia');
                                 if ($this->Session->check('public_unapproved_investors')) {
                                     $public_unapproved_investors = $this->Session->read('public_unapproved_investors');
 
-                                    if ($public_unapproved_investors > 0) {
+                                    if ($public_unapproved_investors > 0) { 
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
+                                            <a href="<?php echo $this->Html->url('/Investments/approveInvestors', true); ?>" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
                                                 <i class="fa fa-users"></i>
-                                                <div class="notify">
+                                               <div class="notify">
                                                     <?php echo $public_unapproved_investors; ?>
                                                 </div>
                                             </a>
@@ -140,7 +140,7 @@ $date = date('g:ia');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approveInvestors" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
+                                            <a href="<?php echo $this->Html->url('/Investments/approveInvestors', true); ?>" class="dark" alt="Unapproved Investors" title="Unapproved Investors">
                                                 <i class="fa fa-users"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_unapproved_investors; ?>
@@ -159,7 +159,7 @@ $date = date('g:ia');
                                     if ($public_termination_req > 0) {
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
+                                            <a href="<?php echo $this->Html->url('/Investments/approveTerminations', true); ?>" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
                                                 <i class="fa fa-times"></i>
                                                 <div class="notify">
                                                     <?php echo $public_termination_req; ?>
@@ -170,7 +170,7 @@ $date = date('g:ia');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approveTerminations" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
+                                            <a href="<?php echo $this->Html->url('/Investments/approveTerminations', true); ?>" class="dark" alt="Unapproved Terminations" title="Unapproved Terminations">
                                                 <i class="fa fa-times"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_termination_req; ?>
@@ -189,7 +189,7 @@ $date = date('g:ia');
                                     if ($public_payment_req > 0) {
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
+                                            <a href="<?php echo $this->Html->url('/Investments/approvePayments', true); ?>" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
                                                 <i class="fa fa-money"></i>
                                                 <div class="notify">
                                                     <?php echo $public_payment_req; ?>
@@ -200,7 +200,7 @@ $date = date('g:ia');
                                     } else {
                                         ?>
                                         <li>
-                                            <a href="/parkstone_online/Investments/approvePayments" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
+                                            <a href="<?php echo $this->Html->url('/Investments/approvePayments', true); ?>" class="dark" alt="Unapproved Payments" title="Unapproved Payments">
                                                 <i class="fa fa-money"></i>
                                                 <div class="notify green">
                                                     <?php echo $public_payment_req; ?>
@@ -222,8 +222,8 @@ $date = date('g:ia');
                                     </a>
                                     <ul class="dropdown">
                                         <li><a href="#"><i class="fa fa-pencil-square-o"></i>Contact Support</a></li>
-                                        <li><a href="/Parkstone/Information/aboutUs"><i class="fa fa-info"></i>About Us</a></li>
-                                        <li><a href="/Parkstone/Information/myHelp"><i class="fa fa-question"></i>Help</a></li>
+                                        <li><a href="<?php echo $this->Html->url('/Information/aboutUs', true); ?>" ><i class="fa fa-info"></i>About Us</a></li>
+                                        <li><a href="<?php echo $this->Html->url('/Information/myHelp', true); ?>" ><i class="fa fa-question"></i>Help</a></li>
                                     </ul>
                                 </li>
 
@@ -260,8 +260,13 @@ $date = date('g:ia');
                                                                     <a href="#" class="settings" alt="Settings" title="Settings"><i class="fa fa-cog"></i></a>
                                                                 </li>-->
                                 <li>
-                                    <a href="/parkstone_online/Users/logout" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
                                     
+                                    <a href="<?php echo $this->Html->url('/Users/logout', true); ?>" class="lock" alt="Logout" title="Logout"><i class="fa fa-lock"></i></a>
+                                  <?php //  echo $this->Html->link('<i class="fa fa-lock"></i>', 
+//                                          "/Users/logout/", 
+//                                          array("alt"=>"Logout","class" => 'lock',"title" => "Logout"));
+
+                                    ?>
                                 </li>
                                 <li>
                                     <?php echo '<span style="font-size: 10px;"><b>'. $username .'</b> is logged in</span>'; ?>

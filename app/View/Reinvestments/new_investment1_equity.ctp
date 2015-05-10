@@ -260,6 +260,14 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     (isset($equitydetails['Investment']['investment_date']) ? 
                                     $equitydetails['Investment']['investment_date'] : '' )));
                             
+                            echo $this->Form->hidden('base_fees', array('value' => 
+                                    (isset($equitydetails['Investment']['base_fees']) ? 
+                                    $equitydetails['Investment']['base_fees'] : '' )));
+                            
+                            echo $this->Form->hidden('oldtotal_amount', array('value' => 
+                                    (isset($equitydetails['Investment']['total_amount']) ? 
+                                    $equitydetails['Investment']['total_amount'] : '' )));
+                            
                              echo $this->Form->hidden('cash_receipt_mode_id', array('value' => 
                                     (isset($equitydetails['Investment']['cash_receipt_mode_id']) ? 
                                     $equitydetails['Investment']['cash_receipt_mode_id'] : '' )));
@@ -633,9 +641,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php
                     echo $this->Html->link('Back', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
                     echo "&nbsp;&nbsp;";
-                    echo $this->Html->link('Finish', "/Reinvestments/newInvestment1Equity1/".(isset($equitydetails['InvestmentCash']['reinvestor_id']) ? 
+                    echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Equity1/".(isset($equitydetails['InvestmentCash']['reinvestor_id']) ? 
                                     $equitydetails['InvestmentCash']['reinvestor_id'] : '' ).'/'.(isset($equitydetails['InvestmentCash']['id']) ? 
-                                    $equitydetails['InvestmentCash']['id'] : '' ), array("class" => 'btn btn-lg btn-primary'));
+                                    $equitydetails['InvestmentCash']['id'] : '' ), 
+                            array("class" => 'btn btn-lg btn-primary'),
+                             array('confirm' => 'Are you sure you wish to submit this investment?'));
                     ?>
                 </div>
                     

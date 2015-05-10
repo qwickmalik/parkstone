@@ -15,7 +15,7 @@ class InvestmentsController extends AppController {
         'InvestorEquity', 'LedgerTransaction', 'Topup');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
-        'Investor' => array('limit' => 8, 'order' => array('Investor.investor_type_id' => 'asc'),
+        'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
             'conditions' => array('Investor.approved' => 1))
     );
 
@@ -1195,7 +1195,7 @@ public function checkDuplicate(){
         $this->__validateUserType(); 
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 3, 'Investor.approved' => 1),
-            'limit' => 8, 'order' => array('Investor.id' => 'asc'));
+            'limit' => 5, 'order' => array('Investor.id' => 'asc'));
 
         $data = $this->paginate('Investor');
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
@@ -1224,7 +1224,7 @@ public function checkDuplicate(){
         $this->__validateUserType(); 
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 5, 'Investor.approved' => 1),
-            'limit' => 8, 'order' => array('Investor.id' => 'asc'));
+            'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
 
@@ -1479,7 +1479,7 @@ public function checkDuplicate(){
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 2, 'Investor.approved' => 1),
-            'limit' => 8, 'order' => array('Investor.id' => 'asc'));
+            'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
 
@@ -1514,7 +1514,7 @@ public function checkDuplicate(){
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 4, 'Investor.approved' => 1),
-            'limit' => 8, 'order' => array('Investor.id' => 'asc'));
+            'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
 
@@ -2506,7 +2506,7 @@ public function checkDuplicate(){
                         'total_tenure' => $total_tenure,
                         'instruction_id' => $this->request->data['Investment']['instruction_id'],
                         'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                        'interest_earned' => $interest_amount,
+                        'expected_interest' => $interest_amount,
                         'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                         'earned_balance' => $this->request->data['Investment']['investment_amount'],
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
@@ -2519,7 +2519,7 @@ public function checkDuplicate(){
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
                         case 'Management Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            $base_fee = ($base_rate / 100) * $investment_amount;
 
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -2529,7 +2529,7 @@ public function checkDuplicate(){
                             $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            $base_fee = ($base_rate / 100) * $investment_amount;
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
                                 $this->Session->write('bmsg', $message);
@@ -2645,8 +2645,8 @@ public function checkDuplicate(){
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => $page));
                     }
-//                    $new_cashathand = $amount_available - $totalamt;
-//                    $new_cashinvested = $cashinvested + $totalamt;
+                    $new_cashathand = $amount_available - $totalamt;
+                    $new_cashinvested = $cashinvested + $totalamt;
 
                     //Ledger transaction entry
 //                    $description = 'Equity investment';
@@ -2658,7 +2658,7 @@ public function checkDuplicate(){
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
                         case 'Management Fee':
-                            $base_fee = ($base_fee / 100) * $totalamt;
+                            $base_fee = ($base_rate / 100) * $totalamt;
 
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
@@ -2668,7 +2668,7 @@ public function checkDuplicate(){
                             $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
-                            $base_fee = ($base_fee / 100) * $totalamt;
+                            $base_fee = ($base_rate / 100) * $totalamt;
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
                                 $this->Session->write('bmsg', $message);
@@ -2721,7 +2721,7 @@ public function checkDuplicate(){
                 $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand,
                     'invested_amount' => $new_cashinvested);
 
-                $this->Session->delete('investtemp');
+//                $this->Session->delete('investtemp');
                 $this->Session->delete('investtemp1');
                 $this->Session->write('generic_array', $generic_array);
                 $this->Session->write('ledger_data', $client_ledger);
@@ -2960,7 +2960,7 @@ public function checkDuplicate(){
                     'total_tenure' => $total_tenure,
                     'instruction_id' => $this->request->data['Investment']['instruction_id'],
                     'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                    'interest_earned' => $interest_amount,
+                    'expected_interest' => $interest_amount,
                     'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                     'earned_balance' => $this->request->data['Investment']['investment_amount'],
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
@@ -2973,7 +2973,7 @@ public function checkDuplicate(){
                 $benchmark_fee = 0;
                 switch ($management_fee_type) {
                     case 'Management Fee':
-                        $base_fee = ($base_fee / 100) * $investment_amount;
+                        $base_fee = ($base_rate / 100) * $investment_amount;
 
                         if ($base_fee > $new_cashathand) {
                             $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -2983,7 +2983,7 @@ public function checkDuplicate(){
                         $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
-                        $base_fee = ($base_fee / 100) * $investment_amount;
+                        $base_fee = ($base_rate / 100) * $investment_amount;
                         if ($base_fee > $new_cashathand) {
                             $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
                             $this->Session->write('bmsg', $message);
@@ -3585,7 +3585,7 @@ public function checkDuplicate(){
                         'total_tenure' => $total_tenure,
                         'instruction_id' => $this->request->data['Investment']['instruction_id'],
                         'instruction_details' => $this->request->data['Investment']['instruction_details'],
-                        'interest_earned' => $interest_amount,
+                        'expected_interest' => $interest_amount,
                         'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                         'earned_balance' => $this->request->data['Investment']['investment_amount'],
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
@@ -3598,7 +3598,7 @@ public function checkDuplicate(){
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
                         case 'Management Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            $base_fee = ($base_rate / 100) * $investment_amount;
 
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -3608,7 +3608,7 @@ public function checkDuplicate(){
                             $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
-                            $base_fee = ($base_fee / 100) * $investment_amount;
+                            $base_fee = ($base_rate / 100) * $investment_amount;
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
                                 $this->Session->write('bmsg', $message);
@@ -3737,7 +3737,7 @@ public function checkDuplicate(){
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
                         case 'Management Fee':
-                            $base_fee = ($base_fee / 100) * $totalamt;
+                            $base_fee = ($base_rate / 100) * $totalamt;
 
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
@@ -3747,7 +3747,7 @@ public function checkDuplicate(){
                             $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
-                            $base_fee = ($base_fee / 100) * $totalamt;
+                            $base_fee = ($base_rate / 100) * $totalamt;
                             if ($base_fee > $new_cashathand) {
                                 $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
                                 $this->Session->write('bmsg', $message);
@@ -3796,9 +3796,7 @@ public function checkDuplicate(){
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                    'investment_date' => $inv_date,
-                    'cash_athand' => $new_cashathand,
-                    'total_invested' => $new_cashinvested);
+                    'investment_date' => $inv_date);
 
                 $total_cash = $new_cashathand + $new_cashinvested;
                 $description = 'Deposit for investment';
@@ -3807,7 +3805,7 @@ public function checkDuplicate(){
                     'invested_amount' => $new_cashinvested);
 
 
-                $this->Session->delete('investtemp');
+//                $this->Session->delete('investtemp');
                 $this->Session->delete('investtemp1');
                 $this->Session->write('generic_array', $generic_array);
                 $this->Session->write('ledger_data', $client_ledger);
@@ -6220,7 +6218,7 @@ public function checkDuplicate(){
                     $to_date = new DateTime($end_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    pr($duration);
+                   
                     $year = $duration;
                     $investment_amount = $amount;
 
@@ -6245,7 +6243,7 @@ public function checkDuplicate(){
                                     'investor_id' => $investor_id,
                                     'principal' => $principal,
                                     'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'maturity_date' => $end_date,
                                     'total' => $total);
 //                                $principal = $total;
                             }
@@ -6273,7 +6271,7 @@ public function checkDuplicate(){
                                     'investor_id' => $investor_id,
                                     'principal' => $principal,
                                     'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+                                    'maturity_date' => $end_date,
                                     'total' => $total);
 //                            $principal = $total;
                             }
@@ -6281,7 +6279,7 @@ public function checkDuplicate(){
                             break;
                     }
                     $new_investmentamt = $investment_data['Investment']['investment_amount'] + $amount;
-                    $newinterest_amt = $investment_data['Investment']['interest_earned'] + $interest_amount;
+                    $newinterest_amt = $investment_data['Investment']['expected_interest'] + $interest_amount;
                     $newtotal_amount_earned = $investment_data['Investment']['total_amount_earned'] + $amount;
                     $new_earnedbalance = $investment_data['Investment']['earned_balance'] + $amount;
                     $newamount_due = $investment_data['Investment']['amount_due'] + $amount_due;
@@ -6982,7 +6980,6 @@ public function checkDuplicate(){
                     'custom_rate' => $custom_rate,
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                     'earned_balance' => $this->request->data['Investment']['investment_amount'],
-                    'interest_earned' => $interest_amount,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
 
                 $ledger_transactions[] = array('debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -6996,7 +6993,7 @@ public function checkDuplicate(){
                 $benchmark_fee = 0;
                 switch ($management_fee_type) {
                     case 'Management Fee':
-                        $base_fee = ($base_fee / 100) * $investment_amount;
+                        $base_fee = ($base_rate / 100) * $investment_amount;
 
                         if ($base_fee > $new_cashathand) {
                             $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -7006,7 +7003,7 @@ public function checkDuplicate(){
                         $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
-                        $base_fee = ($base_fee / 100) * $investment_amount;
+                        $base_fee = ($base_rate / 100) * $investment_amount;
                         if ($base_fee > $new_cashathand) {
                             $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
                             $this->Session->write('bmsg', $message);

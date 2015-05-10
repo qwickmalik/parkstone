@@ -496,7 +496,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <?php echo $this->Html->link('Back', "/Investments/maturityList", array("class" => 'btn btn-lg btn-info')); ?>
 
                     &nbsp;&nbsp;
-<?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", array("class" => 'btn btn-lg btn-primary')); ?>
+<?php echo $this->Html->link('Next', "/Investments/newInvestmentCert", 
+                             array("class" => 'btn btn-lg btn-primary'),
+                             array('confirm' => 'Are you sure you wish to rollover this investment?')); ?>
                 </td>
             </tr>
         </table>
