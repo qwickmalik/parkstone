@@ -31,10 +31,6 @@ each point in time (usually the end of the month).
 - Add topup to process inv and fund management
 - Replicate roll over fixed invsetment for process investments and fund management
 
-- Allow to be able o callback money from investment in process invs. 
-  This will worklike a termination but without penalty. 
-  Will also continue invs with balance as new pricipal and date from current till original due date
-- consider adding termination table to ecord termination details including rate after termination and before.
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
 
 1b. Deduct accrued management fee when equity or fixed investment is being disposed.  And accrued very three months for subtraction when equity is disposed

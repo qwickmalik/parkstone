@@ -35,6 +35,8 @@ NB. All reports will have from date - to date filter options
 - Add notes input to new investment, new reinvestments pages
 -Add receipt no input to new investment, new reinvestments pages
 
+#User password change page
+
 --NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
 - Add from - to date search ranges to Report Module/Maturity List.
 - Create Monthly maturity List Page
