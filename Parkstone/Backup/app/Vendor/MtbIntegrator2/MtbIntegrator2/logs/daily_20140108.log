@@ -1,0 +1,34 @@
+Wed Jan  8 16:28:49 2014,090 [29061] INFO root - calling login 
+Wed Jan  8 16:32:15 2014,317 [30653] INFO root - calling login 
+Wed Jan  8 16:39:13 2014,565 [1377] INFO root - calling login 
+Wed Jan  8 16:40:16 2014,778 [2011] INFO root - calling login 
+Wed Jan  8 16:40:17 2014,500 [2011] INFO root - stdClass::__set_state(array(
+   'return' => 
+  stdClass::__set_state(array(
+     'error' => 'Authentication Failed',
+     'status' => 5,
+  )),
+))
+Wed Jan  8 16:40:50 2014,886 [2290] INFO root - calling login 
+Wed Jan  8 16:40:52 2014,100 [2290] INFO root - stdClass::__set_state(array(
+   'return' => 
+  stdClass::__set_state(array(
+     'browser' => '',
+     'ip' => '41.66.207.229',
+     'key' => 'e6134a83-fc5d-4232-bc05-3238e12a25e1',
+     'os' => '',
+     'status' => 1,
+  )),
+))
+Wed Jan  8 16:49:45 2014,672 [6320] INFO root - calling login 
+Wed Jan  8 16:49:46 2014,620 [6320] INFO root - stdClass::__set_state(array(
+   'return' => 
+  stdClass::__set_state(array(
+     'browser' => '',
+     'ip' => '41.66.207.229',
+     'key' => '6351419a-4a49-4f17-96eb-e67fee81882f',
+     'os' => '',
+     'status' => 1,
+  )),
+))
+Wed Jan  8 16:49:46 2014,621 [6320] INFO root - calling sendMessage : test from new php API, test message, 233268888338,233208270323, DJ. Joseph 
