@@ -260,7 +260,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 //                    echo $this->Html->link('Back', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
                     echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success"));
                     echo "&nbsp;&nbsp;";
-                    echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Fixed1/".(isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' ), array("class" => 'btn btn-lg btn-primary'));
+                    echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Fixed1/".(isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' ), 
+                            array("class" => 'btn btn-lg btn-primary'),
+                             array('confirm' => 'Are you sure you wish to submit this investment?'));
                     ?>
                 </div>
                     

@@ -299,7 +299,6 @@ function __dailyReinvestmentInterests(){
                              'total_amount_earned' => round($new_total_earned,2),
                             'interest_earned' => round($new_accrued_interest,2)
                         );
-                             pr($investment_array);
                              
                     $this->DailyReinvestinterestStatement->create();       
                     $this->DailyReinvestinterestStatement->save($statemt_array);

@@ -611,7 +611,8 @@ echo $this->Form->button('Reset', array("type" => "submit", "class" => "btn btn-
 <?php
 // Edit this to lead to a function that will send the data to db and pass the investment_id to  newInvestmentCert()
 // Same investment contract/cert to be used for all investor types
-echo $this->Html->link('Submit', "/Investments/newInvestmentCert/", array("class" => 'btn btn-lg btn-primary'));
+echo $this->Html->link('Submit', "/Investments/newInvestmentCert/", array("class" => 'btn btn-lg btn-primary'),
+                             array('confirm' => 'Are you sure you wish to submit this investment?'));
 ?>
                 </td>
             </tr>

@@ -10,7 +10,7 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
         <?php echo $this->Html->charset(); ?>
         <title>
             <?php echo $cakeDescription ?>:
-            <?php echo $title_for_layout; ?>
+            <?php // echo $title_for_layout; ?>
         </title>
 <?php
         echo $this->Html->css('bootstrap.css');

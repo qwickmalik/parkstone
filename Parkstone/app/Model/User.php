@@ -140,6 +140,15 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        
+        'ReinvestmentTopup' => array(
+            'className' => 'ReinvestmentTopup',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     

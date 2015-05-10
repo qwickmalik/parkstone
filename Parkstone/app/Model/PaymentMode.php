@@ -23,6 +23,14 @@ class PaymentMode extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+        'ReinvestmentTopup' => array(
+            'className' => 'ReinvestmentTopup',
+            'foreignKey' => 'payment_mode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            )
         );
 }
 

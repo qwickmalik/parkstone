@@ -3308,7 +3308,7 @@ $(document).ready(function() {
     tax.init();
     payment_term.init();
     payments.init();
-    ucsl_report.init();
+//    ucsl_report.init();
     customer.init();
     ucsl_order.init();
     ucsl_payment.init();
