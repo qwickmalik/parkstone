@@ -1,0 +1,62 @@
+[19-Sep-2014 04:48:01 America/Denver] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home1/qwickfu1/public_html/parkstone/app/View/Pages/home.ctp on line 5
+[19-Sep-2014 04:50:21 America/Denver] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home1/qwickfu1/public_html/parkstone/app/View/Pages/home.ctp on line 5
+[20-Sep-2014 17:29:55 America/Denver] PHP Parse error:  syntax error, unexpected '<' in /home1/qwickfu1/public_html/parkstone/app/View/Pages/home.ctp on line 228
+[20-Sep-2014 17:30:54 America/Denver] PHP Parse error:  syntax error, unexpected '<' in /home1/qwickfu1/public_html/parkstone/app/View/Pages/home.ctp on line 3
+[20-Sep-2014 19:14:46 America/Denver] PHP Parse error:  syntax error, unexpected 'pink' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Elements/sidebar.ctp on line 69
+[20-Sep-2014 19:14:46 America/Denver] PHP Parse error:  syntax error, unexpected 'pink' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Elements/sidebar.ctp on line 69
+[20-Sep-2014 19:14:47 America/Denver] PHP Parse error:  syntax error, unexpected 'pink' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Elements/sidebar.ctp on line 69
+[20-Sep-2014 19:14:47 America/Denver] PHP Parse error:  syntax error, unexpected 'pink' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Elements/sidebar.ctp on line 69
+[20-Sep-2014 19:14:47 America/Denver] PHP Parse error:  syntax error, unexpected 'pink' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Elements/sidebar.ctp on line 69
+[20-Sep-2014 19:40:07 America/Denver] PHP Fatal error:  Call to undefined method DashboardController::__validateLoginStatus() in /home1/qwickfu1/public_html/parkstone/app/Controller/DashboardController.php on line 10
+[20-Sep-2014 19:40:08 America/Denver] PHP Fatal error:  Call to undefined method DashboardController::__validateLoginStatus() in /home1/qwickfu1/public_html/parkstone/app/Controller/DashboardController.php on line 10
+[20-Sep-2014 19:55:07 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 41
+[20-Sep-2014 20:03:29 America/Denver] PHP Fatal error:  Call to undefined method SettingsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/SettingsController.php on line 46
+[20-Sep-2014 20:09:13 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:09:13 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:09:59 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:10:00 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:10:05 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:10:06 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 576
+[20-Sep-2014 20:19:54 America/Denver] PHP Warning:  Unterminated comment starting line 6 in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investor.ctp on line 6
+[21-Sep-2014 16:56:05 America/Denver] PHP Fatal error:  Call to undefined method InvestmentsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 580
+[21-Sep-2014 18:22:49 America/Denver] PHP Fatal error:  Call to a member function upload() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 479
+[22-Sep-2014 18:18:14 America/Denver] PHP Parse error:  syntax error, unexpected ';' in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investor.ctp on line 52
+[22-Sep-2014 18:19:45 America/Denver] PHP Parse error:  syntax error, unexpected ';' in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investor.ctp on line 52
+[24-Sep-2014 18:48:20 America/Denver] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'SplFileObject::__construct(/home1/qwickfu1/public_html/parkstone/app/tmp/cache/persistent/myapp_cake_core_default_en-gb): failed to open stream: No such file or directory' in /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php:278
+Stack trace:
+#0 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(278): SplFileObject->__construct('/home1/qwickfu1...', 'r')
+#1 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(235): FileEngine->_clearDirectory('/home1/qwickfu1...', 1411606100, 1411606090)
+#2 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(100): FileEngine->clear(true)
+#3 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Cache.php(184): FileEngine->gc()
+#4 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Cache.php(151): Cache::_buildEngine('_cake_core_')
+#5 /home1/qwickfu1/public_html/parkstone/app/Config/core.php(373): Cache::config('_cake_core_', Array)
+#6 in /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php on line 278
+[25-Sep-2014 02:45:16 America/Denver] PHP Fatal error:  Call to undefined method SettingsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/SettingsController.php on line 122
+[25-Sep-2014 02:45:24 America/Denver] PHP Fatal error:  Call to undefined method SettingsController::__validateUserType() in /home1/qwickfu1/public_html/parkstone/app/Controller/SettingsController.php on line 713
+[25-Sep-2014 08:23:15 America/Denver] PHP Parse error:  syntax error, unexpected '<' in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment2.ctp on line 126
+[25-Sep-2014 08:44:59 America/Denver] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ')' in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment2.ctp on line 148
+[25-Sep-2014 08:52:23 America/Denver] PHP Parse error:  syntax error, unexpected 'dob' (T_STRING), expecting ',' or ';' in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment2.ctp on line 148
+[26-Sep-2014 04:05:10 America/Denver] PHP Fatal error:  Call to a member function upload() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 160
+[04-Oct-2014 20:16:35 America/Denver] PHP Fatal error:  Call to a member function getSetup() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 58
+[04-Oct-2014 20:16:57 America/Denver] PHP Fatal error:  Call to a member function getNewInvesterIndiv() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 58
+[04-Oct-2014 20:19:02 America/Denver] PHP Fatal error:  Call to a member function getSetup() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 58
+[04-Oct-2014 20:19:29 America/Denver] PHP Fatal error:  Call to a member function getSetup() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 58
+[05-Oct-2014 11:41:30 America/Denver] PHP Fatal error:  Class 'Appschedulel' not found in /home1/qwickfu1/public_html/parkstone/app/Model/PaymentSchedule.php on line 3
+[07-Oct-2014 16:45:36 America/Denver] PHP Fatal error:  Call to a member function find() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 80
+[07-Oct-2014 16:45:36 America/Denver] PHP Fatal error:  Call to a member function find() on a non-object in /home1/qwickfu1/public_html/parkstone/app/Controller/InvestmentsController.php on line 80
+[07-Oct-2014 16:46:57 America/Denver] PHP Fatal error:  Cannot redeclare class InstitutionTypes in /home1/qwickfu1/public_html/parkstone/app/Model/InstitutionType.php on line 18
+[07-Oct-2014 16:50:37 America/Denver] PHP Parse error:  syntax error, unexpected 'PaymentTerm' (T_STRING), expecting ')' in /home1/qwickfu1/public_html/parkstone/app/Model/Investor.php on line 68
+[07-Oct-2014 17:01:36 America/Denver] PHP Fatal error:  Unsupported operand types in /home1/qwickfu1/public_html/parkstone/lib/Cake/View/Helper/FormHelper.php on line 1983
+[07-Oct-2014 17:03:09 America/Denver] PHP Fatal error:  Unsupported operand types in /home1/qwickfu1/public_html/parkstone/lib/Cake/View/Helper/FormHelper.php on line 1983
+[07-Oct-2014 17:04:17 America/Denver] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investor_comp.ctp on line 83
+[10-Oct-2014 12:06:40 America/Denver] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'SplFileObject::__construct(/home1/qwickfu1/public_html/parkstone/app/tmp/cache/models/myapp_cake_model_default_qwickfu1_parkst_inv_payment_modes): failed to open stream: No such file or directory' in /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php:278
+Stack trace:
+#0 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(278): SplFileObject->__construct('/home1/qwickfu1...', 'r')
+#1 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(235): FileEngine->_clearDirectory('/home1/qwickfu1...', 1412964400, 1412964390)
+#2 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php(100): FileEngine->clear(true)
+#3 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Cache.php(184): FileEngine->gc()
+#4 /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Cache.php(151): Cache::_buildEngine('_cake_model_')
+#5 /home1/qwickfu1/public_html/parkstone/app/Config/core.php(385): Cache::confi in /home1/qwickfu1/public_html/parkstone/lib/Cake/Cache/Engine/FileEngine.php on line 278
+[13-Oct-2014 13:21:40 America/Denver] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment1_joint.ctp on line 166
+[13-Oct-2014 13:21:59 America/Denver] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment1_joint.ctp on line 166
+[13-Oct-2014 13:25:43 America/Denver] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /home1/qwickfu1/public_html/parkstone/app/View/Investments/new_investment1_joint.ctp on line 163
