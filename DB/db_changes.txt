@@ -1100,3 +1100,26 @@ ALTER TABLE  `investment_returns` ADD  `cheque_nos` VARCHAR( 30 ) NULL AFTER  `p
 MAY 06, 2015
 --------------------
 ALTER TABLE  `investment_returns` CHANGE  `return`  `returns` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
+
+MAY 10,2015
+-------------------
+
+DROP TABLE IF EXISTS `reinvestment_topups`;
+CREATE TABLE IF NOT EXISTS `reinvestment_topups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `reinvestment_id` int(11) DEFAULT NULL,
+  `payment_mode_id` int(3) DEFAULT NULL,
+  `topup_amount` decimal(11,2) DEFAULT NULL,
+  `old_investmentamt` decimal(11,2) DEFAULT NULL,
+  `oldinterest_earned` decimal(11,2) DEFAULT NULL,
+  `oldtotal_amount_earned` decimal(11,2) DEFAULT NULL,
+  `oldearned_balance` decimal(11,2) DEFAULT NULL,
+  `oldamount_due` decimal(11,2) DEFAULT NULL,
+  `investment_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `investments` ADD `expected_interest` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `interest_earned`;
