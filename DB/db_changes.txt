@@ -1123,3 +1123,9 @@ CREATE TABLE IF NOT EXISTS `reinvestment_topups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `investments` ADD `expected_interest` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `interest_earned`;
+
+May 11, 2015
+-----------------------------
+ALTER TABLE `investments` ADD `notes` TEXT NULL ;
+ALTER TABLE `investments` ADD `receipt_no` VARCHAR(35) NULL ;
+ALTER TABLE `reinvestments` ADD `notes` TEXT NULL AFTER `payment_status`, ADD `receipt_no` VARCHAR(35) NULL AFTER `notes`;

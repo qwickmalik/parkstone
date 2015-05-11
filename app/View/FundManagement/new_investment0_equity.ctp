@@ -6,7 +6,7 @@
         <div id="clearer"></div>
 
 
-        <?php echo $this->Form->create('ListCashDeposits', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'searchreinvestor4list'), "inputDefaults" => array('div' => false))); ?>
+        <?php echo $this->Form->create('ListCashDeposits', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'FundManagement', 'action' => 'searchreinvestor4list'), "inputDefaults" => array('div' => false))); ?>
         
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
             <tr>
