@@ -14,7 +14,7 @@ if ($this->Session->check('shopCurrency_investment')) {
         <div id="clearer"></div>
         <!-- Step Investment Details Start -->
         <?php
-        echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'process_fixd'), "inputDefaults" => array('div' => false)));
+        echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'FundManagement', 'action' => 'process_fixd'), "inputDefaults" => array('div' => false)));
         
         
         ?>
@@ -95,7 +95,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <hr>            
 
                     <div class="row">
-                        <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="row">
                             
                             <?php
@@ -120,18 +120,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 ?>
                             
                                 </div>
-                        </div>
-
-                        <div class="col-lg-7 col-md-7 col-sm-12">
                             <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php echo $this->Form->input('investment_amount', array('required',
-                                        'label' => 'Investment Amount*', 'class' => 'required', 'value' => 
+                                        'label' => 'Inv. Amount*', 'class' => 'required', 'value' => 
                                             ($this->Session->check('reinvesttemp.investment_amount') == true 
                                             ? number_format($this->Session->read('reinvesttemp.investment_amount'), 2, '.', ',') : '' ))); ?>
                                 
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php
                                     echo $this->Form->input('duration',array('required','label' => 'Duration*', 
                                         'value' => ($this->Session->check('reinvesttemp.duration') == true ? 
@@ -139,26 +136,30 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     
                                     ?>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">  <?php
+                                <div class="col-lg-3 col-md-3 col-sm-12">  <?php
                                     
-                                    echo $this->Form->input('investment_period', array('required','label' => 'Investment Period*', 'empty' => "--Please Select--",
+                                    echo $this->Form->input('investment_period', array('required','label' => 'Inv. Period*', 'empty' => "--Please Select--",
                                         'options'=> array('Day(s)' => 'Day(s)','Year(s)'=>'Year(s)'),
                                         'value' => ($this->Session->check('reinvesttemp.investment_period') == true ? 
                                             $this->Session->read('reinvesttemp.investment_period') : '' )
                                        )); ?>
                                      
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="col-lg-3 col-md-3 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
                                     <?php echo $this->Form->input('interest_rate', array('required','label' => 'Interest(%)*', 'value' => ($this->Session->check('reinvesttemp.interest_rate') == true ? $this->Session->read('reinvesttemp.interest_rate') : '' ))); ?>
                                     
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            
                             <div class="row"> 
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px;'>Investment Date</span>";?>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <?php echo "<p style='width: 100%; font-size: 14px;font-weight: bold;line-height: 30px;'>Investment Date</p>";?>
+                                   
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     if ($this->Session->check('reinvesttemp.investment_date') == true) {
 
@@ -193,6 +194,22 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     $("#ReinvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
                                     $("#ReinvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
+                                    
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <?php echo $this->Form->input('receipt_no', array(
+                                        'label' => 'Receipt Number', 'value' => 
+                                            ($this->Session->check('reinvesttemp.receipt_no') == true 
+                                            ? number_format($this->Session->read('reinvesttemp.receipt_no'), 2, '.', ',') : '' ))); ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <?php echo $this->Form->input('notes', array(
+                                        'label' => 'Notes', 'value' => 
+                                            ($this->Session->check('reinvesttemp.notes') == true 
+                                            ? number_format($this->Session->read('reinvesttemp.notes'), 2, '.', ',') : '' ))); ?>
+                                </div>
                             </div>
                             
                             

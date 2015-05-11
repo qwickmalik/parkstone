@@ -14,8 +14,8 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <?php
                 echo $this->Element('logo_reports');
-                echo "<H2><b>PARKSTONE CAPITAL LIMITED</b></H2>";
-                echo "<p style='color: red;'><i>Shop address not loading from db</i></p>";
+                echo "<H3><b>PARKSTONE CAPITAL LIMITED</b></H3>";
+                
                 $postaladd = 'Postal Address: ';
 
                 if ($this->Session->check('shopAddress')) {

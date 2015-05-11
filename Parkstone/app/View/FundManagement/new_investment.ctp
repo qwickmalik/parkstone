@@ -8,7 +8,7 @@
         <div id="clearer"></div>
 <!-- Step Investment Details Start -->
                     <?php
-                    echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Reinvestments', 'action' => 'newInvestment'), "inputDefaults" => array('div' => false)));
+                    echo $this->Form->create('Reinvestment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'FundManagement', 'action' => 'newInvestment'), "inputDefaults" => array('div' => false)));
                     ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
 

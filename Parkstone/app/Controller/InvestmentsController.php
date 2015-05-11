@@ -1914,7 +1914,7 @@ public function checkDuplicate(){
                     $ledger_data = $this->Session->read('ledger_data');
                     $this->set('ledger_data', $ledger_data);
                 } else {
-                    $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+                    $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investorid]]);
 
                     if ($ledger_data) {
                         $this->Session->write('ledger_data', $ledger_data);

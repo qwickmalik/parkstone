@@ -1,8 +1,10 @@
 --NOTES FRM REVIEW WITH PARKSTONE (30TH APRIL, 2015)
+
+
 *Reports
 NB. All reports will have from date - to date filter options
 
-1. Active Investments Report
+DONE 1. Active Investments Report
    #fields
    ------
    Investor (Name)
@@ -14,7 +16,7 @@ NB. All reports will have from date - to date filter options
    Accrued Interest
    Total(Principal + Accrued)
 
-2. Investor Deposits Report
+DONE 2. Investor Deposits Report
    #fields
    ------
    Investor (Name)
@@ -28,19 +30,23 @@ NB. All reports will have from date - to date filter options
  ------------
   Total Amt Deposit
 
-3. RollOver/Disinvestment Report
+DONE 3. RollOver/Disinvestment Report
    (refer to technical_specs/reports/Report.xlsx - tab 2)
 
+DONE 4. AGGREGATE INVESTMENT REPORT
+
+
+
 #Reinvestment & Investment Modules
-- Add notes input to new investment, new reinvestments pages
--Add receipt no input to new investment, new reinvestments pages
+DONE - Add notes input to new investment, new reinvestments pages
+DONE -Add receipt no input to new investment, new reinvestments pages
 
 #Lets Add User password change page..we can copy one from qwicktransfer and implement in all our APPS from henceforth
 #PLease format investor details page
 
 --NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
-- Add from - to date search ranges to Report Module/Maturity List.
-- Create Monthly maturity List Page
+DONE - Add from - to date search ranges to Report Module/Maturity List.
+DONE - Create Monthly maturity List Page
 --Redesin Investment payment receipt
 
 

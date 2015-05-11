@@ -2332,37 +2332,57 @@ public function convert2PdfnEmail(){
     }
 
     function jvReceiptVoucher(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function investorContract(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function dailyInterests(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function maturityList(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function discountInvestment(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function jvPaymentVoucher(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
         
     }
     
     function clientLedger(){
-//        $this->__validateUserType3();
+        $this->__validateUserType3();
+        
+    }
+    
+    function activeInvestments(){
+        $this->__validateUserType3();
+        
+    }
+    
+    function investorDeposits(){
+        $this->__validateUserType3();
+        
+    }
+    
+    function rolloverDisinv(){
+        $this->__validateUserType3();
+        
+    }
+    
+    function aggregateInvestment(){
+        $this->__validateUserType3();
         
     }
 }

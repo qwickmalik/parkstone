@@ -3,7 +3,7 @@
 CakePlugin::load('Uploader');
 App::import('Vendor', 'Uploader.Uploader');
 
-class ReinvestmentsController extends AppController {
+class FundManagementController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'FundManagement';
