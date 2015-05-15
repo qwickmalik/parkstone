@@ -28,15 +28,13 @@ class InvestmentsController extends AppController {
         //   $this->request->data = Sanitize::clean($this->request->data, array('remove_html'=>true,'encode'=>false,'unicode'=>false,'backslash'=>true, 'escape'=>true,'dollar'=> true));
     }
 
-    
-      function __validateLoginStatus() {
-      if ($this->action != 'login' && $this->action != 'logout') {
-      if ($this->Session->check('userData') == false) {
-      $this->redirect('/');
-      }
-      }
-      }
-     
+    function __validateLoginStatus() {
+        if ($this->action != 'login' && $this->action != 'logout') {
+            if ($this->Session->check('userData') == false) {
+                $this->redirect('/');
+            }
+        }
+    }
 
     function __validateUserType() {
 
@@ -51,7 +49,7 @@ class InvestmentsController extends AppController {
     }
 
     function newInvestor() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         // $this->set('marriages', $this->Marriage->find('list'));
         $this->set('idtypes', $this->Idtype->find('list'));
@@ -90,7 +88,7 @@ class InvestmentsController extends AppController {
     }
 
     function newInvestorGroup() {
-         $this->__validateUserType();
+        $this->__validateUserType();
         $this->set('idtypes', $this->Idtype->find('list'));
         $this->set('investortypes', $this->InvestorType->find('list'));
         $this->set('grossincomes', $this->GrossIncome->find('list'));
@@ -186,21 +184,23 @@ class InvestmentsController extends AppController {
             }
         }
     }
-public function checkDuplicate(){
-    $this->autoLayout = $this->autoRender = false;
+
+    public function checkDuplicate() {
+        $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
             $name = $_POST['name'];
-            $check = $this->Investor->find('count',['recursive' => -1,
-                'conditions' =>['OR' => ['Investor.fullname' => $name,'Investor.comp_name' =>$name]]]);
-            if($check > 0){
+            $check = $this->Investor->find('count', ['recursive' => -1,
+                'conditions' => ['OR' => ['Investor.fullname' => $name, 'Investor.comp_name' => $name]]]);
+            if ($check > 0) {
                 $message = 'Investor already exists. Please check and try again';
                 $this->Session->write('bmsg', $message);
                 return json_encode(array('status' => 'error'));
-            }else{
+            } else {
                 return json_encode(array('status' => 'ok'));
             }
         }
-}
+    }
+
     public function commit_group() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
@@ -315,8 +315,8 @@ public function checkDuplicate(){
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
-                 $this->Session->delete('public_unapproved_investors');
-               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+                $this->Session->delete('public_unapproved_investors');
+                $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
 
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
@@ -431,48 +431,11 @@ public function checkDuplicate(){
             $this->request->data['Investor']['dob'] = $dob_date;
             $this->request->data['Investor']['registration_date'] = $registration_date;
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
+//            print_r($_FILES);
+//            exit;
+// $file_contents = file_get_contents($_FILES['investor_photo']['tmp_name']);
+//                    $file_name = $_FILES['investor_photo']['name'];
 
-//            if ($data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true))) {
-//		$data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo	));
-//                return json_encode($data);
-//            if($data){
-//                
-//                $this->request->data['Investor']['investor_photo'] = $data['path'];
-////                header('Content-Type: application/json');
-//                // Upload successful, do whatever
-//            }else{
-//                $message = 'Please Supply The Investor\'s Picture';
-//                $this->Session->write('emsg', $message);
-//                return json_encode(array('status' => 'error'));
-//            data[Investor][investor_photo]
-//            if (isset($_FILES["investor_photo"]["type"])) {
-//                $validextensions = array("jpeg", "jpg", "png", "gif");
-//                $temporary = explode(".", $_FILES["investor_photo"]["name"]);
-//                $file_extension = end($temporary);
-//                if ((($_FILES["investor_photo"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/jpg") || ($_FILES["file"]["type"] == "image/jpeg")
-//                        ) && ($_FILES["investor_photo"]["size"] < 900000)//Approx. 100kb files can be uploaded.
-//                        && in_array($file_extension, $validextensions)) {
-//                    if ($_FILES["file"]["error"] > 0) {
-//                        echo "Return Code: " . $_FILES["file"]["error"] . "<br/><br/>";
-//                    } else {
-//                        if (file_exists($this->webroot . "files/uploads/" . $_FILES["investor_photo"]["name"])) {
-//                            echo $_FILES["investor_photo"]["name"] . " <span id='invalid'><b>already exists.</b></span> ";
-//                        } else {
-//                            $sourcePath = $_FILES['investor_photo']['tmp_name']; // Storing source path of the file in a variable
-//                            $targetPath = $this->webroot . "files/uploads/" . $_FILES['investor_photo']['name']; // Target path where file is to be stored
-//                            move_uploaded_file($sourcePath, $targetPath); // Moving Uploaded file
-//                            $this->request->data['Investor']['investor_photo'] = $targetPath;
-////                            echo "<span id='success'>Image Uploaded Successfully...!!</span><br/>";
-////                            echo "<br/><b>File Name:</b> " . $_FILES["file"]["name"] . "<br>";
-////                            echo "<b>Type:</b> " . $_FILES["file"]["type"] . "<br>";
-////                            echo "<b>Size:</b> " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-////                            echo "<b>Temp file:</b> " . $_FILES["file"]["tmp_name"] . "<br>";
-//                        }
-//                    }
-//                } else {
-//                    echo "<span id='invalid'>***Invalid file Size or Type***<span>";
-//                }
-//            }
             $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
@@ -493,7 +456,7 @@ public function checkDuplicate(){
                     $this->Session->delete('investortemp');
                 }
                 $this->Session->delete('public_unapproved_investors');
-               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+                $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
 
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
@@ -586,8 +549,8 @@ public function checkDuplicate(){
                 if ($this->Session->check('investortemp') == true) {
                     $this->Session->delete('investortemp');
                 }
-                 $this->Session->delete('public_unapproved_investors');
-               $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+                $this->Session->delete('public_unapproved_investors');
+                $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
 
                 $message = 'Investor Details Successfully Added';
                 $this->Session->delete('emsg');
@@ -599,6 +562,29 @@ public function checkDuplicate(){
                 return json_encode(array('status' => 'error'));
             }
         }
+    }
+
+    function upload() {
+        $data = array();
+
+        if (isset($_GET['files'])) {
+            $error = false;
+            $files = array();
+
+            $uploaddir = $this->webroot.'files/uploads/';
+            foreach ($_FILES as $file) {
+                if (move_uploaded_file($file['tmp_name'], $uploaddir . basename($file['name']))) {
+                    $files[] = $uploaddir . $file['name'];
+                } else {
+                    $error = true;
+                }
+            }
+            $data = ($error) ? array('error' => 'There was an error uploading your files') : array('files' => $files);
+        } else {
+            $data = array('success' => 'Form was submitted', 'formData' => $_POST);
+        }
+
+        echo json_encode($data);
     }
 
     function approveInvestors() {
@@ -792,8 +778,8 @@ public function checkDuplicate(){
     }
 
     function editInvestor($investor_id = null) {
-         $this->__validateUserType(); 
-         $this->paginate('Investor');
+        $this->__validateUserType();
+        $this->paginate('Investor');
 
         $data = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id), 'order' => array("Investor.investor_type_id" => 'desc')));
         if ($data) {
@@ -822,7 +808,7 @@ public function checkDuplicate(){
     }
 
     function editInvestorComp($investor_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->paginate('Investor');
 
         $data = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id), 'order' => array("Investor.investor_type_id" => 'desc')));
@@ -1093,7 +1079,7 @@ public function checkDuplicate(){
     }
 
     function deleteInvestor() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
 
@@ -1192,7 +1178,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment1Comp() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 3, 'Investor.approved' => 1),
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
@@ -1221,7 +1207,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment1Group() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 5, 'Investor.approved' => 1),
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
@@ -1475,7 +1461,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment1Indv() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 2, 'Investor.approved' => 1),
@@ -1510,7 +1496,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment1Joint() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->paginate = array(
             'conditions' => array('Investor.investor_type_id' => 4, 'Investor.approved' => 1),
@@ -1545,7 +1531,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment2() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -1640,7 +1626,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment2_joint() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -1796,7 +1782,7 @@ public function checkDuplicate(){
 //    }
 
     function newInvestment2_comp($investorid = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         if (!is_null($investorid)) {
             $this->set('portfolios', $this->Portfolio->find('list'));
@@ -1892,7 +1878,7 @@ public function checkDuplicate(){
     }
 
     function newInvestment2Group($investorid = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         if (!is_null($investorid)) {
             $this->set('portfolios', $this->Portfolio->find('list'));
@@ -1996,139 +1982,138 @@ public function checkDuplicate(){
     function process_indv() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
-            
+
             $investor_id = $this->request->data['Investment']['investor_id'];
             $page = $this->request->data['Investment']['investor_page'];
             if (isset($this->request->data['fixed_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
-       
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
-            }elseif (isset($this->request->data['equity_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+            } elseif (isset($this->request->data['equity_reset'])) {
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                
-            }elseif (isset($this->request->data['reset'])) {
-                
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+            } elseif (isset($this->request->data['reset'])) {
+
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page));
             }
             $ledger_transactions = array();
             $cheque_no = '';
@@ -2149,7 +2134,7 @@ public function checkDuplicate(){
                 $inv_date = date('Y-m-d');
             }
             $basefee_duedate = new DateTime($inv_date);
-            $basefee_duedate->add(new DateInterval('P3M'));
+            $basefee_duedate->add(new DateInterval('P1M'));
 
             $pur_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($pur_day)) {
@@ -2175,33 +2160,16 @@ public function checkDuplicate(){
                     $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
                 }
             }
-//            if (isset($this->request->data['equity_process'])) {
-//                case 2:
-//                    $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
-//                    $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
-//                    $this->request->data['Investment']['currency2'] = $this->request->data['currency2'];
-//                    $this->request->data['Investment']['paymentmode_id2'] = $this->request->data['paymentmode_id2'];
-//
-//                    $this->request->data['Investment']['paymentschedule_id2'] = $this->request->data['paymentschedule_id2'];
-//                    break;
-//            }
+
             $this->Session->write('investtemp', $this->request->data['Investment']);
             $this->Session->write('investtemp1', $this->request->data['Investment']);
 
-//            $term_id = $this->request->data['Investment']['investmentterm_id'];
-//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
 
             $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
             $cashinvested = $this->request->data['Investment']['total_invested'];
             $new_cashinvested = $cashinvested;
             if (isset($this->request->data['fixed_process'])) {
-//                switch ($investmentproduct_id) {
-//                    case 1:
-//                if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
-//                    $message = 'Please Select an Investment Term';
-//                    $this->Session->write('bmsg', $message);
-//                    $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                }
+
 
 
                 if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
@@ -2286,29 +2254,14 @@ public function checkDuplicate(){
                 }
 
                 $first_date = $inv_date;
-//                        break;
+
             }
             if (isset($this->request->data['equity_process'])) {
-//                    case 2:
+                  
                 $first_date = $pinv_date;
 
                 $this->request->data['Investment']['investment_date'] = $pinv_date;
 
-//                        if ($this->request->data['instruction_id2'] == "" || $this->request->data['instruction_id2'] == null) {
-//                            $message = 'Please Select an Instruction';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if (($this->request->data['instruction_id2'] == 5) && (is_null($this->request->data['instruction_details2']) || $this->request->data['instruction_details2'] == "")) {
-//                            $message = 'Please State Instruction Details';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if ($this->request->data['currency'] == "" || $this->request->data['currency'] == null) {
-//                            $message = 'Please Select a Currency';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
 
                 if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
                     $message = 'Please Select a Currency';
@@ -2526,7 +2479,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
@@ -2535,7 +2488,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
                     }
@@ -2665,7 +2618,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
@@ -2674,7 +2627,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
                     }
@@ -2774,7 +2727,7 @@ public function checkDuplicate(){
                     $inv_date = date('Y-m-d');
                 }
                 $basefee_duedate = new DateTime($inv_date);
-                $basefee_duedate->add(new DateInterval('P3M'));
+                $basefee_duedate->add(new DateInterval('P1M'));
                 $pur_day = $this->request->data['Investment']['investment_date']['day'];
                 if (!empty($pur_day)) {
                     $pur_month = $this->request->data['Investment']['investment_date']['month'];
@@ -2980,7 +2933,7 @@ public function checkDuplicate(){
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
                         }
-                        $new_cashathand = $new_cashathand - $base_fee;
+//                        $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
@@ -2989,7 +2942,7 @@ public function checkDuplicate(){
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
                         }
-                        $new_cashathand = $new_cashathand - $base_fee;
+//                        $new_cashathand = $new_cashathand - $base_fee;
 
                         break;
                 }
@@ -3057,136 +3010,135 @@ public function checkDuplicate(){
             $investor_id = $this->request->data['Investment']['investor_id'];
             $investmentproduct_id = $this->request->data['Investment']['investmentproduct_id'];
             $management_fee_type = $this->request->data['Investment']['management_fee_type'];
-                if (isset($this->request->data['fixed_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+            if (isset($this->request->data['fixed_reset'])) {
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
-       
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-            }elseif (isset($this->request->data['equity_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+            } elseif (isset($this->request->data['equity_reset'])) {
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                
-            }elseif (isset($this->request->data['reset'])) {
-                
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+            } elseif (isset($this->request->data['reset'])) {
+
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
             }
             $inv_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($inv_day)) {
@@ -3199,7 +3151,7 @@ public function checkDuplicate(){
                 $inv_date = date('Y-m-d');
             }
             $basefee_duedate = new DateTime($inv_date);
-            $basefee_duedate->add(new DateInterval('P3M'));
+            $basefee_duedate->add(new DateInterval('P1M'));
 
             $pur_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($pur_day)) {
@@ -3225,37 +3177,15 @@ public function checkDuplicate(){
                     $this->Session->write('shopCurrency_investment', $currency_array['Currency']['symbol']);
                 }
             }
-//            if (isset($this->request->data['equity_process'])) {
-//                case 2:
-//                    $this->request->data['Investment']['instruction_id2'] = $this->request->data['instruction_id2'];
-//                    $this->request->data['Investment']['instruction_details2'] = $this->request->data['instruction_details2'];
-//                    $this->request->data['Investment']['currency2'] = $this->request->data['currency2'];
-//                    $this->request->data['Investment']['paymentmode_id2'] = $this->request->data['paymentmode_id2'];
-//
-//                    $this->request->data['Investment']['paymentschedule_id2'] = $this->request->data['paymentschedule_id2'];
-//                    break;
-//            }
+
             $this->Session->write('investtemp', $this->request->data['Investment']);
 
             $this->Session->write('investtemp1', $this->request->data['Investment']);
 
-//            $term_id = $this->request->data['Investment']['investmentterm_id'];
-//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
             $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
             $cashinvested = $this->request->data['Investment']['total_invested'];
             $new_cashinvested = $cashinvested;
-//            $term_id = $this->request->data['Investment']['investmentterm_id'];
-//            if (isset($investmentproduct_id) && !empty($investmentproduct_id)) {
             if (isset($this->request->data['fixed_process'])) {
-//                switch ($investmentproduct_id) {
-//                    case 1:
-//                if ($this->request->data['Investment']['investmentterm_id'] == "" || $this->request->data['Investment']['investmentterm_id'] == null) {
-//                    $message = 'Please Select an Investment Term';
-//                    $this->Session->write('bmsg', $message);
-//                    $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-//                }
-
-
 
                 if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
                     $message = 'Please Select  an Investment Product';
@@ -3339,29 +3269,11 @@ public function checkDuplicate(){
                     }
                 }
                 $first_date = $inv_date;
-//                        break;
             }
             if (isset($this->request->data['equity_process'])) {
-//                    case 2:
                 $first_date = $pinv_date;
 
                 $this->request->data['Investment']['investment_date'] = $pinv_date;
-
-//                        if ($this->request->data['instruction_id2'] == "" || $this->request->data['instruction_id2'] == null) {
-//                            $message = 'Please Select an Instruction';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if (($this->request->data['instruction_id2'] == 5) && (is_null($this->request->data['instruction_details2']) || $this->request->data['instruction_details2'] == "")) {
-//                            $message = 'Please State Instruction Details';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
-//                        if ($this->request->data['currency'] == "" || $this->request->data['currency'] == null) {
-//                            $message = 'Please Select a Currency';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                        }
 
                 if ($this->request->data['Investment']['currency_id'] == "" || $this->request->data['Investment']['currency_id'] == null) {
                     $message = 'Please Select a Currency';
@@ -3420,8 +3332,6 @@ public function checkDuplicate(){
                 // $this->request->data['Investment']['investment_amount'] = $totalamt;
 //                        break;
             }
-//                }
-////            }
             //ask if 
             if (isset($payment_schedule) && !empty($payment_schedule)) {
                 if ($payment_schedule == 1) {
@@ -3605,7 +3515,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
@@ -3614,7 +3524,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
                     }
@@ -3744,7 +3654,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
@@ -3753,7 +3663,7 @@ public function checkDuplicate(){
                                 $this->Session->write('bmsg', $message);
                                 $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                             }
-                            $new_cashathand = $new_cashathand - $base_fee;
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
                     }
@@ -4238,7 +4148,7 @@ public function checkDuplicate(){
     }
 
     function newInvestmentCert_OLD() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $userid = null;
         $check = $this->Session->check('userDetails');
         if ($check) {
@@ -4465,7 +4375,7 @@ public function checkDuplicate(){
     }
 
     function newInvestmentCertComp() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $userid = null;
         $check = $this->Session->check('userDetails');
         if ($check) {
@@ -4681,7 +4591,7 @@ public function checkDuplicate(){
     }
 
     function newInvestmentCert() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
 //        if (!is_null($investment_id)) {
 //
@@ -5322,7 +5232,7 @@ public function checkDuplicate(){
     }
 
     function approveTerminations() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $this->paginate = array(
             'conditions' => array(
@@ -5334,7 +5244,7 @@ public function checkDuplicate(){
     }
 
     function approveTerminations2($investor_id = null, $investor_name = null, $investment_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
             $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
@@ -5529,7 +5439,7 @@ public function checkDuplicate(){
     }
 
     function approvePayments() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $this->paginate = array(
             'conditions' => array(
@@ -5541,7 +5451,7 @@ public function checkDuplicate(){
     }
 
     function approvePayments2($investor_id = null, $investor_name = null, $investment_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
             $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
@@ -5586,16 +5496,16 @@ public function checkDuplicate(){
     }
 
     function monthlyMaturityList() {
-       $this->__validateUserType3();
+        $this->__validateUserType3();
         $first_date = date('Y-m-d');
         $date = new DateTime($first_date);
         $date->add(new DateInterval('P1M'));
-        $date_end =$date->format('Y-m-d');
+        $date_end = $date->format('Y-m-d');
         $this->paginate = array(
             'conditions' => array(
-                'Investment.status' => array('Invested', 'Rolled_over'), 
+                'Investment.status' => array('Invested', 'Rolled_over'),
                 'Investment.investment_product_id' => array(1, 3),
-                'AND' => array(array('Investment.due_date >=' => $first_date),array('Investment.due_date <=' => $date_end))),
+                'AND' => array(array('Investment.due_date >=' => $first_date), array('Investment.due_date <=' => $date_end))),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
@@ -5603,7 +5513,7 @@ public function checkDuplicate(){
     }
 
     function processPayments() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $data_array = array();
         $this->paginate = array(
             'conditions' => array(
@@ -5626,7 +5536,7 @@ public function checkDuplicate(){
     }
 
     function processPayments2() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->autoRender = false;
         if ($this->request->is('post')) {
             if (!empty($this->request->data)) {
@@ -5754,7 +5664,7 @@ public function checkDuplicate(){
     }
 
     function cancelInvestment($investment_id = null, $investor = null, $investor_name = null) {
-       $this->__validateUserType();
+        $this->__validateUserType();
 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
@@ -6086,7 +5996,7 @@ public function checkDuplicate(){
     }
 
     function manageFixedInvestments($investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
         if (!is_null($investor_id) && !is_null($investor_name)) {
@@ -6218,7 +6128,7 @@ public function checkDuplicate(){
                     $to_date = new DateTime($end_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                   
+
                     $year = $duration;
                     $investment_amount = $amount;
 
@@ -6262,7 +6172,7 @@ public function checkDuplicate(){
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
-                            
+
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1Y'));
                                 $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -6306,13 +6216,13 @@ public function checkDuplicate(){
                     $result = $this->Investment->save($investment_array);
                     if ($result) {
                         $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
-                    'investment_id' => $investment_data['Investment']['id'], 'currency_id' => $investment_data['Investment']['currency_id'],
-                    'amount' => $amount,
-                    'available_amount' => $amount,
-                    'investment_type' => 'fixed', 'payment_mode' => $payment_name,
-                    'investment_date' => $first_date);
-                $this->InvestmentCash->create();
-                $this->InvestmentCash->save($investmentcash_data);
+                            'investment_id' => $investment_data['Investment']['id'], 'currency_id' => $investment_data['Investment']['currency_id'],
+                            'amount' => $amount,
+                            'available_amount' => $amount,
+                            'investment_type' => 'fixed', 'payment_mode' => $payment_name,
+                            'investment_date' => $first_date);
+                        $this->InvestmentCash->create();
+                        $this->InvestmentCash->save($investmentcash_data);
                         $this->Topup->create();
                         $this->Topup->save($topup_data);
                         if (isset($client_ledger)) {
@@ -6369,7 +6279,7 @@ public function checkDuplicate(){
     }
 
     function manageEquityInvestments($investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $check = $this->Session->check('disposetemp');
         if ($check) {
             $this->Session->delete('disposetemp');
@@ -6405,7 +6315,7 @@ public function checkDuplicate(){
     }
 
     function editFixedInvestment($investor_id = null, $investment_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
@@ -6455,7 +6365,7 @@ public function checkDuplicate(){
     }
 
     function editEquityInvestment($investor_id = null, $investor_name = null, $investment_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
@@ -6512,7 +6422,7 @@ public function checkDuplicate(){
     }
 
     function ReinstateEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
@@ -6540,7 +6450,7 @@ public function checkDuplicate(){
     }
 
     function payInvestor($investor_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
         if (!is_null($investor_id)) {
             $data = $this->ClientLedger->find('first', array('conditions' => array('ClientLedger.investor_id' => $investor_id)));
@@ -6556,7 +6466,7 @@ public function checkDuplicate(){
     }
 
     function disposeEquityInvestment($investment_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 //        $this->set('paymentmodes', $this->PaymentMode->find('list'));
         if (!is_null($investment_id)) {
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
@@ -6674,149 +6584,148 @@ public function checkDuplicate(){
     }
 
     public function listPayments() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
     }
 
     public function editPayment() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
     }
 
     public function process_rollover() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->autoRender = false;
         if ($this->request->is('post')) {
             $invesmentID = $this->request->data['Investment']['id'];
             $investor_id = $this->request->data['Investment']['investor_id'];
-              if (isset($this->request->data['fixed_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+            if (isset($this->request->data['fixed_reset'])) {
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
-       
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-            }elseif (isset($this->request->data['equity_reset'])) {
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+            } elseif (isset($this->request->data['equity_reset'])) {
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-                
-            }elseif (isset($this->request->data['reset'])) {
-                
-                
-         $check = $this->Session->check('ledger_data');
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+            } elseif (isset($this->request->data['reset'])) {
+
+
+                $check = $this->Session->check('ledger_data');
                 if ($check) {
                     $this->Session->delete('ledger_data');
                 }
 
-        $check = $this->Session->check('investtemp1');
-        if ($check) {
-            $this->Session->delete('investtemp1');
-        }
-        $check = $this->Session->check('variabless_fixed');
-        if ($check) {
-           $this->Session->delete('variabless_fixed'); 
-        }
-        $check = $this->Session->check('variabless_equity');
-        if ($check) {
-            $this->Session->delete('variabless_equity');
-        }
- $check = $this->Session->check('investment_array_equity');
-                    if ($check) {
-                        $this->Session->delete('investment_array_equity');
-                    }
-                   $check = $this->Session->check('investment_array_fixed');
-                    if ($check) {
-                        $this->Session->delete('investment_array_fixed');
-                    } 
-                    $check = $this->Session->check('investtemp');
-                    if ($check) {
-                        $this->Session->delete('investtemp');
-                    } 
-                    $check = $this->Session->check('generic_array');
-                    if ($check) {
-                        $this->Session->delete('generic_array');
-                    } 
-                    $check = $this->Session->check('ledger_transactions');
-                    if ($check) {
-                        $this->Session->delete('ledger_transactions');
-                    } 
-                  $message = 'Investment Successfully Reset';
-                    $this->Session->write('imsg', $message); 
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $message = 'Investment Successfully Reset';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
             }
             $ledger_transactions = array();
             $management_fee_type = $this->request->data['Investment']['management_fee_type'];
@@ -6837,7 +6746,7 @@ public function checkDuplicate(){
                     $inv_date = date('Y-m-d');
                 }
                 $basefee_duedate = new DateTime($inv_date);
-                $basefee_duedate->add(new DateInterval('P3M'));
+                $basefee_duedate->add(new DateInterval('P1M'));
 
                 $pur_day = $this->request->data['Investment']['investment_date']['day'];
                 if (!empty($pur_day)) {
@@ -7000,7 +6909,7 @@ public function checkDuplicate(){
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                         }
-                        $new_cashathand = $new_cashathand - $base_fee;
+//                        $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
@@ -7009,7 +6918,7 @@ public function checkDuplicate(){
                             $this->Session->write('bmsg', $message);
                             $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                         }
-                        $new_cashathand = $new_cashathand - $base_fee;
+//                        $new_cashathand = $new_cashathand - $base_fee;
 
                         break;
                 }
@@ -7082,7 +6991,7 @@ public function checkDuplicate(){
     }
 
     function rollover($investment_id = null, $investor_id = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('investmentterms', $this->InvestmentTerm->find('list'));
@@ -7148,7 +7057,7 @@ public function checkDuplicate(){
     }
 
     function statementActiveInv($investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         $issued = $this->Session->check('userData');
         if ($issued) {
             $issued = $this->Session->read('userData');
@@ -7181,9 +7090,9 @@ public function checkDuplicate(){
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-    
+
     function clientLedger($investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
             $data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
@@ -7215,9 +7124,9 @@ public function checkDuplicate(){
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-    
+
     public function statementAllInv($investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
 
         $issued = $this->Session->check('userData');
         if ($issued) {
@@ -7253,7 +7162,7 @@ public function checkDuplicate(){
     }
 
     public function statementInvDetail($invesmentID = null, $investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         if (!is_null($invesmentID)) {
             $data = $this->DailyInterestStatement->find('all', array('conditions' =>
                 array('DailyInterestStatement.investment_id' => $invesmentID)));
@@ -7295,7 +7204,7 @@ public function checkDuplicate(){
     }
 
     public function statementDailyInterest($invesmentID = null, $investor_id = null, $investor_name = null) {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
         if (!is_null($invesmentID)) {
             $data = $this->InvestmentStatement->find('all', array('conditions' =>
                 array('InvestmentStatement.investment_id' => $invesmentID)));
@@ -7337,7 +7246,7 @@ public function checkDuplicate(){
     }
 
     public function payments() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
     }
 
     public function getPurchasePrice() {

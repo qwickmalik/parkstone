@@ -33,6 +33,7 @@ jQuery(document).ready(function($) {
 
   // Finished, submit the form!
   $('.wizard').on('finished', function(e, data) {
+//      $('form').submit();
     var form_data = $('form').serialize();
 
 var query = form_data;

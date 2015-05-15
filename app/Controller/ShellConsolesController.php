@@ -28,21 +28,25 @@ class ShellConsolesController extends AppController {
      */
     public function cronJobs() {
         $this->autoRender = false;
-//        $this->__runDailyDefaulters();
         $this->__invEOD();
     }
 
     public function defaultJobs() {
         $this->autoRender = false;
-        //$this->__defaultDaily();
         $this->__dailyInterests();
-        $this->__dailyReinvestmentInterests();
         $this->__dailyMatured();
-        $this->__dailyReinvestmentMatured();
     }
 
+    public function backendJobs(){
+        $this->autoRender = false;
+        $this->__dailyReinvestmentInterests();
+        $this->__dailyReinvestmentMatured();
+    }
    
-
+    public function miscJobs(){
+        $this->autoRender = false;
+        $this->__processFees();
+    }
     public function sms() {
         $this->autoRender = false;
         $this->__runduedateSMS();
@@ -313,6 +317,27 @@ function __dailyReinvestmentInterests(){
 
     function defaultersMail(){
         
+    }
+    
+    function __processFees(){
+       $data = $this->Investment->find('all',array('conditions' => array(
+            'Investment.basefee_duedate <=' => date('Y-m-d')
+        ),'recursive' => -1));
+       
+       if($data){
+           foreach($data as $val){
+               $id = $val['Investment']['id']; 
+               $old_accrued = $val['Investment']['accrued_basefee'];
+               $base_fee = $val['Investment']['base_fees'];
+               $old_totalfees = $val['Investment']['total_fees'];
+               $new_accrued = $old_accrued + $base_fee;
+               $new_totalfees = $old_totalfees + $base_fee;
+               
+               $new_data = array('accrued_basefee' => $new_accrued,'total_fees' => $new_totalfees);
+               $this->Investment->id = $id;
+               $this->Investment->save($new_data);
+           }
+       }
     }
 }
 
