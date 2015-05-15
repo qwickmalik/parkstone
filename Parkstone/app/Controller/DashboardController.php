@@ -1,10 +1,10 @@
 <?php
 
 class DashboardController extends AppController {
-
+    
     var $name = 'Dashboard';
     var $uses = array('Dashboard','Investor','InvestmentCash', 'Investment');
-    
+    public $components = array('RequestHandler', 'Session');
 
     function beforeFilter() {
         $this->__validateLoginStatus();

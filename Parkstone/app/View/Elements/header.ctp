@@ -1,6 +1,6 @@
 <?php
 $cakeDescription = __d('cake_dev', 'Parkstone Capital');
-        $userType = $this->Session->read('userDetails.usertype_id');
+$userType = $this->Session->read('userDetails.usertype_id');
     
 ?>
 <!DOCTYPE html>
