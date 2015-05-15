@@ -1129,3 +1129,8 @@ May 11, 2015
 ALTER TABLE `investments` ADD `notes` TEXT NULL ;
 ALTER TABLE `investments` ADD `receipt_no` VARCHAR(35) NULL ;
 ALTER TABLE `reinvestments` ADD `notes` TEXT NULL AFTER `payment_status`, ADD `receipt_no` VARCHAR(35) NULL AFTER `notes`;
+
+
+May 15, 2015
+----------------------------
+ALTER TABLE `investments` CHANGE `basefee_accrued` `accrued_basefee` DECIMAL(11,2) NULL DEFAULT '0.00';

@@ -47,7 +47,7 @@ DONE -Add receipt no input to new investment, new reinvestments pages
 --NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
 DONE - Add from - to date search ranges to Report Module/Maturity List.
 DONE - Create Monthly maturity List Page
---Redesin Investment payment receipt
+--Redesign Investment payment receipt
 
 
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--

@@ -1,4 +1,24 @@
+look at new investor photo upload
+==Management Fee Explanation==
+richmom_3
+Based on our recent meeting with our regulators, the 
+treatment for our benchmark, performance and management fee has changed. We have agreed 
+that we will charge a management fee of 6%,  Client’s interest will be calculated based  
+on the benchmark rate assigned to them. Any additional return(rate) which, we call a performance fee will accrue to Parkstone Capital Ltd.
+ 
+Hence, if we place a client’s investment at 32%, and we assign a benchmark rate of 25%, 6% will 
+be management fee, the additional 1% will accrue to Parkstone Capital as a performance fee. Therefore 
+when calculating our income, the Company will get the 6% management fee and 1% performance fee.
+
+
 Please find attached the reports we talked about. At the end of the meeting,
+In addition, fees (management and performance) will be calculated (daily), with the total 
+at the end of every month, but performance fees will be based on residual income at the end of 
+each month, after management fees and benchmark rate computation has been deducted from any income made from investment Parkstone makes.
+ 
+I also think that we may need more than one investment pool for client funds in addition to Parkstone’s own funds which will obviously be separate. 
+ So, I think you may have to make the possibility of creating/selecting an investment pool (more than one).
+ You mentioned this possibility at our last discussion.
 1.We agreed that all Clients will be put in a pool and charged a 6%p.a management fee. 
 Once management fees are deducted from total income gained, the remaining income will be spread to all 
 the clients according to weights that will be assigned to their amounts (based on their investment contributions) on a daily basis.
