@@ -7,6 +7,19 @@ class User extends AppModel {
     var $displayField = "username";
     
     var $hasMany = array(
+        'Sysaudit' => array(
+            'className' => 'Sysaudit',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
         'Payment' => array(
             'className' => 'Payment',
             'foreignKey' => 'user_id',

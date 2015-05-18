@@ -5,15 +5,10 @@ class ReportsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reports';
-    var $uses = array('Setting', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'BalanceSheet', 'IncomeStatement', 'Equity', 'Order', 'Zone', 'OrdersItem', 'Payment', 'ClosingBalance', 'Expectedpayment', 'Expectedinstallment','SalesItem','Sale','Warehouse','Supplierinvoice','Customer', 'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal','CashAccount', 'TempcashAccount','Expense');
-    var $paginate = array(
-        'Order' => array('limit' => 25, 'order' => array('Order.customer_id' => 'asc'), 'conditions' => array('Order.balance >' => 0, 'status' => 'Approved', 'delivery' => 'Delivered'), 'fields' => array('DISTINCT Order.customer_id', 'SUM(Order.balance) As bal', 'Order.amount_paid', 'Order.id', 'Customer.fullname', 'Customer.mobile_no', 'Order.last_date')),
-        'OrdersItem' => array('limit' => 25),
-        'ClosingBalance' => array('limit' => 25),
-        'Expectedinstallment' => array('limit' => 500),
-        'Supplierinvoice' => array('limit' => 25),
-        'Customer' => array('limit' => 500)
-    );
+    var $uses = array('Setting', 'User', 'Currency',  'BalanceSheet', 'IncomeStatement', 'Equity',
+       'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal',
+        'CashAccount', 'TempcashAccount','Expense');
+    var $paginate = array();
 
     function beforeFilter() {
         $this->__validateLoginStatus();
@@ -31,6 +26,9 @@ class ReportsController extends AppController {
 
         $userType = $this->Session->read('userDetails.usertype_id');
         if ($userType != 1) {
+            
+            $message = 'You do not have the required privileges to view this page';
+            $this->Session->write('bmsg', $message);
             $this->redirect('/Dashboard/');
         }
     }
@@ -38,6 +36,9 @@ class ReportsController extends AppController {
 
         $userType = $this->Session->read('userDetails.usertype_id');
         if ($userType != 1 && $userType != 8) {
+            
+            $message = 'You do not have the required privileges to view this page';
+            $this->Session->write('bmsg', $message);
             $this->redirect('/Dashboard/');
         }
     }
@@ -53,6 +54,93 @@ class ReportsController extends AppController {
         throw new CakeException('Vendor class PHPExcel not found!');
     }
 }
+    public function create_audit_trail() {
+        $this->__validateUserType();
+        $title_for_layout = 'Admin / audit trail review';
+        $formTitle = 'ADMIN / AUDIT TRAIL REVIEW';
+        $audit_search_record;
+        $record = $this->Organization->find('all', array(
+            'conditions' => array('Organization.status' => 'Approved'),
+            'recursive' => -1
+        ));
+        $audit_type_record = $this->Sysaudit->find('all', array(
+            'fields' => array('DISTINCT Sysaudit.AUDITTYPE')
+                )
+        );
+        $staff_record = $this->EhmisUser->find('all');
+        $status_msg = "";
+
+        $staff_record_audit = $this->EhmisUser->find('all', array(
+            "order" => array(
+                "EhmisUser.FIRSTNAME" => "ASC"
+            )
+        ));
+        $staff = $this->Employee->find('all');
+        $dependant_record_list = $this->EhmisUser->find('all', array(
+            'conditions' => array('EhmisUser.USER_TYPE_ID' => 2)));
+
+     //Search Audit Trail
+        if ($this->request->is('post') ) {
+            //pr($_POST);
+            $btn_review = "audit_search";
+            $startdate = $_POST['STARTYEAR'] . "-" . $_POST['STARTMONTH'] . "-" . $_POST['STARTDAY'];
+            $enddate = $_POST['ENDYEAR'] . "-" . $_POST['ENDMONTH'] . "-" . $_POST['ENDDAY'];
+             $AUDITTYPE = $_POST['AUDITTYPE'];
+//            $audit_search_record = $this->Sysaudit->find('all', array(
+//                'conditions' => array('Sysaudit.AUDITDATE BETWEEN ? AND ?' => array($startdate, $enddate),
+//                    'Sysaudit.AUDITTYPE' => $_POST['AUDITTYPE']
+////                    'Sysaudit.EHMIS_USER_ID' => $_POST['EHMIS_USER_ID']
+//                )
+//            ));
+            $this->redirect(array('controller' => 'Settings', 'action' => 'list_audit_trail',$startdate,$enddate,$AUDITTYPE));
+           
+        }
+
+        $this->set(compact('formTitle', 'title_for_layout', 'status_msg', 'audit_type_record', 'staff_record_audit', 'audit_search_record', 'btn_review', 'audit_search_record', 'staff', 'record', 'staff_record', 'dependant_record_list'));
+    }
+    
+public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=null) {
+    $this->__validateUserType();
+        $title_for_layout = 'Admin / audit trail review';
+        $formTitle = 'ADMIN / AUDIT TRAIL REVIEW';
+        $audit_search_record;
+        $record = $this->Organization->find('all', array(
+            'conditions' => array('Organization.status' => 'Approved'),
+            'recursive' => -1
+        ));
+        $audit_type_record = $this->Sysaudit->find('all', array(
+            'fields' => array('DISTINCT Sysaudit.AUDITTYPE')
+                )
+        );
+        $staff_record = $this->EhmisUser->find('all');
+        $status_msg = "";
+
+        $staff_record_audit = $this->EhmisUser->find('all', array(
+            "order" => array(
+                "EhmisUser.FIRSTNAME" => "ASC"
+            )
+        ));
+        $staff = $this->Employee->find('all');
+        $dependant_record_list = $this->EhmisUser->find('all', array(
+            'conditions' => array('EhmisUser.USER_TYPE_ID' => 2)));
+
+        
+         $this->paginate = array('conditions' => array('Sysaudit.AUDITDATE BETWEEN ? AND ?' => array($startdate, $enddate),
+                    'Sysaudit.AUDITTYPE' => $AUDITTYPE),
+            'limit' => 20);
+        $audit_search_record = $this->paginate('Sysaudit');
+            if (empty($audit_search_record)) {
+                $status_msg = "No Audit Record Available Currently";
+            }
+       
+
+
+        //echo $this->Sysaudit->getLastQuery();
+        // pr ($audit_search_record);
+
+        $this->set(compact('formTitle', 'title_for_layout', 'status_msg', 'audit_type_record', 'staff_record_audit', 'audit_search_record', 'btn_review', 'audit_search_record', 'staff', 'record', 'staff_record', 'dependant_record_list'));
+    }
+
     function financialPosition1() {
         if ($this->request->is('ajax')) {
             Configure::write('debug', 0);
@@ -2367,8 +2455,59 @@ public function convert2PdfnEmail(){
     }
     
     function activeInvestments(){
-        $this->__validateUserType3();
-        
+        $this->__validateUserType();
+          if ($this->request->is('post')) {
+
+            $sday = $this->request->data['Investment']['begin_date']['day'];
+            $smonth = $this->request->data['Investment']['begin_date']['month'];
+            $syear = $this->request->data['Investment']['begin_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+            $eday = $this->request->data['Investment']['finish_date']['day'];
+            $emonth = $this->request->data['Investment']['finish_date']['month'];
+            $eyear = $this->request->data['Investment']['finish_date']['year'];
+            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
+            $enewdate = strtotime($ends_date);
+            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($end_date);
+            //$date->add(new DateInterval('P1D'));
+             $end_date = $date->format('Y-m-d');
+            $frend_date = date('d F, Y', $enewdate);
+
+            $this->set('frstart_date', $frstart_date);
+            $this->set('frend_date', $frend_date);
+
+            
+            $lateday = date('Y-m-t');
+            $firstday = date('Y-m-01');
+            $accounts = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'Investment.investment_product_id' => array(1,3),
+                    'Investment.status' => array('Invested','Rolled_over','Termination_Requested'))));
+
+//, 'group' => array('Expectedinstallment.zone_id')
+            $total = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'Investment.investment_product_id' => array(1,3),
+                    'Investment.status' => array('Invested','Rolled_over','Termination_Requested')), 'fields' => 
+                array("SUM((Investment.investment_amount)) as principal",
+                    "SUM((Investment.interest_accrued)) as interest", 
+                    "SUM((Investment.investment_amount + Investment.interest_accrued)) as total")));
+
+            if ($accounts) {
+
+                $this->set('accounts', $accounts);
+                if ($total) {
+
+                    $this->set('total', $total);
+                }
+            }
+    }
     }
     
     function investorDeposits(){

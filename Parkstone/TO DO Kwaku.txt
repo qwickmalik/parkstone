@@ -1,16 +1,5 @@
-look at new investor photo upload
-==Management Fee Explanation==
-richmom_3
-Based on our recent meeting with our regulators, the 
-treatment for our benchmark, performance and management fee has changed. We have agreed 
-that we will charge a management fee of 6%,  Client’s interest will be calculated based  
-on the benchmark rate assigned to them. Any additional return(rate) which, we call a performance fee will accrue to Parkstone Capital Ltd.
- 
-Hence, if we place a client’s investment at 32%, and we assign a benchmark rate of 25%, 6% will 
-be management fee, the additional 1% will accrue to Parkstone Capital as a performance fee. Therefore 
-when calculating our income, the Company will get the 6% management fee and 1% performance fee.
-
-
+look at new investor photo upload richmom_3
+--Audit Trail
 Please find attached the reports we talked about. At the end of the meeting,
 In addition, fees (management and performance) will be calculated (daily), with the total 
 at the end of every month, but performance fees will be based on residual income at the end of 
@@ -168,6 +157,17 @@ We will get income from the following sources:
 
        I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
 	   
+DONE==Management Fee Explanation==
+
+Based on our recent meeting with our regulators, the 
+treatment for our benchmark, performance and management fee has changed. We have agreed 
+that we will charge a management fee of 6%,  Client’s interest will be calculated based  
+on the benchmark rate assigned to them. Any additional return(rate) which, we call a performance fee will accrue to Parkstone Capital Ltd.
+ 
+Hence, if we place a client’s investment at 32%, and we assign a benchmark rate of 25%, 6% will 
+be management fee, the additional 1% will accrue to Parkstone Capital as a performance fee. Therefore 
+when calculating our income, the Company will get the 6% management fee and 1% performance fee.
+
 	   
 
 --REVIEW 16TH APRIL, 2015--

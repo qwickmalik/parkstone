@@ -22,19 +22,11 @@ class InvestmentsController extends AppController {
 //var $helpers = array('AjaxMultiUpload.Upload');
 
     function beforeFilter() {
-        // App::uses('Sanitize', 'Utility');
-        $this->__validateLoginStatus();
-        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
-        //   $this->request->data = Sanitize::clean($this->request->data, array('remove_html'=>true,'encode'=>false,'unicode'=>false,'backslash'=>true, 'escape'=>true,'dollar'=> true));
-    }
-
-    function __validateLoginStatus() {
-        if ($this->action != 'login' && $this->action != 'logout') {
-            if ($this->Session->check('userData') == false) {
-                $this->redirect('/');
-            }
+//        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
+        
         }
-    }
+
+    
 
     function __validateUserType() {
 
