@@ -159,7 +159,15 @@ class UsersController extends AppController {
                 $this->Session->write('accYear', $settings['Setting']['accounting_month']);
                 $this->Session->write('owner', $settings['Setting']['owner_name']);
                 $this->Session->write('userInfo', $result);
-
+                     $this->Session->delete('public_unapproved_investors');
+        $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
+        
+        $this->Session->delete('public_termination_req');
+        $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+        
+        $this->Session->delete('public_payment_req');
+        $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+    
                 if (count($result['User']['username']) != 0) {
                     $jsonData = json_encode($result['User']['username']);
                 } else {

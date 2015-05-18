@@ -34,6 +34,8 @@ class AppController extends Controller {
     var $uses = array('Investor', 'Investment');
     
     public function beforeFilter(){
+        
+        $this->__validateLoginStatus();
         $this->Session->delete('public_unapproved_investors');
         $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
         
@@ -42,6 +44,14 @@ class AppController extends Controller {
         
         $this->Session->delete('public_payment_req');
         $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+    }
+    
+    function __validateLoginStatus() {
+        if ($this->action != 'login' && $this->action != 'logout') {
+            if ($this->Session->check('userData') == false) {
+                $this->redirect('/');
+            }
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 $cakeDescription = __d('cake_dev', 'Parkstone Capital');
 $userType = $this->Session->read('userDetails.usertype_id');
-    
+
 ?>
 <!DOCTYPE html>
 <html class="fuelux" lang="en">
@@ -120,7 +120,7 @@ $date = date('g:ia');
                                                                     </ul>
                                                                 </li>-->
                                 <?php
-                                if ($userType == 1) {
+                                if ( $userType == 1) {
             
         
                                 if ($this->Session->check('public_unapproved_investors')) {
@@ -269,7 +269,7 @@ $date = date('g:ia');
                                     ?>
                                 </li>
                                 <li>
-                                    <?php echo '<span style="font-size: 10px;"><b>'. $username .'</b> is logged in</span>'; ?>
+                                    <?php echo '<span style="font-size: 10px;"><b>' . $username .'</b> is logged in</span>'; ?>
                                 </li>
                             </ul>
                         </div>
