@@ -3,40 +3,59 @@
 
 *Reports
 NB. All reports will have from date - to date filter options
+1. Funds under Management
+   [ filter included:YEAR,Checkbox to check for BBF]
+   Columns
+   -------
+   New Investments (shows total monthly client deposits)
+   Cummulative New Investments (cummulative deposits up to date)
+   Investor Interest Rolled over (shows total monthly client interest rollovers)
+   Cumulative Interest rolled over (Shows cummulative interest rollover to date.so previous plus current months)
+   Principal Repayments (Shows monthly principal repayments)
+   Cumulative payments (shows cummulative principal payments)
+   Net Funds Under management (shows Cummulative New Investments + Cummulative rolled over - Cummulative payments)
+   Maturity list (shows total of Monthly/BBF deposit + total monthly/Bbf rolledover interest)
+   Difference(shows Net funds undermanagement - Maturity list)
+   
+   Rows
+   ----
+   BBF (previous year)
+   January
+   February
+   to
+   December
+   
 
-DONE 1. Active Investments Report
-   #fields
-   ------
-   Investor (Name)
-   Start Date
-   Total Amt Invested(Principal)
-   Rate
-   Maturity Date
-   Current Date
-   Accrued Interest
-   Total(Principal + Accrued)
-
-DONE 2. Investor Deposits Report
-   #fields
-   ------
-   Investor (Name)
-   Deposit Date
-   Amount Deposited
-   Investment Date
-   Rate
-   Tenure/Period
-   User/Staff
-   Receipt No
- ------------
-  Total Amt Deposit
-
-DONE 3. RollOver/Disinvestment Report
-   (refer to technical_specs/reports/Report.xlsx - tab 2)
-
-DONE 4. AGGREGATE INVESTMENT REPORT
-
-
-
+2. Interest Accrued[Cummulative/Monthly]
+	[ filter included:YEAR,Checkbox to check for if cummulative/monthly ]
+	COLUMNS
+	-------
+	Investor
+	*BBF (will not apply if monthly)
+	January
+	February
+    to
+    December
+	
+	ROWS
+	----
+	Totals (at the bottom)
+	
+3. Income Spread
+-------------------------------
+[ filter included:YEAR]
+ COLUMNS
+ -------
+ Investment Interest (shows total montly interest of maturing external investments)??
+ Monthly Interest Accrued (shows monthly total from Monthly interest accrued)
+ Spread
+ 
+  ROWS
+  ----
+   January
+   February
+   to
+   December
 #Reinvestment & Investment Modules
 DONE - Add notes input to new investment, new reinvestments pages
 DONE -Add receipt no input to new investment, new reinvestments pages
@@ -110,6 +129,36 @@ T0 D0
 
 DONE
 -----
+DONE 1. Active Investments Report
+   #fields
+   ------
+   Investor (Name)
+   Start Date
+   Total Amt Invested(Principal)
+   Rate
+   Maturity Date
+   Current Date
+   Accrued Interest
+   Total(Principal + Accrued)
+
+DONE 2. Investor Deposits Report
+   #fields
+   ------
+   Investor (Name)
+   Deposit Date
+   Amount Deposited
+   Investment Date
+   Rate
+   Tenure/Period
+   User/Staff
+   Receipt No
+ ------------
+  Total Amt Deposit
+
+DONE 3. RollOver/Disinvestment Report
+   (refer to technical_specs/reports/Report.xlsx - tab 2)
+
+DONE 4. AGGREGATE INVESTMENT REPORT
 DONE 26.04.15 Login system
 
 --New Investor

@@ -18,6 +18,8 @@ each point in time (usually the end of the month).
 
 
 --REVIEW 16TH APRIL, 2015--
+-Add dropdown on reinvestment payment page to show whether payment is principal,interest or both
+-Add dropdown in investment payment page to show whether payment is principal,interest or both
 -Review add investor process. esp corporate and group. check all compulsory fields
 -Set currency fields to cedi by default
 -Give function to check for duplicate investor page entry

@@ -1134,3 +1134,20 @@ ALTER TABLE `reinvestments` ADD `notes` TEXT NULL AFTER `payment_status`, ADD `r
 May 15, 2015
 ----------------------------
 ALTER TABLE `investments` CHANGE `basefee_accrued` `accrued_basefee` DECIMAL(11,2) NULL DEFAULT '0.00';
+
+MAY 20,2015
+---------------------------
+
+CREATE TABLE IF NOT EXISTS `investor_deposits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_ledger_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `investment_id` int(11) DEFAULT NULL,
+  `amount` decimal(11,2) DEFAULT '0.00',
+  `deposit_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `investor_deposits` ADD `receipt_no` VARCHAR(30) NULL AFTER `amount`;
