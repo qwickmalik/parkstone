@@ -12,7 +12,7 @@ class InvestmentsController extends AppController {
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
         'PaymentMode', 'CashReceiptMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
         'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
-        'InvestorEquity', 'LedgerTransaction', 'Topup');
+        'InvestorEquity', 'LedgerTransaction', 'Topup','InvestorDeposit');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
@@ -2323,12 +2323,16 @@ class InvestmentsController extends AppController {
                     
                 }
             }
+            $receipt_no = $this->request->data['Investment']['receipt_no'];
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
-                    'date' => $inv_date, 'description' => 'Deposit for investment');
+                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:'.$receipt_no);
+            
+                
+                
             }
             $base_fee = 0;
             $base_rate = 0;
@@ -2658,7 +2662,8 @@ class InvestmentsController extends AppController {
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                    'investment_date' => $inv_date);
+                    'investment_date' => $inv_date,
+                    'details' => $this->request->data['Investment']['notes']);
 
                 $total_cash = $new_cashathand + $new_cashinvested;
                 $description = 'Deposit for investment';
@@ -3332,13 +3337,16 @@ class InvestmentsController extends AppController {
                     
                 }
             }
+              $receipt_no = $this->request->data['Investment']['receipt_no'];
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
-                    'date' => $inv_date, 'description' => 'Deposit for investment');
+                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:'.$receipt_no);
             }
+             
+           
             $base_fee = 0;
             $base_rate = 0;
             $benchmark_rate = 0;
@@ -3698,7 +3706,8 @@ class InvestmentsController extends AppController {
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
-                    'investment_date' => $inv_date);
+                    'investment_date' => $inv_date,
+                    'details' => $this->request->data['Investment']['notes']);
 
                 $total_cash = $new_cashathand + $new_cashinvested;
                 $description = 'Deposit for investment';

@@ -20,6 +20,19 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
+        'InvestorDeposit' => array(
+            'className' => 'InvestorDeposit',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
         'Payment' => array(
             'className' => 'Payment',
             'foreignKey' => 'user_id',

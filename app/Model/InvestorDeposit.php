@@ -11,34 +11,31 @@
  *
  * @author kwaku.afreh-nuamah
  */
-class ClientLedger extends AppModel {
+class InvestorDeposit extends AppModel {
 
-    var $name = "ClientLedger";
-    var $usesTable = "client_ledgers";
-     var $displayField = "voucher_no";
+    var $name = "InvestorDeposit";
+    var $usesTable = "investor_deposits";
      
        var $belongsTo = array(
-            'Investor' => array(
-            'className' => 'Investor',
-            'foreignKey' => 'investor_id',
+        'ClientLedger' => array(
+            'className' => 'ClientLedger',
+            'foreignKey' => 'client_ledger_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ));
-       
-        var $hasMany = array(
-        'InvestorDeposit' => array(
-            'className' => 'InvestorDeposit',
-            'foreignKey' => 'client_ledger_id',
+          ),
+            'Invesmtment' => array(
+            'className' => 'Invesmtment',
+            'foreignKey' => 'investment_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
             ),
-        'LedgerTransaction' => array(
-            'className' => 'LedgerTransaction',
-            'foreignKey' => 'client_ledger_id',
+            'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
