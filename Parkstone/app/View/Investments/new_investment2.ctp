@@ -240,13 +240,13 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
                                     echo $this->Form->input('notes', array('label' => 'Notes', 'value' =>
-                                        (isset($notes) ? $notes : '')));
+                                        ($this->Session->check('investtemp1.notes') == true ? $this->Session->read('investtemp1.notes') : '' )));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('receipt_no', array('label' => 'Receipt Number', 'value' =>
-                                        (isset($receipt_no) ? $receipt_no : '')));
+                                    echo $this->Form->input('receipt_no', array('label' => 'Receipt Number',  'value' =>
+                                        ($this->Session->check('investtemp1.receipt_no') == true ? $this->Session->read('investtemp1.receipt_no') : '' )));
                                     ?>
                                 </div>
 

@@ -91,6 +91,14 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
+        'InvestorDeposit' => array(
+            'className' => 'InvestorDeposit',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
         'Rollover' => array(
             'className' => 'Rollover',
             'foreignKey' => 'investment_id',
