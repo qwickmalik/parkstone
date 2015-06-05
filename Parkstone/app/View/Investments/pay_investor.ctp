@@ -36,8 +36,12 @@
         ?></span></td>
                         </tr>
                         <tr>
-                            <td width="30%"><b align="right">&nbsp;</b></td>
-                            <td><span align="left" id="xxxxxx">&nbsp;</span></td>
+                            <td width="30%"><b align="right">Instructions:</b></td>
+                            <td><span align="left" id="xxxxxx"><?php
+                                    if (isset($inv_data['Investment']['instruction_details'])) {
+                                        echo $inv_data['Investment']['instruction_details'];
+                                    }
+        ?></span></td>
                         </tr>
                         <tr>
                             <td><b align="right">&nbsp;</b></td>
@@ -140,11 +144,17 @@
                             $("#InvestmentPaymentPaymentDateYear option[value=" + year + "]").attr('selected', true);
                         </script>
                     </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12" >
 <?php echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;" . $this->Form->input('paymentmode_id', array('required','label' => false, 'empty' => "--Please Select--", 
     'value' => ($this->Session->check('payinvesttemp.paymentmode_id') == true ? 
         $this->Session->read('payinvesttemp.paymentmode_id') : '' )));
 ?>
-              
+                        </div>
+              <div class="col-lg-5 col-md-5 col-sm-12" >
+                                    <?php
+                                  echo "<b style='font-size: 16px;'>Instructions:</b>&nbsp;" . $this->Form->input('instruction_id', array('required','label' => false, 'empty' => "--Please Select--"));
+                                    ?>
+                                </div>
                 </td>
 
                        

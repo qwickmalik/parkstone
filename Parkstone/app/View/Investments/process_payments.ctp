@@ -24,7 +24,9 @@
                     <?php if (isset($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;">
-                                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/payInvestor/".(isset($each_item['ClientLedger']['investor_id']) ? $each_item['ClientLedger']['investor_id'] : '' ),array()); ?></td>
+                                <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/payInvestor/".
+                                        (isset($each_item['ClientLedger']['investor_id']) ? $each_item['ClientLedger']['investor_id'] : '' )."/".
+                                        (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array()); ?></td>
                                 <td align="left"><?php echo number_format($each_item['ClientLedger']['available_cash']);  ?></td>
                                 <td align="left"><?php echo number_format($each_item['ClientLedger']['invested_amount']); ?></td>
                                 <td align="left"><?php echo $each_item['ClientLedger']['modified']; ?></td>

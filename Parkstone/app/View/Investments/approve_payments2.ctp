@@ -21,6 +21,9 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                         echo $this->Form->hidden('investment_id',array('value' =>(isset($investment_id)?$investment_id : '')));
                        
                         ?></p></td>
+                <td  align="right" >
+                   &nbsp;
+                </td>
             </tr>
             <tr>
                 <td align="left" width="200"><p style="font-size: 18px;">Investor Name: </p></td>
@@ -29,7 +32,30 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                             echo $investor_name;
                         }
                         ?></p></td>
+                <td align="right">
+                   &nbsp;
+                </td>
             </tr>
+            <tr>
+                <td align="left" width="200"><p style="font-size: 18px;">Instructions: </p></td>
+                <td align="left"><p style="font-size: 18px;"><?php
+                        if (isset($instructions)) {
+                            echo $instructions;
+                        }
+                        ?></p></td>
+                <td align="right">
+                     <fieldset >
+                                <legend style="display: none;">Instructions</legend>
+                                <input id="ApproveInvestmentsInstructions0" required="required" type="radio" value="Pay Principal" name="data[ApproveInvestments][instructions]">
+                                <label for="ApproveInvestmentsInstructions0">Pay Principal</label>
+                                <input id="ApproveInvestmentsInstructions1" type="radio" value="Pay Interest" name="data[ApproveInvestments][instructions]">
+                                <label for="ApproveInvestmentsInstructions1">Pay Interest</label>
+                                <input id="ApproveInvestmentsInstructions2" type="radio" value="Pay Principal & Interest" name="data[ApproveInvestments][instructions]">
+                                <label for="ApproveInvestmentsInstructions2">Pay Both</label>
+                            </fieldset>
+                </td>
+            </tr>
+            
         </table>
 
 

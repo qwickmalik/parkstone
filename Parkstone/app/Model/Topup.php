@@ -34,7 +34,16 @@ class Topup extends AppModel{
         );
     
     
-     
+       
+       var $hasMany = array(
+        'InvestorDeposit' => array(
+            'className' => 'InvestorDeposit',
+            'foreignKey' => 'topup_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
     
 }
 ?>

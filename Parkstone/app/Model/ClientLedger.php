@@ -28,14 +28,6 @@ class ClientLedger extends AppModel {
             ));
        
         var $hasMany = array(
-        'InvestorDeposit' => array(
-            'className' => 'InvestorDeposit',
-            'foreignKey' => 'client_ledger_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
         'LedgerTransaction' => array(
             'className' => 'LedgerTransaction',
             'foreignKey' => 'client_ledger_id',

@@ -10,9 +10,10 @@ class ReinvestmentsController extends AppController {
     var $uses = array('Reinvestment', 'Reinvestor', 'ReinvestorDeposit', 'ReinvestorCashaccount', 'Investee', 'Currency',
         'InvestmentProduct', 'PaymentMode', 'PaymentSchedule', 'InvestmentTerm', 'InvestmentCash',
         'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'ReinvestmentsEquity','InvestorEquity',
-        'ReinvestmentRollover', 'ReinvestmentStatement', /*'ReinvestmentEquityStatement',*/ 
+        'ReinvestmentRollover', 'ReinvestmentStatement', /*'ReinvestmentEquityStatement',*/ 'Instruction',
         'LedgerTransaction', 'ClientLedger', 'ReinvestorEquity', 'InvestorEquity','CashReceiptMode',
         'PaymentMode','InvestmentReturn','ReinvestmentTopup');
+    
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
@@ -2742,7 +2743,8 @@ function get_equity() {
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list', []));
         $this->set('invdestproducts', $this->InvDestProduct->find('list', []));
         $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list', []));
-        
+        $this->set('instructions', $this->Instruction->find('list',array('conditions' => array('Instruction.id' => array('1','2','3')))));
+       
         
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
     }
@@ -2832,7 +2834,7 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
             }
 
 
-
+            $instruction_id =  $this->request->data['Reinvestment']['instruction_id'];
             $payment_day = $this->request->data['Reinvestment']['investment_date']['day'];
             $payment_month = $this->request->data['Reinvestment']['investment_date']['month'];
             $payment_year = $this->request->data['Reinvestment']['investment_date']['year'];
@@ -2932,7 +2934,7 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
                              
                            $return_array = array('user_id' =>$userid,'reinvestment_id' => $investment_id,'returns' => $payment,
                                'return_type' => 'Matured','date' => $payment_date,'cheque_nos' =>$cheque_numbers,
-                               'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
+                               'instruction_id' => $instruction_id,'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
                            
                     $result2 = $this->InvestmentReturn->save($return_array);
                     if ($result2) {

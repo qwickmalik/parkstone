@@ -84,34 +84,52 @@
                         <tr>
                             <td><b align="right">Equity:</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['EquitiesList']['equity_abbrev'])) {
-                                        echo $data['EquitiesList']['equity_abbrev'];
+                                    if (isset($data['EquitiesList'])) {
+                                        foreach($data['EquitiesList'] as $val){
+                                           echo $data['EquitiesList']['equity_abbrev'].';'; 
+                                        }
+                                        
                                     }
                                     ?></span></td>
                         </tr>
                         <tr>
                             <td><b align="right">Total Shares Purchased:</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['Investment']['numb_shares'])) {
-                                        echo $data['Investment']['numb_shares'];
+                            $total_shares = 0;
+                                     if (isset($data['EquitiesList'])) {
+                                         
+                                        foreach($data['EquitiesList'] as $val){
+                                           $total_shares += $data['InvestorEquity']['numb_shares']; 
+                                        }
+                                        
                                     }
+                                    echo $total_shares;
                                     ?></span></td>
                         </tr>
                         <tr>
                             <td><b align="right">Total Shares Remaining:</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['Investment']['numb_shares_left'])) {
-                                        echo $data['Investment']['numb_shares_left'];
+                            $total_remshares = 0;
+                                     if (isset($data['EquitiesList'])) {
+                                         
+                                        foreach($data['EquitiesList'] as $val){
+                                           $total_remshares += $data['InvestorEquity']['numb_shares_left']; 
+                                        }
+                                        
                                     }
+                                    echo $total_remshares;
                                     ?></span></td>
                         </tr>
                         <tr>
                             <td><b align="right">Buying Price:</b></td>
                             <td><span id="xxxxxx"><?php
-                                    if (isset($data['Investment']['purchase_price'])) {
-                                        echo $data['Investment']['purchase_price'];
+                                    if (isset($data['EquitiesList'])) {
+                                        foreach($data['EquitiesList'] as $val){
+                                           echo $data['EquitiesList']['equity_abbrev'].':'.$data['EquitiesList']['equity_abbrev'].';'; 
+                                        }
+                                        
                                     }
-                                    ?></span></td>
+                                    ?><</span></td>
                         </tr>
                         <tr>
                             <td><b align="right">Current Share Price:</b></td>
