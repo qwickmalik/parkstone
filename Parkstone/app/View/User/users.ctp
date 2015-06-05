@@ -28,7 +28,10 @@
                 echo $this->Form->input('usertype_id', array('label' => 'User Type', 'empty' => '--Please Select--'));
                 ?>
             </div>
-            <?php echo $this->Form->button('Save', array("type" => "submit", "id" => "userBtn", "class" => "btn btn-lg btn-success", 'style' => 'float: right;')); //check the parameters here  ?>
+            <?php 
+            echo $this->Form->button('Save', array("type" => "submit", "id" => "userBtn", "class" => "btn btn-lg btn-success", 'style' => 'float: right;'));
+            echo $this->Form->button('Add User', array("type" => "reset", "class" => "btn btn-lg yellow", 'style' => 'float: right;background-color:#FFFF99')); 
+             //check the parameters here  ?>
             
         </div>
 <?php echo $this->Form->end(); ?>

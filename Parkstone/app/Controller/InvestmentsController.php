@@ -2206,7 +2206,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
                 }
-                if (($this->request->data['Investment']['instruction_id'] == 6) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                if (($this->request->data['Investment']['instruction_id'] == 7) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
@@ -2789,7 +2789,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
                 }
-                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                if (($this->request->data['Investment']['instruction_id'] == 7) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page));
@@ -3234,7 +3234,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                 }
-                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                if (($this->request->data['Investment']['instruction_id'] == 7) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
@@ -6877,7 +6877,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
                 }
-                if (($this->request->data['Investment']['instruction_id'] == 5) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
+                if (($this->request->data['Investment']['instruction_id'] == 7) && (is_null($this->request->data['Investment']['instruction_details']) || $this->request->data['Investment']['instruction_details'] == "")) {
                     $message = 'Please State Instruction Details';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));

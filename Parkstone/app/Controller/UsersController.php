@@ -788,8 +788,9 @@ class UsersController extends AppController {
         $this->Session->delete('owner');
         $this->Session->delete('userInfo');
         $this->Session->destroy();
-      $base_url =  Router::url('/', true);
-        $this->redirect($base_url."Users/login");
+//      $base_url =  Router::url('/', true);
+//      $base_url."Users/login";
+        $this->redirect('/');
     }
 
 }
