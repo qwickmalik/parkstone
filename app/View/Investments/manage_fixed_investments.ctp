@@ -130,7 +130,12 @@
                             echo $each_item['Investment']['status'];
                         }
                         ?></td>
-                <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementDailyInterest'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+                <td align="left"><?php
+//echo $this->Html->Link('Statement', '/Investments/statementInvDetail'."/".
+//        (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".
+//        (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".
+//        (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));
+ echo $this->Html->Link('Statement', '/Investments/statementDailyInterest'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
                 <td align="center"><?php if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
                    
@@ -288,9 +293,18 @@
                                         ? $inv['Investor']['fullname'] : '')));
                                 echo $this->Form->hidden('topupavailable_cash',array('value' => (isset($inv['ClientLedger']['available_cash']) 
                                         ? $inv['ClientLedger']['available_cash'] : 0)));
-                                echo $this->Form->input('topup_amount', array('label' => 'Top-up Amount', 'class' => 'required', 'placeholder' => '0.00','value' => 0)); ?> 
+                                echo $this->Form->input('topup_amount', array('label' => 'Top-up Amount', 
+                                    'class' => 'required', 'placeholder' => '0.00','value' => 0)); ?> 
                             </div>
                                  </div>
+                              <div class="row">
+                                  <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('receipt_no', array('label' => 'Receipt Number','value' => '',
+                                        'placeholder' =>'Receipt No.'));
+                                    ?>
+                                </div>
+                              </div>
                             </form>
                             
                           </div>

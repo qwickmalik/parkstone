@@ -41,5 +41,15 @@ class LedgerTransaction extends AppModel {
             'limit' => '',
             'dependent' => true
             ));
+       
+       var $hasMany = array(
+        'InvestorDeposit' => array(
+            'className' => 'InvestorDeposit',
+            'foreignKey' => 'ledger_transaction_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
     
 }

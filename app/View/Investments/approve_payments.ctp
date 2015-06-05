@@ -26,7 +26,10 @@
                     <?php if (isset($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;">
-                               <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/approvePayments2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] : '' )."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array());  ?></td>
+                               <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],
+                                       "/Investments/approvePayments2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] 
+                                       : '' )."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".
+                                       (isset($each_item['Instruction']['instruction_name']) ? $each_item['Instruction']['instruction_name'] : (isset($each_item['Investment']['instruction_details']) ? $each_item['Investment']['instruction_details'] : '' ) ),array());  ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
@@ -35,7 +38,7 @@
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
-                                <td align="left"><?php if($each_item['Instruction']['id'] != 5){
+                                <td align="left"><?php if($each_item['Instruction']['id'] != 7){
                                     echo $each_item['Instruction']['instruction_name'];
                                 }else{
                                    echo $each_item['Investment']['instruction_details']; 

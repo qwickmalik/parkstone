@@ -1,10 +1,11 @@
-look at new investor photo upload richmom_3
---Audit Trail
-Please find attached the reports we talked about. At the end of the meeting,
-In addition, fees (management and performance) will be calculated (daily), with the total 
-at the end of every month, but performance fees will be based on residual income at the end of 
-each month, after management fees and benchmark rate computation has been deducted from any income made from investment Parkstone makes.
- 
+--look at new investor photo upload richmom_3
+
+--dispose Equity Payment
+ --Disable inputs on investment page
+--Delete deposits and payments
+--Reports
+ --Audit Trail
+
 I also think that we may need more than one investment pool for client funds in addition to Parkstone’s own funds which will obviously be separate. 
  So, I think you may have to make the possibility of creating/selecting an investment pool (more than one).
  You mentioned this possibility at our last discussion.
@@ -18,17 +19,18 @@ each point in time (usually the end of the month).
 
 
 --REVIEW 16TH APRIL, 2015--
--Add dropdown on reinvestment payment page to show whether payment is principal,interest or both
--Add dropdown in investment payment page to show whether payment is principal,interest or both
+DONE-Add dropdown on reinvestment payment page to show whether payment is principal,interest or both
+DONE-Add dropdown in investment payment page to show whether payment is principal,interest or both
 -Review add investor process. esp corporate and group. check all compulsory fields
 -Set currency fields to cedi by default
 -Give function to check for duplicate investor page entry
 -Add * to CEO and all compulsory inputs
 -Add input to take receipt number in investment
 -Add * to investment amt
-- Add reset button to new investment page to clear all sessions set on page
-- Add inv statements for
--Add Add page to edit ledger entries or better delete investments,topups,etc which will automatically be deleted from ledger..add foreign key ids of all entry models to transaction id so it can be deleted easily
+DONE- Add reset button to new investment page to clear all sessions set on page
+Review with Grace/Sam- Add client inv statements for Investments
+-Add Add page to edit ledger entries or better delete investments,topups,etc 
+which will automatically be deleted from ledger..add foreign key ids of all entry models to transaction id so it can be deleted easily
  and remember to delete from available or invested amts if necessary
 ---------------------------------
 

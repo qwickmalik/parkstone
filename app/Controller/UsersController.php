@@ -777,7 +777,7 @@ class UsersController extends AppController {
     }
 
     function logout() {
-
+        $this->autoLayout = $this->autoRender = false;
         $this->Session->delete('payments');
         $this->Session->delete('userData');
         $this->Session->delete('userDetails');
@@ -788,7 +788,8 @@ class UsersController extends AppController {
         $this->Session->delete('owner');
         $this->Session->delete('userInfo');
         $this->Session->destroy();
-        $this->redirect('/');
+      $base_url =  Router::url('/', true);
+        $this->redirect($base_url."Users/login");
     }
 
 }

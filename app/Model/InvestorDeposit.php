@@ -17,9 +17,9 @@ class InvestorDeposit extends AppModel {
     var $usesTable = "investor_deposits";
      
        var $belongsTo = array(
-        'ClientLedger' => array(
-            'className' => 'ClientLedger',
-            'foreignKey' => 'client_ledger_id',
+        'LedgerTransaction' => array(
+            'className' => 'LedgerTransaction',
+            'foreignKey' => 'ledger_transaction_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
@@ -36,6 +36,22 @@ class InvestorDeposit extends AppModel {
             'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+            'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+	'Topup' => array(
+            'className' => 'Topup',
+            'foreignKey' => 'topup_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',

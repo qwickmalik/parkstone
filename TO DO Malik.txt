@@ -1,5 +1,3 @@
---NOTES FRM REVIEW WITH PARKSTONE (30TH APRIL, 2015)
-
 
 *Reports
 NB. All reports will have from date - to date filter options
@@ -56,28 +54,25 @@ NB. All reports will have from date - to date filter options
    February
    to
    December
-#Reinvestment & Investment Modules
-DONE - Add notes input to new investment, new reinvestments pages
-DONE -Add receipt no input to new investment, new reinvestments pages
-
-#Lets Add User password change page..we can copy one from qwicktransfer and implement in all our APPS from henceforth
+  
+Additional TO Do
+----------------
+Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)   
+ 
+--Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
+  (link to investor_deposits table)
+--Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
+  -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
+--Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
+  (link to investment_payments table)
+--Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
+  -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
+  investments with payment listing button to further list payments of under each investment for deletion 
+--pls look at format for /mask.js for validation and implement in new investor pages   
 #PLease format investor details page
-
---NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
-DONE - Add from - to date search ranges to Report Module/Maturity List.
-DONE - Create Monthly maturity List Page
 --Redesign Investment payment receipt
-
-
---NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
-
-
-
---Re-investments(PROCESS INVESTMENTS)
-*Allow for selection of multiple equities instead of one like in new investments
-*Payment & Termination Process(flow) as described above
-DONE    *Administrator Pages for viewing pending terminations and payments as described in flow above
-*Then Pages for accepted termination requests and payment requests
+*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
+*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 
 
 
@@ -85,22 +80,11 @@ DONE    *Administrator Pages for viewing pending terminations and payments as de
 NOTES FROM REVIEW 24TH FEB.2015
 --------------------------------------
 
---New Invesment
- Purchase price will be confirmed under Re-investments
 
 
---Manage Investments
-*Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
-
-*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
-*Cancel/terminate investment contract is subject to approval and fee 
-*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
-
-*Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)
-*Then Pages for accepted termination requests and payment requests
 
 
----Company Accounts
+--- Accounting
 *If using Asset Management, it might have to be used for handle assets in terms of client funds
 
 
@@ -108,7 +92,7 @@ NOTES FROM REVIEW 24TH FEB.2015
 
 T0 D0
 -------
---pls look at format for /mask.js for validation and implement in new investor pages
+
 
 
  Extras
@@ -129,6 +113,23 @@ T0 D0
 
 DONE
 -----
+
+
+--Manage Investments
+*Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
+--NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
+DONE - Add from - to date search ranges to Report Module/Maturity List.
+DONE - Create Monthly maturity List Page
+
+*Payment & Termination Process(flow) as described above
+DONE    *Administrator Pages for viewing pending terminations and payments as described in flow above
+*Then Pages for accepted termination requests and payment requests
+*Allow for selection of multiple equities instead of one like in new investments
+#Reinvestment & Investment Modules
+DONE - Add notes input to new investment, new reinvestments pages
+DONE -Add receipt no input to new investment, new reinvestments pages
+
+#Lets Add User password change page..we can copy one from qwicktransfer and implement in all our APPS from henceforth
 DONE 1. Active Investments Report
    #fields
    ------

@@ -37,6 +37,15 @@ class InvestmentReturn extends AppModel{
             'order' =>  '',
             'limit' => '',
             'dependent' => true
+        ),
+         
+         'Instruction' => array(
+            'className' => 'Instruction',
+            'foreignKey' => 'instruction_id',
+            'conditions' => '',
+            'order' =>  '',
+            'limit' => '',
+            'dependent' => true
         ));
       
     

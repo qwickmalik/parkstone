@@ -14,6 +14,22 @@ class Instruction extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'InvestmentPayment' => array(
+            'className' => 'InvestmentPayment',
+            'foreignKey' => 'instruction_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        'InvestmentReturn' => array(
+            'className' => 'InvestmentReturn',
+            'foreignKey' => 'instruction_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
 }
 

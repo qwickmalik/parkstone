@@ -163,10 +163,14 @@
                                     $("#ReinvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
                                     $("#ReinvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
-            <div class="col-lg-12 col-md-12 col-sm-12" >
+            <div class="col-lg-5 col-md-5 col-sm-12" >
                 <?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => '--Please Select--')); ?>
             </div>
-            
+            <div class="col-lg-5 col-md-5 col-sm-12" >
+                                    <?php
+                                  echo  $this->Form->input('instruction_id', array('required','label' => 'Instructions', 'empty' => "--Please Select--"));
+                                    ?>
+                                </div>
             </div>
             
         

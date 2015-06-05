@@ -221,10 +221,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 ">
                                     <?php
-                                    echo $this->Form->input('cash_athand2', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                    echo $this->Form->input('cash_athand2', array('label' => 'Available Cash', 'value' =>
                                         (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash'] ), 'disabled'));
 
-                                    echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
+                                    echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 'value' =>
                                         (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash'] )));
                                     ?> 
                                 </div>
@@ -664,13 +664,13 @@ echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class
                 var prod_val = $("#InvestmentInvestmentproductId").val();
 //             $(".hidden-fee").hide();
                 if (prod_val == "1") {
-
+//                    $("#equity input").prop("disabled",true);
                     $("#fixed").show("slow");
                     $("#equity").hide("slow");
                 }
 
                 if (prod_val == "2") {
-
+//                    $("#fixed input").prop("disabled",true);
                     $("#equity").show(5000);
                     $("#fixed").hide("slow");
                 }
