@@ -7281,7 +7281,7 @@ class InvestmentsController extends AppController {
                 $this->set('investor_name', $investor_name);
             } else {
 
-                $message = 'Sorry, Investment Details Not Found';
+                $message = 'Sorry, xxxInvestment Details Not Found';
                 $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
             }
@@ -7293,6 +7293,48 @@ class InvestmentsController extends AppController {
         }
     }
 
+    public function statementInvDetailEq($invesmentID = null, $investor_id = null, $investor_name = null) {
+        $this->__validateUserType();
+//        if (!is_null($invesmentID)) {
+//            $data = $this->DailyInterestStatement->find('all', array('conditions' =>
+//                array('DailyInterestStatement.investment_id' => $invesmentID)));
+//            $issued = $this->Session->check('userData');
+//            if ($issued) {
+//                $issued = $this->Session->read('userData');
+//                $this->set('issued', $issued);
+//            }
+//
+//            if ($data) {
+//                $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
+//                $data_total = $this->DailyInterestStatement->find('all', array('fields' =>
+//                    array("SUM(DailyInterestStatement.principal) as 'total_principal',"
+//                        . "SUM(DailyInterestStatement.interest) as 'total_interest',SUM(DailyInterestStatement.total) as 'sum_total'"),
+//                    'conditions' => array('DailyInterestStatement.investment_id' => $invesmentID)));
+//
+//                if ($data2) {
+//                    $this->set('data2', $data2);
+//                }
+//                if ($data_total) {
+//                    $this->set('data_total', $data_total);
+//                }
+//                $this->set('data', $data);
+//                $this->set('investor_id', $investor_id);
+//                $this->set('invesmentID', $invesmentID);
+//                $this->set('investor_name', $investor_name);
+//            } else {
+//
+//                $message = 'Sorry, xxxInvestment Details Not Found';
+//                $this->Session->write('imsg', $message);
+//                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
+//            }
+//        } else {
+//
+//            $message = 'Sorry, Investment Details Not Found';
+//            $this->Session->write('imsg', $message);
+//            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
+//        }
+    }
+    
     public function statementDailyInterest($invesmentID = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
         if (!is_null($invesmentID)) {
