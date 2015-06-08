@@ -118,7 +118,7 @@
                             echo $each_item['Investment']['status'];
                         }
                         ?></td>
-                <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementInvDetail/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+                <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementInvDetailEq/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
                 
         <?php  }} ?>
