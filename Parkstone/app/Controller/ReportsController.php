@@ -2524,6 +2524,70 @@ public function convert2PdfnEmail(){
         $this->__validateUserType3();
         
     }
+    
+    function fundsUnderMgt(){
+        $this->__validateUserType3();
+        $this->set('report_name', 'Funds Under Management');
+        
+        if($this->request->is('post')){
+            if ($this->request->data['FundsUnderMgt']['year'] == "" || $this->request->data['FundsUnderMgt']['year'] == null) {
+                $message = 'Please indicate year';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'fundsUnderMgt'));
+            }
+            
+            
+            $year = $this->request->data['FundsUnderMgt']['year'];
+
+            
+            
+            $this->set('year', $year);
+            
+        }
+        
+    }
+    
+    function interestAccrued(){
+        $this->__validateUserType3();
+        $this->set('report_name', 'Interest Accrued');
+        
+        if($this->request->is('post')){
+            if ($this->request->data['InterestAccrued']['year'] == "" || $this->request->data['InterestAccrued']['year'] == null) {
+                $message = 'Please indicate year';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'interestAccrued'));
+            }
+            
+            
+            $year = $this->request->data['InterestAccrued']['year'];
+
+            
+            
+            $this->set('year', $year);
+            
+        }
+    }
+    
+    function incomeSpread(){
+        $this->__validateUserType3();
+        $this->set('report_name', 'Income Spread');
+        
+        if($this->request->is('post')){
+            if ($this->request->data['IncomeSpread']['year'] == "" || $this->request->data['IncomeSpread']['year'] == null) {
+                $message = 'Please indicate year';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'incomeSpread'));
+            }
+            
+            
+            $year = $this->request->data['IncomeSpread']['year'];
+
+            
+            
+            $this->set('year', $year);
+            
+        }
+    }
 }
 
 ?>

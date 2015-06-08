@@ -1,7 +1,6 @@
-
 *Reports
 NB. All reports will have from date - to date filter options
-1. Funds under Management
+DONE 1. Funds under Management
    [ filter included:YEAR,Checkbox to check for BBF]
    Columns
    -------
@@ -24,7 +23,7 @@ NB. All reports will have from date - to date filter options
    December
    
 
-2. Interest Accrued[Cummulative/Monthly]
+DONE 2. Interest Accrued[Cummulative/Monthly]
 	[ filter included:YEAR,Checkbox to check for if cummulative/monthly ]
 	COLUMNS
 	-------
@@ -39,7 +38,7 @@ NB. All reports will have from date - to date filter options
 	----
 	Totals (at the bottom)
 	
-3. Income Spread
+DONE 3. Income Spread
 -------------------------------
 [ filter included:YEAR]
  COLUMNS
