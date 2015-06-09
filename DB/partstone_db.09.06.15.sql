@@ -2536,6 +2536,9 @@ INSERT INTO `zones` (`id`, `zone`, `suburb`) VALUES
 (17, 'ZONE CHEQUES', 'ACCRA'),
 (18, 'test', 'Support_Testing'),
 (19, 'ZONE STAFFS', 'ACCRA');
+
+UPDATE  `qwickfu1_parkst_inv`.`modules` SET  `module_name` =  'Outbound Investmt' WHERE  `modules`.`id` =3;
+UPDATE  `qwickfu1_parkst_inv`.`modules` SET  `module_name` =  'Inbound Investmt' WHERE  `modules`.`id` =2;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
