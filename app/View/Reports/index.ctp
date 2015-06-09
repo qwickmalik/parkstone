@@ -23,7 +23,7 @@
                    // $this->Html->link('Investor Contract','/Reports/investorContract', array('escape' => false)),
                    // $this->Html->link('Daily Interests','/Reports/dailyInterests', array('escape' => false)),
                   //  $this->Html->link('Maturity List','/Reports/maturityList', array('escape' => false)),
-                    $this->Html->link('Discounting of Investment','/Reports/discountInvestment', array('escape' => false)),
+                   // $this->Html->link('Discounting of Investment','/Reports/discountInvestment', array('escape' => false)),
                     $this->Html->link('Active Investments List','/Reports/activeInvestments', array('escape' => false)),
                     $this->Html->link('Aggregate Investment Report','/Reports/aggregateInvestment', array('escape' => false)),
                     $this->Html->link('Investor Deposits Report','/Reports/investorDeposits', array('escape' => false)),

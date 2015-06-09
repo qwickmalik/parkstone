@@ -66,7 +66,7 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'root',
-		'password' => 'ShukranB3#',
+		'password' => '',
 		'database' => 'qwickfu1_parkst_inv',
 		'prefix' => '',
 		//'encoding' => 'utf8',

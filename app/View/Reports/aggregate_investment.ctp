@@ -11,10 +11,10 @@ echo $this->Html->script('print.js'); ?>
 
         <!-- Content start here -->
         <div class="row">
-            <?php echo $this->Form->create('ActiveInvestments', array('url' => array('controller' => 'Reports', 'action' => 'investorDeposits'))); ?>
+            <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Reports', 'action' => 'aggregateInvestment'))); ?>
             
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">From (Investment Date)</p>
+                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">From</p>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <?php
                     $month = date('m');
@@ -24,26 +24,26 @@ echo $this->Html->script('print.js'); ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php echo $this->Form->day('report_date', array("selected" => $day)); ?>&nbsp;
+                    <?php echo $this->Form->day('begin_date', array("selected" => $day)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->month('report_date', array("selected" => $month)); ?>&nbsp;
+                    <?php echo $this->Form->month('begin_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('report_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('begin_date', 2003, date('Y'), array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
                     var month = $("#month").val();
                     var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#InvestmentBeginDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestmentBeginDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestmentBeginDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
 
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">To (Investment Date)</p>
+                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">To</p>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <?php
                     $month = date('m');
@@ -53,21 +53,21 @@ echo $this->Html->script('print.js'); ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php echo $this->Form->day('report_date', array("selected" => $day)); ?>&nbsp;
+                    <?php echo $this->Form->day('finish_date', array("selected" => $day)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->month('report_date', array("selected" => $month)); ?>&nbsp;
+                    <?php echo $this->Form->month('finish_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('report_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('finish_date', 2003, date('Y'), array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
                     var month = $("#month").val();
                     var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#InvestmentFinishDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestmentFinishDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestmentFinishDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
                 <?php
                 echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: right;'));
@@ -109,7 +109,6 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Client Code</b></td>
                         <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Name</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
@@ -122,62 +121,61 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest Due on Current Date</b></td>
                         <td align="right" valign="top" width="100" style="border-bottom: solid 2px Gray;"><b>Principal & Interest Due on Current Date</b></td>
                     </tr>
+                   
+                    <?php if (isset($accounts)) {
+                          
+    foreach ($accounts as $each_item):  
+              
+            ?>
                     <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">01/02/2014</td>
-                        <td align="right" valign="top">220.00</td>
-                        <td align="right" valign="top">2,220.00</td>
-                        <td align="right" valign="top">10/05/2015</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">2,200.00</td>
+                 
+                        <td align="left" valign="top"><?php if (isset($each_item['Investor']['fullname'])) {
+            echo  $each_item['Investor']['fullname'];
+        } ?></td>
+                        <td align="left" valign="top"><?php if (isset($each_item['Investment']['investment_no'])) {
+            echo  $each_item['Investment']['investment_no'];
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_amount'])) {
+            echo  number_format($each_item['Investment']['investment_amount'],2);
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
+            echo  $each_item['Investment']['custom_rate'].'%';
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['due_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['Investment']['due_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php echo date('d-m-Y'); ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['expected_interest'])) {
+            echo  number_format($each_item['Investment']['expected_interest'],2);
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['amount_due']) 
+                                ) {
+              $totals = $each_item['Investment']['amount_due'] ;
+        
+            echo number_format($totals,2);
+            
+                        } ?></td>
+                              <td align="right" valign="top"><?php 
+            echo  date('d-m-Y');
+         ?></td>
+                                    <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
+            echo  number_format($each_item['Investment']['interest_accrued'],2);
+        } ?></td>
+                                     <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
+              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+        
+            echo number_format($totals,2);
+            
+                        } ?></td>
                     </tr>
-                    <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">01/02/2014</td>
-                        <td align="right" valign="top">220.00</td>
-                        <td align="right" valign="top">2,220.00</td>
-                        <td align="right" valign="top">10/05/2015</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">2,200.00</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">01/02/2014</td>
-                        <td align="right" valign="top">220.00</td>
-                        <td align="right" valign="top">2,220.00</td>
-                        <td align="right" valign="top">10/05/2015</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">2,200.00</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">01/02/2014</td>
-                        <td align="right" valign="top">220.00</td>
-                        <td align="right" valign="top">2,220.00</td>
-                        <td align="right" valign="top">10/05/2015</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">2,200.00</td>
-                    </tr>
+                    
+                    <?php
+    
+    endforeach;
+} ?>
                     
                 </table>
             </div>

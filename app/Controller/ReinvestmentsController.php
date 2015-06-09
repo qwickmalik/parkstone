@@ -1552,8 +1552,8 @@ class ReinvestmentsController extends AppController {
                 $id = $reinvestment_data['ReinvestorCashaccount']['id'];
                 $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
                 $new_balance = $old_balance - $invested_amount;
-
-                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance);
+                $new_grand = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $invested_amount;
+                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance,'total_balance' => $new_grand);
                 $this->ReinvestorCashaccount->save($fixed_data);
             }
 
@@ -1953,8 +1953,9 @@ function get_equity() {
                 $id = $reinvestment_data['ReinvestorCashaccount']['id'];
                 $old_balance = $reinvestment_data['ReinvestorCashaccount']['equity_inv_balance'];
                 $new_balance = $old_balance - $invested_amount;
-
-                $equity_data = array('id' => $id, 'equity_inv_balance' => $new_balance);
+                
+                $new_grand = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $invested_amount;
+                $equity_data = array('id' => $id, 'equity_inv_balance' => $new_balance,'total_balance' => $new_grand);
                 $this->ReinvestorCashaccount->save($equity_data);
             }
             $check = $this->Session->check('investment_array_reequity');
@@ -2588,8 +2589,8 @@ public function disposalRequest($id = null){
                 $id = $reinvestment_data['ReinvestorCashaccount']['id'];
                 $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
                 $new_balance = $old_balance - $amount;
-
-                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance);
+                $grand_total = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $amount;
+                $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance,'total_balance' => $grand_total);
                 $this->ReinvestorCashaccount->save($fixed_data);
             
 
@@ -3469,7 +3470,9 @@ if ($this->request->data['Reinvestment']['amount_paidout'] == "" || $this->reque
                                 $cash_athand = $ledger_data['ReinvestorCashaccount']['fixed_inv_returns'];
                                 $new_cashathand = $cash_athand + $received_amt;
                                 $cledger_id = $ledger_data['ReinvestorCashaccount']['id'];
-                                $client_ledger = array('id' => $cledger_id, 'fixed_inv_returns' => $new_cashathand);
+                                
+                $grand_total = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $amount;
+                                $client_ledger = array('id' => $cledger_id, 'fixed_inv_returns' => $new_cashathand,'total_balance' => $grand_total);
                                
 
                             }

@@ -197,8 +197,8 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares2', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' => 'required', 'value' =>
+                                    echo $this->Form->input('numb_shares2', array('label' => 'No. of Shares*','max' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' => 'required', 'value' =>
                                         (isset($equity_array[2]) ? 
                                     $equity_array[2]['ReinvestorEquity']['numb_shares_left'] : 0 )));
                                      echo $this->Form->hidden('shares_rem2', array('value' => (isset($equity_array[2]) ? 
@@ -228,8 +228,8 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares3', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 
+                                    echo $this->Form->input('numb_shares3', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 
                                         'required', 'value' => (isset($equity_array[3]) ? 
                                     $equity_array[3]['ReinvestorEquity']['numb_shares_left'] : 0 )));
                                     
@@ -253,8 +253,8 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares4', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' =>
+                                    echo $this->Form->input('numb_shares4', array('label' => 'No. of Shares*','max' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' =>
                                         'required', 'value' => (isset($equity_array[4]) ? 
                                     $equity_array[4]['ReinvestorEquity']['numb_shares_left'] : 0 )));
                                     
@@ -279,8 +279,8 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares5', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 'required', 'value' => 
+                                    echo $this->Form->input('numb_shares5', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 'required', 'value' => 
                                            (isset($equity_array[5]) ? 
                                     $equity_array[5]['ReinvestorEquity']['numb_shares_left'] : 0 )));
                                         echo $this->Form->hidden('shares_rem5', array('value' => (isset($equity_array[5]) ? 
