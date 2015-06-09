@@ -1,7 +1,7 @@
 <?php echo $this->element('header'); ?>
 
 <!-- Content starts here -->
-<h3>Pay Investor</h3>
+<h3>Sell Equity</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -165,48 +165,64 @@
                                     <?php
                                     echo $this->Form->input('equities_list_id', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
                                         , 'selected' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['equities_list_id'] : '' )]);
+                                    $equity_array[1]['EquityOrder']['equities_list_id'] : '' )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 'required', 
+                                    echo $this->Form->input('numb_shares_sold', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
+                                    $equity_array[1]['EquityOrder']['numb_shares_sold'] : 0 ),'class' => 'required', 
                                         'value' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    $equity_array[1]['EquityOrder']['numb_shares_sold'] : 0 )));
                                     
-                                    echo $this->Form->hidden('shares_rem', array('value' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->hidden('shares_req', array('value' => (isset($equity_array[1]) ? 
+                                    $equity_array[1]['EquityOrder']['numb_shares_sold'] : 0 )));
                                     ?>
 
                                 </div>
 
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('sale_price', array('label' => 'Share Price*','class' => 'required', 
+                                        'value' => (isset($equity_array[1]) ? 
+                                    $equity_array[1]['EquityOrder']['sale_price'] : 0 )));
+                                    
+                                    ?>
 
+                                </div>
                              
                             </div>
 
                             <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
-                                 <div class="col-lg-8 col-md-8 col-sm-12">
+                                <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id2', ['class' => 'equity_id', 'id' => '2', 'type' =>
-                                        'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' =>
-                                        '--Please choose desired equity--', 'selected' => 
-                                        (isset($equity_array[2]) ? 
-                                    $equity_array[2]['ReinvestorEquity']['equities_list_id'] : 0 )]);
+                                    echo $this->Form->input('equities_list_id2', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
+                                        , 'selected' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['EquityOrder']['equities_list_id'] : '' )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares2', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' => 'required', 'value' =>
-                                        (isset($equity_array[2]) ? 
-                                    $equity_array[2]['ReinvestorEquity']['numb_shares_left'] : 0 )));
-                                     echo $this->Form->hidden('shares_rem2', array('value' => (isset($equity_array[2]) ? 
-                                    $equity_array[2]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->input('numb_shares_sold2', array('label' => 'No. of Shares*','max' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['EquityOrder']['numb_shares_sold'] : 0 ),'class' => 'required', 
+                                        'value' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['EquityOrder']['numb_shares_sold'] : 0 )));
+                                    
+                                    echo $this->Form->hidden('shares_req2', array('value' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['EquityOrder']['numb_shares_sold'] : 0 )));
                                     ?>
 
                                 </div>
 
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('sale_price2', array('label' => 'Share Price*','class' => 'required', 
+                                        'value' => (isset($equity_array[2]) ? 
+                                    $equity_array[2]['EquityOrder']['sale_price'] : 0 )));
+                                    
+                                    ?>
+
+                                </div>
 
 
                                 
@@ -218,21 +234,30 @@
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id3', ['class' => 'equity_id', 'selected' => 
-                                        (isset($equity_array[3]) ? 
-                                    $equity_array[3]['InvestorEquity']['equities_list_id'] : 0 ), 'id' => '3', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
-                                    
+                                    echo $this->Form->input('equities_list_id3', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
+                                        , 'selected' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['EquityOrder']['equities_list_id'] : '' )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares3', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 
-                                        'required', 'value' => (isset($equity_array[3]) ? 
-                                    $equity_array[3]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->input('numb_shares_sold3', array('label' => 'No. of Shares*','max' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['EquityOrder']['numb_shares_sold'] : 0 ),'class' => 'required', 
+                                        'value' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['EquityOrder']['numb_shares_sold'] : 0 )));
                                     
-                                     echo $this->Form->hidden('shares_rem3', array('value' => (isset($equity_array[3]) ? 
-                                    $equity_array[3]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->hidden('shares_req3', array('value' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['EquityOrder']['numb_shares_sold'] : 0 )));
+                                    ?>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('sale_price3', array('label' => 'Share Price*','class' => 'required', 
+                                        'value' => (isset($equity_array[3]) ? 
+                                    $equity_array[3]['EquityOrder']['sale_price'] : 0 )));
+                                    
                                     ?>
 
                                 </div>
@@ -242,22 +267,33 @@
 
      <div class="col-lg-5 col-md-6 col-sm-12" style="background: #E3F8FD;float:right; border-left: solid 1px #A7D2F4;">
                                 
+                                
                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id4', ['class' => 'equity_id', 'selected' => 
-                                        (isset($equity_array[4]) ? 
-                                    $equity_array[4]['ReinvestorEquity']['equities_list_id'] : 0 ), 'id' => '4', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id4', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
+                                        , 'selected' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['EquityOrder']['equities_list_id'] : '' )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares4', array('label' => 'No. of Shares*','max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ), 'class' =>
-                                        'required', 'value' => (isset($equity_array[4]) ? 
-                                    $equity_array[4]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->input('numb_shares_sold4', array('label' => 'No. of Shares*','max' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['EquityOrder']['numb_shares_sold'] : 0 ),'class' => 'required', 
+                                        'value' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['EquityOrder']['numb_shares_sold'] : 0 )));
                                     
-                                     echo $this->Form->hidden('shares_rem4', array('value' => (isset($equity_array[4]) ? 
-                                    $equity_array[4]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->hidden('shares_req4', array('value' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['EquityOrder']['numb_shares_sold'] : 0 )));
+                                    ?>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('sale_price4', array('label' => 'Share Price*','class' => 'required', 
+                                        'value' => (isset($equity_array[4]) ? 
+                                    $equity_array[4]['EquityOrder']['sale_price'] : 0 )));
+                                    
                                     ?>
 
                                 </div>
@@ -268,21 +304,31 @@
                             <div class="row" style=" margin-bottom: 5px; border: solid 1px #A7D2F4;">
                                 <div class="col-lg-5 col-md-6 col-sm-12" style=" background: #E3F8FD;margin-right: 0px;  border-right: solid 1px #A7D2F4;">
 
-                                <div class="col-lg-8 col-md-8 col-sm-12">
+                               <div class="col-lg-8 col-md-8 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('equities_list_id5', ['class' => 'equity_id', 'selected' => 
-                                        (isset($equity_array[5]) ? 
-                                    $equity_array[5]['ReinvestorEquity']['min_share_price'] : 0 ), 'id' => '5', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    echo $this->Form->input('equities_list_id5', ['class' => 'equity_id', 'id' => '', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--'
+                                        , 'selected' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['EquityOrder']['equities_list_id'] : '' )]);
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('numb_shares5', array('label' => 'No. of Shares*', 'max' => (isset($equity_array[1]) ? 
-                                    $equity_array[1]['ReinvestorEquity']['numb_shares_left'] : 0 ),'class' => 'required', 'value' => 
-                                           (isset($equity_array[5]) ? 
-                                    $equity_array[5]['ReinvestorEquity']['numb_shares_left'] : 0 )));
-                                        echo $this->Form->hidden('shares_rem5', array('value' => (isset($equity_array[5]) ? 
-                                    $equity_array[5]['ReinvestorEquity']['numb_shares_left'] : 0 )));
+                                    echo $this->Form->input('numb_shares_sold5', array('label' => 'No. of Shares*','max' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['EquityOrder']['numb_shares_sold'] : 0 ),'class' => 'required', 
+                                        'value' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['EquityOrder']['numb_shares_sold'] : 0 )));
+                                    
+                                    echo $this->Form->hidden('shares_req5', array('value' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['EquityOrder']['numb_shares_sold'] : 0 )));
+                                    ?>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <?php
+                                    echo $this->Form->input('sale_price5', array('label' => 'Share Price*','class' => 'required', 
+                                        'value' => (isset($equity_array[5]) ? 
+                                    $equity_array[5]['EquityOrder']['sale_price'] : 0 )));
                                     
                                     ?>
 

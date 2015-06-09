@@ -152,16 +152,16 @@ function __invEOD(){
                 $old_balance = $result['ReinvestorCashaccount']['fixed_inv_balance'];
                 $new_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['fixed_inv_amount'];
                 $new_balance = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['fixed_inv_balance'];
-                
+                $grand_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['total_balance'];
                 $fixed_data = array('id' => $id,'reinvestor_id' => $reinvestor_id, 'fixed_inv_amount' => $new_total,
-                'fixed_inv_balance' => $new_balance);
+                'fixed_inv_balance' => $new_balance,'total_balance' => $grand_total);
                  $this->ReinvestorCashaccount->save($fixed_data);
             }else{
                 $new_total = $data[0]['invested_amount'];
                 $new_balance = $data[0]['invested_amount'];
-                
+                $grand_total = $data[0]['invested_amount'];
                 $fixed_data = array('reinvestor_id' => $reinvestor_id, 'fixed_inv_amount' => $new_total,
-                'fixed_inv_balance' => $new_balance);
+                'fixed_inv_balance' => $new_balance,'total_balance' => $grand_total);
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($fixed_data);
             }
@@ -194,15 +194,16 @@ function __invEOD(){
                 $new_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['equity_inv_amount'];
                 $new_balance = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['equity_inv_balance'];
                 
+                $grand_total = $data[0]['invested_amount'] + $result['ReinvestorCashaccount']['total_balance'];
                 $equity_data = array('id' => $id,'reinvestor_id' => $reinvestor_id, 'equity_inv_amount' => $new_total,
-                'equity_inv_balance' => $new_balance);
+                'equity_inv_balance' => $new_balance,'total_balance' => $grand_total);
                  $this->ReinvestorCashaccount->save($equity_data);
             }else{
                 $new_total = $data[0]['invested_amount'];
                 $new_balance = $data[0]['invested_amount'];
-                
+                $grand_total = $data[0]['invested_amount'];
                 $equity_data = array('reinvestor_id' => $reinvestor_id, 'equity_inv_amount' => $new_total,
-                'equity_inv_balance' => $new_balance);
+                'equity_inv_balance' => $new_balance,'total_balance' => $grand_total);
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($equity_data);
             }

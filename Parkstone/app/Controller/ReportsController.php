@@ -6,7 +6,7 @@ class ReportsController extends AppController {
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reports';
     var $uses = array('Setting', 'User', 'Currency',  'BalanceSheet', 'IncomeStatement', 'Equity',
-       'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal',
+       'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal','Investor',
         'CashAccount', 'TempcashAccount','Expense');
     var $paginate = array();
 
@@ -2441,7 +2441,9 @@ public function convert2PdfnEmail(){
     
     function discountInvestment(){
         $this->__validateUserType3();
-        
+       $this->set('investors', $this->Investor->find('list',array('fields'=>array('id','fullname')))); 
+       
+      
     }
     
     function jvPaymentVoucher(){
@@ -2522,7 +2524,57 @@ public function convert2PdfnEmail(){
     
     function aggregateInvestment(){
         $this->__validateUserType3();
-        
+        if ($this->request->is('post')) {
+          $sday = $this->request->data['Investment']['begin_date']['day'];
+            $smonth = $this->request->data['Investment']['begin_date']['month'];
+            $syear = $this->request->data['Investment']['begin_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+            $eday = $this->request->data['Investment']['finish_date']['day'];
+            $emonth = $this->request->data['Investment']['finish_date']['month'];
+            $eyear = $this->request->data['Investment']['finish_date']['year'];
+            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
+            $enewdate = strtotime($ends_date);
+            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($end_date);
+            //$date->add(new DateInterval('P1D'));
+             $end_date = $date->format('Y-m-d');
+            $frend_date = date('d F, Y', $enewdate);
+
+            $this->set('frstart_date', $frstart_date);
+            $this->set('frend_date', $frend_date);
+
+            
+            $lateday = date('Y-m-t');
+            $firstday = date('Y-m-01');  
+             $accounts = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'Investment.investment_product_id' => array(1,3),
+                    'Investment.status' => array('Invested','Rolled_over','Termination_Requested'))));
+
+//, 'group' => array('Expectedinstallment.zone_id')
+            $total = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'Investment.investment_product_id' => array(1,3),
+                    'Investment.status' => array('Invested','Rolled_over','Termination_Requested')), 'fields' => 
+                array("SUM((Investment.investment_amount)) as principal",
+                    "SUM((Investment.interest_accrued)) as interest", 
+                    "SUM((Investment.investment_amount + Investment.interest_accrued)) as total")));
+
+            if ($accounts) {
+
+                $this->set('accounts', $accounts);
+                if ($total) {
+
+                    $this->set('total', $total);
+                }
+            }
+        }
     }
     
     function fundsUnderMgt(){

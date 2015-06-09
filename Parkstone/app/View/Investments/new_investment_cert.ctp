@@ -31,7 +31,10 @@ echo $this->Html->script('print.js');
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Client Type: <?php echo $data['InvestorType']['investor_type']; ?></p>
             </div>
-            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr>
+                
+            </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <hr>
                 
@@ -55,7 +58,7 @@ echo $this->Html->script('print.js');
                     <tr>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['total_tenure'].' '.$data['Investment']['investment_period']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['duration'].' '.$data['Investment']['investment_period']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['investment_amount']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['custom_rate'].'%'; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['interest_earned']; ?></td>

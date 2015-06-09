@@ -295,7 +295,7 @@ class InvestmentsController extends AppController {
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
             }
-
+            $this->request->data['Investor']['fullname'] = $this->request->data['Investor']['comp_name'];
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
@@ -528,7 +528,8 @@ class InvestmentsController extends AppController {
                 $user_l = $this->Session->read('userDetails.lastname');
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
             }
-
+            
+            $this->request->data['Investor']['fullname'] = $this->request->data['Investor']['comp_name'];
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
             //pr($this->request->data);
@@ -2329,6 +2330,7 @@ class InvestmentsController extends AppController {
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
                     'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:' . $receipt_no, 'voucher_no' => $receipt_no);
+               
                 $inv_deposit = array('user_id' => $this->request->data['Investment']['user_id'],
                     'amount' => $deposit, 'receipt_no' => $receipt_no, 'deposit_date' => $deposit_date->format('Y-m-d'));
 

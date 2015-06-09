@@ -16,7 +16,7 @@ echo $this->Html->script('print.js'); ?>
             ?>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php
-                echo $this->Form->input('client_name', array('label' => 'Client Name*'));
+                echo $this->Form->input('investor_id', array('label' => 'Investor Name*','empty' => '--Select Investor--'));
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

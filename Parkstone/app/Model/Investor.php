@@ -14,7 +14,7 @@ class Investor extends AppModel{
     
     var $name = 'Investor';
     var $usesTable = "investors";
-    
+   
     var $belongsTo = array(
         'User' => array(
             'className' => 'User',
