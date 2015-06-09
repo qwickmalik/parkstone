@@ -17,14 +17,14 @@ class CustomerCategory extends AppModel {
     
     
     var $hasMany = array(
-        'Customer' => array(
-            'className' => 'Customer',
-            'foreignKey' => 'customer_category_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
+//        'Customer' => array(
+//            'className' => 'Customer',
+//            'foreignKey' => 'customer_category_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
          'Investor' => array(
             'className' => 'Investor',
             'foreignKey' => 'customer_category_id',

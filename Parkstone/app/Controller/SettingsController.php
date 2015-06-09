@@ -1136,7 +1136,7 @@ class SettingsController extends AppController {
 
     function exchangeRates() {
 
-        $this->__validateUserType2();
+        $this->__validateUserType();
         $this->set('currencies', $this->Currency->find('list', array('conditions' => array('Currency.is_local' => 0))));
         $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.is_local' => 1]]));
         $data = $this->paginate('ExchangeRate');
