@@ -664,13 +664,13 @@ echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class
                 var prod_val = $("#InvestmentInvestmentproductId").val();
 //             $(".hidden-fee").hide();
                 if (prod_val == "1") {
-//                    $("#equity input").prop("disabled",true);
+                    
                     $("#fixed").show("slow");
                     $("#equity").hide("slow");
                 }
 
                 if (prod_val == "2") {
-//                    $("#fixed input").prop("disabled",true);
+                   $("#InvestmentInvestmentPeriod").prop("disabled",true);
                     $("#equity").show(5000);
                     $("#fixed").hide("slow");
                 }

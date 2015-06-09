@@ -44,7 +44,8 @@ class AppController extends Controller {
         
         $this->Session->delete('public_payment_req');
         $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
-    }
+  $this->__validateLoginStatus();
+        }
     
     function __validateLoginStatus() {
         if ($this->action != 'login' && $this->action != 'logout') {
