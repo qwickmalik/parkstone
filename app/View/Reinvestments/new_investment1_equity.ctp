@@ -242,7 +242,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('reinvestor_id', array('value' 
                                 => (isset($equitydetails['InvestmentCash']['reinvestor_id']) ? 
                                     $equitydetails['InvestmentCash']['reinvestor_id'] : '' )));
-                            echo $this->Form->hidden('investor_id', array('value' => (isset($equitydetails['Investment']['investor_id']) ? $equitydetails['Investment']['investor_id'] : '' )));
+                            echo $this->Form->hidden('investor_id', array('value' =>
+                                (isset($equitydetails['Investment']['investor_id']) ? 
+                                    $equitydetails['Investment']['investor_id'] : '' )));
 
                             echo $this->Form->hidden('reinvestorcashaccount_id', array('value' => (isset($reinvestorcashaccount['ReinvestorCashaccount']['id']) ? 
                                     $reinvestorcashaccount['ReinvestorCashaccount']['id'] : '' )));
