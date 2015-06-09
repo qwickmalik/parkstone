@@ -220,7 +220,9 @@
                                     <?php
                                     echo $this->Form->input('equities_list_id3', ['class' => 'equity_id', 'selected' => 
                                         (isset($equity_array[3]) ? 
-                                    $equity_array[3]['InvestorEquity']['equities_list_id'] : 0 ), 'id' => '3', 'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 'empty' => '--Please choose desired equity--']);
+                                    $equity_array[3]['ReinvestorEquity']['equities_list_id'] : 0 ), 'id' => '3', 
+                                        'type' => 'select', 'label' => 'Equity', 'options' => $equitieslists, 
+                                        'empty' => '--Please choose desired equity--']);
                                     
                                     ?>
                                 </div>
