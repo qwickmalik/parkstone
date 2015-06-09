@@ -12,7 +12,7 @@ class ReinvestmentsController extends AppController {
         'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'ReinvestmentsEquity','InvestorEquity',
         'ReinvestmentRollover', 'ReinvestmentStatement', /*'ReinvestmentEquityStatement',*/ 'Instruction',
         'LedgerTransaction', 'ClientLedger', 'ReinvestorEquity', 'InvestorEquity','CashReceiptMode',
-        'PaymentMode','InvestmentReturn','ReinvestmentTopup');
+        'PaymentMode','InvestmentReturn','ReinvestmentTopup','EquityOrder','Investment');
     
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
@@ -1731,7 +1731,10 @@ $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedge
 //                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
 //                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
 //                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                        
+            $variables = array('totalamt' => $totalamt);
 
+            $this->Session->write('variabless_reequity', $variables);
                         $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
@@ -1773,7 +1776,9 @@ $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedge
 //                        $this->Session->write('investtemp1.amount_deposited', $this->request->data['Investment']['amount_deposited']);
 //                        $this->Session->write('investtemp1.cash_athand', $this->request->data['Investment']['cash_athand']);
 //                        $this->Session->write('investtemp1.total_invested', $this->request->data['Investment']['total_invested']);
+                            $variables = array('totalamt' => $totalamt);
 
+            $this->Session->write('variabless_reequity', $variables);
                         $message = 'Total equity cost cannot be more than investor\'s availalbe cash';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
@@ -1816,6 +1821,7 @@ $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedge
                 'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
                 'investor_id' => $this->request->data['Reinvestment']['investor_id'],
                 'investment_type' => 'equity',
+                'investment_no' => $this->request->data['Reinvestment']['investment_no'],
                 'investment_cash_id' => $this->request->data['Reinvestment']['investment_cash_id'],
                 'currency_id' => $this->request->data['Reinvestment']['currency_id'],
                 'investment_amount' => $totalamt,
@@ -1824,6 +1830,9 @@ $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedge
                 'purchase_date' => $inv_date,
                 'total_fees' => $this->request->data['Reinvestment']['total_fees'],
                 'total_amount' => $totalamt,
+                'numb_shares' => $total_shares,
+                'numb_shares_left' => $total_shares,
+                'details' => $this->request->data['Reinvestment']['details'],
                 'created_by' => $this->request->data['Reinvestment']['user_id'],
                 'modified_by' => $this->request->data['Reinvestment']['user_id']
             );
@@ -2008,7 +2017,38 @@ function get_equity() {
             }
         }
     }
-
+    
+    public function disposalList(){
+       $this->paginate = array(
+            'conditions' => array('Investment.status' => 'Disposal_Requested'),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');  
+        $this->set('data',$data);
+    }
+public function disposalRequest($id = null){
+    
+     $this->set('equitieslists', $this->EquitiesList->find('list'));
+     if(!empty($id) && !is_null($id)){
+    $data = $this->EquityOrder->find('all',array('conditions',array('EquityOrder.id' => $id)));
+   
+   
+        if($data){
+            $x = 1;
+                    $equity_array = array();
+            foreach($data as $val){
+                        $equity_array[$x] = $val;
+                        $x++;
+                    
+                   
+                }
+                 $this->set('equity_array', $equity_array);
+            }
+        
+        $this->set('data',$data);
+     }
+    
+}
     function process() {
         $this->autoRender = false;
         if ($this->request->is('post')) {

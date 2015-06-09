@@ -71,11 +71,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>-->
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Purchase Price:</b></p>";?>
+                                    <?php echo "<p><b>Total Payment:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                     <?php echo (isset($reinvestments['ReinvestmentsEquity']['purchase_price']) ? 
-                                                number_format($reinvestments['ReinvestmentsEquity']['purchase_price'], 2, '.', ',')
+                                     <?php echo (isset($reinvestments['ReinvestmentsEquity']['total_amount']) ? 
+                                                number_format($reinvestments['ReinvestmentsEquity']['total_amount'], 2)
                                               : '' );?>
                                
                                 </div>
@@ -96,7 +96,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestments['ReinvestmentsEquity']['total_fees']) ? 
-                                                number_format($reinvestments['ReinvestmentsEquity']['total_fees'], 2, '.', ',') : '' );?>
+                                                number_format($reinvestments['ReinvestmentsEquity']['total_fees'], 2) : '' );?>
                                
                                 </div>
                             </div>

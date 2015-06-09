@@ -26,6 +26,14 @@ class EquitiesList extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'EquityOrder' => array(
+            'className' => 'EquityOrder',
+            'foreignKey' => 'equities_list_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
     

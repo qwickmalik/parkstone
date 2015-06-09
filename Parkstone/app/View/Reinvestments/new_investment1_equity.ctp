@@ -97,7 +97,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Notes:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($equitydetails['InvestmentCash']['notes']) ? $equitydetails['InvestmentCash']['notes'] : '' );?>
+                                    <?php echo (isset($equitydetails['Investment']['details']) ? $equitydetails['Investment']['details'] : '' );?>
                                 </div>
                             </div> 
                         </div>
@@ -275,6 +275,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                                echo $this->Form->hidden('available_amount', array('value' => 
                                     (isset($equitydetails['InvestmentCash']['available_amount']) ? 
                                     $equitydetails['InvestmentCash']['available_amount'] : 0 )));
+                                
+     
+                               echo $this->Form->hidden('investment_no', array('value' => 
+                                    (isset($equitydetails['Investment']['investment_no']) ? 
+                                    $equitydetails['Investment']['investment_no'] : '' )));
                                 
      
                              
@@ -566,7 +571,15 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </script>
                                 </div>
                                 
-                                
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                      <div class="col-lg-8 col-md-8 col-sm-12">
+                                <?php
+//                                    echo "<p>&nbsp;</p>";
+                                     echo $this->Form->input('details', array('type' => 'textarea','label' => 'Details',
+                                 'value' => ($this->Session->check('reeinvesttemp.details') == true ? 
+                                     $this->Session->read('reeinvesttemp.details') : '' ))); 
+                                    ?>
+                                </div> 
                                     <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
 //                                    echo "<p>&nbsp;</p>";
@@ -576,9 +589,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     ?>
                                 </div>
                                 
-                                    
+                                   
                             </div>
-                           
+                            </div>
                             </div>
                                 </div>
 
@@ -644,8 +657,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Equity1/".(isset($equitydetails['InvestmentCash']['reinvestor_id']) ? 
                                     $equitydetails['InvestmentCash']['reinvestor_id'] : '' ).'/'.(isset($equitydetails['InvestmentCash']['id']) ? 
                                     $equitydetails['InvestmentCash']['id'] : '' ), 
-                            array("class" => 'btn btn-lg btn-primary'),
-                             array('confirm' => 'Are you sure you wish to submit this investment?'));
+                            array("class" => 'btn btn-lg btn-primary','confirm' => 'Are you sure you wish to submit this investment?'));
                     ?>
                 </div>
                     

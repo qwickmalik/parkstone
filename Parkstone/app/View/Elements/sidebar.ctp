@@ -76,6 +76,9 @@
                 <?php echo $this->Html->link('Monthly Maturity List', '/Reinvestments/monthlyMaturityList', array('escape' => false)); ?>
             </li>
             <li>
+                <?php echo $this->Html->link('Disposal Requests', '/Reinvestments/disposalList', array('escape' => false)); ?>
+            </li>
+            <li>
                 <?php echo $this->Html->link('New/Edit Inv. Destination', '/Reinvestments/newInvestmentDestination', array('escape' => false)); ?>
             </li>
             <li>

@@ -12,7 +12,8 @@ class InvestmentsController extends AppController {
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
         'PaymentMode', 'CashReceiptMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
         'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
-        'InvestorEquity', 'LedgerTransaction', 'Topup','InvestorDeposit');
+        'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit', 'ReinvestmentsEquity', 'ReinvestorEquity',
+        'EquityOrder');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
@@ -23,10 +24,7 @@ class InvestmentsController extends AppController {
 
     function beforeFilter() {
 //        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
-        
-        }
-
-    
+    }
 
     function __validateUserType() {
 
@@ -563,7 +561,7 @@ class InvestmentsController extends AppController {
             $error = false;
             $files = array();
 
-            $uploaddir = $this->webroot.'files/uploads/';
+            $uploaddir = $this->webroot . 'files/uploads/';
             foreach ($_FILES as $file) {
                 if (move_uploaded_file($file['tmp_name'], $uploaddir . basename($file['name']))) {
                     $files[] = $uploaddir . $file['name'];
@@ -1974,7 +1972,7 @@ class InvestmentsController extends AppController {
     function process_indv() {
         $this->autoRender = false;
         if ($this->request->is('post')) {
-
+            $total_shares = 0;
             $investor_id = $this->request->data['Investment']['investor_id'];
             $page = $this->request->data['Investment']['investor_page'];
             if (isset($this->request->data['fixed_reset'])) {
@@ -2247,10 +2245,9 @@ class InvestmentsController extends AppController {
                 }
 
                 $first_date = $inv_date;
-
             }
             if (isset($this->request->data['equity_process'])) {
-                  
+
                 $first_date = $pinv_date;
 
                 $this->request->data['Investment']['investment_date'] = $pinv_date;
@@ -2324,18 +2321,18 @@ class InvestmentsController extends AppController {
                     
                 }
             }
-           
+
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
-                $receipt_no = $this->request->data['Investment']['receipt_no']; 
+                $receipt_no = $this->request->data['Investment']['receipt_no'];
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
-                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:'.$receipt_no,'voucher_no' => $receipt_no);
-            $inv_deposit = array('user_id' => $this->request->data['Investment']['user_id'],
-                'amount' => $deposit,'receipt_no' => $receipt_no,'deposit_date' => $deposit_date->format('Y-m-d'));
-                
-                
+                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:' . $receipt_no, 'voucher_no' => $receipt_no);
+                $inv_deposit = array('user_id' => $this->request->data['Investment']['user_id'],
+                    'amount' => $deposit, 'receipt_no' => $receipt_no, 'deposit_date' => $deposit_date->format('Y-m-d'));
+
+
                 $this->Session->write('inv_deposit', $inv_deposit);
             }
             $base_fee = 0;
@@ -2662,6 +2659,8 @@ class InvestmentsController extends AppController {
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
                     'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
+                    'numb_shares' => $total_shares,
+                    'numb_shares_left' => $total_shares,
                     'base_fees' => $base_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
@@ -2729,9 +2728,9 @@ class InvestmentsController extends AppController {
                 }
                 $basefee_duedate = new DateTime($inv_date);
                 $basefee_duedate->add(new DateInterval('P1M'));
-                
-            $deposit_date = new DateTime($inv_date);
-            $deposit_date->sub(new DateInterval('P1D'));
+
+                $deposit_date = new DateTime($inv_date);
+                $deposit_date->sub(new DateInterval('P1D'));
                 $pur_day = $this->request->data['Investment']['investment_date']['day'];
                 if (!empty($pur_day)) {
                     $pur_month = $this->request->data['Investment']['investment_date']['month'];
@@ -3005,6 +3004,7 @@ class InvestmentsController extends AppController {
         if ($this->request->is('post')) {
             $ledger_transactions = array();
             $cheque_no = '';
+            $total_shares = 0;
             $amount = $this->request->data['Investment']['investment_amount'];
             $page = $this->request->data['Investment']['investor_page'];
             $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
@@ -3158,7 +3158,7 @@ class InvestmentsController extends AppController {
             $basefee_duedate->add(new DateInterval('P1M'));
             $deposit_date = new DateTime($inv_date);
             $deposit_date->sub(new DateInterval('P1D'));
-            
+
             $pur_day = $this->request->data['Investment']['investment_date']['day'];
             if (!empty($pur_day)) {
                 $pur_month = $this->request->data['Investment']['investment_date']['month'];
@@ -3346,22 +3346,22 @@ class InvestmentsController extends AppController {
                     
                 }
             }
-              $receipt_no = $this->request->data['Investment']['receipt_no'];
+            $receipt_no = $this->request->data['Investment']['receipt_no'];
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
-                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:'.$receipt_no);
-                
+                    'date' => $inv_date, 'description' => 'Deposit for investment with receipt no:' . $receipt_no);
+
                 $inv_deposit = array('user_id' => $this->request->data['Investment']['user_id'],
-                'amount' => $deposit,'receipt_no' => $receipt_no,'deposit_date' => $deposit_date->format('Y-m-d'));
-                
-                
+                    'amount' => $deposit, 'receipt_no' => $receipt_no, 'deposit_date' => $deposit_date->format('Y-m-d'));
+
+
                 $this->Session->write('inv_deposit', $inv_deposit);
             }
-             
-           
+
+
             $base_fee = 0;
             $base_rate = 0;
             $benchmark_rate = 0;
@@ -3718,6 +3718,8 @@ class InvestmentsController extends AppController {
                     'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
                     'base_fees' => $base_fee,
+                    'numb_shares' => $total_shares,
+                    'numb_shares_left' => $total_shares,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
@@ -4854,9 +4856,9 @@ class InvestmentsController extends AppController {
                 $this->redirect('/Investments/');
             }
         }
-        
+
         $lt_id = null;
-        
+
         if ($this->Session->check('ledger_data')) {
 
             $ledger_data = $this->Session->read('ledger_data');
@@ -4928,19 +4930,19 @@ class InvestmentsController extends AppController {
                         $val['client_ledger_id'] = $cledger_id;
                         $val['voucher_no'] = $investment_number;
                         $this->LedgerTransaction->create();
-                       $lt_result = $this->LedgerTransaction->save($val);
+                        $lt_result = $this->LedgerTransaction->save($val);
                         $lt_id = $lt_result['LedgerTransaction']['id'];
                     }
                 }
             }
             $this->Session->delete('client_ledger');
         }
-        if($this->Session->check('inv_deposit')){
-           $inv_deposit = $this->Session->read('inv_deposit');
-           $inv_deposit['investment_id'] = $investment_id;
-           $inv_deposit['ledger_transaction_id'] = $lt_id;
-           $this->InvestorDeposit->create();
-           $this->InvestorDeposit->save($inv_deposit);
+        if ($this->Session->check('inv_deposit')) {
+            $inv_deposit = $this->Session->read('inv_deposit');
+            $inv_deposit['investment_id'] = $investment_id;
+            $inv_deposit['ledger_transaction_id'] = $lt_id;
+            $this->InvestorDeposit->create();
+            $this->InvestorDeposit->save($inv_deposit);
         }
         if ($this->Session->check('ledger_transactions')) {
 
@@ -5476,7 +5478,7 @@ class InvestmentsController extends AppController {
         $this->set('data', $data);
     }
 
-    function approvePayments2($investor_id = null, $investor_name = null, $investment_id = null,$instructions = null) {
+    function approvePayments2($investor_id = null, $investor_name = null, $investment_id = null, $instructions = null) {
         $this->__validateUserType();
         if (!is_null($investor_id) && !is_null($investor_name)) {
 //            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(1, 3)), 'order' => array('Investment.id')));
@@ -5555,7 +5557,7 @@ class InvestmentsController extends AppController {
                 $result = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' =>
                         $value['Investment']['investor_id']]]);
                 if ($result) {
-                   $result['Investment']['id'] = $value['Investment']['id'];
+                    $result['Investment']['id'] = $value['Investment']['id'];
                     $data_array[] = $result;
                 }
             }
@@ -5601,10 +5603,10 @@ class InvestmentsController extends AppController {
                         if ($data) {
 
                             $update_array = array('id' => $investment_id,
-                                'status' => "Payment_Approved",'instruction_details' => $instructions);
+                                'status' => "Payment_Approved", 'instruction_details' => $instructions);
 
-                           $result = $this->Investment->save($update_array);
-                           
+                            $result = $this->Investment->save($update_array);
+
                             $this->Session->delete('public_payment_req');
                             $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
 
@@ -5639,20 +5641,20 @@ class InvestmentsController extends AppController {
     }
 
     function requestPayment($investment_id = null) {
-        $this->__validateUserType();
+//        $this->__validateUserType();
 
         if (!is_null($investment_id)) {
-            $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id), 
+            $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id),
                 'order' => array('Investment.id')));
             if ($data) {
-                
+
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
                 $result = $this->Investment->save($new_investmentdetails);
                 $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
-    
+
                 if ($result) {
-                    
+
                     $message = 'Payment Request Successfully Sent';
                     $this->Session->write('smsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
@@ -5668,6 +5670,33 @@ class InvestmentsController extends AppController {
             $message = 'Sorry, Investment Not Found';
             $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'maturityList'));
+        }
+    }
+
+    function requestPayment4manageEquityinvestments($investment_id = null, $investor_id = null, $investor_name = null) {
+
+        if (!is_null($investment_id)) {
+            $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
+            if ($data) {
+                $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
+
+                $result = $this->Investment->save($new_investmentdetails);
+                if ($result) {
+                    $message = 'Payment Request Successfully Sent';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+                }
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+            }
+        } else {
+
+            $message = 'Sorry, Investment Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
         }
     }
 
@@ -5851,12 +5880,12 @@ class InvestmentsController extends AppController {
                         'description' => 'Payment of Investment Proceeds');
                     $this->LedgerTransaction->create();
                     $this->LedgerTransaction->save($ledger_transactions);
-                    
-                    $investment_paymentdetails = array('investment_id' => $investment_id, 
-                    'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
-                    'payment_mode' => $this->request->data['InvestmentPayment']['payment_mode'],
-                     'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date);
-                     
+
+                    $investment_paymentdetails = array('investment_id' => $investment_id,
+                        'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
+                        'payment_mode' => $this->request->data['InvestmentPayment']['payment_mode'],
+                        'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date);
+
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if ($ledger_transactions) {
 
@@ -6104,7 +6133,7 @@ class InvestmentsController extends AppController {
                 } else {
                     $inv_date = date('Y-m-d');
                 }
-                
+
                 $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
                 if ($investment_data) {
                     $receipt_no = $this->request->data['Topup']['receipt_no'];
@@ -6126,41 +6155,41 @@ class InvestmentsController extends AppController {
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
                                 $description = 'Fixed Investment Topup for ' . $inv_no;
                                 $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
-                            , 'cash_receipt_mode_id' => $source,
-                            'cheque_no' => $cheque_no, 'credit' => $amount,'user_id' => $userid,
-                            'date' => $inv_date, 'description' => $description,'voucher_no' =>$receipt_no);
-                                
+                                    , 'cash_receipt_mode_id' => $source,
+                                    'cheque_no' => $cheque_no, 'credit' => $amount, 'user_id' => $userid,
+                                    'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
+
                                 $inv_deposit = array('user_id' => $userid,
-                'amount' => $amount,'receipt_no' => $receipt_no,'deposit_date' => $inv_date);
-                
-                
-                
+                                    'amount' => $amount, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
+
+
+
                                 break;
                             case 2:
-                                 $payment_name = 'Cheque';
+                                $payment_name = 'Cheque';
                                 $amount = $this->request->data['Topup']['topup_amount'];
                                 $new_investedamount = $ledger['ClientLedger']['invested_amount'] + $amount;
                                 $cheque_no = $this->request->data['Topup']['cheque_no'];
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
                                 $description = 'Fixed Investment Topup for ' . $inv_no;
-                               
-                             $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
-                            , 'cash_receipt_mode_id' => $source,
-                            'cheque_no' => $cheque_no, 'credit' => $amount,
-                            'user_id' => $userid,
-                            'date' => $inv_date, 'description' => $description,'voucher_no' =>$receipt_no);
-                                
-                                
+
+                                $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                    , 'cash_receipt_mode_id' => $source,
+                                    'cheque_no' => $cheque_no, 'credit' => $amount,
+                                    'user_id' => $userid,
+                                    'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
+
+
                                 $inv_deposit = array('user_id' => $userid,
-                'amount' => $deposit,'receipt_no' => $receipt_no,'deposit_date' => $inv_date);
-                
-                
-               
-                
+                                    'amount' => $deposit, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
+
+
+
+
                                 break;
                             case 4:
-                                 $payment_name = 'Client Ledger Balance';
+                                $payment_name = 'Client Ledger Balance';
                                 $amount = $this->request->data['Topup']['topup_amount'];
                                 if ($amount > $available_cash) {
                                     $message = 'Not enough cash in investor\'s ledger balance to complete this topup';
@@ -6172,18 +6201,17 @@ class InvestmentsController extends AppController {
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'available_cash' => $new_ledgeravailablecash,
                                     'invested_amount' => $new_investedamount);
-                                
-                               $description = 'Fixed Investment Topup for ' . $inv_no;
-                               
-                             $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
-                            , 'cash_receipt_mode_id' => $source,
-                            'cheque_no' => $cheque_no, 'debit' => $amount,
-                            'user_id' => $userid,
-                            'date' => $inv_date, 'description' => $description);
-                             
+
+                                $description = 'Fixed Investment Topup for ' . $inv_no;
+
+                                $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                    , 'cash_receipt_mode_id' => $source,
+                                    'cheque_no' => $cheque_no, 'debit' => $amount,
+                                    'user_id' => $userid,
+                                    'date' => $inv_date, 'description' => $description);
+
                                 break;
                         }
-                        
                     } else {
                         $message = 'Investor ledger retrieval error. Please try again.';
                         $this->Session->write('bmsg', $message);
@@ -6301,18 +6329,18 @@ class InvestmentsController extends AppController {
                             if ($ledger_transactions) {
 
                                 $this->LedgerTransaction->create();
-                              $lt_result =  $this->LedgerTransaction->save($ledger_transactions);
-                              $lt_id = $lt_result['LedgerTransaction']['id'];
+                                $lt_result = $this->LedgerTransaction->save($ledger_transactions);
+                                $lt_id = $lt_result['LedgerTransaction']['id'];
                             }
                         }
-                        if($topup_result){
-                        if(isset($inv_deposit)){
-                            $inv_deposit['investment_id'] = $investment_id;
-           $inv_deposit['ledger_transaction_id'] = $lt_id;
-           $inv_deposit['topup_id'] = $topup_result['Topup']['id'];
-           $this->InvestorDeposit->create();
-           $this->InvestorDeposit->save($inv_deposit);
-                        }
+                        if ($topup_result) {
+                            if (isset($inv_deposit)) {
+                                $inv_deposit['investment_id'] = $investment_id;
+                                $inv_deposit['ledger_transaction_id'] = $lt_id;
+                                $inv_deposit['topup_id'] = $topup_result['Topup']['id'];
+                                $this->InvestorDeposit->create();
+                                $this->InvestorDeposit->save($inv_deposit);
+                            }
                         }
                         $message = 'Topup successful.';
                         $this->Session->write('smsg', $message);
@@ -6530,19 +6558,19 @@ class InvestmentsController extends AppController {
         }
     }
 
-    function payInvestor($investor_id = null,$investment_id =null) {
+    function payInvestor($investor_id = null, $investment_id = null) {
         $this->__validateUserType();
         $this->set('paymentmodes', $this->PaymentMode->find('list'));
-        
-        $this->set('instructions', $this->Instruction->find('list',array('conditions' => array('Instruction.id' => array('1','2','3')))));
+
+        $this->set('instructions', $this->Instruction->find('list', array('conditions' => array('Instruction.id' => array('1', '2', '3')))));
         if (!is_null($investor_id)) {
             $data = $this->ClientLedger->find('first', array('conditions' => array('ClientLedger.investor_id' => $investor_id)));
-            $inv_data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+            $inv_data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
             if ($data) {
                 $this->set('data', $data);
-                if($inv_data){
-                        
-                 $this->set('inv_data', $inv_data);   
+                if ($inv_data) {
+
+                    $this->set('inv_data', $inv_data);
                 }
             } else {
 
@@ -6553,15 +6581,31 @@ class InvestmentsController extends AppController {
         }
     }
 
-    function disposeEquityInvestment($investment_id = null) {
+    function disposeEquityInvestment($investment_id = null, $investment_no = null) {
         $this->__validateUserType();
 //        $this->set('paymentmodes', $this->PaymentMode->find('list'));
-        if (!is_null($investment_id)) {
-            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+        if (!is_null($investment_no) && !is_null($investment_id)) {
+
+            $data = $this->ReinvestmentsEquity->find('first', array('conditions' =>
+                array('ReinvestmentsEquity.investment_no' => $investment_no)));
             if ($data) {
-              $data['EquitiesList'] = $this->InvestorEquity->find('all', array('conditions' => array('InvestorEquity.investment_id' => $investment_id)));
+                $data['inv'] = $this->Investment->find('first', array('conditions' =>
+                    array('Investment.id' => $investment_id)));
+
+                $data['EquitiesList'] = $this->ReinvestorEquity->find('all', array('conditions' =>
+                    array('ReinvestorEquity.reinvestment_id' => $data['ReinvestmentsEquity']['id'])));
+                if ($data['EquitiesList']) {
+                    $x = 1;
+                    $equity_array = array();
+                    foreach ($data['EquitiesList'] as $val) {
+                        $equity_array[$x] = $val;
+                        $x++;
+                    }
+                    $this->set('equity_array', $equity_array);
+                }
                 $this->set('data', $data);
-               
             } else {
 
                 $message = 'Sorry, Investment Not Found';
@@ -7401,6 +7445,93 @@ class InvestmentsController extends AppController {
             } else {
                 $error = json_encode(array("error" => "INVALID SELECTION"));
                 return $error;
+            }
+        }
+    }
+
+    public function makeEquityOrder() {
+        $this->autoRender = $this->autoLayout = false;
+        if ($this->request->is('post')) {
+
+            $investment_id = $_POST['hid_investid'];
+            $invest_no = $this->request->data['EquityOrder']['invest_no'];
+            //$investor_id = $this->request->data['EquityOrder']['invest_no']
+            //$this->request->data['EquityOrder']['investor_id'];
+
+            $totalamt = 0;
+            $total_shares = 0;
+            $equities_list_id = $this->request->data['EquityOrder']['equities_list_id'];
+            if ($this->Session->check('investmt_equities')) {
+                $this->Session->delete('investmt_equities');
+            }
+            $equities = $this->get_equity();
+            $shares_rem = $this->request->data['EquityOrder']['shares_rem'];
+            $shares_ordered = $this->request->data['EquityOrder']['numb_shares'];
+            $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $equities_list_id), 'recursive' => -1));
+            if ($equity) {
+                $equity_name = $equity['EquitiesList']['equity_abbrev'];
+            }
+            if ($shares_ordered > $shares_rem) {
+                $message = 'Shares ordered for ' . $equity_name . '  are more than remaining shares.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'disposeEquityInvestment', $investment_id, $invest_no));
+            }
+            $equity_data = array($equities_list_id => array(
+                    'equities_list_id' => $equities_list_id,
+                    'investment_id' => $investment_id,
+                    'numb_shares_sold' => $shares_ordered
+            ));
+
+            $equities+=$equity_data;
+            $this->set_equity($equities);
+            $x = 2;
+            while ($x <= 5) {
+                $equities = $this->get_equity();
+
+                //equity already exists, add to equity_details
+                if (isset($this->request->data['EquityOrder']['equities_list_id' . $x]) &&
+                        !empty($this->request->data['EquityOrder']['equities_list_id' . $x])) {
+
+                    $shares_rem = $this->request->data['EquityOrder']['shares_rem' . $x];
+                    $shares_ordered = $this->request->data['EquityOrder']['numb_shares' . $x];
+                    $newequities_list_id = $this->request->data['EquityOrder']['equities_list_id' . $x];
+                    $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $newequities_list_id), 'recursive' => -1));
+                    if ($equity) {
+                        $equity_name = $equity['EquitiesList']['equity_abbrev'];
+                    }
+                    if ($shares_ordered > $shares_rem) {
+                        $message = 'Shares ordered for ' . $equity_name . '  are more than remaining shares.';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'disposeEquityInvestment', $investment_id, $invest_no));
+                    }
+
+                    $equity_data = array($newequities_list_id => array(
+                            'equities_list_id' => $newequities_list_id,
+                            'investment_id' => $investment_id,
+                            'numb_shares_sold' => $this->request->data['Reinvestment']['purchase_price' . $x]
+                    ));
+
+                    $equities+=$equity_data;
+                    $this->set_equity($equities);
+                }
+                $x++;
+            }
+
+            $equities = $this->get_equity();
+            if (!empty($equities)) {
+                foreach ($equities as $key => $var) {
+                    $this->EquityOrder->create();
+                    $this->EquityOrder->save($var);
+                }
+                $this->Session->delete('investmt_equities');
+            }
+            $investment = array('id' => $investment_id, 'status' => 'Disposal_Requested');
+            $result = $this->Investment->save($investment);
+
+            if ($result) {
+                $message = 'Disposal Request Successful';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
         }
     }
