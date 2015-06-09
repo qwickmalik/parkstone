@@ -2539,6 +2539,7 @@ INSERT INTO `zones` (`id`, `zone`, `suburb`) VALUES
 
 UPDATE  `qwickfu1_parkst_inv`.`modules` SET  `module_name` =  'Outbound Investmt' WHERE  `modules`.`id` =3;
 UPDATE  `qwickfu1_parkst_inv`.`modules` SET  `module_name` =  'Inbound Investmt' WHERE  `modules`.`id` =2;
+ALTER TABLE  `reinvestor_cashaccounts` ADD  `total_balance` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `fixed_inv_balance`
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
