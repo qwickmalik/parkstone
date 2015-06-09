@@ -1647,12 +1647,15 @@ class ReinvestmentsController extends AppController {
 $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
 
                     if ($ledger_data) {
+                        
                         $ledger_id = $ledger_data['ClientLedger']['id'];
                          $ledger_available = $ledger_data['ClientLedger']['available_cash'];
                          
-                        $cashinvested = $ledger_data['ClientLedger']['total_invested'];
+                        $cashinvested = $ledger_data['ClientLedger']['invested_amount'];
                         $new_cashinvested = $cashinvested;
+                        
                     }
+                    
 
 
 
@@ -1685,9 +1688,10 @@ $ledger_data = $this->ClientLedger->find('first', ['conditions' => ['ClientLedge
             /****Restore old estimated total amount during deposit**/
                     $base_fees = $this->request->data['Reinvestment']['base_fees'];
                     $oldtotal_amount = $this->request->data['Reinvestment']['oldtotal_amount'];
-                         $ledger_available = $ledger_available + $oldtotal_amount;
-                        $cashinvested = $cashinvested - $oldtotal_amount;
-                        $new_cashinvested = $cashinvested;
+                    $ledger_available = $ledger_available + $oldtotal_amount;
+                     $cashinvested = $cashinvested - $oldtotal_amount;
+                     $new_cashinvested = $cashinvested;
+                     
             /**********************************************************/
                     $total_fees = $this->request->data['Reinvestment']['total_fees'];
                     $available_amount = $this->request->data['Reinvestment']['available_amount'];

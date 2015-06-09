@@ -32,7 +32,9 @@ echo $this->Html->script('print.js');
                 <p>Client Type: <?php echo $data['InvestorType']['investor_type']; ?></p>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <hr>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <p>Total Tenure: <?php echo $data['Investment']['total_tenure'].' '.$data['Investment']['investment_period']; ?></p>
+            </div>
                 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
