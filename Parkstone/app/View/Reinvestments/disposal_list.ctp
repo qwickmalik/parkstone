@@ -15,12 +15,12 @@
                         
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('id', 'Inv. No.'); ?></b></td>
                        <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="100" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('total_amount', 'Total Amt'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('numb_shares', 'Total Shares'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('numb_shares_left', ' Shares Left'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="120" align="left"><b><?php echo $this->Paginator->sort('numb_shares', 'Total Shares'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="120" align="left"><b><?php echo $this->Paginator->sort('numb_shares_left', ' Shares Left'); ?></b></td>
                        
-                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('payment_status', 'Payment Status'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
@@ -31,12 +31,11 @@
                                 <td align="left"><?php echo (!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : (!empty($each_item['Investor']['company_name']) ? $each_item['Investor']['company_name'] : '' ) );  ?></td>
                             
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['total_amount']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['total_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['numb_shares']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['numb_shares_left']; ?></td>
                                 
-                                <td align="left"><?php echo $each_item['Investment']['status']; ?></td>
+                                <td align="center"><?php echo $each_item['Investment']['status']; ?></td>
                                 <td align="center" style="border-bottom: solid 1px Gray;">
 
                             <?php
