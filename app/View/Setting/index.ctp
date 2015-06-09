@@ -55,13 +55,13 @@
 					</div>
 				</div>', '/Settings/banks', array('escape' => false)); ?>
         
-        <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
-			<div id="innertext">
-				<h3>Payment Terms</h3>
-				<p>Add/edit payment terms here</p>
-			</div>
-		</div>', '/Settings/paymentTerms', array('escape' => false)); ?>
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
+//			<div id="innertext">
+//				<h3>Payment Terms</h3>
+//				<p>Add/edit payment terms here</p>
+//			</div>
+//		</div>', '/Settings/paymentTerms', array('escape' => false)); ?>
 
         <?php echo $this->Html->link('
 		<div id="settingsbox">' . $this->Html->image('defaulting_rates.png', array()) . '
@@ -93,13 +93,13 @@
 
 
 
-        <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('investment_portfolios.png', array()) . '
-			<div id="innertext">
-				<h3>Investment Portfolios</h3>
-				<p>Set interest rates for investment portfolios here</p>
-			</div>
-		</div>', '/Settings/investmentPortfolios', array('escape' => false)); ?>
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('investment_portfolios.png', array()) . '
+//			<div id="innertext">
+//				<h3>Investment Portfolios</h3>
+//				<p>Set interest rates for investment portfolios here</p>
+//			</div>
+//		</div>', '/Settings/investmentPortfolios', array('escape' => false)); ?>
 
         <?php echo $this->Html->link('
 			<div id="settingsbox">' . $this->Html->image('investor_categories.png', array()) . '
