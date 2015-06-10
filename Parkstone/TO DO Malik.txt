@@ -1,5 +1,59 @@
 *Reports
 NB. All reports will have from date - to date filter options
+
+Additional TO Do
+----------------
+--Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
+  (link to investor_deposits table). Will open page listing all deposits for the said investment from investor_deposits table where investment_id = $id
+--Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
+  -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
+--Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
+  (link to investment_payments table)
+--Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
+  -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
+  investments with payment listing button to further list payments of under each investment for deletion 
+--pls look at format for /mask.js for validation and implement in new investor pages   
+#PLease format investor details page
+--Redesign Investment payment receipt
+*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
+*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
+
+
+
+
+NOTES FROM REVIEW 24TH FEB.2015
+--------------------------------------
+
+
+
+
+
+--- Accounting
+*If using Asset Management, it might have to be used for handle assets in terms of client funds
+
+
+
+
+T0 D0
+-------
+ Extras
++KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
++Kwaku: Payment terms to be calculated in days
++Kwaku: Cron Job to process daily rates of fixed investments
++Malik: Report to list such additions by cron job in investment management 
++Malik: Report to list such additions in general reports module
+
+
+
+
+
+#########   DONE    ###########
+=============================================
+
+
+
+
+
 DONE 1. Funds under Management
    [ filter included:YEAR,Checkbox to check for BBF]
    Columns
@@ -54,65 +108,7 @@ DONE 3. Income Spread
    to
    December
   
-Additional TO Do
-----------------
-Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)   
- 
---Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
-  (link to investor_deposits table)
---Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
-  -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
---Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
-  (link to investment_payments table)
---Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
-  -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
-  investments with payment listing button to further list payments of under each investment for deletion 
---pls look at format for /mask.js for validation and implement in new investor pages   
-#PLease format investor details page
---Redesign Investment payment receipt
-*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
-*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
-
-
-
-
-NOTES FROM REVIEW 24TH FEB.2015
---------------------------------------
-
-
-
-
-
---- Accounting
-*If using Asset Management, it might have to be used for handle assets in terms of client funds
-
-
-
-
-T0 D0
--------
-
-
-
- Extras
-+KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
-+Kwaku: Payment terms to be calculated in days
-+Kwaku: Cron Job to process daily rates of fixed investments
-+Malik: Report to list such additions by cron job in investment management 
-+Malik: Report to list such additions in general reports module
-
-
-#########   BUGS    ###########
-=============================================
-
-21.Please redefine Company accounts into receipts and payments. We should have a separate section to record any inflows, such as income (accrued or received), 
-   and then a separate section for payments. Note that in accounting we should also be able to accrue expenses, not just cash receipts and payments. 
-
-
-
-DONE
------
-
+DONE Client Statements for equity investments must show following columns(Equity name,Purchase Price,Current Price,Gain/Loss)   
 
 --Manage Investments
 *Following processes need approvals(Payment,Termination/Cancel,New Investors)..as in UCSL invoice approval
