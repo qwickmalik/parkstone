@@ -7481,7 +7481,8 @@ class InvestmentsController extends AppController {
             $equity_data = array($equities_list_id => array(
                     'equities_list_id' => $equities_list_id,
                     'investment_id' => $investment_id,
-                    'numb_shares_sold' => $shares_ordered
+                    'shares_req' => $shares_ordered
+                    
             ));
 
             $equities+=$equity_data;
@@ -7510,7 +7511,7 @@ class InvestmentsController extends AppController {
                     $equity_data = array($newequities_list_id => array(
                             'equities_list_id' => $newequities_list_id,
                             'investment_id' => $investment_id,
-                            'numb_shares_sold' => $this->request->data['Reinvestment']['purchase_price' . $x]
+                            'shares_req' => $shares_ordered
                     ));
 
                     $equities+=$equity_data;
