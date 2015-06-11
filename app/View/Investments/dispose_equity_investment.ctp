@@ -308,7 +308,7 @@
             echo $this->Html->link('Cancel', "/Investments/manageEquityInvestments/", array("class" => 'btn btn-lg btn-info'));
            // echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "btn btn-lg btn-success")); //check the parameters here 
            // echo $this->Html->link('Make Payment', "disposeEquityReceipt/". (isset($data['Investment']['id'])? $data['Investment']['id']: null),array( "class" => "btn btn-lg btn-success"));
-            echo $this->Form->button('Place Order', array("type" => "submit","class" => "btn btn-lg btn-success"));
+            echo $this->Form->button('Place Order', array("type" => "submit","class" => "btn btn-lg btn-success",'confirm' => 'Are you sure you want to place this order?'));
             ?> 
         </div>
 
