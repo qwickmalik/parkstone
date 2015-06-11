@@ -18,7 +18,7 @@ Additional TO Do
 *add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
 *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 
-
+--Please look at settings submodule inputs...need to be bootstrapped
 
 
 NOTES FROM REVIEW 24TH FEB.2015
