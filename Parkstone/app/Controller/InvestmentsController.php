@@ -2473,20 +2473,20 @@ class InvestmentsController extends AppController {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
 
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
@@ -2612,20 +2612,20 @@ class InvestmentsController extends AppController {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
 
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
@@ -2633,7 +2633,9 @@ class InvestmentsController extends AppController {
 
 
                     $investment_array = array(
-                        'total_amount' => $totalamt
+                        'total_amount' => $totalamt,
+                            'numb_shares' => $total_shares,
+                    'numb_shares_left' => $total_shares
                     );
                     $check = $this->Session->check('investment_array_equity');
                     if ($check) {
@@ -2661,8 +2663,6 @@ class InvestmentsController extends AppController {
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
                     'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
-                    'numb_shares' => $total_shares,
-                    'numb_shares_left' => $total_shares,
                     'base_fees' => $base_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
@@ -2678,7 +2678,9 @@ class InvestmentsController extends AppController {
 
 //                $this->Session->delete('investtemp');
                 $this->Session->delete('investtemp1');
+                
                 $this->Session->write('generic_array', $generic_array);
+               
                 $this->Session->write('ledger_data', $client_ledger);
                 $this->Session->write('ledger_transactions', $ledger_transactions);
                 $this->Session->write('investtemp.investmentproduct_id', $investmentproduct_id);
@@ -2933,20 +2935,20 @@ class InvestmentsController extends AppController {
                     case 'Management Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
 
-                        if ($base_fee > $new_cashathand) {
-                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
-                        }
+//                        if ($base_fee > $new_cashathand) {
+//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
+//                        }
 //                        $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
-                        if ($base_fee > $new_cashathand) {
-                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
-                        }
+//                        if ($base_fee > $new_cashathand) {
+//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id, $investment_id));
+//                        }
 //                        $new_cashathand = $new_cashathand - $base_fee;
 
                         break;
@@ -3527,20 +3529,20 @@ class InvestmentsController extends AppController {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
 
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
@@ -3666,20 +3668,20 @@ class InvestmentsController extends AppController {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
 
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $totalamt;
-                            if ($base_fee > $new_cashathand) {
-                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-                                $this->Session->write('bmsg', $message);
-                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
-                            }
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
+//                            }
 //                            $new_cashathand = $new_cashathand - $base_fee;
 
                             break;
@@ -3687,7 +3689,9 @@ class InvestmentsController extends AppController {
 
 
                     $investment_array = array(
-                        'total_amount' => $totalamt
+                        'total_amount' => $totalamt,
+                    'numb_shares' => $total_shares,
+                    'numb_shares_left' => $total_shares
                     );
                     $check = $this->Session->check('investment_array_equity');
                     if ($check) {
@@ -3720,8 +3724,6 @@ class InvestmentsController extends AppController {
                     'cheque_no' => $cheque_no,
                     'base_rate' => $base_rate,
                     'base_fees' => $base_fee,
-                    'numb_shares' => $total_shares,
-                    'numb_shares_left' => $total_shares,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_product_id' => $this->request->data['Investment']['investmentproduct_id'],
@@ -5473,7 +5475,7 @@ class InvestmentsController extends AppController {
 
         $this->paginate = array(
             'conditions' => array(
-                'status' => array('Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+                'status' => array('Payment_Requested','Disposal_Requested')),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
@@ -5491,6 +5493,7 @@ class InvestmentsController extends AppController {
             $this->set('investor_name', $investor_name);
             $this->set('investment_id', $investment_id);
             $this->set('instructions', $instructions);
+           
             if ($data) {
 //               $transactions = $this->LedgerTransaction->find('all',['conditions' => [
 //                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
@@ -5576,6 +5579,7 @@ class InvestmentsController extends AppController {
                 $investment_id = $this->request->data['Investment']['investment_id'];
                 $investor_id = $this->request->data['Investment']['investor_id'];
                 $instructions = $this->request->data['ApproveInvestments']['instructions'];
+                
                 $userid = null;
                 $check = $this->Session->check('userDetails');
                 if ($check) {
@@ -5589,7 +5593,7 @@ class InvestmentsController extends AppController {
                                 $data['Investment']['old_status']);
                             $this->Investment->save($update_array);
                             $this->Session->delete('public_payment_req');
-                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
 
                             $message = 'Payment request successfully rejected';
                             $this->Session->write('smsg', $message);
@@ -5603,14 +5607,18 @@ class InvestmentsController extends AppController {
 
                     case "1":
                         if ($data) {
-
+                            if($data['Investment']['status'] == 'Disposal_Requested'){
                             $update_array = array('id' => $investment_id,
-                                'status' => "Payment_Approved", 'instruction_details' => $instructions);
-
+                                'status' => "Disposal_Approved", 'instruction_details' => $instructions);
+                            }else{
+                              $update_array = array('id' => $investment_id,
+                                'status' => "Payment_Approved", 'instruction_details' => $instructions);  
+                            }
                             $result = $this->Investment->save($update_array);
 
                             $this->Session->delete('public_payment_req');
-                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => 
+                                array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
 
                             $message = 'Payment request successfully approved';
                             $this->Session->write('smsg', $message);
@@ -5626,7 +5634,8 @@ class InvestmentsController extends AppController {
                             $update_array = array('id' => $investment_id, 'status' => "Payment_requested");
                             $this->Investment->save($update_array);
                             $this->Session->delete('public_payment_req');
-                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+                            $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' =>
+                                array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
 
                             $message = 'Payment request successfully updated';
                             $this->Session->write('smsg', $message);
@@ -5653,7 +5662,7 @@ class InvestmentsController extends AppController {
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
                 $result = $this->Investment->save($new_investmentdetails);
-                $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+                $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
 
                 if ($result) {
 
@@ -7040,20 +7049,20 @@ class InvestmentsController extends AppController {
                     case 'Management Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
 
-                        if ($base_fee > $new_cashathand) {
-                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-                        }
+//                        if ($base_fee > $new_cashathand) {
+//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+//                        }
 //                        $new_cashathand = $new_cashathand - $base_fee;
                         break;
                     case 'Management & Performance Fee':
                         $base_fee = ($base_rate / 100) * $investment_amount;
-                        if ($base_fee > $new_cashathand) {
-                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-                        }
+//                        if ($base_fee > $new_cashathand) {
+//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                            $this->Session->write('bmsg', $message);
+//                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
+//                        }
 //                        $new_cashathand = $new_cashathand - $base_fee;
 
                         break;

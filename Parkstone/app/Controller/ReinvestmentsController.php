@@ -2017,7 +2017,7 @@ class ReinvestmentsController extends AppController {
 
     public function disposalList() {
         $this->paginate = array(
-            'conditions' => array('Investment.status' => 'Disposal_Requested'),
+            'conditions' => array('Investment.status' => 'Disposal_Approved'),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
@@ -2028,8 +2028,9 @@ class ReinvestmentsController extends AppController {
 
         $this->set('equitieslists', $this->EquitiesList->find('list'));
         if (!empty($id) && !is_null($id)) {
-            $data['eq'] = $this->EquityOrder->find('all', array('conditions', array('EquityOrder.id' => $id,'status' => 'ordered')));
-
+            $data['eq'] = $this->EquityOrder->find('all', array('conditions'=>
+                array('EquityOrder.investment_id' => $id,'EquityOrder.status' => 'ordered')));
+          
 
             if ($data['eq']) {
                 $investment_no = $data['eq'][0]['Investment']['investment_no'];
@@ -2821,7 +2822,8 @@ class ReinvestmentsController extends AppController {
                     'id' => $order_id,
                     'numb_shares_sold' => $shares_ordered,
                     'sale_price' => $sale_price,
-                    'total_price' => $total_price
+                    'total_price' => $total_price,
+                'status' => 'processed'
             ));
 
             $equities+=$equity_data;
@@ -2965,10 +2967,26 @@ class ReinvestmentsController extends AppController {
                 'payment_status' => $repayment_status,'lastpaidout_date' => $relastpaidout_date,'other_fees' => $reother_fees,
                 'modified_by' => $userid);
             
-            $this->ReinvestmentsEquity->save($reinv_array);
-                    
+            $re_result = $this->ReinvestmentsEquity->save($reinv_array);
+              if($re_result){
+               $message = 'Equity Sale Processed Successfully. Try again';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+              }    else {
+                $message = 'Could not process equity sale. Try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+            }     
+            }   else {
+                $message = 'Could not process equity sale. Try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
             }
-                }
+                }   else {
+                $message = 'Could not process equity sale. Try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+            }
                 
             }
            

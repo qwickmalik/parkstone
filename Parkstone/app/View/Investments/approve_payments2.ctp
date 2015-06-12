@@ -19,6 +19,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                         echo $this->Form->hidden('investor_id',array('value' =>(isset($investor_id)?$investor_id : '')));
                         
                         echo $this->Form->hidden('investment_id',array('value' =>(isset($investment_id)?$investment_id : '')));
+                   
                        
                         ?></p></td>
                 <td  align="right" >
@@ -46,6 +47,9 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 <td align="right">
                      <fieldset >
                                 <legend style="display: none;">Instructions</legend>
+                                <input id="ApproveInvestmentsInstructions0" type="radio" value="None" name="data[ApproveInvestments][instructions]">
+                                <label for="ApproveInvestmentsInstructions0">None</label>
+                                
                                 <input id="ApproveInvestmentsInstructions0" required="required" type="radio" value="Pay Principal" name="data[ApproveInvestments][instructions]">
                                 <label for="ApproveInvestmentsInstructions0">Pay Principal</label>
                                 <input id="ApproveInvestmentsInstructions1" type="radio" value="Pay Interest" name="data[ApproveInvestments][instructions]">
