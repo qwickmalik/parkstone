@@ -1191,3 +1191,8 @@ ALTER TABLE  `equity_orders` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT(
 ALTER TABLE  `investor_equities` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT( 11 ) NULL DEFAULT  '0'
 ALTER TABLE  `investor_equities` CHANGE  `numb_shares_left`  `numb_shares_left` INT( 11 ) NULL DEFAULT  '0'
 ALTER TABLE  `reinvestments_equities` ADD  `other_fees` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `total_fees`
+
+June 12, 2015
+----------------------
+ALTER TABLE  `investments` CHANGE  `status`  `status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested',  'Matured',  'Termination_Requested',  'Payment_Requested',  'Termination_Approved', 'Payment_Approved',  'Disposal_Requested',  'Disposal_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT  'Invested',
+CHANGE  `old_status`  `old_status` ENUM(  'Paid',  'Rolled_over',  'Cancelled',  'Part_payment',  'Invested',  'Matured',  'Termination_Requested',  'Payment_Requested',  'Termination_Approved',  'Payment_Approved', 'Disposal_Requested',  'Disposal_Approved' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
