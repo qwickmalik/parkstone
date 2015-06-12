@@ -1,5 +1,5 @@
 --look at new investor photo upload richmom_3
-
+--Must not deduct base fee from deposit initially..also check to make sure prompt for available cash does not take base fee into consideration
 --dispose Equity Payment
  --Disable inputs on investment page
 --Delete deposits and payments
