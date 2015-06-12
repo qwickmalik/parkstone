@@ -40,10 +40,11 @@ class AppController extends Controller {
         $this->Session->write('public_unapproved_investors', $this->Investor->find('count', array('conditions' => array('Investor.approved' => 0))));
         
         $this->Session->delete('public_termination_req');
-        $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+        $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_Requested"))));
         
         $this->Session->delete('public_payment_req');
-        $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Payment_requested"))));
+        $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' =>
+            array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
   $this->__validateLoginStatus();
         }
     

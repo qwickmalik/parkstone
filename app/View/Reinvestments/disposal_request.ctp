@@ -8,7 +8,7 @@
 
 
         <?php echo $this->Form->create('EquityOrder', array('enctype' => 'multipart/form-data', "url" =>
-            array('controller' => 'Investments', 'action' => 'payReinvestorEquity'), "inputDefaults" => array('div' => false))); ?>
+            array('controller' => 'Reinvestments', 'action' => 'payReinvestorEquity'), "inputDefaults" => array('div' => false))); ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="5" align="left">
             <tr>
                 <td align="left" valign="top" width="50%">
@@ -97,7 +97,7 @@
                                        
                                         foreach($equity_array as $val){
                                           
-                                           $total_shares += $val['EquityOrder']['numb_shares_sold']; 
+                                           $total_shares += $val['EquityOrder']['shares_req']; 
                                          
                                         }
                                         
