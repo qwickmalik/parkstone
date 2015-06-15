@@ -36,6 +36,11 @@ $userType = $this->Session->read('userDetails.usertype_id');
 //Javascript
         echo $this->Html->script('jquery-1.9.1.min.js');
         echo $this->Html->script('nowloading.js');
+        echo $this->Html->script('jquery.ui.core.js'); 
+        echo $this->Html->script('jquery.ui.widget.js');
+        echo $this->Html->script('jquery.ui.position.js'); 
+        echo $this->Html->script('jquery.ui.menu.js'); 
+        echo $this->Html->script('jquery.ui.autocomplete.js');
         echo $this->Html->script('min-height.js');
         echo $this->Html->script('jquery.nicescroll.min.js');
         echo $this->Html->script('bootstrap.min.js');

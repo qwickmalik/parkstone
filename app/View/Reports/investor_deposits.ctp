@@ -1,8 +1,13 @@
 <?php echo $this->element('header');
-echo $this->Html->script('jquery.js');
-echo $this->Html->script('jquery.printElement.js');
+//echo $this->Html->script('jquery.js');
+//echo $this->Html->script('jquery.printElement.js');
+//
+//        
+//echo $this->Html->script('print.js'); 
 
-echo $this->Html->script('print.js'); ?>
+
+        
+?>
 
 <h3>Reports: Investor Deposits Report</h3>
 <div class="boxed">
@@ -13,13 +18,15 @@ echo $this->Html->script('print.js'); ?>
         <div class="row">
             <?php echo $this->Form->create('InvestorDeposits', array('url' => array('controller' => 'Reports', 'action' => 'investorDeposits'))); ?>
             
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                 <?php
-                echo $this->Form->input('client_name', array('label' => 'Client Name*'));
+                echo $this->Form->input('fullname', array('required','label' => 'Investor Name*','placeholder' => 'Type investor name here'));
+                echo $this->Form->hidden('investor_id');  
                 ?>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p style="font-weight: bold; padding: 10px 0px 0px 15px;">Date</p>
+            
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">From</p>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <?php
                     $month = date('m');
@@ -29,28 +36,56 @@ echo $this->Html->script('print.js'); ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php echo $this->Form->day('report_date', array("selected" => $day)); ?>&nbsp;
+                    <?php echo $this->Form->day('begin_date', array("selected" => $day)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->month('report_date', array("selected" => $month)); ?>&nbsp;
+                    <?php echo $this->Form->month('begin_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('report_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('begin_date', 2003, date('Y'), array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
                     var month = $("#month").val();
                     var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#InvestorDepositsBeginDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestorDepositsBeginDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestorDepositsBeginDateYear option[value=" + year + "]").attr('selected', true);
+                </script>
+
+            </div>
+             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <p style="font-weight: bold; padding: 10px 0px 0px 0px;">To</p>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <?php
+                    $month = date('m');
+                    $day = date('d');
+                    $Year = date('Y');
+                    ?>
+                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
+                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
+                    <?php echo $this->Form->day('finish_date', array("selected" => $day)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->month('finish_date', array("selected" => $month)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->year('finish_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                </div>
+                <script>
+                    var day = $("#day").val();
+                    var month = $("#month").val();
+                    var year = $("#year").val();
+                    $("#InvestorDepositsFinishDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestorDepositsFinishDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestorDepositsFinishDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
                 <?php
                 echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: right;'));
                 ?>
 
             </div>
-            
             <?php echo $this->Form->end(); ?>
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
             
@@ -85,7 +120,6 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Client Code</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Name</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Deposit Date</b></td>
@@ -96,54 +130,70 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>User/Staff</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Receipt No.</b></td>
                     </tr>
+                    <?php if (isset($accounts)) {
+                          
+    foreach ($accounts as $each_item):  
+              
+            ?>
                     <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">01/02/2014</td>
-                        <td align="right" valign="top">2,000.00</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">2 years</td>
-                        <td align="right" valign="top">Support</td>
-                        <td align="right" valign="top">1234567</td>
+                        <td align="left" valign="top"><?php if (isset($fullname)) {
+            echo  $fullname; 
+            
+                        } ?></td>
+                        <td align="left" valign="top"><?php if (isset($each_item['Investment']['investment_no'])) {
+            echo  $each_item['Investment']['investment_no'];
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestorDeposit']['deposit_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['InvestorDeposit']['deposit_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestorDeposit']['amount'])) {
+            echo  number_format($each_item['InvestorDeposit']['amount'],2);
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
+            echo  $each_item['Investment']['custom_rate'].'%';
+        } ?></td>
+                        <td align="right" valign="top"><?php if(!empty($each_item['InvestorDeposit']['topup_id'])) {
+                            
+           echo  $each_item['Topup']['tenure'].' '.$each_item['Topup']['period'];
+        }elseif(isset($each_item['Investment']['duration']) && isset($each_item['Investment']['investment_period'])){
+            echo  $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period'];
+            
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['User']['firstname']) && 
+                                isset($each_item['User']['lastname'])) {
+            echo  $each_item['User']['firstname'].' '.$each_item['User']['lastname'];
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestorDeposit']['receipt_no'])) {
+            echo  $each_item['InvestorDeposit']['receipt_no'];
+        } ?></td>
                     </tr>
-                    <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">15/04/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">2 years</td>
-                        <td align="right" valign="top">Support</td>
-                        <td align="right" valign="top">1334567</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">21000</td>
-                        <td align="left" valign="top">Adwoa Serwaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">22/08/2014</td>
-                        <td align="right" valign="top">1,000.00</td>
-                        <td align="right" valign="top">01/02/2013</td>
-                        <td align="right" valign="top">11%</td>
-                        <td align="right" valign="top">2 years</td>
-                        <td align="right" valign="top">Support</td>
-                        <td align="right" valign="top">1634567</td>
-                    </tr>
+                    <?php
+    
+    endforeach;
+} ?>
+                    <?php if (isset($total)) {
+            foreach($total as $each_item):
+                ?>
                     <tr style="border-top: solid 2px; background: #eaeaea;">
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="left" valign="top">&nbsp;</td>
-                        <td align="left" valign="top">&nbsp;</td>
-                        <td align="right" valign="top">TOTAL</td>
-                        <td align="right" valign="top">3,200.00</td>
+                        <td align="left" valign="top">TOTAL</td>
+                        <td align="right" valign="top"> <?php   if (isset($each_item[0]['total_deposit'])) {
+                    echo  'GH$ '. number_format($each_item[0]['total_deposit'], 2);
+                }
+                ?></td>
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
                     </tr>
+                        <?php endforeach;
+                }
+                ?>
                 </table>
             </div>
             <?php
@@ -155,3 +205,59 @@ echo $this->Html->script('print.js'); ?>
     </div>
     <!-- Content end here -->
     <?php echo $this->element('footer'); ?>
+<script type="text/javascript" language="javascript">
+$(document).ready(function()
+{
+    
+//    $( "#TempSaleItemName" ).on( "autocompleteselect", function( event, ui ) {
+//        this.val()
+//    } );
+$("#InvestorDepositsFullname").autocomplete({source:function (request, response) {
+            $.ajax({
+                url: "invest_search",
+                type: 'GET',
+                dataType: 'json',
+                data: request,
+                success: function (data) {
+                       if(data['status'] == "ok"){
+                        response($.map(data, function (value, key) {
+                        return {
+                            label: value['fullname'],
+                            value: value['id']
+                        };
+                    }));
+                    
+                }else if(data['status'] == "fail"){
+                     response($.map(data, function (value, key) {
+                        return {
+                            label: "Investor Not Found",
+                            value: key
+                        };
+                    }));
+                }
+                }
+            });
+        },
+    
+    	minChars:5,
+    	max:100,
+        minLength:3,
+        dataType:'json',
+    	selectFirst: false,
+       	delay:10,
+    	formatItem: function(row) {
+			return row[1];
+		},
+        select: function(event, ui) {
+           $("#InvestorDepositsInvestorId").val( ui.item.value);
+           $("#InvestorDepositsFullname").val(ui.item.label);    
+           $("#InvestorDepositsFullname").html( ui.item.label );                         
+           //$("#term").val( ui.item.term);
+          
+             return false; 
+        }
+            
+    });
+    
+    });
+    </script>
