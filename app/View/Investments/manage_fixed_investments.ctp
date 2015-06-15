@@ -11,9 +11,9 @@
     <?php
 //    echo $this->Form->create('', array("url" => array('controller' => 'Stocks', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
     ?>
-    <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
+                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 12px;">
         <tr>
-            <td colspan="11">
+            <td colspan="14">
                 <table border="0" width="100%" cellspacing="5" cellpadding="0" align="left">
                     <tr>
                         <td align="left" width="200"><p style="font-size: 18px;">Investor ID: </p></td>
@@ -37,35 +37,39 @@
             </td>
         </tr>
         <tr>
-            <td style="border-bottom: solid 2px dodgerblue;" width="30" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b>Edit</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="140" align="right"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b>Edit</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Rate(%)'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="140" align="right"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Rate(%)'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Top-up</b></td>
-            
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Top-up</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
                 <td align="left"><?php
                         if(isset($each_item['Investment']['id'])){
                             echo $each_item['Investment']['id'];
+                            $investment_id = $each_item['Investment']['id'];
                         }
                         
                         ?></td>
-                <td align="left"><?php
-                        if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-info'));
+                <td align="center"><?php
+//                        if(isset($each_item['Investment']['id'])){
+//                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-info'));
+                if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array());
                         }
                         ?></td>
                 
-                <td align="right"><?php
+                <td align="center"><?php
                         if(isset($each_item['Investment']['investment_date'])){
                             echo $each_item['Investment']['investment_date'];
                         }
@@ -83,13 +87,13 @@
                         }
                         
                         ?></td>
-                <td align="right"><?php
+                <td align="center"><?php
                         if(isset($each_item['Investment']['due_date'])){
                             echo $each_item['Investment']['due_date'];
                         }
                         
                         ?></td>
-                <td align="center"><?php
+                <td align="right"><?php
                         if(isset($each_item['Investment']['amount_due'])){
                             echo number_format($each_item['Investment']['amount_due'],2);
                         }
@@ -146,7 +150,7 @@
                     }
                     
                     ?>
-                    <!-- Pop-up form -->
+                    <!-- Top-up Pop-up form -->
                             
                     <div class="modal fade" id="topUpForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <!--<form class="basic-form" action="/parkstone_online/Investments/topupInvestment" method="post">-->
@@ -319,15 +323,24 @@
                           
                             <?php $this->Form->end(); ?>
                     </div>
-                    <!-- Pop-up form Ends -->
+                    <!-- Top-up Pop-up form Ends -->
                
                 </td>
-                
+                <td align="center"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentDeposits/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-warning'));
+                        }
+                        ?></td>
+                <td align="center"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-danger'));
+                        }
+                        ?></td>
                 
         <?php  }} ?>
             </tr>
         <tr>
-            <td colspan="11" align="right">
+            <td colspan="14" align="right">
                 <?php 
                 //echo $this->Html->link('Print', "/Stocks/supListSuppliersInvoicesPrint", array("class" => 'button_red'));
 				echo $this->Html->link('Back', "/Investments/manageInvestments", array("class" => 'btn btn-lg btn-info')); 

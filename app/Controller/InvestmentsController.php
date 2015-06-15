@@ -17,7 +17,8 @@ class InvestmentsController extends AppController {
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
-            'conditions' => array('Investor.approved' => 1))
+            'conditions' => array('Investor.approved' => 1)),
+        'InvestorDeposit' => array('limit' => 50, 'order' => array('InvestorDeposit.id' => 'asc')),
     );
 
 //var $helpers = array('AjaxMultiUpload.Upload');
@@ -7546,6 +7547,22 @@ class InvestmentsController extends AppController {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
             }
         }
+    }
+    
+    function delFixedInvestmentDeposits($investor_id = null, $investment_id = null){
+        $this->__validateUserType();
+        $this->set('investor_id', $investor_id);
+        $this->set('investment_id', $investment_id);
+        $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
+        $this->set('investor_name', $investor['Investor']['fullname']);
+        
+        $data = $this->paginate('InvestorDeposit', array('InvestorDeposit.investment_id' => $investment_id));
+        $this->set('data', $data);        
+        
+    }
+    
+    function delFixedInvestmentPayments($investor_id = null, $investment_id = null){
+        
     }
 
 }
