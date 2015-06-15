@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Bank
+ * 
  *
  * @author kwaku.afreh-nuamah
  */
@@ -25,7 +25,7 @@ class InvestorDeposit extends AppModel {
             'limit' => '',
             'dependent' => true
           ),
-            'Invesmtment' => array(
+        'Invesmtment' => array(
             'className' => 'Invesmtment',
             'foreignKey' => 'investment_id',
             'conditions' => '',
@@ -33,7 +33,7 @@ class InvestorDeposit extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-            'User' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
             'conditions' => '',
@@ -41,14 +41,14 @@ class InvestorDeposit extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-            'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
+//        'User' => array(
+//            'className' => 'User',
+//            'foreignKey' => 'user_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
 	'Topup' => array(
             'className' => 'Topup',
             'foreignKey' => 'topup_id',

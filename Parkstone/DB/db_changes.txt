@@ -1152,7 +1152,8 @@ CREATE TABLE IF NOT EXISTS `investor_deposits` (
 
 ALTER TABLE `investor_deposits` ADD `receipt_no` VARCHAR(30) NULL AFTER `amount`;
 
-June 03, 2015
+
+June 03, 2015
 ---------------------------
 ALTER TABLE  `investment_payments` ADD  `instruction_id` INT( 3 ) NULL DEFAULT NULL AFTER  `user_id`
 ALTER TABLE  `investment_returns` ADD  `instruction_id` INT( 3 ) NULL AFTER  `cash_receipt_mode_id`
@@ -1186,11 +1187,11 @@ ALTER TABLE  `investments` CHANGE  `old_status`  `old_status` ENUM(  'Paid',  'R
 
 June 10,2015
 ----------------------
-ALTER TABLE  `equity_orders` ADD  `shares_req` INT( 6 ) NULL DEFAULT NULL AFTER  `equities_list_id`
-ALTER TABLE  `equity_orders` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT( 6 ) NULL DEFAULT  '0'
-ALTER TABLE  `investor_equities` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT( 11 ) NULL DEFAULT  '0'
-ALTER TABLE  `investor_equities` CHANGE  `numb_shares_left`  `numb_shares_left` INT( 11 ) NULL DEFAULT  '0'
-ALTER TABLE  `reinvestments_equities` ADD  `other_fees` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `total_fees`
+ALTER TABLE  `equity_orders` ADD  `shares_req` INT( 6 ) NULL DEFAULT NULL AFTER  `equities_list_id`;
+ALTER TABLE  `equity_orders` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT( 6 ) NULL DEFAULT  '0';
+ALTER TABLE  `investor_equities` CHANGE  `numb_shares_sold`  `numb_shares_sold` INT( 11 ) NULL DEFAULT  '0';
+ALTER TABLE  `investor_equities` CHANGE  `numb_shares_left`  `numb_shares_left` INT( 11 ) NULL DEFAULT  '0';
+ALTER TABLE  `reinvestments_equities` ADD  `other_fees` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00' AFTER  `total_fees`;
 
 June 12, 2015
 ----------------------
