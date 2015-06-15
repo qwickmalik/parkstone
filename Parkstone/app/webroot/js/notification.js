@@ -3227,26 +3227,27 @@ var ucsl_supplierpayment = {
     }
     
 };
-var investor = {
-    init: function () {
-        var self = this;
 
-        $("#InvestorNewInvestorIndivForm").validate({
-            rules: {
-            },
-            focusCleanup: false,
-            highlight: function (label) {
-                $(label).closest('.control-group').removeClass('success').addClass('error');
-            },
-            success: function (label) {
-                $(label).closest('.control-group').removeClass('error');
-            },
-            errorPlacement: function (error, element) {
-                error.appendTo(element.parents('.controls'));
-            }
-        });
-    }
-    };
+//var investor = {
+//    init: function () {
+////        var self = this;
+//
+//        $("#InvestorNewInvestorIndivForm").validate({
+//            rules: {
+//            },
+//            focusCleanup: false,
+//            highlight: function (label) {
+//                $(label).closest('.control-group').removeClass('success').addClass('error');
+//            },
+//            success: function (label) {
+//                $(label).closest('.control-group').removeClass('error');
+//            },
+//            errorPlacement: function (error, element) {
+//                error.appendTo(element.parents('.controls'));
+//            }
+//        });
+//    }
+//    };
     
     var bank_account = {
 
@@ -3315,7 +3316,7 @@ $(document).ready(function() {
     ucsl_supplierpayment.init();
     portfolio.init();
     ucsl_investorpayment.init();
-    investor.init();
+//    investor.init();
    
    
     
