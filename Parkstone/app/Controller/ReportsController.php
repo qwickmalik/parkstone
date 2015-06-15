@@ -7,7 +7,7 @@ class ReportsController extends AppController {
     var $name = 'Reports';
     var $uses = array('Setting', 'User', 'Currency',  'BalanceSheet', 'IncomeStatement', 'Equity',
        'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal','Investor',
-        'CashAccount', 'TempcashAccount','Expense');
+        'CashAccount', 'TempcashAccount','Expense','InvestorDeposit','Investment');
     var $paginate = array();
 
     function beforeFilter() {
@@ -2514,9 +2514,76 @@ public function convert2PdfnEmail(){
     
     function investorDeposits(){
         $this->__validateUserType3();
-        
+          if ($this->request->is('post')) {
+
+            $sday = $this->request->data['InvestorDeposits']['begin_date']['day'];
+            $smonth = $this->request->data['InvestorDeposits']['begin_date']['month'];
+            $syear = $this->request->data['InvestorDeposits']['begin_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+            $eday = $this->request->data['InvestorDeposits']['finish_date']['day'];
+            $emonth = $this->request->data['InvestorDeposits']['finish_date']['month'];
+            $eyear = $this->request->data['InvestorDeposits']['finish_date']['year'];
+            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
+            $enewdate = strtotime($ends_date);
+            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($end_date);
+            //$date->add(new DateInterval('P1D'));
+             $end_date = $date->format('Y-m-d');
+            $frend_date = date('d F, Y', $enewdate);
+
+            $this->set('frstart_date', $frstart_date);
+            $this->set('frend_date', $frend_date);
+
+            $investorid = $this->request->data['InvestorDeposits']['investor_id'];
+            $fullname = $this->request->data['InvestorDeposits']['fullname'];
+            
+            $lateday = date('Y-m-t');
+            $firstday = date('Y-m-01');
+            $accounts = $this->InvestorDeposit->find('all', array('order' => array('InvestorDeposit.id' => 'asc'), 
+                'conditions' => array('InvestorDeposit.deposit_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),'Investment.investor_id' => $investorid)));
+
+//, 'group' => array('Expectedinstallment.zone_id')
+            $total = $this->InvestorDeposit->find('all', array('order' => array('InvestorDeposit.id' => 'asc'), 
+                'conditions' => array('InvestorDeposit.deposit_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),'Investment.investor_id' => $investorid), 
+                'fields' => array('SUM(InvestorDeposit.amount) as total_deposit')));
+
+            if ($accounts) {
+
+                $this->set(compact('accounts','total','fullname' ));
+                
+                
+            }
+        }
     }
-    
+     public function invest_search() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+
+            $custname = $_GET['term'];
+            $customers = $this->Investor->find('all', array('conditions' => array('Investor.fullname LIKE' => "%$custname%")));
+            if ($customers) {
+                $response = array();
+                $i = 0;
+                foreach ($customers as $customer) {
+                    $response[$i]['id'] = $customer['Investor']['id'];
+                    $response[$i]['fullname'] = $customer['Investor']['fullname'];
+                    $i++;
+                }
+                $response['status'] = "ok";
+                return json_encode($response);
+            } else {
+                $response = array();
+                $response['status'] = "fail";
+                return json_encode($response);
+            }
+        }
+    }
     function rolloverDisinv(){
         $this->__validateUserType3();
         

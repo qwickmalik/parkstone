@@ -6319,6 +6319,8 @@ class InvestmentsController extends AppController {
                         'oldamount_due' => $investment_data['Investment']['amount_due'],
                         'topup_amount' => $amount,
                         'cash_receipt_mode_id' => $source,
+                        'tenure' => $duration,
+                        'period'=> 'Day(s)',
                         'investment_id' => $investment_data['Investment']['id'],
                         'user_id' => $userid,
                         'investment_date' => $first_date);
