@@ -23,9 +23,9 @@
                                  <input type="hidden" value="<?php if (isset($data['ClientLedger']['investor_id'])) {
                                         echo $data['ClientLedger']['id'];
                                     } ?>" name="hid_investorid" /></td>
-                                <input type="hidden" value="<?php if (isset($data['ClientLedger']['investor_id'])) {
-                                        echo $data['ClientLedger']['id'];
-                                    } ?>" name="hid_ledgerid" /></td>
+                                <input type="hidden" value="<?php if (isset($inv_data['Investment']['id'])) {
+                                        echo $inv_data['Investment']['id'];
+                                    } ?>" name="hid_investid" /></td>
                         </tr>
                         <tr>
                             <td width="30%"><b align="right">Investor Name:</b></td>
@@ -109,18 +109,12 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
                              <?php
-                                    if ($this->Session->check('payinvesttemp.payment_date') == true) {
-
-                                        $dob_string = $this->Session->read('payinvesttemp.payment_date');
-                                        $month = date('m', strtotime($dob_string));
-                                        $day = date('d', strtotime($dob_string));
-                                        $Year = date('Y', strtotime($dob_string));
-                                    } else {
+                                    
 
                                         $month = date('m');
                                         $day = date('d');
                                         $Year = date('Y');
-                                    }
+                                    
                                     ?>
                                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>

@@ -7,7 +7,7 @@ class ReportsController extends AppController {
     var $name = 'Reports';
     var $uses = array('Setting', 'User', 'Currency',  'BalanceSheet', 'IncomeStatement', 'Equity',
        'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal','Investor',
-        'CashAccount', 'TempcashAccount','Expense','InvestorDeposit','Investment');
+        'CashAccount', 'TempcashAccount','Expense','InvestorDeposit','Investment','InvestmentPayment');
     var $paginate = array();
 
     function beforeFilter() {
@@ -2586,7 +2586,64 @@ public function convert2PdfnEmail(){
     }
     function rolloverDisinv(){
         $this->__validateUserType3();
-        
+         if ($this->request->is('post')) {
+
+            $sday = $this->request->data['RolloverDisinv']['from_date']['day'];
+            $smonth = $this->request->data['RolloverDisinv']['from_date']['month'];
+            $syear = $this->request->data['RolloverDisinv']['from_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+            $eday = $this->request->data['RolloverDisinv']['to_date']['day'];
+            $emonth = $this->request->data['RolloverDisinv']['to_date']['month'];
+            $eyear = $this->request->data['RolloverDisinv']['to_date']['year'];
+            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
+            $enewdate = strtotime($ends_date);
+            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($end_date);
+            //$date->add(new DateInterval('P1D'));
+             $end_date = $date->format('Y-m-d');
+            $frend_date = date('d F, Y', $enewdate);
+
+
+            
+          
+            $accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'InvestmentPayment.event_type !=' => 'Payment'),
+                ));
+
+//, 'group' => array('Expectedinstallment.zone_id')
+            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'InvestmentPayment.event_type' => 'Payment'),
+                'group' => 'InvestmentPayment.investor_id', 'fields' => 
+                array("SUM((InvestmentPayment.amount)) as payment",'InvestmentPayment.investor_id')));
+            
+            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
+                    array($start_date, $end_date),
+                    'InvestmentPayment.event_type !=' => 'Payment'),
+                'group' => 'InvestmentPayment.investor_id', 'fields' => 
+                array("SUM((Investment.investment_amount + Investment.interest_accrued)) as totalamount",'InvestmentPayment.investor_id')));
+            $inv = array();
+            if ($accounts) {
+                $x = 1;
+                
+                foreach($accounts as $val){
+                    if($val['InvestmentPayment']['investor_id'] = $x){
+                   $inv[$x] = $val['InvestmentPayment']['investor_id'];  
+                    }
+                    $x++;
+                }
+                  
+            }
+            $this->set(compact('accounts','total','total_payment','inv'));
+    } 
     }
     
     function aggregateInvestment(){
