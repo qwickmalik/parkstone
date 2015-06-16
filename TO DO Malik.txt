@@ -3,7 +3,7 @@ NB. All reports will have from date - to date filter options
 
 Additional TO Do
 ----------------
---Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
+DONE --Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
   (link to investor_deposits table). Will open page listing all deposits for the said investment from investor_deposits table where investment_id = $id
 --Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
   -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
