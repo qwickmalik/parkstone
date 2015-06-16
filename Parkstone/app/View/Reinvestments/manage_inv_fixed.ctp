@@ -63,8 +63,10 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <b><?php echo $this->Paginator->sort('interest_rate', 'Rate'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Action"; ?></td>
-                 <td style="border-bottom: solid 2px dodgerblue" width="100" align="left"><b>Statement</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b>Top-up</b></td>
+                <td style="border-bottom: solid 2px dodgerblue" width="100" align="left"><b>Statement</b></td>
+                <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b>Top-up</b></td>
+                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
+                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
             </tr>
             
             <?php foreach ($data as $each_item): ?>
@@ -270,6 +272,16 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                
                 </td>
                     
+                <td align="center"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentDeposits/'.$investor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-warning'));
+                        }
+                        ?></td>
+                <td align="center"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-danger'));
+                        }
+                        ?></td>
                 </tr>
 <?php endforeach; ?>
             <tr>

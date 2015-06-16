@@ -3726,6 +3726,31 @@ class ReinvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
+    
+    
+    function delFixedInvestmentDeposits($investor_id = null, $investment_id = null){
+        $this->__validateUserType();
+        $this->set('investor_id', $investor_id);
+        $this->set('investment_id', $investment_id);
+        $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $investor_id)));
+        $this->set('investor_name', $investor['Investor']['fullname']);
+        
+        $data2 = $this->paginate('ReinvestorDeposit', array('ReinvestorDeposit.investment_id' => $investment_id));
+        $this->set('data', $data2);        
+        
+    }
+    
+    function delFixedInvestmentPayments($investor_id = null, $investment_id = null){
+        $this->__validateUserType();
+        $this->set('investor_id', $investor_id);
+        $this->set('investment_id', $investment_id);
+        $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
+        $this->set('investor_name', $investor['Investor']['fullname']);
+        
+        $data2 = $this->paginate('InvestmentPayment', array('InvestmentPayment.investment_id' => $investment_id));
+        $this->set('data', $data2);        
+        
+    }
 
 }
 
