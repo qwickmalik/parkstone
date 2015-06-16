@@ -30,6 +30,14 @@ class PaymentMode extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+            ),
+        'InvestmentPayment' => array(
+            'className' => 'InvestmentPayment',
+            'foreignKey' => 'payment_mode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             )
         );
 }
