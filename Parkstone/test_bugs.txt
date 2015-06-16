@@ -1,0 +1,29 @@
+1.       Top-ups do not reflect in the Client Statements.
+
+2.       There are no receipts generated for top ups.
+
+3.       The receipts are also not aligned properly.
+
+4.       Kindly omit the last sentence in the receipt when we have to print it.  (i.e Return(/investments/new/investment0) (Print)- this shouldn’t show in print out.
+
+5.       Kindly review format for the date.
+
+6.       Amounts deposited for investment is not available for investment (i.e available cash is zero) making it difficult to set a new investment.
+
+7.       Cheque spelt wrongly- Kindly check all sentences for typo mistakes.
+
+8.       Computation for disinvestment inaccurate.
+
+9.       We were unable to edit submitted new investments and top ups.
+
+10.   Rates on various reports should be changed to Benchmark rate.
+
+11.   Kindly explained status, elapsed tenure and tenure left on Daily and Monthly Maturity List
+
+12.   What is deposit requests?
+
+13.   Also I was unable to type 2 telephone numbers while I was registering a client. Space caters for 1 telephone number.
+
+14.   Total Clients investments remains zero after inputting figures.
+
+15.   Amounts received from clients do not reflect in the outbound deposited amount.
