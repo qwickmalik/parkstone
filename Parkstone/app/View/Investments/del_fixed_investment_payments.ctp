@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 <!-- Content starts here -->
-<h3>Delete Fixed Investment Deposits</h3>
+<h3>Delete Fixed Investment Payments</h3>
 <div class="boxed">
 	<div class="inner">
 		<div id="clearer"></div>
@@ -9,7 +9,7 @@
 
 
     <?php
-    echo $this->Form->create('DelFixedInvestmentDeposits', array("url" => array('controller' => 'Investments', 'action' => 'delFixedInvestmentDeposits'), "inputDefaults" => array('label' => false, 'div' => false)));
+    echo $this->Form->create('DelFixedInvestmentPayments', array("url" => array('controller' => 'Investments', 'action' => 'delFixedInvestmentPayments'), "inputDefaults" => array('label' => false, 'div' => false)));
     ?>
                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 12px;">
         <tr>
@@ -46,25 +46,27 @@
         </tr>
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'Deposit ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('deposit_date', 'Deposit Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('ledger_transaction_id', 'Ledger Trans. ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('topup_id', 'Top-up ID'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('amount', 'Amount'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('receipt_no', 'Receipt No.'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b>Delete</b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('payment_mode_id', 'Payment Mode'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('cheque_no', 'Cheque No.'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('event_type', 'Event Type'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('event_date', 'Event Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('amount', 'Amount Paid'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('payment_date', 'Payment Date'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete</b></td>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
-                <td align="left"><?php echo $each_item['InvestorDeposit']['id']; ?></td>
-                <td align="center"><?php echo $each_item['InvestorDeposit']['deposit_date']; ?></td>
-                <td align="center"><?php echo $each_item['InvestorDeposit']['ledger_transaction_id']; ?></td>
-                <td align="left"><?php echo $each_item['InvestorDeposit']['topup_id']; ?></td>
-                <td align="right"><?php echo $each_item['InvestorDeposit']['amount']; ?></td>
-                <td align="left"><?php echo $each_item['InvestorDeposit']['receipt_no']; ?></td>
+                <td align="left"><?php echo $each_item['InvestmentPayment']['id']; ?></td>
+                <td align="center"><?php echo $each_item['PaymentMode']['payment_mode_name']; ?></td>
+                <td align="center"><?php echo $each_item['InvestmentPayment']['cheque_no']; ?></td>
+                <td align="left"><?php echo $each_item['InvestmentPayment']['event_type']; ?></td>
+                <td align="right"><?php echo $each_item['InvestmentPayment']['event_date']; ?></td>
+                <td align="left"><?php echo $each_item['InvestmentPayment']['amount']; ?></td>
+                <td align="left"><?php echo $each_item['InvestmentPayment']['payment_date']; ?></td>
                 <td align="center">
                 <?php 
-                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
-                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox', 'label' => false, 'hiddenField' => false, 'style' => 'float: right;'));  
+                    echo $this->Form->hidden('id', array('value' => $each_item['InvestmentPayment']['id']));
+                    echo $this->Form->input('delete'.$each_item['InvestmentPayment']['id'], array( 'type' => 'checkbox', 'label' => false, 'hiddenField' => false, 'style' => 'float: right;'));  
                     ?>
                 </td>
                 
@@ -82,7 +84,7 @@
     </table>
                 <?php
                 echo $this->Form->end();
-               ?>
+                ?>
     <div id="clearer"></div>
 
 
