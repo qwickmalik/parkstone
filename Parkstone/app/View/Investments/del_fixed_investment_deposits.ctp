@@ -9,7 +9,7 @@
 
 
     <?php
-    echo $this->Form->create('DelFixedInvestmentDeposits', array("url" => array('controller' => 'Investments', 'action' => 'delFixedInvestmentDeposits'), "inputDefaults" => array('label' => false, 'div' => false)));
+//    echo $this->Form->create('', array("url" => array('controller' => 'Stocks', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
     ?>
                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 12px;">
         <tr>
@@ -32,11 +32,11 @@
                         }
                         ?></p></td>
                         
-                        <td align="left" width="200"><p style="font-weight: bold;">Investment ID: </p></td>
+                        <td align="left" width="200"><p style="font-weight: bold;">Investment No.: </p></td>
                         
                         <td align="left"><p style="font-weight: bold;"><?php
-                        if(isset($investment_id)){
-                            echo $investment_id;
+                        if(isset($investment_no)){
+                            echo $investment_no;
                         }
                         ?></p></td>
                         
@@ -51,7 +51,7 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('topup_id', 'Top-up ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('amount', 'Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('receipt_no', 'Receipt No.'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b>Delete</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete</b></td>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
@@ -63,8 +63,11 @@
                 <td align="left"><?php echo $each_item['InvestorDeposit']['receipt_no']; ?></td>
                 <td align="center">
                 <?php 
-                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
-                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox', 'label' => false, 'hiddenField' => false, 'style' => 'float: right;'));  
+                 if(isset($each_item['InvestorDeposit']['id'])){
+                            echo $this->Html->link('Delete', '/Investments/delDeposit/'.$each_item["InvestorDeposit"]["id"], array());
+                        }
+//                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
+//                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox',$checked. 'label' => false, 'hiddenField' => false));  
                     ?>
                 </td>
                 
@@ -74,15 +77,12 @@
         <tr>
             <td colspan="14" align="right">
                 <?php 
-				echo $this->Html->link('Back', "/Investments/manageFixedInvestments/".$investor_id."/".$investment_id, array("class" => 'btn btn-md btn-info')); 
-                                echo $this->Form->button('Delete', array('type' => 'submit', 'class' => 'btn btn-md btn-danger'))
+                
+				echo $this->Html->link('Back', "/Investments/manageFixedInvestments/".(isset($investor_id)?$investor_id:'').'/'.(isset($investor_name)?$investor_name:''), array("class" => 'btn btn-lg btn-info')); 
                 ?>
             </td>
         </tr>
     </table>
-                <?php
-                echo $this->Form->end();
-               ?>
     <div id="clearer"></div>
 
 
