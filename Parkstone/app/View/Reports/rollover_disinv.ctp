@@ -37,9 +37,9 @@ echo $this->Html->script('print.js'); ?>
                     var day = $("#day").val();
                     var month = $("#month").val();
                     var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#RolloverDisinvFromDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#RolloverDisinvFromDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#RolloverDisinvFromDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -65,9 +65,9 @@ echo $this->Html->script('print.js'); ?>
                     var day = $("#day").val();
                     var month = $("#month").val();
                     var year = $("#year").val();
-                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#RolloverDisinvToDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#RolloverDisinvToDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#RolloverDisinvToDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
                 <?php
                 echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: right;'));
@@ -109,7 +109,6 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Client Code</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Name</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
@@ -120,180 +119,110 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal & Interest Due</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Payment</b></td>
                     </tr>
+                    <?php if (isset($accounts)) {
+                       
+       foreach ($inv as $val):                  
+//     print_r($accounts);exit;
+    foreach ($accounts as $each_item):  
+              if($val == $each_item['InvestmentPayment']['investor_id']){
+            ?>
                     <tr>
-                        <td align="right" valign="top" rowspan="8">21000</td>
-                        <td align="left" valign="top" rowspan="8">Gibril Mohammed</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">10/02/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">36.00</td>
-                        <td align="right" valign="top">236.00</td>
+                        <td align="left" valign="top" rowspan="8"><?php if (isset($each_item['Investor']['fullname'])) {
+            echo  $each_item['Investor']['fullname'];
+        } ?></td>
+                        <td align="left" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                        <td align="right" valign="top" style="background-color:Gray;"></td>
+                    </tr>
+                              <?php
+                              break;
+              }
+    endforeach;
+    foreach ($accounts as $each_item):  
+        if($val == $each_item['InvestmentPayment']['investor_id']){
+ ?>
+                    <tr>
+                        <td align="left" valign="top"><?php if (isset($each_item['Investment']['investment_no'])) {
+            echo  $each_item['Investment']['investment_no'];
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_amount'])) {
+            echo  number_format($each_item['Investment']['investment_amount'],2);
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
+            echo  $each_item['Investment']['custom_rate'].'%';
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['event_date'])) {
+            echo  date('d-m-Y',strtotime($each_item['InvestmentPayment']['event_date']));
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
+            echo  number_format($each_item['Investment']['interest_accrued'],2);
+        } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
+              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+        
+            echo number_format($totals,2);
+            
+                        } ?></td>
                         <td align="right" valign="top">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0005</td>
-                        <td align="right" valign="top">05/03/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">33.73</td>
-                        <td align="right" valign="top">233.73</td>
-                        <td align="right" valign="top">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0050</td>
-                        <td align="right" valign="top">01/04/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">31.07</td>
-                        <td align="right" valign="top">231.07</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0061</td>
-                        <td align="right" valign="top">08/07/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">21.40</td>
-                        <td align="right" valign="top">221.40</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0064</td>
-                        <td align="right" valign="top">29/08/2014</td>
-                        <td align="right" valign="top">500.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">54.25</td>
-                        <td align="right" valign="top">554.25</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0082</td>
-                        <td align="right" valign="top">09/10/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">16.31</td>
-                        <td align="right" valign="top">216.31</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0088</td>
-                        <td align="right" valign="top">08/12/2014</td>
-                        <td align="right" valign="top">400.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">16.83</td>
-                        <td align="right" valign="top">416.83</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top">2,109.59</td>
-                        <td align="right" valign="top">2,109.59</td>
                     </tr>
                     
-                    <tr>
-                        <td align="right" valign="top" colspan="10">&nbsp;</td>
+     <?php
+        }
+    endforeach;
+    
+    ?>
+     <tr>              
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"></td>
+                        <td align="right" valign="top"><?php if (isset($total)) {
+            foreach($total as $each_item):
+                 if($val == $each_item['InvestmentPayment']['investor_id']){
+                 if (isset($each_item[0]['totalamount'])) {
+                    echo 'GH$ '.number_format($each_item[0]['totalamount'], 2);
+                }
+                 }
                         
+            endforeach;
+                        }
+                ?></td>
+                        <td align="right" valign="top"><?php if (isset($total_payment)) {
+            foreach($total_payment as $each_item):
+                 if($val == $each_item['InvestmentPayment']['investor_id']){
+                 if (isset($each_item[0]['payment'])) {
+                    echo 'GH$ '.number_format($each_item[0]['payment'], 2);
+                }
+                 }
+            endforeach;
+                        }
+                ?></td>
                     </tr>
-                    <tr>
-                        <td align="right" valign="top" rowspan="8">21000</td>
-                        <td align="left" valign="top" rowspan="8">Florence Nana Pokuaa</td>
-                        <td align="left" valign="top">LC/02/13/0002</td>
-                        <td align="right" valign="top">10/02/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">36.00</td>
-                        <td align="right" valign="top">236.00</td>
-                        <td align="right" valign="top">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0005</td>
-                        <td align="right" valign="top">05/03/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">33.73</td>
-                        <td align="right" valign="top">233.73</td>
-                        <td align="right" valign="top">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0050</td>
-                        <td align="right" valign="top">01/04/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">31.07</td>
-                        <td align="right" valign="top">231.07</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0061</td>
-                        <td align="right" valign="top">08/07/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">18%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">21.40</td>
-                        <td align="right" valign="top">221.40</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0064</td>
-                        <td align="right" valign="top">29/08/2014</td>
-                        <td align="right" valign="top">500.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">54.25</td>
-                        <td align="right" valign="top">554.25</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0082</td>
-                        <td align="right" valign="top">09/10/2014</td>
-                        <td align="right" valign="top">200.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">16.31</td>
-                        <td align="right" valign="top">216.31</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="left" valign="top">LC/02/13/0088</td>
-                        <td align="right" valign="top">08/12/2014</td>
-                        <td align="right" valign="top">400.00</td>
-                        <td align="right" valign="top">24%</td>
-                        <td align="right" valign="top">10/02/2015</td>
-                        <td align="right" valign="top">16.83</td>
-                        <td align="right" valign="top">416.83</td>
-                        <td align="right" valign="top">&nbsp;</td>     
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top"></td>
-                        <td align="right" valign="top">2,109.59</td>
-                        <td align="right" valign="top">2,109.59</td>
-                    </tr>
+   <?php 
+   
+   
+
+   endforeach;
+        } 
+
+?>
+                   
                     
-                    <tr>
+<!--                    <tr>
                         <td align="right" valign="top" colspan="10">&nbsp;</td>
                         
-                    </tr>
+                    </tr>-->
+                  
                 </table>
             </div>
             <?php

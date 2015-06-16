@@ -113,7 +113,7 @@
                    echo "No-Action Necessary";
                     
                     }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured'){
-                     echo $this->Html->Link('Rollover', '/Investments/rollover/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));?> 
+                     echo $this->Html->Link('Rollover', '/Investments/clearRolloverSession/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));?> 
                     | <?php 
                       echo $this->Html->Link('Request Paymt', '/Investments/requestPayment4managefixedinvestments/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ).'/'. (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false));
                               

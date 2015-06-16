@@ -47,10 +47,10 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 <td align="right">
                      <fieldset >
                                 <legend style="display: none;">Instructions</legend>
-                                <input id="ApproveInvestmentsInstructions0" type="radio" value="None" name="data[ApproveInvestments][instructions]">
+                                <input id="ApproveInvestmentsInstructions0" required="required" type="radio" value="None" name="data[ApproveInvestments][instructions]">
                                 <label for="ApproveInvestmentsInstructions0">None</label>
                                 
-                                <input id="ApproveInvestmentsInstructions0" required="required" type="radio" value="Pay Principal" name="data[ApproveInvestments][instructions]">
+                                <input id="ApproveInvestmentsInstructions0" type="radio" value="Pay Principal" name="data[ApproveInvestments][instructions]">
                                 <label for="ApproveInvestmentsInstructions0">Pay Principal</label>
                                 <input id="ApproveInvestmentsInstructions1" type="radio" value="Pay Interest" name="data[ApproveInvestments][instructions]">
                                 <label for="ApproveInvestmentsInstructions1">Pay Interest</label>

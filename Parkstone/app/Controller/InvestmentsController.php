@@ -4612,6 +4612,72 @@ class InvestmentsController extends AppController {
             $this->Session->delete('investtemp.investmentproduct_id');
         }
     }
+    function clearRolloverSession($investment_id = null, $investor_id = null){
+        
+        if(empty($investment_id) || empty($investor_id)){
+            $message = 'Sorry,try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'Investments'));
+        }else{
+            
+            if($this->Session->check('rollover_details')){
+                $this->Session->delete('rollover_details');
+            }
+            if($this->Session->check('rollovertemp')){
+                $this->Session->delete('rollovertemp');
+            }
+            
+            if($this->Session->check('investpayments')){
+                      
+                       $this->Session->delete('investpayments');
+                    }
+                    
+                    
+         $check = $this->Session->check('ledger_data');
+                if ($check) {
+                    $this->Session->delete('ledger_data');
+                }
+
+                $check = $this->Session->check('investtemp1');
+                if ($check) {
+                    $this->Session->delete('investtemp1');
+                }
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $this->Session->delete('variabless_fixed');
+                }
+                $check = $this->Session->check('variabless_equity');
+                if ($check) {
+                    $this->Session->delete('variabless_equity');
+                }
+
+                $check = $this->Session->check('investment_array_equity');
+                if ($check) {
+                    $this->Session->delete('investment_array_equity');
+                }
+                $check = $this->Session->check('investment_array_fixed');
+                if ($check) {
+                    $this->Session->delete('investment_array_fixed');
+                }
+                $check = $this->Session->check('investtemp');
+                if ($check) {
+                    $this->Session->delete('investtemp');
+                }
+                $check = $this->Session->check('generic_array');
+                if ($check) {
+                    $this->Session->delete('generic_array');
+                }
+                $check = $this->Session->check('ledger_transactions');
+                if ($check) {
+                    $this->Session->delete('ledger_transactions');
+                }
+                $check = $this->Session->check('rledger_data');
+                if ($check) {
+                    $this->Session->delete('rledger_data');
+                }
+               $this->redirect(array('controller' => 'Investments', 'action' => 'rollover',$investment_id,$investor_id));
+        }
+    }
 
     function newInvestmentCert() {
         $this->__validateUserType();
@@ -4707,7 +4773,13 @@ class InvestmentsController extends AppController {
                     $this->Rollover->save($rollover_details);
                     $this->set('rollover_details', $rollover_details);
                     $this->Session->delete('rollover_details');
-
+                    if($this->Session->check('investpayments')){
+                       $investment_paymentdetails = $this->Session->read('investpayments'); 
+                       $this->InvestmentPayment->create();
+                       $this->InvestmentPayment->save($investment_paymentdetails);
+                       $this->Session->delete('investpayments');
+                    }
+                    
                     $statemt_array = $this->Session->check('statemt_array_fixed');
                     if ($statemt_array) {
                         $statemt_array = $this->Session->read('statemt_array_fixed');
@@ -4815,7 +4887,12 @@ class InvestmentsController extends AppController {
                     $this->Rollover->save($rollover_details);
                     $this->set('rollover_details', $rollover_details);
                     $this->Session->delete('rollover_details');
-
+                     if($this->Session->check('investpayments')){
+                       $investment_paymentdetails = $this->Session->read('investpayments'); 
+                       $this->InvestmeantPayment->create();
+                       $this->InvestmentPayment->save($investment_paymentdetails);
+                       $this->Session->delete('investpayments');
+                    }
                     $statemt_array = $this->Session->check('statemt_array');
                     if ($statemt_array) {
                         $statemt_array = $this->Session->read('statemt_array');
@@ -5331,7 +5408,7 @@ class InvestmentsController extends AppController {
                                 $data['Investment']['old_status']);
                             $this->Investment->save($update_array);
                             $this->Session->delete('public_termination_req');
-                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_Requested"))));
 
                             $message = 'Termination request successfully rejected';
                             $this->Session->write('smsg', $message);
@@ -5436,10 +5513,22 @@ class InvestmentsController extends AppController {
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $this->LedgerTransaction->save($ledger_transactions);
+                            
+                                
                             }
                             $this->Investment->save($update_array);
+                            //insert into investmentpayments for rollover
+                $investment_paymentdetails = array('investment_id' => $investment_id,
+                        'investor_id' => $investor_id, 'amount' => $amount_due,
+                    'user_id' => $userid, 'payment_date' => date('Y-m-d'),'event_type' => 'Termination',
+                        'event_date' => date('Y-m-d'));
+
+                 $this->InvestmentPayment->create();
+                    $this->InvestmentPayment->save($investment_paymentdetails);
+                    
+                    
                             $this->Session->delete('public_termination_req');
-                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_Requested"))));
 
                             $message = 'Termination request successfully approved';
                             $this->Session->write('smsg', $message);
@@ -5455,7 +5544,7 @@ class InvestmentsController extends AppController {
                             $update_array = array('id' => $investment_id, 'status' => "Termination_Requested");
                             $this->Investment->save($update_array);
                             $this->Session->delete('public_termination_req');
-                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_requested"))));
+                            $this->Session->write('public_termination_req', $this->Investment->find('count', array('conditions' => array('Investment.status LIKE' => "Termination_Requested"))));
 
                             $message = 'Termination request successfully updated';
                             $this->Session->write('smsg', $message);
@@ -5552,7 +5641,8 @@ class InvestmentsController extends AppController {
         $data_array = array();
         $this->paginate = array(
             'conditions' => array(
-                'status' => array('Payment_Approved', 'Termination_Approved'), 'Investment.investment_product_id' => array(1, 3)),
+                'status' => array('Payment_Approved', 'Termination_Approved'), 
+                'Investment.investment_product_id' => array(1, 3)),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'),
             'group' => array('Investment.investor_id')
@@ -5790,6 +5880,7 @@ class InvestmentsController extends AppController {
             $payment = 0;
             $investorid = $_POST['hid_investorid'];
             $ledgerid = $_POST['hid_ledgerid'];
+           $investment_id =  $_POST['hid_investid'];
             $inv_day = $this->request->data['InvestmentPayment']['payment_date']['day'];
             if (!empty($inv_day)) {
                 $inv_month = $this->request->data['InvestmentPayment']['payment_date']['month'];
@@ -5837,20 +5928,10 @@ class InvestmentsController extends AppController {
 
 
 
-            $payment_day = $this->request->data['InvestmentPayment']['payment_date']['day'];
-            $payment_month = $this->request->data['InvestmentPayment']['payment_date']['month'];
-            $payment_year = $this->request->data['InvestmentPayment']['payment_date']['year'];
-            $fpayment_date = $payment_year . "-" . $payment_month . "-" . $payment_day;
-            $spayment_date = strtotime($fpayment_date);
-            $payment_date = date('Y-m-d', $spayment_date);
-            $session_date = date('d-m-Y', $spayment_date);
-            //$this->request->data['InvestmentPayment']['payment_date'] = $payment_date;
-            $check = $this->Session->check('payment_date');
-            if ($check) {
-                $this->Session->delete('payment_date');
-            }
-            $this->Session->write('payment_date', $session_date);
-
+           
+            $payment_date = $inv_date;
+           
+            
             $payment = $this->request->data['InvestmentPayment']['amount'];
             $sms_amount = $this->request->data['InvestmentPayment']['amount'];
             $payment_mode = $this->request->data['InvestmentPayment']['paymentmode_id'];
@@ -5892,11 +5973,12 @@ class InvestmentsController extends AppController {
                         'description' => 'Payment of Investment Proceeds');
                     $this->LedgerTransaction->create();
                     $this->LedgerTransaction->save($ledger_transactions);
-
-                    $investment_paymentdetails = array('investment_id' => $investment_id,
+//                    'investment_id' => $investment_id,
+                    $investment_paymentdetails = array('user_id' => $userid,'investment_id' => $investment_id,
                         'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
-                        'payment_mode' => $this->request->data['InvestmentPayment']['payment_mode'],
-                        'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date);
+                        'payment_mode_id' => $this->request->data['InvestmentPayment']['paymentmode_id'],
+                        'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date,'event_type' => 'Payment',
+                        'event_date' => $payment_date);
 
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if ($ledger_transactions) {
@@ -7034,7 +7116,7 @@ class InvestmentsController extends AppController {
                 //'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
                 $investment_array = array('balance' => $amount_due,
                     'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
-                    'custom_rate' => $custom_rate,
+                    'custom_rate' => $custom_rate,'investment_amount' => $investment_amount,
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
                     'earned_balance' => $this->request->data['Investment']['investment_amount'],
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
@@ -7043,7 +7125,7 @@ class InvestmentsController extends AppController {
                     'date' => $inv_date, 'description' => $description);
 
                 $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'],
-                    'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount,
+                    'investor_id' => $data['Investment']['investor_id'], 'old_investment_amount' => $data["Investment"]["investment_amount"],
                     'custom_rate' => $custom_rate, 'old_custom_rate' => $data["Investment"]["custom_rate"], 'rollover_date' => $date->format('Y-m-d'));
 
                 $base_fee = 0;
@@ -7106,7 +7188,16 @@ class InvestmentsController extends AppController {
                     $this->Session->delete('statemt_array');
                 }
 
+                //insert into investmentpayments for rollover
+                $investment_paymentdetails = array('investment_id' => $data['Investment']['id'],
+                        'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount,
+                    'user_id' => $data['Investment']['user_id'], 'payment_date' => $inv_date,'event_type' => 'Rolledover',
+                        'event_date' => $inv_date);
 
+                 
+                    $this->Session->write('investpayments', $investment_paymentdetails);
+                    
+                /**************************************************************************************/
                 $this->Session->write('statemt_array', $statemt_array);
                 $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
                 $this->Session->write('variabless_fixed', $variables);
