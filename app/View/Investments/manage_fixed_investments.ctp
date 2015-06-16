@@ -343,7 +343,7 @@
             <td colspan="14" align="right">
                 <?php 
                 //echo $this->Html->link('Print', "/Stocks/supListSuppliersInvoicesPrint", array("class" => 'button_red'));
-				echo $this->Html->link('Back', "/Investments/manageInvestments", array("class" => 'btn btn-lg btn-info')); 
+				echo $this->Html->link('Back', "/Investments/manageInvestments/", array("class" => 'btn btn-lg btn-info')); 
                 ?>
             </td>
         </tr>

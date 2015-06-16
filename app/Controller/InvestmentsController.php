@@ -7649,8 +7649,8 @@ class InvestmentsController extends AppController {
         $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
         $this->set('investor_name', $investor['Investor']['fullname']);
         
-        $data = $this->paginate('InvestorDeposit', array('InvestorDeposit.investment_id' => $investment_id));
-        $this->set('data', $data);        
+        $data2 = $this->paginate('InvestorDeposit', array('InvestorDeposit.investment_id' => $investment_id));
+        $this->set('data', $data2);        
         
     }
     

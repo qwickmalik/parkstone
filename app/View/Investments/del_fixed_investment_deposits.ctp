@@ -63,8 +63,8 @@
                 <td align="left"><?php echo $each_item['InvestorDeposit']['receipt_no']; ?></td>
                 <td align="center">
                 <?php 
-//                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
-//                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox',$checked. 'label' => false, 'hiddenField' => false));  
+                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
+                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox', 'label' => false, 'hiddenField' => false));  
                     ?>
                 </td>
                 
@@ -74,8 +74,8 @@
         <tr>
             <td colspan="14" align="right">
                 <?php 
-                
-				echo $this->Html->link('Back', "/Investments/manageFixedInvestments", array("class" => 'btn btn-lg btn-info')); 
+				echo $this->Html->link('Back', "/Investments/manageFixedInvestments/".$investor_id."/".$investment_id, array("class" => 'btn btn-md btn-info')); 
+                                echo $this->Form->button('Delete', array('type' => 'submit', 'class' => 'btn btn-md btn-danger'))
                 ?>
             </td>
         </tr>
