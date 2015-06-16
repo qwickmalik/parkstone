@@ -1208,4 +1208,6 @@ ADD  `event_date` DATE NULL AFTER  `event_type`;
 
 June 16, 2015
 ----------------------
-ALTER TABLE  `investment_payments` CHANGE  `selling_price`  `selling_price` DECIMAL( 11, 2 ) NOT NULL DEFAULT  '0.00'
+ALTER TABLE  `investment_payments` CHANGE  `selling_price`  `selling_price` DECIMAL( 11, 2 ) NOT NULL DEFAULT  '0.00';
+ALTER TABLE  `investment_payments` CHANGE  `payment_mode`  `payment_mode_id` INT( 11 ) NULL DEFAULT NULL;
+ALTER TABLE  `rollovers` CHANGE  `amount`  `old_investment_amount` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00'

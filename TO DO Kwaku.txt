@@ -1,10 +1,13 @@
 --look at new investor photo upload richmom_3
---Must not deduct base fee from deposit initially..also check to make sure prompt for available cash does not take base fee into consideration
---dispose Equity Payment
+DONE--Must not deduct base fee from deposit initially..also check to make sure prompt for available cash does not take base fee into consideration
+DONE--dispose Equity Payment
  --Disable inputs on investment page
 --Delete deposits and payments
 --Reports
  --Audit Trail
+ --Client Statements
+--fund manager
+--Backup
 
 I also think that we may need more than one investment pool for client funds in addition to Parkstone’s own funds which will obviously be separate. 
  So, I think you may have to make the possibility of creating/selecting an investment pool (more than one).
