@@ -1210,6 +1210,10 @@ June 16, 2015
 ----------------------
 ALTER TABLE  `investment_payments` CHANGE  `selling_price`  `selling_price` DECIMAL( 11, 2 ) NOT NULL DEFAULT  '0.00';
 ALTER TABLE  `investment_payments` CHANGE  `payment_mode`  `payment_mode_id` INT( 11 ) NULL DEFAULT NULL;
+ALTER TABLE  `rollovers` CHANGE  `amount`  `old_investment_amount` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00'
+
+June 17, 2015
+-----------------------
 ALTER TABLE  `rollovers` CHANGE  `amount`  `old_investment_amount` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
 ALTER TABLE  `ledger_transactions` ADD  `investment_id` INT( 11 ) NULL AFTER  `payment_mode_id`;
 
@@ -1222,4 +1226,6 @@ ALTER TABLE  `daily_reinvestinterest_statements` ADD  `accrued_days` INT( 4 ) NU
 ALTER TABLE  `investments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total_tenure`;
 ALTER TABLE  `reinvestments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `lastpaidout_date`
 
--- EFFECTED ON Parkstone SERVER
+June 17, 2015 Malik
+-----------------------------
+ALTER TABLE `defaulting_rates` ADD `early_termination_fee` DECIMAL(5,2) NULL AFTER `expired_rate`;

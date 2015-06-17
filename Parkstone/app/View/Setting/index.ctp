@@ -55,6 +55,23 @@
 					</div>
 				</div>', '/Settings/banks', array('escape' => false)); ?>
         
+        <?php echo $this->Html->link('
+			<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
+				<div id="innertext">
+					<h3>Equities List</h3>
+					<p>Create/edit names of equities here</p>
+				</div>
+			</div>', '/Settings/equitiesList', array('escape' => false)); ?>
+        
+        
+        <?php echo $this->Html->link('
+		<div id="settingsbox">' . $this->Html->image('tax_rates.png', array()) . '
+			<div id="innertext">
+				<h3>Tax Rates</h3>
+				<p>Set/edit tax rates to be used in sales here</p>
+			</div>
+		</div>', '/Settings/taxesList', array('escape' => false)); ?>
+        
         <?php // echo $this->Html->link('
 //		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
 //			<div id="innertext">
@@ -72,24 +89,13 @@
 		</div>', '/Settings/defaultingRates', array('escape' => false)); ?>
 
 
-
-        <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('tax_rates.png', array()) . '
-			<div id="innertext">
-				<h3>Tax Rates</h3>
-				<p>Set/edit tax rates to be used in sales here</p>
-			</div>
-		</div>', '/Settings/taxesList', array('escape' => false)); ?>
-
-
-
-        <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
-			<div id="innertext">
-				<h3>Transaction Names</h3>
-				<p>Create names for various expenses done by company here. Names will be used in Cash Accounts Module</p>
-			</div>
-		</div>', '/Settings/createExpenses', array('escape' => false)); ?>
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
+//			<div id="innertext">
+//				<h3>Transaction Names</h3>
+//				<p>Create names for various expenses done by company here. Names will be used in Cash Accounts Module</p>
+//			</div>
+//		</div>', '/Settings/createExpenses', array('escape' => false)); ?>
 
 
 
@@ -101,21 +107,15 @@
 //			</div>
 //		</div>', '/Settings/investmentPortfolios', array('escape' => false)); ?>
 
-        <?php echo $this->Html->link('
-			<div id="settingsbox">' . $this->Html->image('investor_categories.png', array()) . '
-				<div id="innertext">
-					<h3>Investor Categories</h3>
-					<p>Set/edit investor categories here</p>
-				</div>
-			</div>', '/Settings/customerCategories', array('escape' => false)); ?>
+        <?php // echo $this->Html->link('
+//			<div id="settingsbox">' . $this->Html->image('investor_categories.png', array()) . '
+//				<div id="innertext">
+//					<h3>Investor Categories</h3>
+//					<p>Set/edit investor categories here</p>
+//				</div>
+//			</div>', '/Settings/customerCategories', array('escape' => false)); ?>
         
-        <?php echo $this->Html->link('
-			<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
-				<div id="innertext">
-					<h3>Equities List</h3>
-					<p>Create/edit names of equities here</p>
-				</div>
-			</div>', '/Settings/equitiesList', array('escape' => false)); ?>
+        
         
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('users.png', array()) . '
