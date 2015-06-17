@@ -139,7 +139,7 @@
 //        (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".
 //        (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".
 //        (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));
- echo $this->Html->Link('Statement', '/Investments/statementDailyInterest'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+ echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
                 <td align="center"><?php if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
                    

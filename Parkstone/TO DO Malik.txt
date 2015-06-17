@@ -3,21 +3,20 @@ NB. All reports will have from date - to date filter options
 
 Additional TO Do
 ----------------
-DONE --Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
-  (link to investor_deposits table). Will open page listing all deposits for the said investment from investor_deposits table where investment_id = $id
---Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
-  -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
---Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
-  (link to investment_payments table)
---Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
-  -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
-  investments with payment listing button to further list payments of under each investment for deletion 
-  #PLease format investor details page
+*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
+we dont need to move it to reports anyway
+it can be where it is in manage fixed investments
+let me see if there is a sample smwhere for u
+ok u can look in technical_specs for a sample if u dont mind
+a picture called client_statement
+cheers
+
+
 --Redesign Investment payment receipt
+
 --pls look at format for /mask.js for validation and implement in new investor pages   
 
 *add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
-*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 
 --Please look at settings submodule inputs...need to be bootstrapped
 
@@ -50,8 +49,16 @@ T0 D0
 
 #########   DONE    ###########
 =============================================
-
-
+DONE  #PLease format investor details page
+DONE --Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
+  (link to investment_payments table)
+DONE --Deposit Delete Page on every single Manage Investment Page-/Investments/manageFixedInvestments
+  (link to investor_deposits table). Will open page listing all deposits for the said investment from investor_deposits table where investment_id = $id
+DONE --Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInvFixed/
+  -on click deletebtn it opens a page listing all investments with deposits listing button to further list deposits under each investment for deletion
+DONE --Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
+  -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
+  investments with payment listing button to further list payments of under each investment for deletion 
 
 
 
