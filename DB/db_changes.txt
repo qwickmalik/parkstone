@@ -1221,3 +1221,5 @@ ALTER TABLE  `daily_interest_statements` ADD  `accrued_days` INT( 4 ) NULL DEFAU
 ALTER TABLE  `daily_reinvestinterest_statements` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total`;
 ALTER TABLE  `investments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total_tenure`;
 ALTER TABLE  `reinvestments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `lastpaidout_date`
+
+-- EFFECTED ON Parkstone SERVER
