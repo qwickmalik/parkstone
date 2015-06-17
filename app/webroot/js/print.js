@@ -22,7 +22,7 @@ var ucsl_report = {
         $("a#print_receipt").click(function(event){
             $("#dateRow").hide();
             $("#emailRow").hide();
-            $(".inner").printElement();
+            $(". inner_print").printElement();
             $("#dateRow").show();
             $("#emailRow").show();
             event.preventDefault();

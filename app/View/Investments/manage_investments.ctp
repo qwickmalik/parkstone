@@ -53,7 +53,7 @@
                 <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('investor_type', 'Investor Type'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('phone', 'Phone No.'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo 'Manage Inv.'; ?></b></td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo 'Inv. Statements'; ?></b></td>
+                <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo 'Client. Statements'; ?></b></td>
             </tr>
                 <?php
                 if (isset($data)) {
@@ -97,8 +97,10 @@
                 <td align="left"><?php 
                 echo $this->Html->Link('Client Ledger', '/Investments/clientLedger' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
                 echo " | ";
-                 echo $this->Html->Link('Statement', '/Investments/statementActiveInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
-               
+                echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : (isset($each_item['Investor']['comp_name']) ? $each_item['Investor']['comp_name'] : '' ) ),array('escape'=>false));
+ 
+//                 echo $this->Html->Link('Statement', '/Investments/statementActiveInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
+//               
 //                echo $this->Html->Link('Statement', '/Investments/statementAllInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' ), array('escape' => false)); 
                 ?></td>
             </tr>

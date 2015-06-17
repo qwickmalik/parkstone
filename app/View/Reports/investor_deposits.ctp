@@ -89,7 +89,7 @@
             <?php echo $this->Form->end(); ?>
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
             
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print" align="center">
                 <?php
                 echo $this->Element('logo_reports');
                 echo "<H3><b>PARKSTONE CAPITAL LIMITED</b></H3>";
@@ -144,13 +144,13 @@
             echo  $each_item['Investment']['investment_no'];
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['InvestorDeposit']['deposit_date'])) {
-            echo  date('d-m-Y',strtotime($each_item['InvestorDeposit']['deposit_date']));
+            echo  date('d-M-Y',strtotime($each_item['InvestorDeposit']['deposit_date']));
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['InvestorDeposit']['amount'])) {
             echo  number_format($each_item['InvestorDeposit']['amount'],2);
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
-            echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
+            echo  date('d-M-Y',strtotime($each_item['Investment']['investment_date']));
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
             echo  $each_item['Investment']['custom_rate'].'%';

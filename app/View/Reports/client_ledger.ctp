@@ -38,7 +38,7 @@ echo $this->Html->script('print.js'); ?>
                 echo "<p><b>CLIENT LEDGER</b></p>";
                 ?>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Date</b></td>
