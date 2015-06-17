@@ -7665,6 +7665,48 @@ class InvestmentsController extends AppController {
         $this->set('data', $data2);        
         
     }
+    
+    function statementClient($investor_id = null, $invesmentID = null, $investor_name = null){
+        $this->__validateUserType();
+        if (!is_null($invesmentID)) {
+            $data = $this->InvestmentStatement->find('all', array('conditions' =>
+                array('InvestmentStatement.investment_id' => $invesmentID)));
+            $issued = $this->Session->check('userData');
+            if ($issued) {
+                $issued = $this->Session->read('userData');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+                $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
+                $data_total = $this->InvestmentStatement->find('all', array('fields' =>
+                    array("SUM(InvestmentStatement.principal) as 'total_principal',"
+                        . "SUM(InvestmentStatement.interest) as 'total_interest',SUM(InvestmentStatement.total) as 'sum_total'"),
+                    'conditions' => array('InvestmentStatement.investment_id' => $invesmentID)));
+
+                if ($data2) {
+                    $this->set('data2', $data2);
+                }
+                if ($data_total) {
+                    $this->set('data_total', $data_total);
+                }
+                $this->set('data', $data);
+                $this->set('investor_id', $investor_id);
+                $this->set('invesmentID', $invesmentID);
+                $this->set('investor_name', $investor_name);
+            } else {
+
+                $message = 'Sorry, Investment Details Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $invesmentID));
+            }
+        } else {
+
+            $message = 'Sorry, Investment Details Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $invesmentID));
+        }
+    }
 
 }
 
