@@ -1210,4 +1210,14 @@ June 16, 2015
 ----------------------
 ALTER TABLE  `investment_payments` CHANGE  `selling_price`  `selling_price` DECIMAL( 11, 2 ) NOT NULL DEFAULT  '0.00';
 ALTER TABLE  `investment_payments` CHANGE  `payment_mode`  `payment_mode_id` INT( 11 ) NULL DEFAULT NULL;
-ALTER TABLE  `rollovers` CHANGE  `amount`  `old_investment_amount` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00'
+ALTER TABLE  `rollovers` CHANGE  `amount`  `old_investment_amount` DECIMAL( 11, 2 ) NULL DEFAULT  '0.00';
+ALTER TABLE  `ledger_transactions` ADD  `investment_id` INT( 11 ) NULL AFTER  `payment_mode_id`;
+
+
+June 17, 2015
+---------------------
+ALTER TABLE  `investment_cashes` ADD  `investor_deposit_id` INT( 11 ) NULL AFTER  `reinvestor_deposit_id`;
+ALTER TABLE  `daily_interest_statements` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total`;
+ALTER TABLE  `daily_reinvestinterest_statements` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total`;
+ALTER TABLE  `investments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `total_tenure`;
+ALTER TABLE  `reinvestments` ADD  `accrued_days` INT( 4 ) NULL DEFAULT  '0' AFTER  `lastpaidout_date`
