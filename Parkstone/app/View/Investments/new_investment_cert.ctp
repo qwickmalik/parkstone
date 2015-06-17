@@ -14,7 +14,7 @@ echo $this->Html->script('print.js');
 
         <!-- Content start here -->
         <div class="row">
-
+            <div class="inner_print">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <?php 
                     echo $this->Element('logo_reports');
@@ -126,6 +126,7 @@ echo $this->Html->script('print.js');
                         
                     </tr>
                 </table>
+            </div>
             </div>
             <?php 
             echo "<p>&nbsp;</p>";
