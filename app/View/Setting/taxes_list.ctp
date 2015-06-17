@@ -7,30 +7,24 @@
 	<div class="inner">
             <div id="clearer"></div>
 		
-                    <?php echo $this->Form->create('Tax',array("url" => array('controller' => 'Settings', 'action' => 'taxesList'),"inputDefaults" => array('label' => false,'div' => false)));?>
-                    <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
-                            
-                            <tr>
-                                <td><h3 align="right">Name:</h3></td>
-                                <td><?php echo $this->Form->input('tax_name',array("class" => "large","size" => 40)); echo $this->Form->hidden('id'); ?></td>
-                            </tr>
-                            <tr>
-                                <td><h3 align="right">Rate:</h3></td>
-                                <td><?php echo $this->Form->input('tax_rate',array("class" => "large","size" => 40)); ?></td>
-                            </tr>
-                            <tr>
-                                <td><h3 align="right">&nbsp;</h3></td>
-                                <td>
-                                    <?php echo $this->Form->button('Save',array("type" => "submit","id" =>"taxBtn","class" => "button_green")); //check the parameters here ?>
-                                </td>
-                            </tr>
-                    </table>
+                    <?php echo $this->Form->create('Tax',array("url" => array('controller' => 'Settings', 'action' => 'taxesList'),"inputDefaults" => array('div' => false)));?>
+                    
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                    <?php echo $this->Form->input('tax_name',array()); echo $this->Form->hidden('id'); ?>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                    <?php echo $this->Form->input('tax_rate',array()); ?>
+                </div>
+            </div>
+            <?php echo $this->Form->button('Save',array("type" => "submit","id" =>"taxBtn","class" => "btn btn-md btn-success", 'style' => 'float: right;')); //check the parameters here ?>
+            
+            
                    <?php
                     echo $this->Form->end();
                    ?>
                     <div id="clearer"></div>
                     
-                    <form id="taxes_list" action="#" method="post">
                     <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
                             <tr>
                                   <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
@@ -67,7 +61,7 @@
                                 </td>
                             </tr>
                     </table>
-                    </form>
+
                 </div>
             <!-- Content ends here -->
 

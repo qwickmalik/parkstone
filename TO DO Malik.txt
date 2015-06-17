@@ -1,29 +1,6 @@
-*Reports
-NB. All reports will have from date - to date filter options
-
 Additional TO Do
 ----------------
-*Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
-we dont need to move it to reports anyway
-it can be where it is in manage fixed investments
-let me see if there is a sample smwhere for u
-ok u can look in technical_specs for a sample if u dont mind
-a picture called client_statement
-cheers
-
-
---Redesign Investment payment receipt
-
---pls look at format for /mask.js for validation and implement in new investor pages   
-
-*add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
-
---Please look at settings submodule inputs...need to be bootstrapped
-
-
-NOTES FROM REVIEW 24TH FEB.2015
---------------------------------------
-
+DONE --pls look at format for /mask.js for validation and implement in new investor pages   
 
 
 
@@ -49,6 +26,9 @@ T0 D0
 
 #########   DONE    ###########
 =============================================
+DONE --Please look at settings submodule inputs...need to be bootstrapped
+DONE. ADDED TO DEFAULT RATES SUBMODULE *add page in settings / input in payment terms or company setup page to set defaulting fee for early termination
+DONE --Redesign Investment payment receipt
 DONE  #PLease format investor details page
 DONE --Payment Delete Page On Manage Investment-/Investments/manageFixedInvestments
   (link to investment_payments table)
@@ -59,7 +39,7 @@ DONE --Deposit Delete Page on Manage Reinvestment Page()-Reinvestments/manageInv
 DONE --Payment Delete Page On Manage Investment -Reinvestments/manageInvFixed/
   -similar to reinvestment deposits delete on click deletebtn it opens a page listing all 
   investments with payment listing button to further list payments of under each investment for deletion 
-
+DONE *Date on daily statements should reflect full date(day,month,year) Also it should show monthly aggregates not daily. Move to reports and replace with client statement
 
 
 DONE 1. Funds under Management

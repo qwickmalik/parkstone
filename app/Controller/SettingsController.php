@@ -766,27 +766,24 @@ class SettingsController extends AppController {
     function defaultingRates() {
         $this->__validateUserType();
         //     
-        $data = $this->paginate('DefaultingRate');
-        $this->set('data', $data);
+//        $data = $this->paginate('DefaultingRate');
+//        $this->set('data', $data);
         $rateResults = $this->DefaultingRate->getDefaultingRate();
 //        foreach ($rateResults as $rateResult) {
 //            $rateRes = $rateResult;
 //        }
 
-        $this->set('$rateResults', $rateResults);
+        $this->set('default_rates', $rateResults);
+        
         if ($this->request->is('post')) {
 
             if (!empty($this->request->data)) {
-
 
                 $count = $this->DefaultingRate->find('count');
                 if ($count < 1) {
                     $result = $this->DefaultingRate->save($this->request->data);
                     if ($result) {
                         $this->request->data = null;
-
-
-
                         $message = 'Defaulting Rates Added';
                         $this->Session->write('smsg', $message);
                         $this->redirect(array('controller' => 'Settings', 'action' => 'defaultingRates'));
@@ -1217,6 +1214,8 @@ class SettingsController extends AppController {
             }
         }
     }
+    
+    
 
 }
 
