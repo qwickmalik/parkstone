@@ -243,19 +243,26 @@ function __dailyInterests(){
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
         $new_balanced_earned = $investment_amount + $daily_interest;
         $new_total_earned = $investment_amount1 + $daily_interest;
-        
+        $afirst_date = $value['Investment']['investment_date'];
+        $ainv_date = new DateTime($afirst_date);
+        $aend_date = date('Y-m-d');
+        $ato_date = new DateTime($aend_date);
+         $aduration = date_diff($ainv_date, $ato_date);
+         $aduration = $duration->format("%a");
                             $statemt_array = array(
                                 'investment_id' => $value['Investment']['id'],
                                 'investor_id' => $value['Investment']['investor_id'],
                                 'principal' => round($principal_amount,2),
                                 'interest' => round($daily_interest,2),
                                 'date' => $date,
+                                'accrued_days' => $aduration,
                                 'total' => round($new_balanced_earned,2));
                             
                              $investment_array = array(
                                  'id' => $value['Investment']['id'],
                                  'earned_balance' => round($new_balanced_earned,2),
                              'total_amount_earned' => round($new_total_earned,2),
+                                 'accrued_days' => $aduration,
                             'interest_accrued' => round($new_accrued_interest,2)
                         );
                     $this->DailyInterestStatement->create();       
@@ -288,20 +295,27 @@ function __dailyReinvestmentInterests(){
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
         $new_balanced_earned = $investment_amount + $daily_interest;
         $new_total_earned = $investment_amount1 + $daily_interest;
-
+        $afirst_date = $value['Investment']['investment_date'];
+        $ainv_date = new DateTime($afirst_date);
+        $aend_date = date('Y-m-d');
+        $ato_date = new DateTime($aend_date);
+         $aduration = date_diff($ainv_date, $ato_date);
+         $aduration = $duration->format("%a");
        
                             $statemt_array = array(
                                 'reinvestment_id' => $value['Reinvestment']['id'],
                                 'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
                                 'principal' => $principal_amount,
-                                'interest' => $daily_interest,
+                                'interest' => round($daily_interest,2),
                                 'date' => $date,
-                                'total' => $new_balanced_earned);
+                                'accrued_days' => $aduration,
+                                'total' => round($new_balanced_earned,2));
                             
                              $investment_array = array(
                                  'id' => $value['Reinvestment']['id'],
                                  'earned_balance' => round($new_balanced_earned,2),
                              'total_amount_earned' => round($new_total_earned,2),
+                                 'accrued_days' => $aduration,
                             'interest_earned' => round($new_accrued_interest,2)
                         );
                              

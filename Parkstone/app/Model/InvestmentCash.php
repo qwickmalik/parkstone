@@ -51,7 +51,15 @@ class InvestmentCash extends AppModel{
             'order' =>  '',
             'limit' => '',
             'dependent' => true
-        ));
+        ),
+	'InvestorDeposit' => array(
+            'className' => 'InvestorDeposit',
+            'foreignKey' => 'investor_deposit_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
       var $hasMany = array(
         'Reinvestment' => array(
             'className' => 'Reinvestment',

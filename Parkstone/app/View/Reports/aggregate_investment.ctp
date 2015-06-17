@@ -106,7 +106,7 @@ echo $this->Html->script('print.js'); ?>
                 echo "<p><b>AGGREGATE INVESTMENT REPORT</b></p>";
                 ?>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
                         <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Name</b></td>
@@ -136,7 +136,7 @@ echo $this->Html->script('print.js'); ?>
             echo  $each_item['Investment']['investment_no'];
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
-            echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
+            echo  date('d-M-Y',strtotime($each_item['Investment']['investment_date']));
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_amount'])) {
             echo  number_format($each_item['Investment']['investment_amount'],2);
@@ -145,7 +145,7 @@ echo $this->Html->script('print.js'); ?>
             echo  $each_item['Investment']['custom_rate'].'%';
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['due_date'])) {
-            echo  date('d-m-Y',strtotime($each_item['Investment']['due_date']));
+            echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
         } ?></td>
                         <td align="right" valign="top"><?php echo date('d-m-Y'); ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['expected_interest'])) {
@@ -159,7 +159,7 @@ echo $this->Html->script('print.js'); ?>
             
                         } ?></td>
                               <td align="right" valign="top"><?php 
-            echo  date('d-m-Y');
+            echo  date('d-M-Y');
          ?></td>
                                     <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
             echo  number_format($each_item['Investment']['interest_accrued'],2);

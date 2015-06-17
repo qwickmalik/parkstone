@@ -50,7 +50,7 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('ledger_transaction_id', 'Ledger Trans. ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('topup_id', 'Top-up ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('amount', 'Amount'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('receipt_no', 'Receipt No.'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('receipt_no', 'Receipt No.'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete</b></td>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
@@ -60,11 +60,11 @@
                 <td align="center"><?php echo $each_item['InvestorDeposit']['ledger_transaction_id']; ?></td>
                 <td align="left"><?php echo $each_item['InvestorDeposit']['topup_id']; ?></td>
                 <td align="right"><?php echo $each_item['InvestorDeposit']['amount']; ?></td>
-                <td align="left"><?php echo $each_item['InvestorDeposit']['receipt_no']; ?></td>
+                <td align="center"><?php echo $each_item['InvestorDeposit']['receipt_no']; ?></td>
                 <td align="center">
                 <?php 
                  if(isset($each_item['InvestorDeposit']['id'])){
-                            echo $this->Html->link('Delete', '/Investments/delDeposit/'.$each_item["InvestorDeposit"]["id"], array());
+                            echo $this->Html->link('Delete', '/Investments/delDeposit/'.$each_item["InvestorDeposit"]["id"]."/".(isset($investor_name)?$investor_name:''), array());
                         }
 //                    echo $this->Form->hidden('id', array('value' => $each_item['InvestorDeposit']['id']));
 //                    echo $this->Form->input('delete'.$each_item['InvestorDeposit']['id'], array( 'type' => 'checkbox',$checked. 'label' => false, 'hiddenField' => false));  

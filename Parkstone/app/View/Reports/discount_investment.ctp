@@ -66,7 +66,7 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php echo "<p>Date: 18/07/2014</p>"; ?>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Date</b></td>

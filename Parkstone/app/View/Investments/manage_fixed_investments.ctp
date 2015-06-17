@@ -47,10 +47,10 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
+            <!--<td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>-->
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Top-up</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
+            <!--<td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>-->
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
@@ -134,12 +134,13 @@
                             echo $each_item['Investment']['status'];
                         }
                         ?></td>
-                <td align="left"><?php
+<!--                <td align="left"><?php
 //echo $this->Html->Link('Statement', '/Investments/statementInvDetail'."/".
 //        (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".
 //        (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".
 //        (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));
- echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+// echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?>
+                </td>-->
                 
                 <td align="center"><?php if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
                    
@@ -327,15 +328,20 @@
                
                 </td>
                 <td align="center"><?php
+                if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
                         if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentDeposits/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-warning'));
+                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentDeposits/'.$investor_id.'/'.$each_item['Investment']['id'].'/'.$each_item['Investment']['investment_no'], array('class' => 'btn btn-xs btn-warning'));
                         }
+                }else {
+                                        echo 'N/A';
+                                    }
+                                   
                         ?></td>
-                <td align="center"><?php
-                        if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-danger'));
-                        }
-                        ?></td>
+<!--                <td align="center"><?php
+//                        if(isset($each_item['Investment']['id'])){
+//                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-danger'));
+//                        }
+                        ?></td>-->
                 
         <?php  }} ?>
             </tr>
