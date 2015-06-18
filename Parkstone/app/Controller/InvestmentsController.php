@@ -23,10 +23,28 @@ class InvestmentsController extends AppController {
 
 //var $helpers = array('AjaxMultiUpload.Upload');
 
+//    function beforeFilter() {
+////        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
+//    }
+ /**
+     * This function execute when the page loads before
+     * any other function
+     */
     function beforeFilter() {
-//        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
+        $this->__validateLoginStatus();
     }
 
+    /**
+     * Function to check whether user is logged in
+     * @return boolean
+     */
+    function __validateLoginStatus() {
+        if ($this->action != 'login' && $this->action != 'logout') {
+            if ($this->Session->check('userData') == false) {
+                $this->redirect('/');
+            }
+        }
+    }
     function __validateUserType() {
 
         $userType = $this->Session->read('userDetails.usertype_id');
@@ -5972,7 +5990,24 @@ class InvestmentsController extends AppController {
             $balance = 0;
             $old_balance = 0;
 
-
+            $investment_data = $this->Investment->find('first',['conditions' => ['Investment.id' => $investment_id]]);
+                    if($investment_data){
+                        $earnedbalance = $investment_data['Investment']['earned_balance'];
+                        $status = $investment_data['Investment']['status'];
+                        if ($sms_amount > $earnedbalance) {
+                    $message = 'Payment amount cannot be more than Investment balance';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
+                    }
+                        $new_earnedbalance = $earnedbalance - $sms_amount;
+                        
+                        if($new_earnedbalance <= 0){
+                            $status = 'Paid';
+                        }elseif($new_earnedbalance > 0){
+                            $status = 'Part_payment';
+                        }
+                        $investment_array = array('id' => $investment_id,'status' => $status,'earned_balance' => $new_earnedbalance);
+                    }
             $date = date('Y-m-d H:i:s');
             //use id to retrieve Investment info
             $ledger_details = $this->ClientLedger->find('first', array('conditions' => array('ClientLedger.id' => $ledgerid)));
@@ -6014,6 +6049,9 @@ class InvestmentsController extends AppController {
                         'event_date' => $payment_date);
 
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
+                    if(!empty($investment_array)){
+                        $this->Investment->save($investment_array);
+                    }
                     if ($ledger_transactions) {
 
                         $check = $this->Session->check('ipayment_receipt');
