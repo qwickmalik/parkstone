@@ -1,4 +1,9 @@
-<?php echo $this->element('header'); ?>
+<?php echo $this->element('header');
+
+$shopCurrency =""; if ($this->Session->check('shopCurrency')) {
+    $shopCurrency = $this->Session->read('shopCurrency');
+
+}?>
 
 <!-- Content starts here -->
 <h3>Pay Investor</h3>
@@ -22,7 +27,7 @@
         ?></span>
                                  <input type="hidden" value="<?php if (isset($data['ClientLedger']['investor_id'])) {
                                         echo $data['ClientLedger']['id'];
-                                    } ?>" name="hid_investorid" /></td>
+                                    } ?>" name="hid_ledgerid" /></td>
                                 <input type="hidden" value="<?php if (isset($inv_data['Investment']['id'])) {
                                         echo $inv_data['Investment']['id'];
                                     } ?>" name="hid_investid" /></td>
@@ -58,23 +63,23 @@
                 <td align="left" valign="top" width="50%">
 
                     <table width="100%" cellspacing="10" cellpadding="0" border="0">
-
                         <tr>
-                            <td><b align="right">Total Invested Amount:</b></td>
-                            <td><span id="xxxxxx"><?php
-                                    if (isset($data['ClientLedger']['invested_amount'])) {
-                                        echo $data['ClientLedger']['invested_amount'];
-                                    }
-        ?></span></td>
-                        </tr>
-                        <tr>
-                            <td><b align="right">Available Cash:</b></td>
+                            <td><b align="right">Ledger Balance:</b></td>
                             <td><span id="xxxxxx"><?php
                                    if (isset($data['ClientLedger']['available_cash'])) {
-                                        echo $data['ClientLedger']['available_cash'];
+                                        echo $shopCurrency." ".number_format($data['ClientLedger']['available_cash'],2);
                                     }
                                     ?></span></td>
                         </tr>
+                        <tr>
+                            <td><b align="right">Investment Balance:</b></td>
+                            <td><span id="xxxxxx"><?php
+                                   if (isset($inv_data['Investment']['earned_balance'])) {
+                                        echo $shopCurrency." ".number_format($inv_data['Investment']['earned_balance'],2);
+                                    }
+        ?></span></td>
+                        </tr>
+                        
                         <tr>
                             <td><b align="right">Approval Date & Time:</b></td>
                             <td><span id="xxxxxx"><?php

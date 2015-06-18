@@ -41,6 +41,7 @@ class ShellConsolesController extends AppController {
         $this->autoRender = false;
         $this->__dailyReinvestmentInterests();
         $this->__dailyReinvestmentMatured();
+        
     }
    
     public function miscJobs(){
@@ -248,7 +249,7 @@ function __dailyInterests(){
         $aend_date = date('Y-m-d');
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
-         $aduration = $duration->format("%a");
+         $aduration = $aduration->format("%a");
                             $statemt_array = array(
                                 'investment_id' => $value['Investment']['id'],
                                 'investor_id' => $value['Investment']['investor_id'],
@@ -300,7 +301,7 @@ function __dailyReinvestmentInterests(){
         $aend_date = date('Y-m-d');
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
-         $aduration = $duration->format("%a");
+         $aduration = $aduration->format("%a");
        
                             $statemt_array = array(
                                 'reinvestment_id' => $value['Reinvestment']['id'],

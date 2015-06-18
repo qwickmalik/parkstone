@@ -45,11 +45,11 @@ class AppController extends Controller {
         $this->Session->delete('public_payment_req');
         $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' =>
             array('Investment.status' => array("Payment_Requested",'Disposal_Requested')))));
-  $this->__validateLoginStatus();
+//  $this->__validateLoginStatus();
         }
-    
+    //&& ($this->action != 'defaultJobs' && $this->action != 'cronJobs' && $this->action != 'backendJobs' && $this->action != 'miscJobs')
     function __validateLoginStatus() {
-        if ($this->action != 'login' && $this->action != 'logout') {
+        if (($this->action != 'login' && $this->action != 'logout') ) {
             if ($this->Session->check('userData') == false) {
                 $this->redirect('/');
             }
