@@ -8,6 +8,7 @@
         <?php
         echo $this->Html->css('prettify.css');
         echo $this->Html->script('bootstrap.min.js');
+        echo $this->Html->script('masks.js');
 //echo $this->Html->script('fuelux/wizards.js');
 //        echo $this->Html->script('prettify.js');
         echo $this->Html->css('fuelux/style.css');
@@ -118,7 +119,7 @@
                                         </div>
 
                                         <?php
-                                        echo $this->Form->input('phone', array('label' => 'Phone Number*', 'value' => (isset($investor['Investor']['phone']) ? $investor['Investor']['phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
+                                        echo $this->Form->input('phone', array('label' => 'Phone Number*', 'value' => (isset($investor['Investor']['phone']) ? $investor['Investor']['phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required', 'id' => 'phone'));
                                         echo $this->Form->input('email', array('label' => 'Email Address', 'value' => (isset($investor['Investor']['email']) ? $investor['Investor']['email'] : '' ), 'placeholder' => 'Enter email address'));
                                         ?>
                                     </div>

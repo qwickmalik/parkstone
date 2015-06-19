@@ -336,8 +336,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="col-lg-4 col-md-4 col-sm-12">
                             <?php
-                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 
-                                'empty' => '--Please select currency--', 'selected' => ($this->Session->check('rollovertemp.currency_id') == true ? $this->Session->read('rollovertemp.currency_id') : $data['Investment']['currency_id'] )));
+//                            echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 
+//                                'empty' => '--Please select currency--', 'selected' => ($this->Session->check('rollovertemp.currency_id') == true ? $this->Session->read('rollovertemp.currency_id') : $data['Investment']['currency_id'] )));
+                            echo $this->Form->input('currencyid', array('value' => 1, 'disabled', 'type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('rollovertemp.currency_id') == true ? $this->Session->read('rollovertemp.currency_id') : $data['Investment']['currency_id'] )));
+                                    echo $this->Form->hidden('currency_id', array('default' => 1, 'value' => isset($currencies['id']) ? $currencies['id'] : 1));
                             ?>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12">

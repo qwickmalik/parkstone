@@ -207,7 +207,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('currency_id', array('type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
+                                    
+                                    echo $this->Form->input('currencyid', array('value' => 1, 'disabled', 'type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
+                                    echo $this->Form->hidden('currency_id', array('default' => 1, 'value' => isset($currencies['id']) ? $currencies['id'] : 1));
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
