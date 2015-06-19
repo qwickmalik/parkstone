@@ -1,70 +1,56 @@
+TO DO
+----
 --look at new investor photo upload richmom_3
-DONE--Must not deduct base fee from deposit initially..also check to make sure prompt for available cash does not take base fee into consideration
-DONE--dispose Equity Payment
- --Disable inputs on investment page
---Delete deposits and payments
+
 --Reports
- --Audit Trail
- --Client Statements
+--Audit Trail
+- Add logic/session to set termination penality during login. most likely in company setup
 --fund manager
 --Backup
+--Schedule
+---user wamp/php path and call script or install windows wget and run just like cronjob
++Convert amounts to primary currency selected in system setup
 
-I also think that we may need more than one investment pool for client funds in addition to Parkstone’s own funds which will obviously be separate. 
- So, I think you may have to make the possibility of creating/selecting an investment pool (more than one).
- You mentioned this possibility at our last discussion.
-1.We agreed that all Clients will be put in a pool and charged a 6%p.a management fee. 
-Once management fees are deducted from total income gained, the remaining income will be spread to all 
-the clients according to weights that will be assigned to their amounts (based on their investment contributions) on a daily basis.
-2.Income calculation will be done daily on investments we have made. Client statements will reflect the weighted average rate at 
-each point in time (usually the end of the month).
-3.Moneys must be pooled into one column both reinvestor fixed balance and returns
- when it is rolledover it must be subtracted from pool
 
+##########    BUGS    ##########
+================================
+Rates on various reports should be changed to Benchmark rate.
+Kindly explained status, elapsed tenure and tenure left on Daily and Monthly Maturity List
+What is deposit requests?
+Computation for disinvestment inaccurate.
+Amounts deposited for investment is not available for investment (i.e available cash is zero) making it difficult to set a new investment.
+--Top-ups do not reflect in the Client Statements.
+--There are no receipts generated for top ups.
++ Please check error under payment date on edit_payment.ctp
++ PRINT button for investment certificates not working
++ Pls take a look at newInvestment2_comp() and process_comp() for me.
+ when an investment entry is processed, the investor id is lost and it throws an error. Same problem with group investment too. I've sorted out the views
+New investor for group next button gives js error
 
 --REVIEW 16TH APRIL, 2015--
-DONE-Add dropdown on reinvestment payment page to show whether payment is principal,interest or both
-DONE-Add dropdown in investment payment page to show whether payment is principal,interest or both
 -Review add investor process. esp corporate and group. check all compulsory fields
 -Set currency fields to cedi by default
 -Give function to check for duplicate investor page entry
 -Add * to CEO and all compulsory inputs
 -Add input to take receipt number in investment
 -Add * to investment amt
-DONE- Add reset button to new investment page to clear all sessions set on page
+
 Review with Grace/Sam- Add client inv statements for Investments
 -Add Add page to edit ledger entries or better delete investments,topups,etc 
 which will automatically be deleted from ledger..add foreign key ids of all entry models to transaction id so it can be deleted easily
  and remember to delete from available or invested amts if necessary
 ---------------------------------
 
---NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
-- In cash deposit receipt, change tenure to show for a yeat and show
-   total tenure below client type
-- Add db and frontpage input for termination penality. most likely in company setup
-- Make sure during termination, interest is added.
-- Create ledger under list of client statements in manage investments
-- restore client statement and modify with sample from Grace
-- Add topup to process inv and fund management
-- Replicate roll over fixed invsetment for process investments and fund management
-
 --NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
-
-1b. Deduct accrued management fee when equity or fixed investment is being disposed.  And accrued very three months for subtraction when equity is disposed
-
 13. (Kwaku)Add Parkstone hyphen client name to owner of reinvesment equity
-16. (Kwaku)Add topup invesment table 
+
 
 Notes FROM REVIEW 04 MARCH, 2015
 ---------------------------------
--Equity Fee must move from new investment to process investments
 -Calculate( or accrue) equity management fees quarterly and store
 
-*roll over only if due
-* Purchase price will be confirmed under Re-investments
-
 --Re-investments
-- Add column in ReinvestorCashaacounts to record aggregate of matured reinvestments
-DONE -*Purchase price input under new reinvestments should be editable not disabled.
+- Add column in ReinvestorCashaacounts to record aggregate of matured reinvestments.
 --FundManagement should have its own controller and view folder
 
 TO DO
@@ -79,25 +65,12 @@ DONE -MOTTO--"Growth with stability"
  - pay reinvestor company
  ---AJAX UPLOAD OF INVESTOR IMAGES
 +modify process_indv and process_corp investment function to accomodate new look joint,group and corp investment view (eg.new_investment2_joint.ctp)
-+Convert amounts to primary currency selected in system setup
+
 +KWAKU: in the controller or somewhere you can write code that states that if the re-investor is NOT parkstone, then investment amount shouldnt deduct the amount from the pool
-+Kwaku: Payment terms to be calculated in days
-+Kwaku: Cron Job to process daily rates of fixed investments
+
 - Add group and Joint investor details
-- If investment product type is equity, the rollover has to be different.also cross check current rollover function
 - Instructions in Equity will be different
-Schedule
 
---Windows version of cronjob is scheduler
----user wamp/php path and call script or install windows wget and run just like cronjob
-
-##########    BUGS    ##########
-================================
-+ Please check error under payment date on edit_payment.ctp
-+ PRINT button for investment certificates not working
-+ Pls take a look at newInvestment2_comp() and process_comp() for me.
- when an investment entry is processed, the investor id is lost and it throws an error. Same problem with group investment too. I've sorted out the views
-New investor for group next button gives js error
 ---Parkstone Ideas-----
 
 
@@ -164,6 +137,48 @@ We will get income from the following sources:
 
        I will suggest all sections with ‘rates’ be renamed ‘benchmark rate’.
 	   
+NOTES FROM Sam
+-------------------
+I also think that we may need more than one investment pool for client funds in addition to Parkstone’s own funds which will obviously be separate. 
+ So, I think you may have to make the possibility of creating/selecting an investment pool (more than one).
+ You mentioned this possibility at our last discussion.
+1.We agreed that all Clients will be put in a pool and charged a 6%p.a management fee. 
+Once management fees are deducted from total income gained, the remaining income will be spread to all 
+the clients according to weights that will be assigned to their amounts (based on their investment contributions) on a daily basis.
+2.Income calculation will be done daily on investments we have made. Client statements will reflect the weighted average rate at 
+each point in time (usually the end of the month).
+3.Moneys must be pooled into one column both reinvestor fixed balance and returns
+ when it is rolledover it must be subtracted from pool	   
+	   =======DONE =======
+DONE --Equity Fee must move from new investment to process investments
+DONE--Delete deposits and payments
+DONE -*roll over only if due
+DONE -* Purchase price will be confirmed under Re-investments
+DONE- - If investment product type is equity, the rollover has to be different.also cross check current rollover function
+--NOTES FRM REVIEW WITH PARKSTONE (8TH APRIL, 2015)
+--NOTES FRM REVIEW WITH PARKSTONE TEAM LED BY GRACE.(20TH MARCH,2015)--
+DONE -16. (Kwaku)Add topup invesment table 
+
+DONE -1b. Deduct accrued management fee when equity or fixed investment is being disposed.  And accrued very three months for subtraction when equity is disposed
+
+DONE-Add dropdown on reinvestment payment page to show whether payment is principal,interest or both
+DONE-Add dropdown in investment payment page to show whether payment is principal,interest or both
+DONE- Add reset button to new investment page to clear all sessions set on page
+DONE -*Purchase price input under new reinvestments should be editable not disabled
+	   DONE-- In cash deposit receipt, change tenure to show for a yeat and show
+   total tenure below client type
+DONE -- Make sure during termination, interest is added.
+DONE -- Create ledger under list of client statements in manage investments
+DONE -- restore client statement and modify with sample from Grace
+DONE -- Add topup to process inv and fund management
+DONE -- Replicate roll over fixed invsetment for process investments and fund management
+DONE-+Kwaku: Payment terms to be calculated in days
+DONE-+Kwaku: Cron Job to process daily rates of fixed investments
+DONE---Windows version of cronjob is scheduler
+DONE--Must not deduct base fee from deposit initially..also check to make sure prompt for available cash does not take base fee into consideration
+DONE-- dispose Equity Payment
+DONE -- Disable inputs on investment page
+DONE ----Client Statements	   
 DONE==Management Fee Explanation==
 
 Based on our recent meeting with our regulators, the 
