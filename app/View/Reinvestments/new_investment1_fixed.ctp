@@ -55,7 +55,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount']) ?
-                                            number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'], 2, '.', ',') : '' );?>
+                                            $shopCurrency." ".number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'], 2) : '' );?>
                                 </div>
                             </div>
                             
@@ -65,7 +65,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance']) ?
-                                            number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'], 2, '.', ',') : '' );?>
+                                            $shopCurrency." ".number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'], 2) : '' );?>
                                 </div>
                             </div> 
                         </div>
@@ -261,8 +261,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     echo $this->Form->button('Process', array("type" => "submit", "class" => "btn btn-lg btn-success"));
                     echo "&nbsp;&nbsp;";
                     echo $this->Html->link('Submit', "/Reinvestments/newInvestment1Fixed1/".(isset($reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id']) ? $reinvestorcashaccounts['ReinvestorCashaccount']['reinvestor_id'] : '' ), 
-                            array("class" => 'btn btn-lg btn-primary'),
-                             array('confirm' => 'Are you sure you wish to submit this investment?'));
+                            array("class" => 'btn btn-lg btn-primary','confirm' => 'Are you sure you wish to submit this investment?'));
                     ?>
                 </div>
                     

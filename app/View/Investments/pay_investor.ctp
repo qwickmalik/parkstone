@@ -27,10 +27,10 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
         ?></span>
                                  <input type="hidden" value="<?php if (isset($data['ClientLedger']['investor_id'])) {
                                         echo $data['ClientLedger']['id'];
-                                    } ?>" name="hid_ledgerid" /></td>
-                                <input type="hidden" value="<?php if (isset($inv_data['Investment']['id'])) {
+                                    } ?>" name="hid_ledgerid" /><input type="hidden" value="<?php if (isset($inv_data['Investment']['id'])) {
                                         echo $inv_data['Investment']['id'];
                                     } ?>" name="hid_investid" /></td>
+                                
                         </tr>
                         <tr>
                             <td width="30%"><b align="right">Investor Name:</b></td>
