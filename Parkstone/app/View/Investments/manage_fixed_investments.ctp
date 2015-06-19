@@ -50,7 +50,7 @@
             <!--<td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>-->
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Top-up</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
-            <!--<td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>-->
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
@@ -112,7 +112,7 @@
                     }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid' || $each_item['Investment']['status'] == 'Payment_Requested' || $each_item['Investment']['status'] == 'Termination_Requested'){
                    echo "No-Action Necessary";
                     
-                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured'){
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured'|| $each_item['Investment']['status'] == 'Part_payment'){
                      echo $this->Html->Link('Rollover', '/Investments/clearRolloverSession/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));?> 
                     | <?php 
                       echo $this->Html->Link('Request Paymt', '/Investments/requestPayment4managefixedinvestments/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ).'/'. (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false));
@@ -328,7 +328,7 @@
                
                 </td>
                 <td align="center"><?php
-                if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over'){
+                if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over' || $each_item['Investment']['status'] == 'Part_payment'){
                         if(isset($each_item['Investment']['id'])){
                             echo $this->Html->link('Delete', '/Investments/delFixedInvestmentDeposits/'.$investor_id.'/'.$each_item['Investment']['id'].'/'.$each_item['Investment']['investment_no'], array('class' => 'btn btn-xs btn-warning'));
                         }
@@ -337,11 +337,11 @@
                                     }
                                    
                         ?></td>
-<!--                <td align="center"><?php
-//                        if(isset($each_item['Investment']['id'])){
-//                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-danger'));
-//                        }
-                        ?></td>-->
+                <td align="center"><?php
+                        if(isset($each_item['Investment']['id'])){
+                            echo $this->Html->link('Delete', '/Investments/delFixedInvestmentPayments/'.$investor_id.'/'.$each_item['Investment']['id'].'/'.$each_item['Investment']['investment_no'], array('class' => 'btn btn-xs btn-danger'));
+                        }
+                        ?></td>
                 
         <?php  }} ?>
             </tr>
