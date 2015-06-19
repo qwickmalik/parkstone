@@ -1,3 +1,14 @@
+Test Bugs
+-----------
+Cheque spelt wrongly- Kindly check all sentences for typo mistakes.
+Rates on various reports should be changed to Benchmark rate.
+13.   Also I was unable to type 2 telephone numbers while I was registering a client. Space caters for 1 telephone number.
+2.       There are no receipts generated for top ups.
+3.       The receipts are also not aligned properly.
+4.       Kindly omit the last sentence in the receipt when we have to print it.  (i.e Return(/investments/new/investment0) (Print)- this shouldn’t show in print out.
+
+5.       Kindly review format for the date.
+
 Additional TO Do
 ----------------
 DONE --pls look at format for /mask.js for validation and implement in new investor pages   
