@@ -1,7 +1,7 @@
 <?php
 $cakeDescription = __d('cake_dev', 'Parkstone Capital');
 $userType = $this->Session->read('userDetails.usertype_id');
-
+date_default_timezone_set('Africa/Accra');
 ?>
 <!DOCTYPE html>
 <html class="fuelux" lang="en">

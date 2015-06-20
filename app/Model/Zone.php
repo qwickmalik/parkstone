@@ -33,47 +33,47 @@ class Zone extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-        'Customer' => array(
-            'className' => 'Customer',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'Client' => array(
-            'className' => 'Client',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
+//        'Customer' => array(
+//            'className' => 'Customer',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//        'Client' => array(
+//            'className' => 'Client',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
         
-        'Order' => array(
-            'className' => 'Order',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'Invoice' => array(
-            'className' => 'Invoice',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-         'InvoiceoldEdition' => array(
-            'className' => 'InvoiceoldEdition',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
+//        'Order' => array(
+//            'className' => 'Order',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//        'Invoice' => array(
+//            'className' => 'Invoice',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+//         'InvoiceoldEdition' => array(
+//            'className' => 'InvoiceoldEdition',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
         'PettycashWithdrawal' => array(
             'className' => 'PettycashWithdrawal',
             'foreignKey' => 'zone_id',

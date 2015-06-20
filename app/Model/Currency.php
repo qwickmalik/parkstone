@@ -39,8 +39,16 @@ var $hasMany = array(
             'limit' => '',
             'dependent' => true
             ),
-        'BankAccount' => array(
-            'className' => 'BankAccount',
+//        'BankAccount' => array(
+//            'className' => 'BankAccount',
+//            'foreignKey' => 'currency_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
+        'CashAccount' => array(
+            'className' => 'CashAccount',
             'foreignKey' => 'currency_id',
             'conditions' => '',
             'order' => '',
