@@ -4,9 +4,6 @@ MORE DETAILS PLEASE (WHICH PAGE) Cheque spelt wrongly- Kindly check all sentence
 MORE DETAILS PLEASE (WHICH ONE) 3.       The receipts are also not aligned properly.
 MORE DETAILS PLEASE 5.       Kindly review format for the date.
 
-BROWSER PRINT DEFAULT CONFIGURATION ISSUE. CANNOT BE HANDLED BY CSS OR JAVASCRIPT 4.       Kindly omit the last sentence in the receipt when we have to print it.  (i.e Return(/investments/new/investment0) (Print)- this shouldn’t show in print out.
-
-
 
 
 
@@ -39,6 +36,10 @@ T0 D0
 
 #########   DONE    ###########
 =============================================
+
+BROWSER PRINT DEFAULT CONFIGURATION ISSUE. CANNOT BE HANDLED BY CSS OR JAVASCRIPT 4.       Kindly omit the last sentence in the receipt when we have to print it.  (i.e Return(/investments/new/investment0) (Print)- this shouldn’t show in print out.
+
+
 DONE 2.       There are no receipts generated for top ups.
 DONE Fixed layout for company details at the tops of receipts and reports to make them printer-friendly
 DONE Statement of Equity Investment
