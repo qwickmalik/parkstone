@@ -124,7 +124,7 @@ echo $this->Html->script('print.js');
 										 </span></td>
                 </tr> 
                 <tr>
-                    <td><b align="right">Investment Rate:</b></td>
+                    <td><b align="right">Benchmark Rate:</b></td>
                     <td><span id="xxxxxx"><?php if (isset($investment_array['InvestmentTerm']['interest_rate'])) {
     echo $investment_array['InvestmentTerm']['interest_rate'];
 } ?></span></td>

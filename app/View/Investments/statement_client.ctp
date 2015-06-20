@@ -9,43 +9,45 @@ if ($this->Session->check('shopCurrency')) {
 } else {
     $shopCurrency = "";
 }?>
-<h3>Client Statement</h3>
+<h3>Client Statement (Fixed)</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
         <!-- Content start here -->
         <div class="row">
+            <div class="inner_print">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         &nbsp;
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php 
                         echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;','width' => 120, 'alt' => $this->Session->read('shopName')));
                         ?>
                         <p style='font-weight: bold; font-size: 14px; text-align: left;'>
                             <?php 
                             echo $this->Session->read('shopName').'<br />'; 
-                            echo 'CLIENT NAME: '.(isset($investor_name)?$investor_name:''); 
+                            echo 'CLIENT NAME: '.(isset($investor_name)?$investor_name:'').'<br />'; 
+                            echo 'CLIENT STATEMENT'
                             ?></p>
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
                     
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <table class="table table-striped">
                     
                     <tr>
                         <th align="left" width="120">Date</th>
                         <th align="left" width="150">Inv. Number &nbsp;</th>
                         <th align="left">Inv. Amount</th>
-                        <th align="left">Interest Rate</th>
+                        <th align="left">Benchmark Rate</th>
                         <th align="left" width="120">Maturity Date</th>
                         <th align="left">Accrued Days</th>
                         <th align="left">Accrued Interest</th>
@@ -91,16 +93,13 @@ if ($this->Session->check('shopCurrency')) {
                         <td align="left" valign="top" ></td>
                         <td align="left" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
-                        <td align="right" valign="top" >
-                  &nbsp;</td><td align="left" valign="top" >&nbsp;</td>
-                        
+                        <td align="right" valign="top" > &nbsp;</td>
+                        <td align="left" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
-                        <td align="right" valign="top" >
-                 &nbsp; </td>
-                        <td align="right" valign="top" >
-                        &nbsp;</td>
+                        <td align="right" valign="top" >&nbsp; </td>
+                        <td align="right" valign="top" > &nbsp;</td>
                     </tr>
                  
                        <?php if (isset($total)) {
@@ -110,19 +109,18 @@ if ($this->Session->check('shopCurrency')) {
                         <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total(<?php echo $shopCurrency; ?>)</td>
                         <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                    &nbsp;</td><td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
-                        
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"> &nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                   &nbsp;</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                                <?php   if (isset($each_item[0]['balance_due'])) {
-                    echo number_format($each_item[0]['balance_due'], 2);
-                }
-                ?></td>
+                            <?php   if (isset($each_item[0]['balance_due'])) {
+                                echo number_format($each_item[0]['balance_due'], 2);
+                            }
+                            ?>
+                        </td>
                     </tr>
                         <?php endforeach;
                 }
@@ -132,18 +130,15 @@ if ($this->Session->check('shopCurrency')) {
                     </tr>
                     <tr>
                         <td align="left" valign="top" colspan="3">PARKSTONE OFFICIAL NAME :</td>
-                        
+
                         <td align="left" valign="top" colspan="2">
-                            <p><b><?php if(isset($issued)){echo $issued;} ?></b></p></td>
+                            <p><b><?php if(isset($issued)){echo $issued;} ?></b></p>
+                        </td>
                         <td align="left" valign="top" >&nbsp;</td>
-                        
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
-                        <td align="right" valign="top" >
-                 &nbsp; </td>
-                        <td align="right" valign="top" >
-                        &nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
                     </tr>
                     <tr>
                         <td align="left" colspan="10" style="border-bottom: solid 1px #ffffff;background: #ffffff;"></td>
@@ -153,16 +148,14 @@ if ($this->Session->check('shopCurrency')) {
                         
                         <td align="right" valign="top" colspan="2">&nbsp;</td>
                         <td align="left" valign="top" >&nbsp;</td>
-                        
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>
-                        <td align="right" valign="top" >
-                 &nbsp; </td>
-                        <td align="right" valign="top" >
-                        &nbsp;</td>
+                        <td align="right" valign="top" >&nbsp; </td>
+                        
                     </tr>
                 </table>
+            </div>
             </div>
             <?php
             echo "<p>&nbsp;</p>";

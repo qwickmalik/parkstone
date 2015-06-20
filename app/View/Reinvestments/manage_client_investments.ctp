@@ -43,7 +43,7 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Details<?php // echo $this->Paginator->sort('id', 'ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Inv. Date<?php // echo $this->Paginator->sort('date', 'Supply Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Inv. Amount<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Rate (%)</b></td>
+            <td style="border-bottom: solid 2px dodgerblue" width="30" align="center"><b>Benchmark Rate (%)</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Due Date<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Amount Due<?php //echo $this->Paginator->sort('cost_price', 'Total Cost Price'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action<?php //echo $this->Paginator->sort('balance', 'Balance'); ?></b></td>

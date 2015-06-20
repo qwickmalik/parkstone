@@ -61,7 +61,7 @@ echo $this->Html->script('print.js'); ?>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     &nbsp;
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                     <?php 
                     
                     echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;','width' => 120, 'alt' => $this->Session->read('shopName')));
@@ -73,7 +73,7 @@ echo $this->Html->script('print.js'); ?>
                         ?></p>
                     <p align='left'>For the period <?php echo isset($year)? $year: ''; ?></p>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
                 </div>
             </div>

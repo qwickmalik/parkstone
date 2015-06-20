@@ -59,7 +59,7 @@
                         <td><span id="xxxxxx">20,000</span></td>
                     </tr>
                     <tr>
-                        <td><b align="right">Rate(%):</b></td>
+                        <td><b align="right">Benchmark Rate(%):</b></td>
                         <td><span id="xxxxxx">15</span></td>
                     </tr>
                     <tr>

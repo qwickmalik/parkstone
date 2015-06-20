@@ -2,241 +2,147 @@
 echo $this->element('header');
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
+
 echo $this->Html->script('print.js');
 
-$shopCurrency = "";
 if ($this->Session->check('shopCurrency')) {
     $shopCurrency = $this->Session->read('shopCurrency');
+} else {
+    $shopCurrency = "";
 }
 ?>
-<!-- Content starts here -->
 <h3>Statement of Equity Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
-        <div>
-            <table id="payment_receipt" border="0" width="700px" cellspacing="0" cellpadding="5" align="center" style="border: solid 1px Gray;">
-
-                <tr>
-                    <td align="left" valign="top" width="50%" >
-                        <?php
-                        echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;', 'width' => 120, 'alt' => $this->Session->read('shopName')));
-                        ?>
-                        <p style='font-weight: bold; font-size: 19px; text-align: left; margin-top: 20px;'>
+        <!-- Content start here -->
+        <div class="row">
+            <div class="inner_print">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                             <?php
-                            echo $this->Session->read('shopName') . '<br />';
-                            ?></p>
-
-                    </td>
-                    <td align="left" valign="top" width="50%" >
-                        <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%">
-                        <b style="font-size: 20px; font-weight: bold; display: block; width:90%; height: 100%; background-color: dodgerblue; padding: 10px 10px 10px 10px; text-align: center; border: solid 1px gray; color: #ffffff;">Statement: Equity Investment</b><br />
-                        <b style="font-size: 14px;">To: <?php
-                            if (isset($investor_name)) {
-                                echo $investor_name;
-                            }
-                            ?></b>
-                    </td>
-                    <td align="left" valign="top" width="50%">
-                        <!--                <b>Warehouse: Warehouse name</b><br></br>-->
-                        <b>Investor ID: <?php
-                            if (isset($investor_id)) {
-                                echo $investor_id;
-                            }
-                            ?></b><br />
-
-                        <b>Date: </b><?php
-                            echo date('jS F,Y');
+                            echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;', 'width' => 120, 'alt' => $this->Session->read('shopName')));
                             ?>
-                    </td>
-                </tr>
-        <!--        <tr>
-                    <td align="left" valign="top" width="50%">&nbsp;</td>
-                    <td align="left" valign="top" width="50%">&nbsp;</td>
-                </tr>-->
-        <!--        <tr>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                </tr>-->
+                            <p style='font-weight: bold; font-size: 14px; text-align: left;'>
+                                <?php
+                                echo $this->Session->read('shopName') . '<br />';
+                                echo 'CLIENT NAME: ' . (isset($investor_name) ? $investor_name : '') . '<br />';
+                                echo 'STATEMENT OF EQUITY INVESTMENT'
+                                ?></p>
+                            <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
+                        </div>
 
-                <tr>
-                    <td align="left" valign="top" colspan="2" style="border-top: solid 2px Gray;">
-                        <table width="100%" align="left" cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                                <td style="border-bottom: solid 2px dodgerblue" align="left"><b>Equity Name</b></td>
-                                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Purchase Price</b></td>
-                                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Current Price</b></td>
-                                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Gain/Loss</b></td>
-                            </tr>
-                            <tr>
-                                <td  align="left">xxx</td>
-                                <td  align="center">xxx</td>
-                                <td  align="center">xxx</td>
-                                <td  align="center">xxx</td>
-                            </tr>
-                            <?php 
-                            /*
-                            if (isset($data)) {
-                                foreach ($data as $each_item) {
-                                    ?>
-                                    <tr>
-                                        <td align="left"><?php
-                                            if (isset($each_item['DailyInterestStatement']['date'])) {
-                                                echo date('M,y', strtotime($each_item['DailyInterestStatement']['date'])); //.",".date('y',$each_item['InvestmentStatement']['maturity_date']);
-                                            }
-                                            ?></td>
-                                        <td align="right"><?php
-                                            if (isset($each_item['DailyInterestStatement']['principal'])) {
-                                                echo number_format($each_item['DailyInterestStatement']['principal'], 2, '.', ',');
-                                            }
-                                            ?></td>
-                                        <td align="center"><?php
-                                            if (isset($each_item['DailyInterestStatement']['interest'])) {
-                                                echo $each_item['DailyInterestStatement']['interest'];
-                                            }
-                                            ?></td>
-                                        <td align="right"><?php
-                                            if (isset($each_item['DailyInterestStatement']['total'])) {
-                                                echo number_format($each_item['DailyInterestStatement']['total'], 2, '.', ',');
-                                            }
-                                            ?></td>
-                                    </tr>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table table-striped">
 
-                                    <?php
-                                }
-                            }
-*/
-                            if (isset($data_total)) {
+                        <tr>
+                            <td align="left" width="120">Date</td>
+                            <td align="left" width="150">Inv. Number</td>
+                            <td align="right">Inv. Amount</td>
+                            <td align="left">Equity Name</td>
+                            <td align="right">Purchase Price</td>
+                            <td align="right">Current Price</td>
+                            <td align="right">Gain/Loss</td>
+                        </tr>
+                        <?php
+                        if (isset($total)) {
+                            foreach ($total as $each_item):
+                                ?>
+                                <tr>
+                                    <td align="left"><?php
+                                        if (isset($each_item['InvestorEquity']['purchase_date'])) {
+                                            echo date('d-M-Y', strtotime($each_item['InvestorEquity']['purchase_date']));
+                                        }
+                                        ?></td>
+                                    <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
+                                    <td align="right"><?php
+                                        if (isset($each_item['InvestorEquity']['numb_shares_left']) && isset($each_item['InvestorEquity']['purchase_price'])) {
+                                            $inv_amount = $each_item['InvestorEquity']['numb_shares_left'] * $each_item['InvestorEquity']['purchase_price'];
+                                            echo number_format($inv_amount, 2);
+                                        }
+                                        ?></td>
+                                    <td align="left"><?php echo $each_item['EquitiesList']['equity_abbrev']; ?></td>
+                                    <td align="right"><?php
+                                        if (isset($each_item['InvestorEquity']['purchase_price'])) {
+                                            echo number_format($each_item['InvestorEquity']['purchase_price'], 2);
+                                        }
+                                        ?></td>
+                                    <td align="right"><?php
+                                        if (isset($each_item['EquitiesList']['share_price'])) {
+                                            echo number_format($each_item['EquitiesList']['share_price'], 2);
+                                        }
+                                        ?></td>
+                                    <td align="right"><?php
+                                        if (isset($each_item['InvestorEquity']['numb_shares_left']) && isset($each_item['EquitiesList']['share_price'])) {
+                                            $sale_amount = $each_item['InvestorEquity']['numb_shares_left'] * $each_item['EquitiesList']['share_price'];
+                                            $profit_loss = $sale_amount - $inv_amount;
+                                            
+                                            echo number_format($profit_loss, 2);
+                                            
+                                        }
+                                        ?></td>
 
-                                foreach ($data_total as $each_item):
-                                    ?>
-                                    <tr>
-                                        <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total</td>
-                                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
-                                            if (isset($each_item[0]['total_principal'])) {
-                                                echo $shopCurrency . ' ' . number_format($each_item[0]['total_principal'], 2, '.', ',');
-                                            }
-                                            ?></td>
-                                        <td align="center" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
-                                            if (isset($each_item[0]['total_interest'])) {
-                                                echo $shopCurrency . ' ' . number_format($each_item[0]['total_interest'], 2, '.', ',');
-                                            }
-                                            ?></td>
-                                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><?php
-                                            if (isset($each_item[0]['sum_total'])) {
-                                                echo $shopCurrency . ' ' . number_format($each_item[0]['sum_total'], 2, '.', ',');
-                                            }
-                                            ?></td>
-                                    </tr>
                                     <?php
                                 endforeach;
                             }
                             ?>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%">
-                        <table width="100%" cellspacing="10" cellpadding="0" border="0">
-                            <tr>
-                                <td><b align="right">Investment ID:</b></td>
-                                <td><span id="xxxxxx"><?php
-                                        if (isset($invesmentID)) {
-                                            echo $invesmentID;
-                                        }
-                                        ?></td>
-                            </tr>
-                            <tr>
-                                <td><b align="right">Investment Term:</b></td>
-                                <td><span id="xxxxxx"><?php
-                                        if (isset($data2['Portfolio']['payment_name'])) {
-                                            echo $data2['Portfolio']['payment_name'];
-                                        }
-                                        ?></span></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td align="left" valign="top" width="50%">
-                        <table width="100%" cellspacing="10" cellpadding="0" border="0">
-                            <tr>
-                                <td><b align="right">Investment Date:</b></td>
-                                <td><span id="xxxxxx"><?php
-                                        if (isset($data2['Investment']['investment_date'])) {
-                                            echo $data2['Investment']['investment_date'];
-                                        }
-                                        ?></td>
-                            </tr>
-                            <tr>
-                                <td><b align="right">Due Date:</b></td>
-                                <td><span id="xxxxxx"><?php
-                                        if (isset($data2['Investment']['due_date'])) {
-                                            echo $data2['Investment']['due_date'];
-                                        }
-                                        ?></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                    <td align="left" valign="top" width="50%" style="border-top: solid 2px Gray;">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%">
-                        <p><b>Issued by: </b><?php
-                            if (isset($issued)) {
-                                echo $issued;
-                            }
-                            ?></p>
-                    </td>
-                    <td align="right" valign="top" width="50%" >
-                        &nbsp;
 
-                    </td>
+                        <tr>
+                            <td align="left" valign="top" ></td>
+                            <td align="left" valign="top" >&nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                            <td align="left" valign="top" > &nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                        </tr>
 
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%">&nbsp;</td>
-                    <td align="left" valign="top" width="50%">
-                        &nbsp;
-                    </td>
-                </tr>
-            </table>
+                        <tr>
+                            <td align="left" colspan="7" style="border-bottom: solid 1px #ffffff;background: #ffffff;"></td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" colspan="3">PARKSTONE OFFICIAL NAME :</td>
 
-            <table border="0" width="700px" cellspacing="0" cellpadding="5" align="center">
-                <tr>
-                    <td align="left" valign="top" width="50%">&nbsp;</td>
-                    <td align="left" valign="top" width="50%">
-                        &nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" width="50%">&nbsp;</td>
-                    <td align="right" valign="top" width="50%">
-                        <?php
-                        echo $this->Html->link('Return', "/Investments/manageClientInvestments" . "/" . (isset($investor_id) ? $investor_id : '' ) . "/" . (isset($investor_name) ? $investor_name : '' ), array("class" => 'btn btn-lg btn-info'));
-                        echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
-// echo $this->Form->button('Print Receipt',array("type" => "submit","class" => "button_red","id"=>"print_receipt"));
-                        ?>
-                    </td>
-                </tr>
-            </table>
+                            <td align="left" valign="top" colspan="2">
+                                <p><b><?php
+                                        if (isset($issued)) {
+                                            echo $issued;
+                                        }
+                                        ?></b></p>
+                            </td>
+                            <td align="left" valign="top" >&nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="left" colspan="10" style="border-bottom: solid 1px #ffffff;background: #ffffff;"></td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" colspan="3">SIGNATURE :</td>
 
+                            <td align="right" valign="top" colspan="2">&nbsp;</td>
+                            <td align="left" valign="top" >&nbsp;</td>
+                            <td align="right" valign="top" >&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <?php
+            echo "<p>&nbsp;</p>";
+            echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
+            echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
+            ?>
         </div>
     </div>
-
+    <!-- Content end here -->
     <?php echo $this->element('footer'); ?>
-		
+

@@ -54,10 +54,30 @@ echo $this->Html->script('print.js'); ?>
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <?php
-                echo $this->Element('logo_reports');
-                echo "<H3><b>PARKSTONE CAPITAL LIMITED</b></H3>";
-                echo "<p><b>INVESTOR CONTRACT</b></p>";
+//                echo $this->Element('logo_reports');
+//                echo "<H3><b>PARKSTONE CAPITAL LIMITED</b></H3>";
+//                echo "<p><b>INVESTOR CONTRACT</b></p>";
                 ?>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <?php 
+                        echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;','width' => 120, 'alt' => $this->Session->read('shopName')));
+                        ?>
+                        <p style='font-weight: bold; font-size: 14px; text-align: left;'>
+                            <?php 
+                            echo $this->Session->read('shopName').'<br />'; 
+                            echo 'INVESTOR CONTRACT'
+                            ?></p>
+                        <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <p>Client Name: Adwoa Serwaa</p>
@@ -76,7 +96,7 @@ echo $this->Html->script('print.js'); ?>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Period</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal Amt. GHS</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest Rate</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark Rate</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest GHS</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Maturity Amt. GHS</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Maturity Date</b></td>
