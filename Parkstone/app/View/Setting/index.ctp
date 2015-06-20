@@ -42,18 +42,26 @@
         <?php echo $this->Html->link('
 				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
 					<div id="innertext">
-						<h3>Bank Accounts</h3>
-						<p>Add/edit company bank accounts</p>
-					</div>
-				</div>', '/Settings/bankAccounts', array('escape' => false)); ?>
-        
-        <?php echo $this->Html->link('
-				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
-					<div id="innertext">
 						<h3>Banks</h3>
 						<p>Add/edit banks</p>
 					</div>
 				</div>', '/Settings/banks', array('escape' => false)); ?>
+        
+        <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
+					<div id="innertext">
+						<h3>Cash/Bank Accounts</h3>
+						<p>Add/edit company cash & bank accounts</p>
+					</div>
+				</div>', '/Settings/cashAccounts', array('escape' => false)); ?>
+        
+        <?php echo $this->Html->link('
+				<div id="settingsbox">' . $this->Html->image('company_accounts.png', array()) . '
+					<div id="innertext">
+						<h3>Transaction/Financial Categories</h3>
+						<p>Add/edit transaction/financial categories here</p>
+					</div>
+				</div>', '/Settings/transactionCategories', array('escape' => false)); ?>
         
         <?php echo $this->Html->link('
 			<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
@@ -72,13 +80,7 @@
 			</div>
 		</div>', '/Settings/taxesList', array('escape' => false)); ?>
         
-        <?php // echo $this->Html->link('
-//		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
-//			<div id="innertext">
-//				<h3>Payment Terms</h3>
-//				<p>Add/edit payment terms here</p>
-//			</div>
-//		</div>', '/Settings/paymentTerms', array('escape' => false)); ?>
+        
 
         <?php echo $this->Html->link('
 		<div id="settingsbox">' . $this->Html->image('defaulting_rates.png', array()) . '
@@ -87,33 +89,6 @@
 				<p>Set interest rates for defaulters who do not pay instalments</p>
 			</div>
 		</div>', '/Settings/defaultingRates', array('escape' => false)); ?>
-
-
-        <?php // echo $this->Html->link('
-//		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
-//			<div id="innertext">
-//				<h3>Transaction Names</h3>
-//				<p>Create names for various expenses done by company here. Names will be used in Cash Accounts Module</p>
-//			</div>
-//		</div>', '/Settings/createExpenses', array('escape' => false)); ?>
-
-
-
-        <?php // echo $this->Html->link('
-//		<div id="settingsbox">' . $this->Html->image('investment_portfolios.png', array()) . '
-//			<div id="innertext">
-//				<h3>Investment Portfolios</h3>
-//				<p>Set interest rates for investment portfolios here</p>
-//			</div>
-//		</div>', '/Settings/investmentPortfolios', array('escape' => false)); ?>
-
-        <?php // echo $this->Html->link('
-//			<div id="settingsbox">' . $this->Html->image('investor_categories.png', array()) . '
-//				<div id="innertext">
-//					<h3>Investor Categories</h3>
-//					<p>Set/edit investor categories here</p>
-//				</div>
-//			</div>', '/Settings/customerCategories', array('escape' => false)); ?>
         
         
         
@@ -140,6 +115,42 @@
 						<p>Create user departments here</p>
 					</div>
 				</div>', '/Users/userDepartments', array('escape' => false)); ?>
+
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
+//			<div id="innertext">
+//				<h3>Transaction Names</h3>
+//				<p>Create names for various expenses done by company here. Names will be used in Cash Accounts Module</p>
+//			</div>
+//		</div>', '/Settings/createExpenses', array('escape' => false)); ?>
+
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('payment_terms.png', array()) . '
+//			<div id="innertext">
+//				<h3>Payment Terms</h3>
+//				<p>Add/edit payment terms here</p>
+//			</div>
+//		</div>', '/Settings/paymentTerms', array('escape' => false)); ?>
+
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('investment_portfolios.png', array()) . '
+//			<div id="innertext">
+//				<h3>Investment Portfolios</h3>
+//				<p>Set interest rates for investment portfolios here</p>
+//			</div>
+//		</div>', '/Settings/investmentPortfolios', array('escape' => false)); ?>
+
+        <?php // echo $this->Html->link('
+//			<div id="settingsbox">' . $this->Html->image('investor_categories.png', array()) . '
+//				<div id="innertext">
+//					<h3>Investor Categories</h3>
+//					<p>Set/edit investor categories here</p>
+//				</div>
+//			</div>', '/Settings/customerCategories', array('escape' => false)); ?>
+        
+        
+        
+        
 
         <!-- Panels end here -->
 <?php echo $this->element('footer'); ?>

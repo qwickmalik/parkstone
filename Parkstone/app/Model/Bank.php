@@ -9,7 +9,7 @@
 /**
  * Description of Bank
  *
- * @author kwaku.afreh-nuamah
+ * @author Malik
  */
 class Bank extends AppModel {
 
@@ -17,22 +17,22 @@ class Bank extends AppModel {
     var $usesTable = "banks";
      var $displayField = "bank_name";
        var $hasMany = array(
-            'Investor' => array(
-            'className' => 'Investor',
+       'CashAccount' => array(
+            'className' => 'CashAccount',
             'foreignKey' => 'bank_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
             ),
-           'BankAccount' => array(
-            'className' => 'BankAccount',
-            'foreignKey' => 'bank_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
+//        'BankBalance' => array(
+//            'className' => 'BankBalance',
+//            'foreignKey' => 'bank_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),
         );
     
 }

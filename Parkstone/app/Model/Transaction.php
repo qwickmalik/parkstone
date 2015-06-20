@@ -4,10 +4,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-class TempcashAccount extends AppModel {
+class Transaction extends AppModel {
 
-    var $name = "TempcashAccount";
-    var $usesTable = "tempcash_accounts";
+    var $name = "Transaction";
+    var $usesTable = "transactions";
    
     
      var $belongsTo = array(
@@ -18,26 +18,35 @@ class TempcashAccount extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true),
-         'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'user_id',
+         
+         'AccountingHead' => array(
+            'className' => 'AccountingHead',
+            'foreignKey' => 'head_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true),
-         'Zone' => array(
-            'className' => 'Zone',
-            'foreignKey' => 'zone_id',
+         
+         'CashAccount' => array(
+            'className' => 'CashAccount',
+            'foreignKey' => 'account_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true),
+         'PaymentMode' => array(
+            'className' => 'PaymentMode',
+            'foreignKey' => 'paymentmode_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true)
          );
-//            
-//    var $hasMany = array(
+            
+    var $hasMany = array(
 //        'Loan' => array(
 //            'className' => 'Loan',
-//            'foreignKey' => 'tempcash_account_id',
+//            'foreignKey' => 'cash_account_id',
 //            'conditions' => '',
 //            'order' => '',
 //            'limit' => '',
@@ -45,7 +54,7 @@ class TempcashAccount extends AppModel {
 //            ), 
 //        'Loanpayment' => array(
 //            'className' => 'Loanpayment',
-//            'foreignKey' => 'tempcash_account_id',
+//            'foreignKey' => 'cash_account_id',
 //            'conditions' => '',
 //            'order' => '',
 //            'limit' => '',
@@ -53,7 +62,7 @@ class TempcashAccount extends AppModel {
 //            ),
 //        'LoanExpectedpayment' => array(
 //            'className' => 'LoanExpectedpayment',
-//            'foreignKey' => 'tempcash_account_id',
+//            'foreignKey' => 'cash_account_id',
 //            'conditions' => '',
 //            'order' => '',
 //            'limit' => '',
@@ -61,7 +70,7 @@ class TempcashAccount extends AppModel {
 //            ),
 //        'BalanceSheet' => array(
 //            'className' => 'BalanceSheet',
-//            'foreignKey' => 'tempcash_account_id',
+//            'foreignKey' => 'cash_account_id',
 //            'conditions' => '',
 //            'order' => '',
 //            'limit' => '',
@@ -75,15 +84,28 @@ class TempcashAccount extends AppModel {
 //            'limit' => '',
 //            'dependent' => true
 //            ),
-//        
-//        'Pettycash' => array(
-//            'className' => 'Pettycash',
+//        'PettycashDeposit' => array(
+//            'className' => 'PettycashDeposit',
+//            'foreignKey' => 'cash_account_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//            ),        
+//        'PettycashWithdrawal' => array(
+//            'className' => 'PettycashWithdrawal',
 //            'foreignKey' => 'cash_account_id',
 //            'conditions' => '',
 //            'order' => '',
 //            'limit' => '',
 //            'dependent' => true
 //            )
-//        );
+        );
+    
+    
+        
+        
+        
+        
  }
 ?>

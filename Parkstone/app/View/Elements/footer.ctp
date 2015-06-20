@@ -15,3 +15,8 @@
 
 </body>
 </html>
+<script lang="javascript">
+//Tooltip
+    $('[rel="tooltip"]').tooltip('toggle')
+    $('[rel="tooltip"]').tooltip('hide');   
+</script>

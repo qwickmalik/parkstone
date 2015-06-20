@@ -4,7 +4,7 @@ class SettingsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Setting';
-    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory', 'Portfolio', 'Bank', 'BankAccount', 'EquitiesList', 'ExchangeRate');
+    var $uses = array('Setting', 'Subsidiary', 'Item', 'Client', 'User', 'Currency', 'Supplier', 'Tax', 'Rate', 'Expense', 'DefaultingRate', 'Warehouse', 'Zone', 'CustomerCategory', 'Portfolio', 'Bank', 'CashAccount', 'EquitiesList', 'ExchangeRate', 'TransactionCategory', 'AccountingHead');
     var $paginate = array(
         'Item' => array('limit' => 25, 'order' => array('Item.item' => 'asc')),
         'Client' => array('limit' => 25, 'order' => array('Client.client_name' => 'asc')),
@@ -22,7 +22,7 @@ class SettingsController extends AppController {
         'Subsidiary' => array('limit' => 10, 'order' => array('Subsidiary.id' => 'asc')),
         'Bank' => array('limit' => 20, 'order' => array('Bank.id' => 'asc')),
         'EquitiesList' => array('limit' => 20, 'order' => array('EquitiesList.equity' => 'asc')),
-        'BankAccount' => array('limit' => 20, 'order' => array('BankAccount.id' => 'asc'))
+        'CashAccount' => array('limit' => 25, 'order' => array('CashAccount.id' => 'asc')),
     );
 
     
@@ -894,120 +894,159 @@ class SettingsController extends AppController {
         }
     }
 
-    public function banks() {
+    function banks($ba_id = null) {
         $this->__validateUserType();
-
-        if ($this->request->is('post')) {
-            if (!empty($this->request->data)) {
-                if ($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null) {
-                    $message = 'Please Enter Bank Name';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccount'));
-                }
-
-                $qry = array('bank_name' => $this->request->data['Bank']['bank_name']);
-
-                $result = $this->Bank->save($qry);
-                //$this->request->data);
-                if ($result) {
-                    $this->request->data = null;
-                    $message = 'Bank Successfully Added';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-                } else {
-                    $message = 'Please Check All Fields';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-                }
-            } else {
-                $message = 'Some Fields Missing Data';
-                $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-            }
-        }
-
+        
         $data = $this->paginate('Bank');
         $this->set('data', $data);
+
+        if ($ba_id != null && $ba_id != '') {
+            $this->set('ba', $this->Bank->find('first', ['conditions' => ['Bank.id' => $ba_id]]));
+        } else {
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data['Bank']['id'])) {
+                    if ($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null) {
+                        $message = 'Please Enter Bank Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    }
+
+                    $bank_id = $this->request->data['Bank']['id'];
+
+                    $this->Bank->delete($bank_id, false);
+                    $result = $this->Bank->save($this->request->data);
+
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Bank Updated';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    } else {
+                        $message = 'Could not update Bank';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    }
+                } else {
+                    if ($this->request->data['Bank']['bank_name'] == "" || $this->request->data['Bank']['bank_name'] == null) {
+                        $message = 'Please Enter Bank Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    }
+                    $result = $this->Bank->save($this->request->data);
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Bank successfully added';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    } else {
+                        $message = 'Could not add new Bank. Please report to System Administrator';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
+                    }
+                }
+            }
+        }
     }
 
-    function delBank($bankID = null) {
-        $this->autoRender = $this->autoLayout = false;
+    public function delBank($bank_id = Null) {
+        $this->autoRender = false;
 
+        $result = $this->Bank->delete($bank_id, false);
+        if ($result) {
 
-        Configure::write('debug', 0);
-
-        if (!is_null($bankID)) {
-
-
-            // $userID = $_POST['userId'];
-            $result = $this->Bank->delete($bankID, false);
-
-
-
-            if ($result) {
-
-                $message = 'Bank Deleted';
-                $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-            } else {
-
-                $message = 'Could not Delete Bank';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
-            }
+            $message = 'Bank Deleted';
+            $this->Session->write('smsg', $message);
+            $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
         } else {
-            $message = 'Invalid Selection';
+            $message = 'Could Not Delete Bank';
             $this->Session->write('emsg', $message);
             $this->redirect(array('controller' => 'Settings', 'action' => 'banks'));
         }
     }
 
-    function bankAccounts() {
+
+    function cashAccounts($cashaccount_id = null) {
         $this->__validateUserType();
+        $data = $this->paginate('CashAccount');
+        $this->set('data', $data);
         $this->set('banks', $this->Bank->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
+        $this->set('company', $this->Setting->find('first'));
+        
+        
+        $zones = $this->Zone->find('all', array('fields' => array('id', 'zone', 'suburb')));
+            foreach($zones as $each_item){
+                $list[$each_item['Zone']['id']] = $each_item['Zone']['zone'].' '.$each_item['Zone']['suburb'];
+            }
 
-        if ($this->request->is('post')) {
-            if (!empty($this->request->data)) {
-
-                if ($this->request->data['BankAccount']['bank_id'] == "" || $this->request->data['BankAccount']['bank_id'] == null) {
-                    $message = 'Please Enter Bank Name';
+            $this->set('zones', $list);
+        
+        if ($cashaccount_id != null && $cashaccount_id != '') {
+            $this->set('ca', $this->CashAccount->find('first', ['conditions' => ['CashAccount.id' => $cashaccount_id]]));
+        } else {
+            if ($this->request->is('post')) {
+                if ($this->request->data['CashAccount']['zone_id'] == "" || $this->request->data['CashAccount']['zone_id'] == null) {
+                    $message = 'Please Select a Company Branch';
                     $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
                 }
-                if ($this->request->data['BankAccount']['account_no'] == "" || $this->request->data['BankAccount']['account_no'] == null) {
-                    $message = 'Please Enter Account Number';
+                if ($this->request->data['CashAccount']['account_name'] == "" || $this->request->data['CashAccount']['account_name'] == null) {
+                    $message = 'Please Enter Account Name';
                     $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
                 }
-                if ($this->request->data['BankAccount']['branch'] == "" || $this->request->data['BankAccount']['branch'] == null) {
-                    $message = 'Please Enter Branch';
+                if ($this->request->data['CashAccount']['bank_id'] == "" || $this->request->data['CashAccount']['bank_id'] == null) {
+                    $message = 'Please Select a Bank';
                     $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
                 }
+                if ($this->request->data['CashAccount']['account_no'] == "" || $this->request->data['CashAccount']['account_no'] == null) {
+                    $message = 'Please Enter Cash Account/Repository Identifier';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
+                }
+                    
+                if (!empty($this->request->data['CashAccount']['id'])) {
 
-                $term = array('account_name' => $this->request->data['BankAccount']['account_name'], 'currency_id' => $this->request->data['BankAccount']['currency_id'], 'bank_id' => $this->request->data['BankAccount']['bank_id'], 'account_no' => $this->request->data['BankAccount']['account_no'], 'branch' => $this->request->data['BankAccount']['branch']);
+                    $ca_id = $this->request->data['CashAccount']['id'];
 
-                $result = $this->BankAccount->save($term);
-                //$this->request->data);
-                if ($result) {
-                    $this->request->data = null;
-                    $message = 'Bank Account Details Save Successfully';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                    $this->CashAccount->delete($ca_id, false);
+                    $result = $this->CashAccount->save($this->request->data);
+
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Cash Account/Repository Updated';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
+                    } else {
+                        $message = 'Could not update Cash Account/Repository';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
+                    }
                 } else {
-                    $message = 'Please Check All Fields';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+                    
+                    $result = $this->CashAccount->save($this->request->data);
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Cash Account/Repository successfully added';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
+                    } else {
+                        $message = 'Could not add new Cash Account/Repository. Please report to System Administrator';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
+                    }
                 }
-            } else {
-                $message = 'Some Fields Missing Data';
-                $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
             }
         }
-        $data = $this->paginate('BankAccount');
-        $this->set('data', $data);
     }
 
     function accountInfo() {
@@ -1017,7 +1056,7 @@ class SettingsController extends AppController {
 
             if (!empty($_POST['baccountId'])) {
                 $baccountId = $_POST['baccountId'];
-                $baccountLst = $this->BankAccount->find('first', array('conditions' => array('BankAccount.id' => $baccountId)));
+                $baccountLst = $this->CashAccount->find('first', array('conditions' => array('CashAccount.id' => $baccountId)));
 
                 $baccountLsts = json_encode($baccountLst);
                 return $baccountLsts;
@@ -1029,40 +1068,41 @@ class SettingsController extends AppController {
 //        $this->autoRender = false;
 //        if ($this->request->is('post')){
 //            if(!empty($this->request->data)){
-//                $result = $this->BankAccount->save($this->request->data);
+//                $result = $this->CashAccount->save($this->request->data);
 //                if($result){
 //                    $this->request->data = null;
 //                    $message = 'Bank Account Details Saved Successfully';
 //                   $this->Session->write('smsg', $message);
-//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                   $this->redirect(array('controller' => 'Settings','action' => 'cashAccounts'));
 //                }else{
 //                    $message = 'Please Check All Fields';
 //                   $this->Session->write('emsg', $message);
-//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                   $this->redirect(array('controller' => 'Settings','action' => 'cashAccounts'));
 //                }
 //            }else{
 //                    $message = 'Some Fields Missing Data';
 //                   $this->Session->write('emsg', $message);
-//                   $this->redirect(array('controller' => 'Settings','action' => 'bankAccounts'));
+//                   $this->redirect(array('controller' => 'Settings','action' => 'cashAccounts'));
 //                }
 //        }
 //    }
 
-    public function delBankAcc($bank_account = Null) {
+    public function delCashAcc($cash_account = Null) {
         $this->autoRender = false;
 
-        $result = $this->BankAccount->delete($bank_account, false);
+        $result = $this->CashAccount->delete($cash_account, false);
         if ($result) {
 
-            $message = 'Bank Account Deleted';
+            $message = 'Cash Account Deleted';
             $this->Session->write('smsg', $message);
-            $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+            $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
         } else {
-            $message = 'Could Not Delete Bank Account';
+            $message = 'Could Not Delete Cash Account';
             $this->Session->write('emsg', $message);
-            $this->redirect(array('controller' => 'Settings', 'action' => 'bankAccounts'));
+            $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
         }
     }
+    
 
     public function currencies($curr_id = NULL) {
 
@@ -1215,7 +1255,104 @@ class SettingsController extends AppController {
         }
     }
     
-    
+    function transactionCategories($category_id = null) {
+        $this->__validateUserType();
+        $this->set('headids', $this->AccountingHead->find('list'));
+        
+        $data = $this->paginate('TransactionCategory', array('TransactionCategory.delete' => 0));
+        $this->set('data', $data);
+        
+        
+        if ($category_id != null && $category_id != '') {
+            $this->set('transcat', $this->TransactionCategory->find('first', ['conditions' => ['TransactionCategory.id' => $category_id]]));
+        } else {
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data['TransactionCategory']['id'])) {
+                    
+                    if ($this->request->data['TransactionCategory']['category_name'] == "" || $this->request->data['TransactionCategory']['category_name'] == null) {
+                        $message = 'Please Enter Transaction Category Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+
+                    if ($this->request->data['TransactionCategory']['head_id'] == "" || $this->request->data['TransactionCategory']['head_id'] == null) {
+                        $message = 'Please Select an Accounting Header';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+
+                    $trans_id = $this->request->data['TransactionCategory']['id'];
+
+                    $this->TransactionCategory->delete($trans_id, false);
+                    $result = $this->TransactionCategory->save($this->request->data);
+
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Transaction Category Updated';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    } else {
+                        $message = 'Could not update Transaction Category';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+                } else {
+                    if ($this->request->data['TransactionCategory']['category_name'] == "" || $this->request->data['TransactionCategory']['category_name'] == null) {
+                        $message = 'Please Enter Transaction Category Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+
+                    if ($this->request->data['TransactionCategory']['head_id'] == "" || $this->request->data['TransactionCategory']['head_id'] == null) {
+                        $message = 'Please Select an Accounting Header';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+                    $result = $this->TransactionCategory->save($this->request->data);
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Transaction Category successfully added';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    } else {
+                        $message = 'Could not add new Transaction Category. Please report to System Administrator';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+                    }
+                }
+            }
+        }
+    }
+
+    function delTransactionCategory($catID = null) {
+        $this->autoRender =  $this->autoLayout = false;
+           
+       
+            if (!is_null($catID)) {
+
+
+               // $catID = $_POST['paymentnameId'];
+                $result = $this->TransactionCategory->delete($catID,false);
+
+
+
+                if ($result) {
+                      $message = 'Transaction Category Deleted';
+                   $this->Session->write('smsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'transactionCategories'));
+                } else {
+                     $message = 'Could not Delete Transaction Category';
+                   $this->Session->write('bmsg', $message);
+                   $this->redirect(array('controller' => 'Settings','action' => 'transactionCategories'));
+                }
+            }
+        
+    }
+
 
 }
 

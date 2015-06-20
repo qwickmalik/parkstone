@@ -1,96 +1,88 @@
 <?php
 
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ */
+
+/**
+ * Company Bank Accounts
+ *
+ * @author Malik 
  */
 class CashAccount extends AppModel {
 
     var $name = "CashAccount";
     var $usesTable = "cash_accounts";
-   
-    
-     var $belongsTo = array(
-        'Expense' => array(
-            'className' => 'Expense',
-            'foreignKey' => 'expense_id',
+     var $displayField = "account_no";
+     
+        var $hasMany = array(
+        'Transaction' => array(
+            'className' => 'Transaction',
+            'foreignKey' => 'account_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        'BankTransfer' => array(
+            'className' => 'BankTransfer',
+            'foreignKey' => 'source_account_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        'BankTransfer' => array(
+            'className' => 'BankTransfer',
+            'foreignKey' => 'dest_account_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        'BankBalance' => array(
+            'className' => 'BankBalance',
+            'foreignKey' => 'account_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        'StatedBankBalance' => array(
+            'className' => 'StatedBankBalance',
+            'foreignKey' => 'account_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
+        );
+        
+        var $belongsTo = array(
+        'Bank' => array(
+            'className' => 'Bank',
+            'foreignKey' => 'bank_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true),
-         'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'user_id',
+        'Currency' => array(
+            'className' => 'Currency',
+            'foreignKey' => 'currency_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true),
-         'Zone' => array(
+        'Zone' => array(
             'className' => 'Zone',
             'foreignKey' => 'zone_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
-            'dependent' => true)
-         );
-            
-    var $hasMany = array(
-        'Loan' => array(
-            'className' => 'Loan',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ), 
-        'Loanpayment' => array(
-            'className' => 'Loanpayment',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'LoanExpectedpayment' => array(
-            'className' => 'LoanExpectedpayment',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'BalanceSheet' => array(
-            'className' => 'BalanceSheet',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'IncomeStatement' => array(
-            'className' => 'IncomeStatement',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
-        'PettycashDeposit' => array(
-            'className' => 'PettycashDeposit',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),        
-        'PettycashWithdrawal' => array(
-            'className' => 'PettycashWithdrawal',
-            'foreignKey' => 'cash_account_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            )
+            'dependent' => true),
         );
- }
-?>
+    
+       
+}

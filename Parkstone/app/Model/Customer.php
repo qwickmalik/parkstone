@@ -82,14 +82,14 @@ class Customer extends AppModel {
             'limit' => '',
             'dependent' => true
         ),
-        'Zone' => array(
-            'className' => 'Zone',
-            'foreignKey' => 'zone_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-          ),
+//        'Zone' => array(
+//            'className' => 'Zone',
+//            'foreignKey' => 'zone_id',
+//            'conditions' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'dependent' => true
+//          ),
         'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',

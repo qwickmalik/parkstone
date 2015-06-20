@@ -182,6 +182,38 @@
             </li>
         </ul>
     </li>-->
+<li class="parent lightyellow">
+        <a href="#">
+            <span class="menu-icon"><i class="fa fa-columns"></i></span>
+            <span class="menu-text">Accounting</span>
+        </a>
+        <ul class="child">
+            <li>
+                <?php echo $this->Html->link('Revenue/Income', '/Accounting/income', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Expenses', '/Accounting/expenses', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Assets', '/Accounting/assets', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Liabilities', '/Accounting/liabilities', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Owners Equity', '/Accounting/ownerEquity', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Cash/Bank Transfers', '/Accounting/bankTransfers', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Cash/Bank Account Balances', '/Accounting/bankBalances', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Stated Bank Account Balances', '/Accounting/statedBankBalances', array('escape' => false)); ?>
+            </li>
+        </ul>
+    </li>
     <li class="lightorange">
         <?php
         echo $this->Html->link('
