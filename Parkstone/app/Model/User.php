@@ -59,14 +59,14 @@ class User extends AppModel {
             'dependent' => true
             ),
             
-         'CashAccount' => array(
-             'className' => 'CashAccount',
-             'foreignKey' => 'user_id',
-             'conditions' => '',
-             'order' => '',
-             'limit' => '',
-             'dependent' => true
-         ),
+//         'CashAccount' => array(
+//             'className' => 'CashAccount',
+//             'foreignKey' => 'user_id',
+//             'conditions' => '',
+//             'order' => '',
+//             'limit' => '',
+//             'dependent' => true
+//         ),
         'InvestmentPayment' => array(
             'className' => 'InvestmentPayment',
             'foreignKey' => 'user_id',

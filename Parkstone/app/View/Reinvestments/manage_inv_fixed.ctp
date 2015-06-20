@@ -60,7 +60,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <b><?php echo $this->Paginator->sort('investment_amount', 'Amount Invested'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('interest_rate', 'Rate'); ?></b>
+                    <b><?php echo $this->Paginator->sort('interest_rate', 'Benchmark Rate'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Action"; ?></td>
                 <td style="border-bottom: solid 2px dodgerblue" width="100" align="left"><b>Statement</b></td>

@@ -34,7 +34,7 @@ class EquitiesList extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            )
+            ),
         );
     
     function getEquity(){

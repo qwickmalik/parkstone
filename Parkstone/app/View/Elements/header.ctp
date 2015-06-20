@@ -52,6 +52,7 @@ date_default_timezone_set('Africa/Accra');
         echo $this->fetch('css');
         echo $this->fetch('script');
         ?>
+        
     </head>
 <?php
 $username = "Unknown";

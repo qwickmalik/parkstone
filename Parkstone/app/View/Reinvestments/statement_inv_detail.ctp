@@ -106,7 +106,7 @@ echo $this->Html->script('print.js');
                             <tr>
                                 <td style="border-bottom: solid 2px dodgerblue" align="left"><b>Month<?php // echo $this->Paginator->sort('date', 'Supply Date');   ?></b></td>
                                 <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Principal<?php echo "(" . $shopCurrency . ")"; //echo $this->Paginator->sort('cost_price', 'Total Cost Price');    ?></b></td>
-                                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Interest (2.5%)</b></td>
+                                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Interest</b></td>
                                 <td style="border-bottom: solid 2px dodgerblue" align="right"><b>Total<?php echo "(" . $shopCurrency . ")"; //echo $this->Paginator->sort('balance', 'Balance');    ?></b></td>
                             </tr>
                             <?php if (isset($data)) {

@@ -1733,3 +1733,8 @@ INSERT INTO `tempcash_accounts` (`id`, `category_id`, `user_id`, `zone_id`, `exp
 
 
 ALTER TABLE `cash_accounts` ADD `zone_id` INT(11) NULL ;
+
+June 20, 2015
+--------------------------
+ALTER TABLE `investors` CHANGE `phone` `phone` VARCHAR(35) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `investors` CHANGE `other_names` `other_names` VARCHAR(35) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `nk_relationship` `nk_relationship` VARCHAR(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `postal_address` `postal_address` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `phone` `phone` VARCHAR(35) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;

@@ -54,7 +54,7 @@ class InvestmentsController extends AppController {
     }
 
     function index() {
-        
+        $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
     }
 
     function newInvestor() {
@@ -6574,7 +6574,7 @@ class InvestmentsController extends AppController {
                         }
                         $message = 'Topup successful.';
                         $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'topupReceipt', $investor_id, $investment_id, $investor_name));
                     } else {
                         $message = 'Error Saving Topup Details.Please Try again.';
                         $this->Session->write('bmsg', $message);
@@ -7575,7 +7575,7 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
         }
     }
-
+/*
     public function statementInvDetailEq($invesmentID = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
 //        if (!is_null($invesmentID)) {
@@ -7617,7 +7617,52 @@ class InvestmentsController extends AppController {
 //            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
 //        }
     }
+*/
+    function statementInvDetailEq($investor_id = null, $investment_id = null, $investor_name = null) {
+        $this->__validateUserType();
 
+        if (!is_null($investor_id)) {
+            $data = $this->Investment->find('all', array('conditions' =>
+                array('Investment.investor_id' => $investor_id,
+                    'Investment.investment_product_id' => array(2,3),
+                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
+            ))));
+            $issued = $this->Session->check('userDetails');
+            if ($issued) {
+                $issued = $this->Session->read('userDetails.firstname');
+                $issued .= ' ' . $this->Session->read('userDetails.lastname');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+                $data_total = $this->InvestorEquity->find('all', array(
+//                    'fields' => array("SUM(Investment.earned_balance) as 'balance_due'"),
+                    'conditions' => array('InvestorEquity.investment_id' => $investment_id,
+                        'NOT' => array('InvestorEquity.numb_shares_left' => 0))
+                    ));
+
+
+                if ($data_total) {
+                    $this->set('total', $data_total);
+                }
+                $this->set('data', $data);
+                $this->set('investor_id', $investor_id);
+                $this->set('investor_name', $investor_name);
+            } else {
+
+//print_r('11');exit;
+                $message = 'Sorry, Investment Details Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        } else {
+//print_r('oo');exit;
+            $message = 'Sorry, Investor Details Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
+    }
+    
     public function statementDailyInterest($invesmentID = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
         if (!is_null($invesmentID)) {
@@ -8128,6 +8173,7 @@ class InvestmentsController extends AppController {
         if (!is_null($investor_id)) {
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
+                    'Investment.investment_product_id' => array(1,3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
             ))));
             $issued = $this->Session->check('userDetails');
@@ -8162,6 +8208,43 @@ class InvestmentsController extends AppController {
             $message = 'Sorry, Investor Details Not Found';
             $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
+    }
+    
+    function topupReceipt($investor_id = null, $investment_id = null, $investor_name = null){
+        $this->__validateUserType();
+
+        if (!is_null($investor_id)) {
+            $data = $this->InvestorDeposit->find('first', array(
+                'conditions' => array('InvestorDeposit.investment_id' => $investment_id),
+                'order' => array('InvestorDeposit.id' => 'desc')));
+            
+            
+            $issued = $this->Session->check('userDetails');
+            if ($issued) {
+                $issued = $this->Session->read('userDetails.firstname');
+                $issued .= ' ' . $this->Session->read('userDetails.lastname');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+                $data2 = $this->Investment->find('first', array('conditions' =>
+                array('Investment.id' => $investment_id)));
+                
+                $this->set('data', $data);
+                $this->set('data2', $data2);
+                $this->set('investor_id', $investor_id);
+                $this->set('investor_name', $investor_name);
+            } else {
+                $message = 'Sorry, Investment Details Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+            }
+        } else {
+//print_r('oo');exit;
+            $message = 'Sorry, Investor Details Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
         }
     }
 
