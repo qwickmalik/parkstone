@@ -14,7 +14,8 @@ TO DO
 
 ##########    BUGS    ##########
 ================================
-Rates on various reports should be changed to Benchmark rate.
+
+-Give function to check for duplicate investor page entry
 Kindly explained status, elapsed tenure and tenure left on Daily and Monthly Maturity List
 What is deposit requests?
 Computation for disinvestment inaccurate.
@@ -29,10 +30,6 @@ New investor for group next button gives js error
 
 --REVIEW 16TH APRIL, 2015--
 -Review add investor process. esp corporate and group. check all compulsory fields
--Set currency fields to cedi by default
--Give function to check for duplicate investor page entry
--Add * to CEO and all compulsory inputs
--Add input to take receipt number in investment
 -Add * to investment amt
 
 Review with Grace/Sam- Add client inv statements for Investments
@@ -150,6 +147,9 @@ each point in time (usually the end of the month).
 3.Moneys must be pooled into one column both reinvestor fixed balance and returns
  when it is rolledover it must be subtracted from pool	   
 	   =======DONE =======
+	   DONE--Set currency fields to cedi by default
+DONE-Add * to CEO and all compulsory inputs
+DONE--Add input to take receipt number in investment
 DONE --Equity Fee must move from new investment to process investments
 DONE--Delete deposits and payments
 DONE -*roll over only if due
