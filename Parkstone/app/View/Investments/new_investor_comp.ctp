@@ -48,10 +48,10 @@ echo $this->Html->script('bootstrap.min.js');
                                         <?php
                                         echo $this->Form->hidden('investor_type_id', array('value' => 3));
                                         echo $this->Form->input('investortype_id', array('default' => 3, 'label' => 'Investor Type', 'disabled'));
-                                        echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer: ','empty' => '--Please Select--'));                                      
+                                        echo $this->Form->input('user_id', array('class' => 'required','default' => 0,'label' => 'Investment Officer*: ','empty' => '--Please Select--'));                                      
                                         echo $this->Form->input('comp_name', array('label' => 'Company/Organisation Name*', 'value' => (isset($investor['Investor']['comp_name']) ? $investor['Investor']['comp_name'] : '' ), 'placeholder' => 'Enter company/organisation name', 'class' => 'required'));
                                         echo $this->Form->input('nature_biz', array('label' => 'Nature of Business', 'value' => (isset($investor['Investor']['nature_biz']) ? $investor['Investor']['nature_biz'] : '' ), 'placeholder' => 'Describe nature of business'));
-                                        echo $this->Form->input('reg_numb', array('label' => 'Reg. Number*','value' => (isset($investor['Investor']['reg_numb']) ? $investor['Investor']['reg_numb'] : '' ), 'placeholder' => 'Enter company registration number', 'class' => 'required'));
+                                        echo $this->Form->input('reg_numb', array('required','label' => 'Reg. Number*','value' => (isset($investor['Investor']['reg_numb']) ? $investor['Investor']['reg_numb'] : '' ), 'placeholder' => 'Enter company registration number', 'class' => 'required'));
                                         ?>
 
                                         <div class="row">
@@ -70,14 +70,14 @@ echo $this->Html->script('bootstrap.min.js');
                                         </div>
 
                                         <?php
-                                        echo $this->Form->input('physical_address', array('required','size' => 30, 'value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address'));
+                                        echo $this->Form->input('physical_address', array('label' => 'Physical Address*','required','size' => 30, 'value' => (isset($investor['Investor']['physical_address']) ? $investor['Investor']['physical_address'] : '' ), 'placeholder' => 'Enter physical address'));
                                         echo $this->Form->input('postal_address', array('size' => 30, 'value' => (isset($investor['Investor']['postal_address']) ? $investor['Investor']['postal_address'] : '' ), 'placeholder' => 'Enter postal address'));
                                         ?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('ceo', array('size' => 30, 'value' => (isset($investor['Investor']['ceo']) ? $investor['Investor']['ceo'] : '' ), 'placeholder' => 'Enter name of CEO/Director/Manager', 'label' => 'CEO/Director/Manager', 'class' => 'required'));
+                                        echo $this->Form->input('ceo', array('size' => 30, 'value' => (isset($investor['Investor']['ceo']) ? $investor['Investor']['ceo'] : '' ), 'placeholder' => 'Enter name of CEO/Director/Manager', 'label' => 'CEO/Director/Manager*', 'class' => 'required'));
                                         echo $this->Form->input('contact_person', array('label' => 'Contact Person*','value' => (isset($investor['Investor']['contact_person']) ? $investor['Investor']['contact_person'] : '' ), 'placeholder' => 'Enter name of contact person for investment', 'class' => 'required'));
                                         echo $this->Form->input('position', array('value' => (isset($investor['Investor']['position']) ? $investor['Investor']['position'] : '' ), 'placeholder' => 'Enter position of contact person'));
                                         echo $this->Form->input('phone', array('label' => 'Phone Number*', 'value' => (isset($investor['Investor']['phone']) ? $investor['Investor']['phone'] : '' ), 'placeholder' => 'Enter phone number', 'class' => 'required'));
@@ -97,7 +97,7 @@ echo $this->Html->script('bootstrap.min.js');
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
                                         echo $this->Form->input('acc_name', array('label' => 'Account Name', 'placeholder' => "Enter investor name as used with the bank"));
-                                       echo $this->Form->input('bank_id', array('label' => 'Bank Name*', 'class' => 'required','empty' => "--Select bank--"));  
+                                       echo $this->Form->input('bank_id', array('label' => 'Bank Name', 'empty' => "--Select bank--"));  
 						 ?>
                                     </div>
 
