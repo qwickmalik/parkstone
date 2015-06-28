@@ -271,3 +271,43 @@ if ($this->Session->check('userData')) {
 <!-- Footer starts here -->
 <?php echo $this->element('footer'); ?>
 <!-- Footer ends here -->
+   <script lang="javascript">
+        jQuery(document).ready(function ($) {
+               function hide_chequeno() {
+                var cashmode = $("#TransactionPaymentmodeId").val();
+                if (cashmode == '2') {
+                    $("#TransactionChequeNo").prop('disabled', false);
+                    return false;
+                }
+                if (cashmode != '2' && cashmode != '4' ) {
+                    $("#TransactionChequeNo").prop('disabled', true);
+                    return false;
+                }
+            }
+
+ function hide_repository() {
+                var cat_id = $("#TransactionCategoryId").val();
+                if (cat_id == '2') {
+                    $("#TransactionAccountId").prop('disabled', false);
+                    return false;
+                }
+                if (cat_id != '101' ) {
+                    $("#TransactionAccountId").prop('disabled', true);
+                    return false;
+                }
+            }
+
+            //Disable Repository
+            hide_repository();
+            $("#TransactionCategoryId").change(function () {
+                hide_repository();
+            });
+
+            //DISABLE CHEQUENO if CASH
+            hide_chequeno();
+            $("#TransactionPaymentmodeId").change(function () {
+                hide_chequeno();
+            });
+            
+            });
+    </script>
