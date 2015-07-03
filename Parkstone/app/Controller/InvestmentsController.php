@@ -2405,6 +2405,12 @@ class InvestmentsController extends AppController {
                     $period = $this->request->data['Investment']['investment_period'];
                     $duration = $this->request->data['Investment']['duration'];
                     $year = $duration;
+                    $adate = date('Y-m-d');
+                    $to_date = new DateTime($adate);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
+                    
                     switch ($period) {
                         case 'Day(s)':
 
@@ -2413,10 +2419,12 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-
+                            
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1D'));
                                 $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -2442,9 +2450,12 @@ class InvestmentsController extends AppController {
                             $rate = $custom_rate;
 
                             $YEAR2DAYS = 365 * $duration;
+                             $aYEAR2DAYS = 365 * $aduration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                             $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1Y'));
                                 $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -2478,9 +2489,12 @@ class InvestmentsController extends AppController {
                         'instruction_id' => $this->request->data['Investment']['instruction_id'],
                         'instruction_details' => $this->request->data['Investment']['instruction_details'],
                         'expected_interest' => $interest_amount,
-                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
-                        'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
+                        'total_amount_earned' => $aamount_due,
+                        'earned_balance' => $aamount_due,
+                        'accrued_days' => $aduration,
+                        'interest_accrued' => $ainterest_amount,
+                        'amount_due' => $amount_due, 
+                        'due_date' => $date->format('Y-m-d')
                     );
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
@@ -2867,9 +2881,16 @@ class InvestmentsController extends AppController {
                 $period = $this->request->data['Investment']['investment_period'];
                 $duration = $this->request->data['Investment']['duration'];
                 $year = $duration;
+                 $to_date = date('Y-m-d');
+                    $to_date = new DateTime($to_date);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
                 switch ($period) {
                     case 'Day(s)':
 
+                        $finv_date = $inv_date;
+                        $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
@@ -2879,6 +2900,8 @@ class InvestmentsController extends AppController {
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
+                        $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1D'));
                             $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -2889,7 +2912,7 @@ class InvestmentsController extends AppController {
                                 'interest' => $interest_amount2,
                                 'maturity_date' => $date_statemt->format('Y-m-d'),
                                 'total' => $total);
-//                                $principal = $total;
+//                            $principal = $total;
                         }
 
                         break;
@@ -2904,9 +2927,12 @@ class InvestmentsController extends AppController {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
+                         $aYEAR2DAYS = 365 * $aduration;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1Y'));
                             $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -2922,6 +2948,7 @@ class InvestmentsController extends AppController {
 
                         break;
                 }
+
                 $check = $this->Session->check('statemt_array_fixed');
                 if ($check) {
                     $this->Session->delete('statemt_array_fixed');
@@ -2940,8 +2967,10 @@ class InvestmentsController extends AppController {
                     'instruction_id' => $this->request->data['Investment']['instruction_id'],
                     'instruction_details' => $this->request->data['Investment']['instruction_details'],
                     'expected_interest' => $interest_amount,
-                    'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                    'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                    'accrued_days' => $aduration,
+                    'interest_accrued' => $ainterest_amount,
+                    'total_amount_earned' => $aamount_due,
+                    'earned_balance' => $aamount_due,
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                 );
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
@@ -3434,6 +3463,11 @@ class InvestmentsController extends AppController {
                     $period = $this->request->data['Investment']['investment_period'];
                     $duration = $this->request->data['Investment']['duration'];
                     $year = $duration;
+                    $to_date = date('Y-m-d');
+                    $to_date = new DateTime($to_date);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
                     switch ($period) {
                         case 'Day(s)':
 
@@ -3446,6 +3480,8 @@ class InvestmentsController extends AppController {
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1D'));
                                 $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -3498,9 +3534,12 @@ class InvestmentsController extends AppController {
                             $statemt_array = array();
                             $rate = $custom_rate;
                             $YEAR2DAYS = 365 * $duration;
+                            $aYEAR2DAYS = 365 * $aduration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                             $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                             for ($n = 1; $n <= $duration; $n++) {
                                 $date_statemt->add(new DateInterval('P1Y'));
                                 $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -3534,8 +3573,10 @@ class InvestmentsController extends AppController {
                         'instruction_id' => $this->request->data['Investment']['instruction_id'],
                         'instruction_details' => $this->request->data['Investment']['instruction_details'],
                         'expected_interest' => $interest_amount,
-                        'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                        'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                        'total_amount_earned' => $aamount_due,
+                        'earned_balance' => $aamount_due,
+                        'accrued_days' => $aduration,
+                        'interest_accrued' => $ainterest_amount,
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                     );
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
@@ -4802,8 +4843,8 @@ class InvestmentsController extends AppController {
                         $investment_paymentdetails = $this->Session->read('investpayments');
                         $this->InvestmentPayment->create();
                         $resultIP = $this->InvestmentPayment->save($investment_paymentdetails);
-                        if($resultIP){
-                           $ip_id = $resultIP['InvestmentPayment']['id']; 
+                        if ($resultIP) {
+                            $ip_id = $resultIP['InvestmentPayment']['id'];
                         }
                         $this->Session->delete('investpayments');
                     }
@@ -4922,8 +4963,8 @@ class InvestmentsController extends AppController {
                         $investment_paymentdetails = $this->Session->read('investpayments');
                         $this->InvestmentPayment->create();
                         $resultIP = $this->InvestmentPayment->save($investment_paymentdetails);
-                        if($resultIP){
-                           $ip_id = $resultIP['InvestmentPayment']['id']; 
+                        if ($resultIP) {
+                            $ip_id = $resultIP['InvestmentPayment']['id'];
                         }
                         $this->Session->delete('investpayments');
                     }
@@ -5003,11 +5044,11 @@ class InvestmentsController extends AppController {
                         $this->LedgerTransaction->create();
                         $lt_result = $this->LedgerTransaction->save($val);
                         $lt_id = $lt_result['LedgerTransaction']['id'];
-                        if(!empty($ip_id)){
-                        $investpaymt_array = array('id' => $ip_id,'ledger_transaction_id' => $lt_id);
-                        $this->InvestmentPayment->save($investpaymt_array);
+                        if (!empty($ip_id)) {
+                            $investpaymt_array = array('id' => $ip_id, 'ledger_transaction_id' => $lt_id);
+                            $this->InvestmentPayment->save($investpaymt_array);
                         }
-                         if (isset($val['edit'])) {
+                        if (isset($val['edit'])) {
                             $lt_result = $this->LedgerTransaction->find('first', ['conditions' =>
                                 ['LedgerTransaction.debit' => $val['edit'], 'client_ledger_id' => $cledger_id], 'order' => ['LedgerTransaction.id' => 'desc'],
                                 'recursive' => -1]);
@@ -5018,7 +5059,7 @@ class InvestmentsController extends AppController {
                                 $this->LedgerTransaction->delete($lt_id, false);
                                 $created = $lt_result['LedgerTransaction']['created'];
                             }
-                            
+
                             $created = new DateTime($created);
                             $created = $created->add(new DateInterval('PT30M'));
                             $created = $created->format('Y-m-d H:i:s');
@@ -5073,9 +5114,9 @@ class InvestmentsController extends AppController {
                         $this->LedgerTransaction->create();
                         $lt_result = $this->LedgerTransaction->save($val);
                         $lt_id = $lt_result['LedgerTransaction']['id'];
-                        if(!empty($ip_id)){
-                        $investpaymt_array = array('id' => $ip_id,'ledger_transaction_id' => $lt_id);
-                        $this->InvestmentPayment->save($investpaymt_array);
+                        if (!empty($ip_id)) {
+                            $investpaymt_array = array('id' => $ip_id, 'ledger_transaction_id' => $lt_id);
+                            $this->InvestmentPayment->save($investpaymt_array);
                         }
                         if (isset($val['edit'])) {
                             $lt_result = $this->LedgerTransaction->find('first', ['conditions' =>
@@ -5088,7 +5129,7 @@ class InvestmentsController extends AppController {
                                 $this->LedgerTransaction->delete($lt_id, false);
                                 $created = $lt_result['LedgerTransaction']['created'];
                             }
-                            
+
                             $created = new DateTime($created);
                             $created = $created->add(new DateInterval('PT30M'));
                             $created = $created->format('Y-m-d H:i:s');
@@ -5591,7 +5632,7 @@ class InvestmentsController extends AppController {
 
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
                                 'interest_earned' => $interest_amount, 'custom_rate' => $custom_rate, 'total_amount_earned' => $amount_due, 'duration' => $duration,
-                                'status' => "Termination_Approved");
+                                'status' => "Termination_Approved",'accrued_days' => $duration);
                             $ltid = null;
                             if ($ledger_data) {
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
@@ -5610,14 +5651,14 @@ class InvestmentsController extends AppController {
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-                                if($ltresult){
+                                if ($ltresult) {
                                     $ltid = $ltresult['LedgerTransaction']['id'];
                                 }
                             }
                             $this->Investment->save($update_array);
                             //insert into investmentpayments for rollover
                             $investment_paymentdetails = array('investment_id' => $investment_id,
-                                'investor_id' => $investor_id, 'amount' => $amount_due,'ledger_transaction_id' => $ltid,
+                                'investor_id' => $investor_id, 'amount' => $amount_due, 'ledger_transaction_id' => $ltid,
                                 'user_id' => $userid, 'payment_date' => date('Y-m-d'), 'event_type' => 'Termination',
                                 'event_date' => date('Y-m-d'));
 
@@ -6078,7 +6119,7 @@ class InvestmentsController extends AppController {
                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_balance);
                 $this->ClientLedger->save($client_ledger);
                 $voucher_no = date('mdyhis') . rand(2, 4);
-                 $ltid = null;
+                $ltid = null;
                 $result = $this->ClientLedger->save($client_ledger);
                 if ($result) {
                     //enter new ledger transaction
@@ -6088,13 +6129,13 @@ class InvestmentsController extends AppController {
                         'description' => 'Payment of Investment Proceeds');
                     $this->LedgerTransaction->create();
                     $resultLtran = $this->LedgerTransaction->save($ledger_transactions);
-                    if($resultLtran){
-                        $ltid = $resultLtran['LedgerTransaction']['id']; 
+                    if ($resultLtran) {
+                        $ltid = $resultLtran['LedgerTransaction']['id'];
                     }
 //                    'investment_id' => $investment_id,
                     $investment_paymentdetails = array('user_id' => $userid, 'investment_id' => $investment_id,
                         'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
-                        'payment_mode_id' => $this->request->data['InvestmentPayment']['paymentmode_id'],'ledger_transaction_id' => $ltid,
+                        'payment_mode_id' => $this->request->data['InvestmentPayment']['paymentmode_id'], 'ledger_transaction_id' => $ltid,
                         'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date, 'event_type' => 'Payment',
                         'event_date' => $payment_date);
 
@@ -6130,12 +6171,12 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
                 }
-            }else {
+            } else {
 
-                    $message = 'Investment Payout Unsuccessful';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
-                }
+                $message = 'Investment Payout Unsuccessful';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor, $investor_name));
+            }
         }
     }
 
@@ -7184,6 +7225,11 @@ class InvestmentsController extends AppController {
                 $duration = $this->request->data['Investment']['duration'];
                 $custom_rate = $this->request->data['Investment']['custom_rate'];
                 $year = $duration;
+                $to_date = date('Y-m-d');
+                    $to_date = new DateTime($to_date);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
                 switch ($period) {
                     case 'Day(s)':
 
@@ -7198,6 +7244,8 @@ class InvestmentsController extends AppController {
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
+                        $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1D'));
                             $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -7223,9 +7271,12 @@ class InvestmentsController extends AppController {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
+                         $aYEAR2DAYS = 365 * $aduration;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
+                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                            $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1Y'));
                             $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -7243,16 +7294,16 @@ class InvestmentsController extends AppController {
                 }
 
 
-
-
+                    
                 $total_tenure = $this->request->data['Investment']['total_tenure'];
                 $description = 'Reinvestment of ' . $data["Investment"]["investment_no"] . ' for ' . $duration . ' ' . $period;
                 //'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
                 $investment_array = array('balance' => $amount_due,
                     'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
+                    'interest_accrued' => $ainterest_amount, 'accrued_days' => $aduration,
                     'custom_rate' => $custom_rate, 'investment_amount' => $investment_amount,
-                    'total_tenure' => $total_tenure, 'total_amount_earned' => $this->request->data['Investment']['investment_amount'],
-                    'earned_balance' => $this->request->data['Investment']['investment_amount'],
+                    'total_tenure' => $total_tenure, 'total_amount_earned' => $aamount_due,
+                    'earned_balance' => $aamount_due,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
 
                 $ledger_transactions[] = array('debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -7575,56 +7626,58 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
         }
     }
-/*
-    public function statementInvDetailEq($invesmentID = null, $investor_id = null, $investor_name = null) {
-        $this->__validateUserType();
-//        if (!is_null($invesmentID)) {
-//            $data = $this->DailyInterestStatement->find('all', array('conditions' =>
-//                array('DailyInterestStatement.investment_id' => $invesmentID)));
-//            $issued = $this->Session->check('userData');
-//            if ($issued) {
-//                $issued = $this->Session->read('userData');
-//                $this->set('issued', $issued);
-//            }
-//
-//            if ($data) {
-//                $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
-//                $data_total = $this->DailyInterestStatement->find('all', array('fields' =>
-//                    array("SUM(DailyInterestStatement.principal) as 'total_principal',"
-//                        . "SUM(DailyInterestStatement.interest) as 'total_interest',SUM(DailyInterestStatement.total) as 'sum_total'"),
-//                    'conditions' => array('DailyInterestStatement.investment_id' => $invesmentID)));
-//
-//                if ($data2) {
-//                    $this->set('data2', $data2);
-//                }
-//                if ($data_total) {
-//                    $this->set('data_total', $data_total);
-//                }
-//                $this->set('data', $data);
-//                $this->set('investor_id', $investor_id);
-//                $this->set('invesmentID', $invesmentID);
-//                $this->set('investor_name', $investor_name);
-//            } else {
-//
-//                $message = 'Sorry, xxxInvestment Details Not Found';
-//                $this->Session->write('imsg', $message);
-//                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
-//            }
-//        } else {
-//
-//            $message = 'Sorry, Investment Details Not Found';
-//            $this->Session->write('imsg', $message);
-//            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
-//        }
-    }
-*/
+
+    /*
+      public function statementInvDetailEq($invesmentID = null, $investor_id = null, $investor_name = null) {
+      $this->__validateUserType();
+      //        if (!is_null($invesmentID)) {
+      //            $data = $this->DailyInterestStatement->find('all', array('conditions' =>
+      //                array('DailyInterestStatement.investment_id' => $invesmentID)));
+      //            $issued = $this->Session->check('userData');
+      //            if ($issued) {
+      //                $issued = $this->Session->read('userData');
+      //                $this->set('issued', $issued);
+      //            }
+      //
+      //            if ($data) {
+      //                $data2 = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
+      //                $data_total = $this->DailyInterestStatement->find('all', array('fields' =>
+      //                    array("SUM(DailyInterestStatement.principal) as 'total_principal',"
+      //                        . "SUM(DailyInterestStatement.interest) as 'total_interest',SUM(DailyInterestStatement.total) as 'sum_total'"),
+      //                    'conditions' => array('DailyInterestStatement.investment_id' => $invesmentID)));
+      //
+      //                if ($data2) {
+      //                    $this->set('data2', $data2);
+      //                }
+      //                if ($data_total) {
+      //                    $this->set('data_total', $data_total);
+      //                }
+      //                $this->set('data', $data);
+      //                $this->set('investor_id', $investor_id);
+      //                $this->set('invesmentID', $invesmentID);
+      //                $this->set('investor_name', $investor_name);
+      //            } else {
+      //
+      //                $message = 'Sorry, xxxInvestment Details Not Found';
+      //                $this->Session->write('imsg', $message);
+      //                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
+      //            }
+      //        } else {
+      //
+      //            $message = 'Sorry, Investment Details Not Found';
+      //            $this->Session->write('imsg', $message);
+      //            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments', $investor_id, $investor_name));
+      //        }
+      }
+     */
+
     function statementInvDetailEq($investor_id = null, $investment_id = null, $investor_name = null) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
-                    'Investment.investment_product_id' => array(2,3),
+                    'Investment.investment_product_id' => array(2, 3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
             ))));
             $issued = $this->Session->check('userDetails');
@@ -7639,7 +7692,7 @@ class InvestmentsController extends AppController {
 //                    'fields' => array("SUM(Investment.earned_balance) as 'balance_due'"),
                     'conditions' => array('InvestorEquity.investment_id' => $investment_id,
                         'NOT' => array('InvestorEquity.numb_shares_left' => 0))
-                    ));
+                ));
 
 
                 if ($data_total) {
@@ -7662,7 +7715,7 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-    
+
     public function statementDailyInterest($invesmentID = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
         if (!is_null($invesmentID)) {
@@ -7845,7 +7898,7 @@ class InvestmentsController extends AppController {
     }
 
     function delfixedpayment() {
-        $this->autoLayout = $this->autoRender =  false;
+        $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('post')) {
             $investment_id = $_POST['hid_investid'];
             $investor_id = $_POST['hid_investorid'];
@@ -7858,16 +7911,15 @@ class InvestmentsController extends AppController {
             if ($invpayments) {
                 foreach ($invpayments as $val) {
                     $invpayments_id = $val['InvestmentPayment']['id'];
-                    if (!empty($this->request->data['InvestmentPayments']['delete' . $invpayments_id])
-                           && $this->request->data['InvestmentPayments']['delete' . $invpayments_id] == 1) {
-                        $sms_amount += $val['InvestmentPayment']['amount']; 
-                        $lt_id =  $val['InvestmentPayment']['ledger_transaction_id'];
-                        $this->InvestmentPayment->delete($invpayments_id,false);
+                    if (!empty($this->request->data['InvestmentPayments']['delete' . $invpayments_id]) && $this->request->data['InvestmentPayments']['delete' . $invpayments_id] == 1) {
+                        $sms_amount += $val['InvestmentPayment']['amount'];
+                        $lt_id = $val['InvestmentPayment']['ledger_transaction_id'];
+                        $this->InvestmentPayment->delete($invpayments_id, false);
                     }
                 }
             }
 
-            
+
             $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($investment_data) {
                 $earnedbalance = $investment_data['Investment']['earned_balance'];
@@ -7881,16 +7933,16 @@ class InvestmentsController extends AppController {
                 }
                 $investment_array = array('id' => $investment_id, 'status' => $status, 'earned_balance' => $new_earnedbalance);
             }
-            
-            $ledger_details = $this->ClientLedger->find('first', array('conditions' => 
+
+            $ledger_details = $this->ClientLedger->find('first', array('conditions' =>
                 array('ClientLedger.investor_id' => $investor_id)));
-             if ($ledger_details) {
+            if ($ledger_details) {
                 $old_balance = $ledger_details['ClientLedger']['available_cash'];
                 $investor = $ledger_details['ClientLedger']['investor_id'];
                 $investor_name = $ledger_details['Investor']['fullname'];
                 $new_balance = $old_balance + $sms_amount;
 
-                
+
 
 //                $new_investmentdetails = array('id' => $investment_id, 'earned_balance' => $earned_balance
 //                    , 'balance' => $balance, $amount_due => $balance, 'amount_paidout' => $total_paid,
@@ -7900,43 +7952,41 @@ class InvestmentsController extends AppController {
                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_balance);
                 $this->ClientLedger->save($client_ledger);
                 $voucher_no = date('mdyhis') . rand(2, 4);
-                 $ltid = null;
+                $ltid = null;
                 $result = $this->ClientLedger->save($client_ledger);
                 if ($result) {
                     //enter new ledger transaction
-                    if(!empty($lt_id)){
-                       $this->LedgerTransaction->delete($lt_id,false); 
+                    if (!empty($lt_id)) {
+                        $this->LedgerTransaction->delete($lt_id, false);
                     }
-                    
-               
 
-                   
+
+
+
                     if (!empty($investment_array)) {
                         $this->Investment->save($investment_array);
                     }
-                   $message = 'Investment Payment Deleted Successfully';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Investments', 'action' => 'delFixedInvestmentPayments', $investor_id, $investment_id, $investment_no));
-
+                    $message = 'Investment Payment Deleted Successfully';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'delFixedInvestmentPayments', $investor_id, $investment_id, $investment_no));
                 } else {
 
                     $message = 'Payment Deleting Unsuccessful';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'delFixedInvestmentPayments', 'delFixedInvestmentPayments', $investor_id, $investment_id, $investment_no));
                 }
-            }else {
+            } else {
 
-                    $message = 'Payment Deleting Unsuccessful';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
-                }
-            
-        }else {
+                $message = 'Payment Deleting Unsuccessful';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+            }
+        } else {
 
-                    $message = 'Invalid Access Method';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
-                }
+            $message = 'Invalid Access Method';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
     }
 
     function delDeposit($deposit_id = null, $investor_name = null) {
@@ -8171,11 +8221,16 @@ class InvestmentsController extends AppController {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
+            
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
-                    'Investment.investment_product_id' => array(1,3),
+                    'Investment.investment_product_id' => array(1, 3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
-            ))));
+            )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment'),
+                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
+                    'Investment.due_date','Investment.id','Investment.earned_balance')));
+            //,'SUM(InvestmentPayment.amount) as investpay_amount'
+//            pr($data);exit;
             $issued = $this->Session->check('userDetails');
             if ($issued) {
                 $issued = $this->Session->read('userDetails.firstname');
@@ -8210,16 +8265,16 @@ class InvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-    
-    function topupReceipt($investor_id = null, $investment_id = null, $investor_name = null){
+
+    function topupReceipt($investor_id = null, $investment_id = null, $investor_name = null) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
             $data = $this->InvestorDeposit->find('first', array(
                 'conditions' => array('InvestorDeposit.investment_id' => $investment_id),
                 'order' => array('InvestorDeposit.id' => 'desc')));
-            
-            
+
+
             $issued = $this->Session->check('userDetails');
             if ($issued) {
                 $issued = $this->Session->read('userDetails.firstname');
@@ -8229,8 +8284,8 @@ class InvestmentsController extends AppController {
 
             if ($data) {
                 $data2 = $this->Investment->find('first', array('conditions' =>
-                array('Investment.id' => $investment_id)));
-                
+                    array('Investment.id' => $investment_id)));
+
                 $this->set('data', $data);
                 $this->set('data2', $data2);
                 $this->set('investor_id', $investor_id);
@@ -8245,6 +8300,161 @@ class InvestmentsController extends AppController {
             $message = 'Sorry, Investor Details Not Found';
             $this->Session->write('imsg', $message);
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+        }
+    }
+
+    public function get_accruedinterest($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+        if ($data) {
+            $status = $data['Investment']['status'];
+            switch ($status) {
+                case 'Rolled_over':
+                case 'Invested':
+                case 'Termination_Requested':
+                case 'Payment_Requested':
+                    $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+                    $custom_rate = $data['Investment']['custom_rate'];
+                    $investment_amount = $data['Investment']['investment_amount'];
+                    $interest_amount = '0.00';
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;
+                    return $accrued_interest;
+                    break;
+                        case 'Termination_Approved':
+                        case 'Cancelled':
+                       $accrued_interest = $data['Investment']['interest_accrued'];
+                    return $accrued_interest;
+                default:
+                     $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = $data['Investment']['due_date'];
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+                    $custom_rate = $data['Investment']['custom_rate'];
+                    $investment_amount = $data['Investment']['investment_amount'];
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;
+                    return $accrued_interest;
+                    break;
+            }
+        }else{
+            return 'Invesment details missing';
+        }
+    }
+    
+    function get_accrueddays($investment_id = null){
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+        if ($data) {
+            $status = $data['Investment']['status'];
+            switch ($status) {
+                case 'Rolled_over':
+                case 'Invested':
+                case 'Termination_Requested':
+                case 'Payment_Requested':
+                    $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    
+                    $accrued_days = $duration;
+                    return $accrued_days;
+                    break;
+                        case 'Termination_Approved':
+                        case 'Cancelled':
+                       $accrued_days = $data['Investment']['accrued_days'];
+                    return $accrued_days;
+                default:
+                     $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = $data['Investment']['due_date'];
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    
+                    $accrued_days = $duration;
+                    return $accrued_days;
+                    break;
+            }
+        }else{
+            return 'Invesment details missing';
         }
     }
 

@@ -163,7 +163,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-3 col-md-3 col-sm-12 hidden-fee">
                                     <?php
-                                    echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' =>
+                                    echo $this->Form->input('base_fees', array('label' => 'Fee(%)', 'class' => 'required', 'value' =>
                                         ($this->Session->check('investtemp1.base_fees') == true ?
                                                 $this->Session->read('investtemp1.base_fees') : '' )));
                                     ?> 
@@ -194,7 +194,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     
-                                    echo $this->Form->input('currencyid', array('value' => 1, 'disabled', 'type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
+                                    echo $this->Form->input('currencyid', array('label' => 'Currency','value' => 1, 'disabled', 'type' => 'select', 'options' => $currencies, 'empty' => '--Please select currency--', 'selected' => ($this->Session->check('investtemp1.currency_id') == true ? $this->Session->read('investtemp1.currency_id') : '' )));
                                     echo $this->Form->hidden('currency_id', array('default' => 1, 'value' => isset($currencies['id']) ? $currencies['id'] : 1));
                                     ?>
                                 </div>

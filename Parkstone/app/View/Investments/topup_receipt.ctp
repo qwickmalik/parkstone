@@ -72,7 +72,7 @@ echo $this->Html->script('print.js');
                         <td align="left" valign="top" ><b>Receipt No.</b></td>
                     </tr>
                     <tr>
-                        <td align="left" valign="top"><?php echo $data['InvestorDeposit']['deposit_date']; ?></td>
+                        <td align="left" valign="top"><?php echo date('d-m-Y',strtotime($data['InvestorDeposit']['deposit_date'])); ?></td>
                         <td align="right" valign="top"><?php echo $data['InvestorDeposit']['amount']; ?></td>
                         <td align="left" valign="top"><?php echo $data['InvestorDeposit']['receipt_no']; ?></td>
 

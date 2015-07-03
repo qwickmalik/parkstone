@@ -52,10 +52,20 @@ if ($this->Session->check('shopCurrency')) {
                         <th align="left">Accrued Days</th>
                         <th align="left">Accrued Interest</th>
                         <th align="left">Principal Plus Interest</th>
-                        <th align="left">Receipts</th>
+                        <th align="left">Payments</th>
                         <th align="left">Balance Due</th>
                     </tr>
-                    <?php if(isset($data)){ foreach ($data as $each_item): ?>
+                    <?php if(isset($data)){ foreach ($data as $each_item): 
+                    $amount = 0;
+                    if(!empty($each_item['InvestmentPayment']) ){
+                    foreach ($each_item['InvestmentPayment'] as $val):
+                        if($val['event_type'] == 'Payment'){
+                        $amount += $val['amount'];
+                        }
+                        endforeach;
+                    }
+                        ?>
+                    
                        <tr>
                             <td align="left"><?php if (isset($each_item['Investment']['investment_date'])) {
             echo  date('d-M-Y',strtotime($each_item['Investment']['investment_date']));
@@ -68,24 +78,35 @@ if ($this->Session->check('shopCurrency')) {
                             <td align="left"><?php if (isset($each_item['Investment']['due_date'])) {
             echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
         } ?></td>
-                            <td align="left"><?php echo $each_item['Investment']['accrued_days']; ?></td>
-                            <td align="left"><?php if (isset($each_item['Investment']['interest_accrued'])) {
-            echo  number_format($each_item['Investment']['interest_accrued'],2);
+                            <td align="left"><?php if (isset($each_item['Investment']['id'])){
+                                $id = $each_item['Investment']['id'];
+                               $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
+            echo $accrued_days;
         } ?></td>
-                            <td align="left"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
-              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+                            <td align="left"><?php if (isset($each_item['Investment']['id'])) {
+                                $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+            echo  number_format($interest_accrued,2);
+        } ?></td>
+                            <td align="left"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
+                                 $id = $each_item['Investment']['id'];
+                               $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                
+                                $totals = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
         
             echo number_format($totals,2);
             
                         } ?></td>
-                            <td align="left"><?php if (isset($each_item['Investment']['investment_amount'])) {
-            echo  number_format($each_item['Investment']['investment_amount'],2);
+                            <td align="left"><?php if (isset($amount)) {
+            echo  number_format($amount,2);
         } ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['earned_balance'])) {
             echo  number_format($each_item['Investment']['earned_balance'],2);
         } ?></td>
                        </tr>
                     <?php endforeach;
+                    
+                     
                        }
                     ?>
                    

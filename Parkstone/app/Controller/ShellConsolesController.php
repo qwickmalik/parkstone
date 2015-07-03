@@ -84,7 +84,8 @@ function __dailyMatured(){
            }
             $each_array = array('id' => $each['Investment']['id'],
                 'status' => 'Matured','old_status' => $each['Investment']['status'],
-                'earned_balance' => 0.00,'total_tenure' => $new_tenure);
+                'total_tenure' => $new_tenure);
+            //'earned_balance' => 0.00,
             $this->Investment->save($each_array);
             //Update Ledger data
             $cledger_id = $ledger_data['ClientLedger']['id'];     

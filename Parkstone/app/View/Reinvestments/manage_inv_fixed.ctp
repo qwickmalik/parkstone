@@ -76,7 +76,7 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
                     <td align="left"><?php echo number_format( $each_item['Reinvestment']['investment_amount'], 2) ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['interest_rate']; ?></td>
+                    <td align="left"><?php echo $each_item['Reinvestment']['interest_rate'].'%'; ?></td>
                     <td align="left">
                         <?php if($each_item['Reinvestment']['status'] == 'Invested' || 
                                 $each_item['Reinvestment']['status']=='Rolled_over'

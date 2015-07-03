@@ -25,7 +25,8 @@ class InvestmentPayment extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
-            ),'Investor' => array(
+            )
+         ,'Investor' => array(
             'className' => 'Investor',
             'foreignKey' => 'investor_id',
             'conditions' => '',

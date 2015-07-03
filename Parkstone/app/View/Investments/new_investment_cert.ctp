@@ -75,7 +75,7 @@ echo $this->Html->script('print.js');
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Interest GHS</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Maturity Amt. GHS</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Maturity Date</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Instructions A/c</b></td>
+                        <!--<td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Instructions A/c</b></td>-->
                     </tr>
                     <tr>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
@@ -83,10 +83,10 @@ echo $this->Html->script('print.js');
                         <td align="right" valign="top"><?php echo $data['Investment']['duration'].' '.$data['Investment']['investment_period']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['investment_amount']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['custom_rate'].'%'; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['interest_earned']; ?></td>
+                        <td align="right" valign="top"><?php echo $data['Investment']['expected_interest']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['amount_due']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['due_date']; ?></td>
-                        <td align="left" valign="top"><?php echo $data['Instruction']['instruction_name']; ?></td>
+                        <!--<td align="left" valign="top"><?php // echo $data['Instruction']['instruction_name']; ?></td>-->
                     </tr>
                 </table>
             </div>
