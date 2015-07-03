@@ -5532,6 +5532,7 @@ class InvestmentsController extends AppController {
                 $approval_status = $this->request->data['ApproveInvestments']['approvals'];
                 $investment_id = $this->request->data['Investment']['investment_id'];
                 $investor_id = $this->request->data['Investment']['investor_id'];
+                $instructions = $this->request->data['ApproveInvestments']['instructions'];
                 $userid = null;
                 $check = $this->Session->check('userDetails');
                 if ($check) {
@@ -5632,7 +5633,7 @@ class InvestmentsController extends AppController {
 
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
                                 'interest_earned' => $interest_amount, 'custom_rate' => $custom_rate, 'total_amount_earned' => $amount_due, 'duration' => $duration,
-                                'status' => "Termination_Approved",'accrued_days' => $duration);
+                                'status' => "Termination_Approved",'accrued_days' => $duration,'instruction_details' => $instructions);
                             $ltid = null;
                             if ($ledger_data) {
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
@@ -6032,6 +6033,7 @@ class InvestmentsController extends AppController {
             }
             $this->request->data['InvestmentPayment']['payment_date'] = $inv_date;
             $this->Session->write('payinvesttemp', $this->request->data['InvestmentPayment']);
+            $this->Session->write('payment_date',$inv_date);
 
             if ($this->request->data['InvestmentPayment']['paymentmode_id'] == "" || $this->request->data['InvestmentPayment']['paymentmode_id'] == null) {
                 $message = 'Please Select A Mode of Payment.';
@@ -6142,6 +6144,7 @@ class InvestmentsController extends AppController {
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if (!empty($investment_array)) {
                         $this->Investment->save($investment_array);
+                        
                     }
                     if ($ledger_transactions) {
 
