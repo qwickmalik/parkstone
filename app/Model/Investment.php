@@ -4,7 +4,7 @@ class Investment extends AppModel{
     
     var $name = 'Investment';
     var $usesTable = "investments";
-    
+    var $actsAs = array('Containable');
     
     var $belongsTo = array(
         'Investor' => array(

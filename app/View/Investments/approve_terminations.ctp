@@ -19,7 +19,7 @@
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Rate'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('interest_accrued', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
                     </tr>
@@ -33,7 +33,13 @@
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
+                                <td align="left"><?php // echo $each_item['Investment']['interest_earned']; 
+                                          if (isset($each_item['Investment']['id'])) {
+                                $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+            echo  number_format($interest_accrued,2);
+        } 
+                                ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
                                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){
                                     echo $each_item['Instruction']['instruction_name'];

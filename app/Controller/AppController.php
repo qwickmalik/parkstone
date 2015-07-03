@@ -55,5 +55,160 @@ class AppController extends Controller {
             }
         }
     }
+    
+    public function get_accruedinterest($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+        if ($data) {
+            $status = $data['Investment']['status'];
+            switch ($status) {
+                case 'Rolled_over':
+                case 'Invested':
+                case 'Termination_Requested':
+                case 'Payment_Requested':
+                    $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+                    $custom_rate = $data['Investment']['custom_rate'];
+                    $investment_amount = $data['Investment']['investment_amount'];
+                    $interest_amount = '0.00';
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;
+                    return $accrued_interest;
+                    break;
+                        case 'Termination_Approved':
+                        case 'Cancelled':
+                       $accrued_interest = $data['Investment']['interest_accrued'];
+                    return $accrued_interest;
+                default:
+                     $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = $data['Investment']['due_date'];
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+                    $custom_rate = $data['Investment']['custom_rate'];
+                    $investment_amount = $data['Investment']['investment_amount'];
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            $amount_due = $interest_amount + $investment_amount;
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;
+                    return $accrued_interest;
+                    break;
+            }
+        }else{
+            return 'Invesment details missing';
+        }
+    }
+    
+    function get_accrueddays($investment_id = null){
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+        if ($data) {
+            $status = $data['Investment']['status'];
+            switch ($status) {
+                case 'Rolled_over':
+                case 'Invested':
+                case 'Termination_Requested':
+                case 'Payment_Requested':
+                    $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    
+                    $accrued_days = $duration;
+                    return $accrued_days;
+                    break;
+                        case 'Termination_Approved':
+                        case 'Cancelled':
+                       $accrued_days = $data['Investment']['accrued_days'];
+                    return $accrued_days;
+                default:
+                     $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = $data['Investment']['due_date'];
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    
+                    $accrued_days = $duration;
+                    return $accrued_days;
+                    break;
+            }
+        }else{
+            return 'Invesment details missing';
+        }
+    }
 
 }
