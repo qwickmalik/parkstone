@@ -51,7 +51,7 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                             <b>Date: </b><?php $check = $this->Session->check('payment_date');
                             if ($check) {
                                 $pdate = $this->Session->read('payment_date');
-                                        echo $pdate;;
+                                        echo $pdate;
                             } ?>
                             
                             
