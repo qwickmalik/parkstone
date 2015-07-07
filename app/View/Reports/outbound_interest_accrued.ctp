@@ -212,10 +212,37 @@ echo $this->Html->script('print.js'); ?>
                               <?php
     
     endforeach;
-} ?>
+ ?>
                 </table>
             </div>
+              <div class="pagination">
+                                 <table>
+                                <tbody>
+                       
+                                <tr>
+                                    <td colspan="6" align="center">
+                                        <?php
+                                        echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
+                                        echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        //prints X of Y, where X is current page and Y is number of pages
+                                        echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
+                                        ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+<!--                                <ul>
+                                    <li><a href="#">Prev</a></li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">Next</a></li>
+                                </ul>-->
+                            </div>
             <?php
+                         }
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));

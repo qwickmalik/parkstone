@@ -2798,7 +2798,8 @@ public function convert2PdfnEmail(){
 //                    '(select SUM(interest_amounts) from interest_accruals '
 //                    . 'where CONCAT(YEAR(interest_date)'
 //                    . ',"-",MONTH(interest_date)) = \''.date('Y-m',strtotime($juldate_string)).'\')';
-            $accounts = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc','Investor.surname' => 'asc','Investor.comp_name' => 'asc'), 
+             
+        $this->paginate = array('order' => array('Investor.in_trust_for' => 'asc','Investor.surname' => 'asc','Investor.comp_name' => 'asc'), 
                 'conditions' => array('Investment.status' => array('Rolled_over','Invested','Termination_Requested','Payment_Requested',
                     'Termination_Approved','Payment_Approved','Matured'),'YEAR(InterestAccrual.interest_date)' => $year
                    ),
@@ -2806,8 +2807,9 @@ public function convert2PdfnEmail(){
                     'SUM(interest_amounts) as interests','InterestAccrual.Jan','InterestAccrual.Feb',
                     'InterestAccrual.Mar','InterestAccrual.Apr','InterestAccrual.May','InterestAccrual.Jul','InterestAccrual.Jun','InterestAccrual.Aug',
                     'InterestAccrual.Sep','InterestAccrual.Oct','InterestAccrual.Nov','InterestAccrual.Dec'),
-                'group' => array('InterestAccrual.investor_id')));
-        
+                'group' => array('InterestAccrual.investor_id'),
+            'limit' => 20);
+        $accounts = $this->paginate('InterestAccrual');
                if($bbf == 1){
               $bbf_total = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc','Investor.surname' => 'asc','Investor.comp_name' => 'asc'), 
                 'conditions' => array('Investment.status' => array('Rolled_over','Invested','Termination_Requested','Payment_Requested',
@@ -2905,7 +2907,8 @@ public function convert2PdfnEmail(){
 //                    '(select SUM(interest_amounts) from interest_accruals '
 //                    . 'where CONCAT(YEAR(interest_date)'
 //                    . ',"-",MONTH(interest_date)) = \''.date('Y-m',strtotime($juldate_string)).'\')';
-            $accounts = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'), 
+           
+        $this->paginate = array('order' => array('Reinvestor.company_name' => 'asc'), 
                 'conditions' => array('Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested','Payment_Requested',
                     'Termination_Approved','Payment_Approved','Matured'),'YEAR(ReinvestInterestAccrual.interest_date)' => $year
                    ),
@@ -2914,8 +2917,10 @@ public function convert2PdfnEmail(){
                     'ReinvestInterestAccrual.Mar','ReinvestInterestAccrual.Apr','ReinvestInterestAccrual.May','ReinvestInterestAccrual.Jul',
                     'ReinvestInterestAccrual.Jun','ReinvestInterestAccrual.Aug',
                     'ReinvestInterestAccrual.Sep','ReinvestInterestAccrual.Oct','ReinvestInterestAccrual.Nov','ReinvestInterestAccrual.Dec'),
-                'group' => array('ReinvestInterestAccrual.reinvestor_id')));
+                'group' => array('ReinvestInterestAccrual.reinvestor_id'),
+            'limit' => 20);
         
+        $accounts = $this->paginate('ReinvestInterestAccrual');
                if($bbf == 1){
               $bbf_total = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'), 
                 'conditions' => array('Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested','Payment_Requested',
