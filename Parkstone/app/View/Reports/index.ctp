@@ -29,7 +29,8 @@
                     $this->Html->link('Investor Deposits Report','/Reports/investorDeposits', array('escape' => false)),
                     $this->Html->link('Rollover/Disinvestments Report','/Reports/rolloverDisinv', array('escape' => false)),
                     $this->Html->link('Funds Under Management','/Reports/fundsUnderMgt', array('escape' => false)),
-                    $this->Html->link('Interest Accrued','/Reports/interestAccrued', array('escape' => false)),
+                    $this->Html->link('Internal Investments Accrued Interest','/Reports/interestAccrued', array('escape' => false)),
+                    $this->Html->link('External Investments Accrued Interest','/Reports/outboundInterestAccrued', array('escape' => false)),
                     $this->Html->link('Income Spread','/Reports/incomeSpread', array('escape' => false)),
                      );
                  echo '<p class="subtitle-blue">Investments</p>';

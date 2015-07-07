@@ -18,8 +18,13 @@
 
         <!-- Row Start -->
         <div class="row">
-
+            
+<!--<li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>-->
+                                <!--<li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>-->
             <!-- Form Layout Start -->
+              <?php
+                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", 'class' => 'basic-form',"url" => array( 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false)));
+                            ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="boxed no-padding">
                     <div class="inner">
@@ -31,8 +36,7 @@
                         <div id="wizard-form" class="wizard">
                             <ul class="steps">
                                 <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Personal Information<span class="chevron"></span></li>
-                                <!--<li data-target="#step2"><span class="badge">2</span>For Joint Account Holder<span class="chevron"></span></li>-->
-                                <!--<li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>-->
+                                
                                 <li data-target="#step2"><span class="badge">2</span>Bank Details<span class="chevron"></span></li>
                                 <li data-target="#step3"><span class="badge">3</span>Next of Kin<span class="chevron"></span></li>
                             </ul>
@@ -40,9 +44,7 @@
 
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
-                            <?php
-                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", 'class' => 'basic-form',"url" => array( 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false)));
-                            ?>
+                          
                             <!-- Step 1 Personal Information Form Start -->
                             <div class="step-pane active" id="step1">
                                 <div class="row">
