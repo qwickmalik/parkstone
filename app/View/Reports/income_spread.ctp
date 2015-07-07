@@ -158,6 +158,13 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top">xxx</td>
                         <td align="right" valign="top">xxx</td>
                     </tr>
+                    
+                    <tr>
+                        <td align="left" valign="top"><b>Total</b></td>
+                        <td align="right" valign="top"><b>xxx</b></td>
+                        <td align="right" valign="top"><b>xxx</b></td>
+                        <td align="right" valign="top"><b>xxx</b></td>
+                    </tr>
                 </table>
             </div>
             <?php

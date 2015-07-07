@@ -12,7 +12,8 @@ class InvestmentsController extends AppController {
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
         'PaymentMode', 'CashReceiptMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
         'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
-        'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit', 'ReinvestmentsEquity', 'ReinvestorEquity', 'ReinvestorCashaccount',
+        'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit','InterestAccrual',
+        'ReinvestmentsEquity', 'ReinvestorEquity', 'ReinvestorCashaccount',
         'EquityOrder');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
@@ -1143,7 +1144,10 @@ class InvestmentsController extends AppController {
 
             //$this->Session->delete('ivt');
         }
-
+          $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->delete('ivt');
@@ -1196,7 +1200,10 @@ class InvestmentsController extends AppController {
         $data = $this->paginate('Investor');
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('investor', $data);
-
+        $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1226,7 +1233,10 @@ class InvestmentsController extends AppController {
 
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
 
-
+        $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1478,7 +1488,10 @@ class InvestmentsController extends AppController {
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
-
+        $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1513,7 +1526,10 @@ class InvestmentsController extends AppController {
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
-
+        $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -2496,6 +2512,19 @@ class InvestmentsController extends AppController {
                         'amount_due' => $amount_due, 
                         'due_date' => $date->format('Y-m-d')
                     );
+                    
+                    $interest_accruals = array(
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'interest_amounts' => $ainterest_amount,
+                        'interest_date' => $inv_date
+                    );
+                    
+                    $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
+                    $check = $this->Session->write('interest_accrual',$interest_accruals);
+                    
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -2973,6 +3002,18 @@ class InvestmentsController extends AppController {
                     'earned_balance' => $aamount_due,
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                 );
+                $interest_accruals = array(
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'interest_amounts' => $ainterest_amount,
+                        'interest_date' => $inv_date
+                    );
+                    
+                    $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
+                    $check = $this->Session->write('interest_accrual',$interest_accruals);
+                    
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -3579,6 +3620,19 @@ class InvestmentsController extends AppController {
                         'interest_accrued' => $ainterest_amount,
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                     );
+                    
+                    $interest_accruals = array(
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'interest_amounts' => $ainterest_amount,
+                        'interest_date' => $inv_date
+                    );
+                    
+                    $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
+                    $check = $this->Session->write('interest_accrual',$interest_accruals);
+                    
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -4787,10 +4841,21 @@ class InvestmentsController extends AppController {
             $investment_array = $this->Session->read('investment_array_fixed');
 
             $this->Investment->id = $investment_id;
-            $this->Investment->save($investment_array);
+            $investmt_result = $this->Investment->save($investment_array);
+            if($investmt_result){
+                
             $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($result) {
-
+            
+                    
+                    $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                         $interest_accruals = $this->Session->read('interest_accrual');
+                         $interest_accruals['investment_id'] = $investment_id;
+                        $this->InterestAccrual->save($interest_accruals);
+                        $this->Session->delete('interest_accrual');
+                    }
+                       
                 $payment_name = '';
                 $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
                 if ($payment_mode) {
@@ -4887,11 +4952,12 @@ class InvestmentsController extends AppController {
                 }
 
                 $this->Session->delete('variabless_fixed');
-            } else {
+            }else {
                 $message = "Sorry No Investment To Display";
                 $this->Session->write('imsg', $message);
                 $this->redirect('/Investments/');
             }
+        }
         }
 
         $investment_array = $this->Session->check('investment_array_equity');
@@ -5059,7 +5125,7 @@ class InvestmentsController extends AppController {
                                 $this->LedgerTransaction->delete($lt_id, false);
                                 $created = $lt_result['LedgerTransaction']['created'];
                             }
-
+                             $this->InterestAccrual->deleteAll(array('investment_id' => $investment_id),false);
                             $created = new DateTime($created);
                             $created = $created->add(new DateInterval('PT30M'));
                             $created = $created->format('Y-m-d H:i:s');
@@ -7308,12 +7374,24 @@ class InvestmentsController extends AppController {
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $aamount_due,
                     'earned_balance' => $aamount_due,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
-
+                $interest_accruals = array(
+                        'investor_id' => $this->request->data['Investment']['investor_id'],
+                        'interest_amounts' => $ainterest_amount,
+                        'interest_date' => $inv_date
+                    );
+                    
+                    $check = $this->Session->check('interest_accrual');
+                    if ($check) {
+                        $this->Session->delete('interest_accrual');
+                    }
+                    $check = $this->Session->write('interest_accrual',$interest_accruals);
+                    
                 $ledger_transactions[] = array('debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
                     'date' => $inv_date, 'description' => $description);
 
                 $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'],
                     'investor_id' => $data['Investment']['investor_id'], 'old_investment_amount' => $data["Investment"]["investment_amount"],
+                    'old_interest_accrued' => $data["Investment"]["interest_accrued"],
                     'custom_rate' => $custom_rate, 'old_custom_rate' => $data["Investment"]["custom_rate"], 'rollover_date' => $date->format('Y-m-d'));
 
                 $base_fee = 0;

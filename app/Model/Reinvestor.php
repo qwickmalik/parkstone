@@ -20,6 +20,14 @@ class Reinvestor extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
+         'ReinvestInterestAccrual' => array(
+            'className' => 'ReinvestInterestAccrual',
+            'foreignKey' => 'reinvestor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
          'InvestmentCash' => array(
             'className' => 'InvestmentCash',
             'foreignKey' => 'reinvestor_id',

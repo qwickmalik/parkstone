@@ -181,7 +181,7 @@ if ($this->Session->check('shopCurrency')) {
             <?php
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
-            echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
+            echo $this->Html->link('Return', "/Investments/manageInvestments", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
             ?>
         </div>
     </div>

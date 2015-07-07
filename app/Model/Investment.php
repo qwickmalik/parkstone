@@ -91,6 +91,14 @@ class Investment extends AppModel{
             'limit' => '',
             'dependent' => true
             ),
+            'InterestAccrual' => array(
+            'className' => 'InterestAccrual',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
         'InvestorDeposit' => array(
             'className' => 'InvestorDeposit',
             'foreignKey' => 'investment_id',

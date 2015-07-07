@@ -3,7 +3,7 @@ echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 
 echo $this->Html->script('print.js'); ?>
-<h3>Reports: Internal Investments Accrued Interest</h3>
+<h3>Reports: External Investments Accrued Interest</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -11,7 +11,7 @@ echo $this->Html->script('print.js'); ?>
         <!-- Content start here -->
         <div class="row">
             <?php
-            echo $this->Form->create('InterestAccrued', array('url' => array('controller' => 'Reports', 'action' => 'interestAccrued')));
+            echo $this->Form->create('ReinvestInterestAccrual', array('url' => array('controller' => 'Reports', 'action' => 'outboundInterestAccrued')));
             ?>
             <div class="row" style="background: #eaeaea; padding: 10px 0px 5px 0px;">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -39,7 +39,7 @@ echo $this->Html->script('print.js'); ?>
                     var year = $("#year").val();
 //                    $("#InvestmentInvestmentDateDay option[value=" + day + "]").attr('selected', true);
 //                    $("#InvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
-                    $("#InterestAccruedReportDateYear option[value=" + year + "]").attr('selected', true);
+                    $("#ReinvestInterestAccrualReportDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
                 
             </div>
@@ -108,19 +108,15 @@ echo $this->Html->script('print.js'); ?>
               
             ?>
                     <tr>
-                        <td align="left" valign="top"><?php if (!empty($each_item['Investor']['in_trust_for'])) {
-                    echo  $each_item['Investor']['in_trust_for'];
-                }elseif(!empty($each_item['Investor']['surname'])){
-                    echo  $each_item['Investor']['surname'];
-                }elseif(!empty($each_item['Investor']['comp_name'])){
-                    echo  $each_item['Investor']['comp_name'];
+                        <td align="left" valign="top"><?php if (!empty($each_item['Reinvestor']['company_name'])) {
+                    echo  $each_item['Reinvestor']['company_name'];
                 }
                 ?></td>
                         <td align="right" valign="top">
                               <?php 
                               if(isset($bbf_total)){
                             foreach ($bbf_total as $btot):  
-                            if ($btot['InterestAccrual']['investor_id'] == $each_item['InterestAccrual']['investor_id'] && isset($btot[0]['total_interests'])) {
+                            if ($btot['ReinvestReinvestInterestAccrual']['reinvestor_id'] == $each_item['ReinvestReinvestInterestAccrual']['reinvestor_id'] && isset($btot[0]['total_interests'])) {
                     echo number_format($btot[0]['total_interests'], 2);
                 }
                 
@@ -129,74 +125,74 @@ echo $this->Html->script('print.js'); ?>
                 ?>
                       
                         </td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Jan'])) {
-                    echo  number_format($each_item['InterestAccrual']['Jan'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestReinvestInterestAccrual']['Jan'])) {
+                    echo  number_format($each_item['ReinvestReinvestInterestAccrual']['Jan'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Feb'])) {
-                    echo  number_format($each_item['InterestAccrual']['Feb'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Feb'])) {
+                    echo  number_format($each_item['ReinvestInterestAccrual']['Feb'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Mar'])) {
-                    echo   number_format($each_item['InterestAccrual']['Mar'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Mar'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['Mar'], 2);
                 }else{
                     echo  ' 0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Apr'])) {
-                    echo  number_format($each_item['InterestAccrual']['Apr'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Apr'])) {
+                    echo  number_format($each_item['ReinvestInterestAccrual']['Apr'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['May'])) {
-                    echo   number_format($each_item['InterestAccrual']['May'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['May'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['May'], 2);
                 }else{
                     echo  ' 0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Jun'])) {
-                    echo  number_format($each_item['InterestAccrual']['Jun'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Jun'])) {
+                    echo  number_format($each_item['ReinvestInterestAccrual']['Jun'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Jul'])) {
-                    echo  number_format($each_item['InterestAccrual']['Jul'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Jul'])) {
+                    echo  number_format($each_item['ReinvestInterestAccrual']['Jul'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Aug'])) {
-                    echo   number_format($each_item['InterestAccrual']['Aug'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Aug'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['Aug'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Sep'])) {
-                    echo   number_format($each_item['InterestAccrual']['Sep'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Sep'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['Sep'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Oct'])) {
-                    echo  number_format($each_item['InterestAccrual']['Oct'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Oct'])) {
+                    echo  number_format($each_item['ReinvestInterestAccrual']['Oct'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Nov'])) {
-                    echo   number_format($each_item['InterestAccrual']['Nov'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Nov'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['Nov'], 2);
                 }else{
                     echo  '0.00';
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if (!empty($each_item['InterestAccrual']['Dec'])) {
-                    echo   number_format($each_item['InterestAccrual']['Dec'], 2);
+                        <td align="right" valign="top"><?php if (!empty($each_item['ReinvestInterestAccrual']['Dec'])) {
+                    echo   number_format($each_item['ReinvestInterestAccrual']['Dec'], 2);
                 }else{
                     echo  '0.00';
                 }
@@ -204,7 +200,7 @@ echo $this->Html->script('print.js'); ?>
                                 <td align="right" valign="top"><b>
                             <?php 
                             foreach ($total as $tot):  
-                            if ($tot['InterestAccrual']['investor_id'] == $each_item['InterestAccrual']['investor_id'] && isset($tot[0]['total_interests'])) {
+                            if ($tot['ReinvestInterestAccrual']['reinvestor_id'] == $each_item['ReinvestInterestAccrual']['reinvestor_id'] && isset($tot[0]['total_interests'])) {
                     echo  'GH$ '. number_format($tot[0]['total_interests'], 2);
                 }
                 

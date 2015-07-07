@@ -10,8 +10,8 @@ class ShellConsolesController extends AppController {
     public $components = array('RequestHandler', 'Session', 'Message');
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
-         'Equity',  'Customer','InvestmentCash',
-        'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment',
+         'Equity',  'Customer','InvestmentCash','InterestAccrual',
+        'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment','ReinvestInterestAccrual',
         'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement');
 
     function beforeFilter() {
@@ -271,7 +271,14 @@ function __dailyInterests(){
                     $this->DailyInterestStatement->save($statemt_array);
                     
                      $this->Investment->save($investment_array);
-                    
+                       $interest_accruals = array(
+                        'investor_id' => $value['Investment']['investor_id'],
+                           'investment_id' => $value['Investment']['id'],
+                        'interest_amounts' => round($daily_interest,2),
+                        'interest_date' => $aend_date
+                    );
+                       $this->InterestAccrual->create();
+               $this->InterestAccrual->save($interest_accruals);     
         }
                     
     }
@@ -297,7 +304,7 @@ function __dailyReinvestmentInterests(){
         $new_accrued_interest = $old_accrued_interest + $daily_interest;
         $new_balanced_earned = $investment_amount + $daily_interest;
         $new_total_earned = $investment_amount1 + $daily_interest;
-        $afirst_date = $value['Investment']['investment_date'];
+        $afirst_date = $value['Reinvestment']['investment_date'];
         $ainv_date = new DateTime($afirst_date);
         $aend_date = date('Y-m-d');
         $ato_date = new DateTime($aend_date);
@@ -325,7 +332,14 @@ function __dailyReinvestmentInterests(){
                     $this->DailyReinvestinterestStatement->save($statemt_array);
                     
                      $this->Reinvestment->save($investment_array);
-                    
+                      $interest_accruals = array(
+                        'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
+                           'reinvestment_id' => $value['Reinvestment']['id'],
+                        'interest_amounts' => round($daily_interest,2),
+                        'interest_date' => $date
+                    );
+                      $this->ReinvestInterestAccrual->create();
+               $this->ReinvestInterestAccrual->save($interest_accruals);
         }
                     
     }
