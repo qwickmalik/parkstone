@@ -5,9 +5,10 @@ class ReportsController extends AppController {
 
     public $components = array('RequestHandler', 'Session');
     var $name = 'Reports';
-    var $uses = array('Setting', 'User', 'Currency',  'BalanceSheet', 'IncomeStatement', 'Equity',
-       'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal','Investor','InterestAccrual','ReinvestInterestAccrual',
-        'CashAccount', 'TempcashAccount','Expense','InvestorDeposit','Investment','InvestmentPayment');
+    var $uses = array('Setting', 'User', 'Currency', 'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal',
+        'Investor','InterestAccrual','ReinvestInterestAccrual','TempcashAccount', 'InvestorDeposit','Investment','InvestmentPayment',
+        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'AccountingHead', 'BankBalance', 'BankTransfer', 'StatedBankBalance',
+        );
     var $paginate = array();
 
     function beforeFilter() {
@@ -42,7 +43,20 @@ class ReportsController extends AppController {
             $this->redirect('/Dashboard/');
         }
     }
+    
+    public function getAccountingDate(){
+        $acc_date = null;
+        $setup = $this->Setting->find('first', array());
+        if($setup){
+            $accounting_date = $setup['Setting']['accounting_month'];
+            $acc_date1 = explode('-', $accounting_date);
 
+            $acc_date = '-'.$acc_date1[1].'-'.$acc_date1[2];
+
+            return $acc_date;
+        }  
+    }
+    
     function index() {
         $this->__validateUserType3();
     }
@@ -141,6 +155,7 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         $this->set(compact('formTitle', 'title_for_layout', 'status_msg', 'audit_type_record', 'staff_record_audit', 'audit_search_record', 'btn_review', 'audit_search_record', 'staff', 'record', 'staff_record', 'dependant_record_list'));
     }
 
+/*
     function financialPosition1() {
         if ($this->request->is('ajax')) {
             Configure::write('debug', 0);
@@ -501,7 +516,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         }
     }
 
-    
     public function customerpaymentDetails($order_id = null, $custname = null, $amount_paid = null, $balance = null) {
         $this->__validateUserType3();
         $this->paginate('Payment');
@@ -540,7 +554,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         }
     }
 
-    
     public function searchOrder($sorder = Null) {
 
         $this->autoRender = false;
@@ -588,7 +601,8 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
 
 //        
     }
-        public function clearOrdersearchSessions() {
+    
+    public function clearOrdersearchSessions() {
         $check = $this->Session->check('cscust');
         if (!$check) {
             $message = 'No Customer selected';
@@ -628,9 +642,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
 //            $this->set('data', $order);
 //        }
     }
-
-
-
 
     function groupSales() {
         $this->__validateUserType();
@@ -770,7 +781,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         }
     }
 
-    
     function zonalSales() {
         $this->__validateUserType3();
 
@@ -866,7 +876,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         }
     }
 
-    
     public function precustomerpaymentDetails() {
         $this->__validateUserType3();
         $data = $this->paginate('Customer');
@@ -884,7 +893,7 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         }
     }
     
-         public function clearpresearchSessions() {
+    public function clearpresearchSessions() {
         $check = $this->Session->check('precust');
         if (!$check) {
             $message = 'No Customer selected';
@@ -897,7 +906,6 @@ public function list_audit_trail($startdate = null,$enddate =null,$AUDITTYPE=nul
         $this->redirect(array('controller' => 'Reports', 'action' => 'customerOrderHistory'));
     }
 
-    
     public function searchCustomerDetails($sorder = Null) {
 
         $this->autoRender = false;
@@ -2166,7 +2174,7 @@ if($warehs != "" && $warehs != null){
         }
     }
     
-public function convert2PdfnEmail(){
+    public function convert2PdfnEmail(){
 //            if ($this->request->is('post')) {
 //                        $content = $this->request->data['Expectedinstallment']['content'];
 //                        $email =   $this->request->data['Expectedinstallment']['email'];
@@ -2412,12 +2420,13 @@ public function convert2PdfnEmail(){
         } 
     }
 
-        function redirectTOPettySummByZone() {
+    function redirectTOPettySummByZone() {
 
         $this->autoRender = false;
         $this->redirect('/Reports/pettycashSummByZone/');
     }
-        function redirectTOPettySummByHeading() {
+    
+    function redirectTOPettySummByHeading() {
 
         $this->autoRender = false;
         $this->redirect('/Reports/summByHeading/');
@@ -2459,7 +2468,7 @@ public function convert2PdfnEmail(){
         $this->__validateUserType3();
         
     }
-    
+    */
     function activeInvestments(){
         $this->__validateUserType();
           if ($this->request->is('post')) {
@@ -2973,6 +2982,638 @@ public function convert2PdfnEmail(){
             
             $this->set('year', $year);
             
+        }
+    }
+    
+    function journal() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['Journal']['start_date'] == "" || $this->request->data['Journal']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'journal'));
+            }
+            if ($this->request->data['Journal']['end_date'] == "" || $this->request->data['Journal']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'journal'));
+            }
+
+
+            $st_date = $this->request->data['Journal']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['Journal']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+
+
+            $all_transactions = $this->Transaction->find('all', array(
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array(),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('all_transactions', $all_transactions);
+        }
+    }
+
+    function generalLedger() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['GeneralLedger']['start_date'] == "" || $this->request->data['GeneralLedger']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'generalLedger'));
+            }
+            if ($this->request->data['GeneralLedger']['end_date'] == "" || $this->request->data['GeneralLedger']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'generalLedger'));
+            }
+
+
+            $st_date = $this->request->data['GeneralLedger']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['GeneralLedger']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+
+
+            $all_transactions = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.debit', 'Transaction.credit', 'Transaction.transaction_date', 'AccountingHead.head_name', 'TransactionCategory.category_name', 'Transaction.category_id'),
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('all_transactions', $all_transactions);
+        }
+    }
+
+    function trialBalance() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['TrialBalance']['start_date'] == "" || $this->request->data['TrialBalance']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'trialBalance'));
+            }
+            if ($this->request->data['TrialBalance']['end_date'] == "" || $this->request->data['TrialBalance']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'trialBalance'));
+            }
+
+
+            $st_date = $this->request->data['TrialBalance']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['TrialBalance']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+
+
+            $all_transactions = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.debit', 'Transaction.credit', 'Transaction.transaction_date', 'AccountingHead.head_name', 'TransactionCategory.category_name', 'Transaction.category_id'),
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('all_transactions', $all_transactions);
+        }
+    }
+
+    function balanceSheet() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['BalanceSheet']['year'] == "" || $this->request->data['BalanceSheet']['year'] == null) {
+                $message = 'Please indicate Year';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
+            }
+            
+
+            $year = $this->request->data['BalanceSheet']['year']['year'];
+            
+            $acc_date = $this->getAccountingDate();
+            $this->set('acc_date', $acc_date);
+            if($acc_date == '-00-00' || $acc_date == null || $acc_date == ''){
+                $message = 'Please set accounting date in SETTINGS > COMPANY SETUP';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
+            } else{
+                $end_date = $year.$acc_date;
+                
+                $date = DateTime::createFromFormat('Y-m-d', $end_date);
+                $statement_date = $date->format('F d, Y');
+                
+                $start_year = $year - 1;
+                $start_date = $start_year.$acc_date;
+                
+                $edate = DateTime::createFromFormat('Y-m-d', $end_date);
+                $e_date = $edate->format('d-M-y');
+                $sdate = DateTime::createFromFormat('Y-m-d', $start_date);
+                $s_date = $sdate->format('d-M-y');
+                
+                
+                $prev_start_year = $year - 2;
+                $prev_date = $prev_start_year.$acc_date;
+                
+                //requested year
+                $asset_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+                
+                $accu_depre = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+
+                $liability_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+
+                $oe_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+                
+                
+                //previous year
+                $prev_asset_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $start_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+                
+                $prev_accu_depre = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $start_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+
+                $prev_liability_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($prev_date, $start_date), 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+
+                $prev_oe_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                    'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($prev_date, $start_date), 'Transaction.delete' => 0),
+                    'group' => array('Transaction.category_id'),
+                ));
+
+
+                $this->set('s_date', $s_date);
+                $this->set('e_date', $e_date);
+                $this->set('statement_date', $statement_date);
+                $this->set('asset_data', $asset_data);
+                $this->set('accu_depre', $accu_depre);
+                $this->set('liability_data', $liability_data);
+                $this->set('oe_data', $oe_data);
+                $this->set('prev_asset_data', $prev_asset_data);
+                $this->set('prev_accu_depre', $prev_accu_depre);
+                $this->set('prev_liability_data', $prev_liability_data);
+                $this->set('prev_oe_data', $prev_oe_data);
+                
+                
+            }
+            
+
+            
+        }
+    }
+    
+    function aggregateIndebtedness() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['BalanceSheet']['start_date'] == "" || $this->request->data['BalanceSheet']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
+            }
+            if ($this->request->data['BalanceSheet']['end_date'] == "" || $this->request->data['BalanceSheet']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
+            }
+
+
+            $st_date = $this->request->data['BalanceSheet']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['BalanceSheet']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+            $asset_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+            $accu_depre = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $liability_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+            $oe_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('asset_data', $asset_data);
+            $this->set('accu_depre', $accu_depre);
+            $this->set('liability_data', $liability_data);
+            $this->set('oe_data', $oe_data);
+        }
+    }
+    
+    function incomeStatement() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['IncomeStatement']['start_date'] == "" || $this->request->data['IncomeStatement']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'incomeStatement'));
+            }
+            if ($this->request->data['IncomeStatement']['end_date'] == "" || $this->request->data['IncomeStatement']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'incomeStatement'));
+            }
+
+
+            $st_date = $this->request->data['IncomeStatement']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['IncomeStatement']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+            $income_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $expense_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('income_data', $income_data);
+            $this->set('expense_data', $expense_data);
+        }
+    }
+
+    function cashFlow() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['IncomeStatement']['start_date'] == "" || $this->request->data['IncomeStatement']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'incomeStatement'));
+            }
+            if ($this->request->data['IncomeStatement']['end_date'] == "" || $this->request->data['IncomeStatement']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'incomeStatement'));
+            }
+
+
+            $st_date = $this->request->data['IncomeStatement']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['IncomeStatement']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+
+            $income_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $expense_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('income_data', $income_data);
+            $this->set('expense_data', $expense_data);
+        }
+    }
+    
+    function ownersEquity() {
+        $this->__validateUserType();
+
+        if ($this->request->is('post')) {
+            if ($this->request->data['OwnersEquity']['start_date'] == "" || $this->request->data['OwnersEquity']['start_date'] == null) {
+                $message = 'Please indicate Start Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'ownersEquity'));
+            }
+            if ($this->request->data['OwnersEquity']['end_date'] == "" || $this->request->data['OwnersEquity']['end_date'] == null) {
+                $message = 'Please indicate End Date';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'ownersEquity'));
+            }
+
+
+            $st_date = $this->request->data['OwnersEquity']['start_date'];
+            $st_day = $st_date['day'];
+            $st_month = $st_date['month'];
+            $st_year = $st_date['year'];
+            $start_date = $st_year . '-' . $st_month . '-' . $st_day;
+
+            $e_date = $this->request->data['OwnersEquity']['end_date'];
+            $e_day = $e_date['day'];
+            $e_month = $e_date['month'];
+            $e_year = $e_date['year'];
+            $end_date = $e_year . '-' . $e_month . '-' . $e_day;
+//            $end_date = implode('-', $e_date);
+
+            $income_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+
+            $expense_data = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+            $oe_investment = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+            $oe_withdrawal = $this->Transaction->find('all', array(
+                'fields' => array('SUM(Transaction.debit) AS sum_debit', 'Transaction.category_id', 'TransactionCategory.category_name'),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'group' => array('Transaction.category_id'),
+            ));
+
+            $this->set('start_date', $start_date);
+            $this->set('end_date', $end_date);
+            $this->set('income_data', $income_data);
+            $this->set('expense_data', $expense_data);
+            $this->set('oe_investment', $oe_investment);
+            $this->set('oe_withdrawal', $oe_withdrawal);
+        }
+    }
+
+    function getStatementDates() {
+
+//        $this->set('statement_dates', $statement_dates);
+        $this->autoRender = false;
+        $this->autoLayout = false;
+
+        if ($this->request->is('ajax')) {
+
+
+            if (!empty($_POST['ID'])) {
+
+                $ID = $_POST['ID'];
+                $statements = $this->StatedBankBalance->find('all', array('fields' => array('id', 'statement_date'), 'conditions' => array('StatedBankBalance.account_id' => $ID)));
+
+                if ($statements) {
+//                    foreach ($statements as $each):
+//                        $statement_dates[] = $each['StatedBankBalance']['statement_date'];
+//                    endforeach;
+                    $itemLsts = json_encode($statements);
+                    return $itemLsts;
+                }else {
+                    $message = 'Please select a Statement Date';
+                    $this->Session->write('imsg', $message);
+                    $error = json_encode(array("error" => "No Data For Account"));
+                    return $error;
+                }
+            } else {
+                $error = json_encode(array("error" => "INVALID SELECTION"));
+                return $error;
+            }
+        }
+    }
+
+    function bankReconciliation() {
+        $this->__validateUserType();
+//        $accounts = $this->CashAccount->find('list');
+//        $this->set('accounts', $accounts);
+        $accounts = $this->CashAccount->find('all', array('fields' => array('id', 'Bank.bank_name', 'account_no', 'Zone.zone')));
+        foreach ($accounts as $each_item):
+            $list[$each_item['CashAccount']['id']] = $each_item['Zone']['zone'] . ' -- ' . $each_item['CashAccount']['account_no'];
+        endforeach;
+        $this->set('accounts', $list);
+
+
+
+
+        if ($this->request->is('post')) { //if form submitted
+            $account_id = $this->request->data['Account']['account_id'];
+
+            if ($account_id != "" || $account_id != null) { //if a bank account is selected
+                $this->set('balance_details', $this->StatedBankBalance->find('all', array('fields' => array('StatedBankBalance.statement_date'), 'conditions' => array('StatedBankBalance.account_id' => $account_id))));
+
+
+
+
+
+
+
+                if ($this->request->data['Account']['statement_date'] != "" || $this->request->data['Account']['statement_date'] != null) { //if both bank account and bank statement balance date are selected
+                    $statement_date = $this->request->data['Account']['statement_date'];
+                    $statement_date = date('Y-m-d',strtotime($statement_date));
+                    $stated_balance = $this->StatedBankBalance->find('all', array(
+                        'fields' => array('SUM(StatedBankBalance.amount) AS sum_amount'),
+                        'conditions' => array('StatedBankBalance.statement_date' => $statement_date, 'StatedBankBalance.account_id' => $account_id),
+                    ));
+//                    
+//                    $received_sum = $this->BankTransfer->find('all', array(
+//                        'fields' => array('SUM(BankTransfer.amount) AS sum_amount'),
+//                        'conditions' => array('BankTransfer.transfer_date <=' => $statement_date, 'BankTransfer.dest_account_id' => $account_id),
+//                        ));
+//                    
+//                    $transferred_sum = $this->BankTransfer->find('all', array(
+//                        'fields' => array('SUM(BankTransfer.amount) AS sum_amount'),
+//                        'conditions' => array('BankTransfer.transfer_date <=' => $statement_date, 'BankTransfer.source_account_id' => $account_id),
+//                        ));
+//                    
+//                    $income = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.amount) AS sum_amount'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 1),
+//                        ));
+//                    
+//                    $expenses = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.amount) AS sum_amount'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 2),
+//                        ));
+                    $cash = $this->BankBalance->find('first', array(
+                        'conditions' => array('BankBalance.created <=' => $statement_date, 'BankBalance.account_id' => $account_id),
+                        'order' => array('BankBalance.id' => 'DESC'),
+                    ));
+
+
+
+
+//                    $balance_per_books = $income[0][0]['sum_amount'] - $expenses[0][0]['sum_amount'] + $received_sum[0][0]['sum_amount'] - $transferred_sum[0][0]['sum_amount'];
+
+                    $balance_per_books = $cash['BankBalance']['amount'];
+
+                    $uncleared_receive_cheques = $this->BankTransfer->find('all', array(
+                        'fields' => array('SUM(BankTransfer.amount) AS sum_amount', 'cheque_no', 'amount'),
+                        'conditions' => array('BankTransfer.transfer_date <=' => $statement_date, 'BankTransfer.dest_account_id' => $account_id, 'BankTransfer.cheque_no !=' => '', 'BankTransfer.cheque_no !=' => null, 'BankTransfer.cheque_cleared' => 0,
+                    )));
+                    $uncleared_payout_cheques = $this->BankTransfer->find('all', array(
+                        'fields' => array('SUM(BankTransfer.amount) AS sum_amount', 'cheque_no', 'amount'),
+                        'conditions' => array('BankTransfer.transfer_date <=' => $statement_date, 'BankTransfer.source_account_id' => $account_id, 'BankTransfer.cheque_no !=' => '', 'BankTransfer.cheque_no !=' => null, 'BankTransfer.cheque_cleared' => 0,
+                    )));
+//                    $uncleared_income_cheques = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.amount) AS sum_amount', 'cheque_no', 'amount'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 1,'Transaction.cheque_no !=' => '', 'Transaction.cheque_no !=' => null, 'Transaction.cheque_cleared' => 0),
+//                        ));
+//                    $uncleared_expense_cheques = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.amount) AS sum_amount', 'cheque_no', 'amount'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.cheque_no !=' => '', 'Transaction.cheque_no !=' => null, 'Transaction.head_id' => 2, 'Transaction.cheque_cleared' => 0),
+//                        ));
+//                    $uncleared_oe_inv_cheques = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.credit) AS sum_amount', 'cheque_no', 'amount', 'credit'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 3, 'Transaction.cheque_no !=' => '','Transaction.cheque_no !=' => null, 'Transaction.cheque_cleared' => 0),
+//                        ));
+//                    $uncleared_oe_exp_cheques = $this->Transaction->find('all', array(
+//                        'fields' => array('SUM(Transaction.debit) AS sum_amount', 'cheque_no', 'amount', 'debit'),
+//                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.cheque_no !=' => '', 'Transaction.cheque_no !=' => null, 'Transaction.head_id' => 3, 'Transaction.cheque_cleared' => 0),
+//                        ));
+                    $uncleared_cash_asset_debit_cheques = $this->Transaction->find('all', array(
+                        'fields' => array('SUM(Transaction.debit) AS sum_amount', 'cheque_no', 'amount', 'debit'),
+                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 4, 'Transaction.category_id' => 101, 'Transaction.cheque_no !=' => '', 'Transaction.cheque_no !=' => null, 'Transaction.cheque_cleared' => 0),
+                    ));
+                    $uncleared_cash_asset_credit_cheques = $this->Transaction->find('all', array(
+                        'fields' => array('SUM(Transaction.credit) AS sum_amount', 'cheque_no', 'amount', 'credit'),
+                        'conditions' => array('Transaction.transaction_date <=' => $statement_date, 'Transaction.account_id' => $account_id, 'Transaction.head_id' => 4, 'Transaction.category_id' => 101, 'Transaction.cheque_no !=' => null, 'Transaction.cheque_cleared' => 0),
+                    ));
+
+
+                    $total_deposit_cheques_in_transit = $uncleared_receive_cheques + $uncleared_cash_asset_debit_cheques;
+
+
+                    $this->set('statement_date', $statement_date);
+                    $this->set('stated_balance', $stated_balance);
+                    $this->set('balance_per_books', $balance_per_books);
+                    $this->set('uncleared_receive_cheques', $uncleared_receive_cheques);
+                    $this->set('uncleared_payout_cheques', $uncleared_payout_cheques);
+//                    $this->set('uncleared_income_cheques', $uncleared_income_cheques);
+//                    $this->set('uncleared_expense_cheques', $uncleared_expense_cheques);
+//                    $this->set('uncleared_oe_inv_cheques', $uncleared_oe_inv_cheques);
+//                    $this->set('uncleared_oe_exp_cheques', $uncleared_oe_exp_cheques);
+                    $this->set('uncleared_cash_asset_debit_cheques', $uncleared_cash_asset_debit_cheques);
+                    $this->set('uncleared_cash_asset_credit_cheques', $uncleared_cash_asset_credit_cheques);
+                    $this->set('total_deposit_cheques_in_transit', $total_deposit_cheques_in_transit);
+                } else {//only bank account selected. give info on what to do next.
+                    $message = 'Please select a Statement Date';
+                    $this->Session->write('imsg', $message);
+//                    $this->redirect(array('controller' => 'Reports', 'action' => 'bankReconciliation'));    
+                }
+            } else {//no bank account selected
+                $message = 'Please select an Account';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Reports', 'action' => 'bankReconciliation'));
+            }
         }
     }
 }

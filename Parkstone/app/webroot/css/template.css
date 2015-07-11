@@ -49,7 +49,23 @@ a #dashboard:hover{
     padding: 5px 5px 5px 5px;
 }
 
+.myradio{
+    width: 50px;
+    
+}
 
+legend {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 0px;
+  line-height: inherit;
+  font-weight: bold;
+  font-size: 14px;
+  color: #72879c;
+  margin: 10px 0px;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
 #settingsbox{
     float: left;
 	width: 300px;

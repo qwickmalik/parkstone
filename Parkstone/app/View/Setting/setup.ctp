@@ -1,4 +1,7 @@
-<?php echo $this->element('header'); ?>
+<?php 
+echo $this->element('header'); 
+echo $this->Html->script('jquery.js');
+?>
 
 <!-- Content starts here -->
 <h3>Settings: Company Setup</h3>
@@ -85,17 +88,17 @@
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <td align="right"><b>Accounting Year Starts:</b></td>
+                    <td align="right"><b>Accounting Year Begins:</b></td>
                     <td>
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <?php echo $this->Form->day('accounting_month', array()); ?>
+                                <?php echo $this->Form->day('accounting_month', array('required')); ?>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <?php echo $this->Form->month('accounting_month', array("selected" => $month, 'empty' => $month)); ?>
+                                <?php echo $this->Form->month('accounting_month', array('required', "selected" => $month, 'empty' => $month)); ?>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <?php echo $this->Form->year('accounting_month', 2000, date('Y'), array()); ?>
+                                <?php echo $this->Form->year('accounting_month', 2000, date('Y'), array('required')); ?>
                             </div>
                         </div>
 
