@@ -25,14 +25,14 @@ class Bank extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-//        'BankBalance' => array(
-//            'className' => 'BankBalance',
-//            'foreignKey' => 'bank_id',
-//            'conditions' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'dependent' => true
-//            ),
+        'BankBalance' => array(
+            'className' => 'BankBalance',
+            'foreignKey' => 'bank_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
         );
     
 }

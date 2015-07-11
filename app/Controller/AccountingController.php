@@ -1379,7 +1379,7 @@ class AccountingController extends AppController {
         }
     }
     
-    function ownerEquity($transactionid = NULL) {
+    function ownerEquity($transaction_id = NULL) {
         $this->__validateUserType();
         $data = $this->paginate('Transaction', array('Transaction.head_id' => 3, 'Transaction.delete' => 0));
         $this->set('data', $data);
@@ -1404,8 +1404,8 @@ class AccountingController extends AppController {
         //Check user privilege and show relevant repository
         $this->showRelevantRepository();
         
-        if ($transactionid != null && $transactionid != '') {
-            $this->set('ex', $this->Transaction->find('first', ['conditions' => ['Transaction.id' => $transactionid]]));
+        if ($transaction_id != null && $transaction_id != '') {
+            $this->set('ex', $this->Transaction->find('first', ['conditions' => ['Transaction.id' => $transaction_id]]));
         } else {
             if ($this->request->is('post')) {
                 //set logged in user
@@ -1437,7 +1437,7 @@ class AccountingController extends AppController {
                         'conditions' => ['CashAccount.id' => $sacct_id]
                     ]);
                     $old_cash = $this->request->data['Transaction']['old_amount'];
-                    $transactionid = $this->request->data['Transaction']['id'];
+                    $transaction_id = $this->request->data['Transaction']['id'];
                     
                         if ($sbank_data) {
                             
@@ -1466,15 +1466,15 @@ class AccountingController extends AppController {
 
                                     case '1': //Increase or deposit
                                                 $sbb_bal = $sbb_bal + $cash;
-                                                $sbankBal_array = array('id' => '', 'account_id' => $sacct_id,
+                                                $sbankBal_array = array('id' => '', 'bank_id' => $sbank_data['CashAccount']['bank_id'],'account_id' => $sacct_id,
                                                     'amount' => $sbb_bal, 'user' => $user, 'created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
                                                 /*
-//                                                $this->Transaction->delete($transactionid, false);
+//                                                $this->Transaction->delete($transaction_id, false);
 //                                                $this->request->data['Transaction']['credit'] = $this->request->data['Transaction']['amount'];
 //                                                $result = $this->Transaction->save($this->request->data);
 //                                                $result1 = $this->BankBalance->save($sbankBal_array);
                                                 */
-                                                $trans = $this->Transaction->find('first', array('conditions' => array('Transaction.id' => $transactionid)));
+                                                $trans = $this->Transaction->find('first', array('conditions' => array('Transaction.id' => $transaction_id)));
                                                 $trans_asset = $this->Transaction->find('first', array(
                                                     'conditions' => array(
                                                         'Transaction.random_salt' => $trans['Transaction']['random_salt'], 
@@ -1519,12 +1519,12 @@ class AccountingController extends AppController {
                                                 $sbankBal_array = array('id' => '', 'account_id' => $sacct_id,
                                                     'amount' => $sbb_bal, 'user' => $user, 'created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
                                                 /*
-                                                $this->Transaction->delete($transactionid, false);
+                                                $this->Transaction->delete($transaction_id, false);
                                                 $this->request->data['Transaction']['debit'] = $this->request->data['Transaction']['amount'];
                                                 $result = $this->Transaction->save($this->request->data);
                                                 $result1 = $this->BankBalance->save($sbankBal_array);
                                                 */
-                                                $trans = $this->Transaction->find('first', array('conditions' => array('Transaction.id' => $transactionid)));
+                                                $trans = $this->Transaction->find('first', array('conditions' => array('Transaction.id' => $transaction_id)));
                                                 $trans_asset = $this->Transaction->find('first', array(
                                                     'conditions' => array(
                                                         'Transaction.random_salt' => $trans['Transaction']['random_salt'], 
@@ -1589,7 +1589,7 @@ class AccountingController extends AppController {
 
                                     case '1': //Increase or deposit
                                                 $sbb_bal = $sbankBal['BankBalance']['amount'] + $cash;
-                                                $sbankBal_array = array('id' => '', 'account_id' => $sacct_id,
+                                                $sbankBal_array = array('id' => '', 'bank_id' => $sbank_data['CashAccount']['bank_id'],'account_id' => $sacct_id,
                                                     'amount' => $sbb_bal, 'user' => $user, 'created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
                                                 
                                                 /*
@@ -2959,81 +2959,81 @@ class AccountingController extends AppController {
 
 
         $this->set('users', $this->User->find('list', array('conditions' => array('User.usertype_id IN (1,7,8)'))));
-
-        $accounts = $this->CashAccount->find('all', array('fields' => array('id', 'Bank.bank_name', 'account_no', 'Zone.zone')));
-        foreach ($accounts as $each_item) {
-            $list[$each_item['CashAccount']['id']] = $each_item['Zone']['zone'] . ' -- ' . $each_item['CashAccount']['account_no'] . ' (' . $each_item['Bank']['bank_name'] . ') ';
-        }
-        $this->set('accounts', $list);
-
-
-        if ($balanceid != null && $balanceid != '') { //request to edit record
-            $this->set('ex', $this->BankBalance->find('first', ['conditions' => ['BankBalance.id' => $balanceid]]));
-        } else {//request to save new or edited record
-            if ($this->request->is('post')) {
-                /* input validations */
-                if ($this->request->data['BankBalance']['statement_date'] == "" || $this->request->data['BankBalance']['statement_date'] == null) {
-                    $message = 'Please enter Statement Date';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                }
-                if ($this->request->data['BankBalance']['account_id'] == "" || $this->request->data['BankBalance']['account_id'] == null) {
-                    $message = 'Please Select an Account';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                }
-                if ($this->request->data['BankBalance']['balance'] == "" || $this->request->data['BankBalance']['balance'] == null) {
-                    $message = 'Please Enter Balance';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                }
-                /* end input validations */
-
-                if (!empty($this->request->data['BankBalance']['id'])) { //save edited record
-                    $balanceid = $this->request->data['BankBalance']['id'];
-
-                    $this->BankBalance->delete($balanceid, false);
-                    $result = $this->BankBalance->save($this->request->data);
-
-                    if ($result) {
-                        $this->request->data = null;
-
-                        $message = 'Stated Bank Balance Updated';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                    } else {
-                        $message = 'Could not update Stated Bank Balance';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                    }
-                } else { //save new record
-                    $account_id = $this->request->data['BankBalance']['account_id'];
-                    $acc_info = $this->BankBalance->find('first', array(
-                        'conditions' => array('BankBalance.account_id' => $account_id), 'recursive' => -1));
-                    if ($acc_info) {
-//                        pr($acc_info);
-//                        exit;
-                        $this->request->data['BankBalance']['id'] = $acc_info['BankBalance']['id'];
-                        $result = $this->BankBalance->save($this->request->data);
-                    } else {
-                        $result = $this->BankBalance->save($this->request->data);
-                    }
+//
+//        $accounts = $this->CashAccount->find('all', array('fields' => array('id', 'Bank.bank_name', 'account_no', 'Zone.zone')));
+//        foreach ($accounts as $each_item) {
+//            $list[$each_item['CashAccount']['id']] = $each_item['Zone']['zone'] . ' -- ' . $each_item['CashAccount']['account_no'] . ' (' . $each_item['Bank']['bank_name'] . ') ';
+//        }
+//        $this->set('accounts', $list);
+//
+//
+//        if ($balanceid != null && $balanceid != '') { //request to edit record
+//            $this->set('ex', $this->BankBalance->find('first', ['conditions' => ['BankBalance.id' => $balanceid]]));
+//        } else {//request to save new or edited record
+//            if ($this->request->is('post')) {
+//                /* input validations */
+//                if ($this->request->data['BankBalance']['statement_date'] == "" || $this->request->data['BankBalance']['statement_date'] == null) {
+//                    $message = 'Please enter Statement Date';
+//                    $this->Session->write('emsg', $message);
+//                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                }
+//                if ($this->request->data['BankBalance']['account_id'] == "" || $this->request->data['BankBalance']['account_id'] == null) {
+//                    $message = 'Please Select an Account';
+//                    $this->Session->write('emsg', $message);
+//                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                }
+//                if ($this->request->data['BankBalance']['balance'] == "" || $this->request->data['BankBalance']['balance'] == null) {
+//                    $message = 'Please Enter Balance';
+//                    $this->Session->write('emsg', $message);
+//                    $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                }
+//                /* end input validations */
+//
+//                if (!empty($this->request->data['BankBalance']['id'])) { //save edited record
+//                    $balanceid = $this->request->data['BankBalance']['id'];
+//
+//                    $this->BankBalance->delete($balanceid, false);
 //                    $result = $this->BankBalance->save($this->request->data);
-
-                    if ($result) {
-                        $this->request->data = null;
-
-                        $message = 'Stated Bank Balance successfully added';
-                        $this->Session->write('smsg', $message);
-                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                    } else {
-                        $message = 'Could not add new Stated Bank Balance. Please report to System Administrator';
-                        $this->Session->write('emsg', $message);
-                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
-                    }
-                }
-            }
-        }
+//
+//                    if ($result) {
+//                        $this->request->data = null;
+//
+//                        $message = 'Stated Bank Balance Updated';
+//                        $this->Session->write('smsg', $message);
+//                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                    } else {
+//                        $message = 'Could not update Stated Bank Balance';
+//                        $this->Session->write('emsg', $message);
+//                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                    }
+//                } else { //save new record
+//                    $account_id = $this->request->data['BankBalance']['account_id'];
+//                    $acc_info = $this->BankBalance->find('first', array(
+//                        'conditions' => array('BankBalance.account_id' => $account_id), 'recursive' => -1));
+//                    if ($acc_info) {
+////                        pr($acc_info);
+////                        exit;
+//                        $this->request->data['BankBalance']['id'] = $acc_info['BankBalance']['id'];
+//                        $result = $this->BankBalance->save($this->request->data);
+//                    } else {
+//                        $result = $this->BankBalance->save($this->request->data);
+//                    }
+////                    $result = $this->BankBalance->save($this->request->data);
+//
+//                    if ($result) {
+//                        $this->request->data = null;
+//
+//                        $message = 'Bank Balance successfully added';
+//                        $this->Session->write('smsg', $message);
+//                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                    } else {
+//                        $message = 'Could not add new Stated Bank Balance. Please report to System Administrator';
+//                        $this->Session->write('emsg', $message);
+//                        $this->redirect(array('controller' => 'Accounting', 'action' => 'bankBalances'));
+//                    }
+//                }
+//            }
+//        }
     }
 
     function delBankBalance($balanceid = Null) {

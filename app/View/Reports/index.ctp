@@ -47,22 +47,28 @@
                 <?php
                 //Bank Accounts
                 $bank_accounts = array(
-                    $this->Html->link('Link','/Reports/', array('escape' => false)),
-                    $this->Html->link('Link','/Reports/', array('escape' => false)),
-                    $this->Html->link('Link','/Reports/', array('escape' => false)),
+                    $this->Html->link('Cash/Bank Balances','/Accounting/bankBalances', array('escape' => false)),
+                    $this->Html->link('Stated Bank Balances','/Reports/', array('escape' => false)),
                      );
-                echo '<p class="subtitle-blue">Bank Accounts</p>';
-               // echo $this->Html->nestedList($bank_accounts, array('class' => 'square'), $tag = 'ul');
+                echo '<p class="subtitle-blue">Cash/Bank Accounts</p>';
+                echo $this->Html->nestedList($bank_accounts, array('class' => 'square'), $tag = 'ul');
                  
                 
                 //Financial Statements
                 $financial_statements = array(
-                    $this->Html->link('Income Statement','/Reports/', array('escape' => false)),
-                    $this->Html->link('Statement of Financial Position','/Reports/', array('escape' => false)),
-                    $this->Html->link('Owner Equity Statement','/Reports/', array('escape' => false)),
+//                    $this->Html->link('Journal', '/Reports/journal', array('escape' => false)),
+//                    $this->Html->link('General Ledger', '/Reports/generalLedger', array('escape' => false)),
+//                    $this->Html->link('Trial Balance', '/Reports/trialBalance', array('escape' => false)),
+
+                    $this->Html->link('Balance Sheet', '/Reports/balanceSheet', array('escape' => false)),
+                    $this->Html->link('Income Statement', '/Reports/incomeStatement', array('escape' => false)),
+                    $this->Html->link('Cash Flow Statement', '/Reports/cashFlow', array('escape' => false)),
+                    $this->Html->link('Statement of Owners Equity', '/Reports/ownersEquity', array('escape' => false)),
+                    $this->Html->link('Aggregate Indebtedness', '/Reports/aggregateIndebtedness', array('escape' => false)),
+                    $this->Html->link('Bank Reconciliation Statement', '/Reports/bankReconciliation', array('escape' => false)),
                      );
                 echo '<p class="subtitle-blue">Financial Statements</p>';
-                //echo $this->Html->nestedList($financial_statements, array('class' => 'square'), $tag = 'ul');
+                echo $this->Html->nestedList($financial_statements, array('class' => 'square'), $tag = 'ul');
                  
                 
                 

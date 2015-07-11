@@ -22,8 +22,9 @@
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              
                 <?php
-                echo $this->Form->radio('is_local', array("0" => "No", "1" => "Yes"), array('value' => '0', "label" => "Local Currency", 'class' => 'iradio_flat-blue'));
+                echo $this->Form->radio('is_local', array("0" => "No", "1" => "Yes"), array('value' => isset($curr['Currency']['is_local']) ? $curr['Currency']['is_local'] : '', "label" => "Local Currency", 'class' => 'myradio'));
 
                 echo $this->Form->button('Save', array("type" => "submit", "id" => "custCatBtn", "class" => "btn btn-lg btn-success", 'style' => 'float: right;'));
                 ?>

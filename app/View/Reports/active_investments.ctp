@@ -85,32 +85,7 @@ if ($this->Session->check('shopCurrency')) {
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
             
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
-                <?php
-//                echo $this->Element('logo_reports');
-//                echo "<H3><b>PARKSTONE CAPITAL LIMITED</b></H3>";
-//                $postaladd = 'Postal Address: ';
-//
-//                if ($this->Session->check('shopAddress')) {
-//                    $shopAddress = $this->Session->read('shopAddress');
-//                    $postaladd .=$shopAddress;
-//                    if ($this->Session->check('shopPosttown')) {
-//                        $shopPosttown = $this->Session->read('shopPosttown');
-//
-//                        // $postaladd .= ', '.$shopPosttown;
-//                    }
-//                    if ($this->Session->check('shopPostCity')) {
-//                        $shopPostCity = $this->Session->read('shopPostCity');
-//                        $postaladd .= ', ' . $shopPostCity;
-//                    }
-//                    if ($this->Session->check('shopPostCount')) {
-//                        $shopPostCount = $this->Session->read('shopPostCount');
-//                        $postaladd .= ', ' . $shopPostCount;
-//                    }
-//                    echo "<p>" . $postaladd . "</p>";
-//                }
-//
-//                echo "<p><b>ACTIVE INVESTMENTS LIST</b></p>";
-                ?>
+                
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         &nbsp;
