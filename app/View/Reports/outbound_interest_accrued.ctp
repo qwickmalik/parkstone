@@ -14,9 +14,14 @@ echo $this->Html->script('print.js'); ?>
             echo $this->Form->create('ReinvestInterestAccrual', array('url' => array('controller' => 'Reports', 'action' => 'outboundInterestAccrued')));
             ?>
             <div class="row" style="background: #eaeaea; padding: 10px 0px 5px 0px;">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                   <?php echo $this->Form->input('investmentdestination_id', array('required',"empty" => "--Select Investment Destination--",'label' => false )); ?>&nbsp;
+                </div>
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                 
-                <div class="col-lg-3 col-md-3 col-sm-12">
+              
+                
+              
                     <?php
 //                    $month = date('m');
 //                    $day = date('d');
@@ -25,14 +30,9 @@ echo $this->Html->script('print.js'); ?>
                     <input type="hidden" id="month" value="<?php // echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php // echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php // echo $this->Form->day('report_date', array("selected" => $day)); ?>&nbsp;
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-12">
-                    <?php // echo $this->Form->month('report_date', array("selected" => $month)); ?>&nbsp;
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-12">
+                   
                     <?php echo $this->Form->year('report_date', 2009, date('Y'), array("selected" => $Year)); ?>
-                </div>
+                
                 <script>
 //                    var day = $("#day").val();
 //                    var month = $("#month").val();
@@ -210,12 +210,27 @@ echo $this->Html->script('print.js'); ?>
                             </b></td>
                     </tr>
                               <?php
-    
     endforeach;
+    }else {
  ?>
+                    <tr>
+                        <td colspan="15">
+                         <div class="alert alert-warning">
+                        <h4><i class="icon-remove"></i> NO ACCRUED RECORDS FOUND FOR THIS SEARCH. </h4>
+                    </div>   
+                            
+                        </td> 
+                    </tr>
+                       
+                <?php } ?>
                 </table>
+               
+                 
             </div>
-              <div class="pagination">
+             
+            
+           
+             <div class="pagination">
                                  <table>
                                 <tbody>
                        
@@ -241,8 +256,7 @@ echo $this->Html->script('print.js'); ?>
                                     <li><a href="#">Next</a></li>
                                 </ul>-->
                             </div>
-            <?php
-                         }
+              <?php  
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
