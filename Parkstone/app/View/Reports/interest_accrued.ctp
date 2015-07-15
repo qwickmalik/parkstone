@@ -215,11 +215,26 @@ echo $this->Html->script('print.js'); ?>
                     </tr>
                               <?php
     
-    endforeach;
-?>
+    endforeach;  }else {
+ ?>
+                    <tr>
+                        <td colspan="15">
+                         <div class="alert alert-warning">
+                        <h4><i class="icon-remove"></i> NO ACCRUED RECORDS FOUND FOR THIS SEARCH. </h4>
+                    </div>   
+                            
+                        </td> 
+                    </tr>
+                       
+                <?php } ?>
                 </table>
+               
+                 
             </div>
-              <div class="pagination">
+             
+            
+           
+             <div class="pagination">
                                  <table>
                                 <tbody>
                        
@@ -245,15 +260,12 @@ echo $this->Html->script('print.js'); ?>
                                     <li><a href="#">Next</a></li>
                                 </ul>-->
                             </div>
-            
-            <?php
-                         }
+              <?php  
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));
             ?>
         </div>
-       
     </div>
     <!-- Content end here -->
 <?php echo $this->element('footer'); ?>
