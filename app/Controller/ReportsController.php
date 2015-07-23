@@ -3166,7 +3166,7 @@ if($warehs != "" && $warehs != null){
 			$year = $this->request->data['BalanceSheet']['year']['year'];
 			
 			$acc_date = $this->getAccountingDate();
-			$this->set('acc_date', $acc_date);
+//			$this->set('acc_date', $acc_date);
 			if($acc_date == '-00-00' || $acc_date == null || $acc_date == ''){
 				$message = 'Please set accounting date in SETTINGS > COMPANY SETUP';
 				$this->Session->write('emsg', $message);
@@ -3177,23 +3177,25 @@ if($warehs != "" && $warehs != null){
 				$date = DateTime::createFromFormat('Y-m-d', $end_date);
 				$statement_date = $date->format('F d, Y');
 				
-				$start_year = $year - 1;
+				$start_year = strval($year - 1);
 				$start_date = $start_year.$acc_date;
-				
+//                                $this->set('start_date', $start_date);
+//                                $this->set('end_date', $end_date);
+                                
 				$edate = DateTime::createFromFormat('Y-m-d', $end_date);
 				$e_date = $edate->format('d-M-y');
 				$sdate = DateTime::createFromFormat('Y-m-d', $start_date);
 				$s_date = $sdate->format('d-M-y');
 				
 				
-				$prev_start_year = $year - 2;
+				$prev_start_year = strval($year - 2);
 				$prev_date = $prev_start_year.$acc_date;
 				
 				//requested year
 				$asset_data = $this->Transaction->find('all', array(
-					'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-					'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
-					'group' => array('Transaction.category_id'),
+					'fields' => array(/*'SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit',*/ 'Transaction.category_id', 'TransactionCategory.category_name', 'Transaction.transaction_date', 'Transaction.debit', 'Transaction.credit'),
+					'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
+					'group' => array(/*'Transaction.category_id'*/),
 				));
 				
 				$accu_depre = $this->Transaction->find('all', array(
@@ -3240,7 +3242,18 @@ if($warehs != "" && $warehs != null){
 					'group' => array('Transaction.category_id'),
 				));
 
-
+                                $categories = $this->TransactionCategory->find('list', array('conditions' => array('TransactionCategory.head_id' => 4)));
+                                
+//                                $x=0;
+//                                foreach ($asset_data as $each_item):
+//                                    $malik = array(
+//                                        $x => array($each_item['TransactionCategory']['category_name'], $each_item['TransactionCategory']['amount'], 3000),
+//                                    );
+//                                    $x++;
+//                                endforeach;
+                                
+                                $this->set('categories', $categories);
+                                
 				$this->set('s_date', $s_date);
 				$this->set('e_date', $e_date);
 				$this->set('statement_date', $statement_date);

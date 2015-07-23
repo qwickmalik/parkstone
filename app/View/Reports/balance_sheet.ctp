@@ -45,6 +45,23 @@ if (isset($asset_data) && isset($liability_data)) {
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         &nbsp;
+                        <?php
+//                        $malik = array(
+//                            1 => array('Cash Asset', 2000, 3000),
+//                            2 => array('Fixed Asset', 1000, 4000),
+//                            3 => array('Accounts Receivable', 3000, 2000, )
+//                            );
+                        
+                         ?>
+                        
+                            <?php
+                            
+                            
+                            print_r($categories);
+                            
+                            
+                            ?>
+                        
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php 
@@ -74,7 +91,13 @@ if (isset($asset_data) && isset($liability_data)) {
                         <td align="right" width="150" style="font-weight: bold;"><?php echo $s_date; ?></td>
                     </tr>
                     <tr>
-                        <td align="left" colspan="2" style="font-weight: bold; background: #eaeaea;">ASSETS</td>
+                        <td align="left" colspan="2" style="font-weight: bold; background: #eaeaea;">ASSETS
+                        <?php 
+                            print_r($asset_data); 
+//                            print_r($start_date);
+//                            print_r($end_date);
+                        ?>
+                        </td>
                     </tr>
                     <?php
                     $total_assets = 0;
@@ -83,8 +106,27 @@ if (isset($asset_data) && isset($liability_data)) {
                         <tr>
                             <td align="left"><?php echo $each_item['TransactionCategory']['category_name']; ?></td>
                             <td align="right" width="150"><?php
-                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
-                                echo number_format($net_asset, 2, '.', ',');
+                                if($each_item['Transaction']['transaction_date'] > '2014-08-31'){
+                                    $net_asset = 0;
+                                    $net_asset += $each_item['Transaction']['debit'] - $each_item['Transaction']['credit'];
+//                                        
+//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
+                                    echo number_format($net_asset, 2, '.', ',');
+                                }
+                                
+                                ?></td>
+                            <td align="right" width="150"><?php
+//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
+//                                echo number_format($net_asset, 2, '.', ',');
+                                if($each_item['Transaction']['transaction_date'] < '2014-08-31'){
+                                    $net_asset = 0;
+                                    $net_asset += $each_item['Transaction']['debit'] - $each_item['Transaction']['credit'];
+//                                        
+//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
+                                    echo number_format($net_asset, 2, '.', ',');
+                                }
+                                
+
                                 ?></td>
                         </tr>
                         <?php
