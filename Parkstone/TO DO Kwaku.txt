@@ -1,6 +1,9 @@
 TO DO
 ----
---look at new investor photo upload richmom_3
+Balance Sheet ... sum entries for the same transaction category into one
+
+
+--look at new investor photo upload richmom_3 
 
 --Reports
 --Audit Trail
