@@ -1,7 +1,7 @@
 <?php
 
-CakePlugin::load('Uploader');
-App::import('Vendor', 'Uploader.Uploader');
+//CakePlugin::load('Uploader');
+//App::import('Vendor', 'Uploader.Uploader');
 
 class ReinvestmentsController extends AppController {
 
@@ -25,7 +25,7 @@ class ReinvestmentsController extends AppController {
 
     function beforeFilter() {
         $this->__validateLoginStatus();
-        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
+//        $this->Uploader = new Uploader(array('tempDir' => TMP, 'ajaxField' => "qqfile"));
     }
 
     function __validateLoginStatus() {
@@ -334,18 +334,18 @@ class ReinvestmentsController extends AppController {
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
 
 //            if ($data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true))) {
-            $data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo));
-            return json_encode($data);
-            if ($data) {
-
-                $this->request->data['Investor']['investor_photo'] = $data['path'];
-//                header('Content-Type: application/json');
-                // Upload successful, do whatever
-            } else {
-                $message = 'Please Supply The Investor\'s Picture';
-                $this->Session->write('emsg', $message);
-                return json_encode(array('status' => 'error'));
-            }
+//            $data = $this->Uploader->upload($this->Uploader->ajaxField, array('overwrite' => true, 'name' => $photo));
+//            return json_encode($data);
+//            if ($data) {
+//
+//                $this->request->data['Investor']['investor_photo'] = $data['path'];
+////                header('Content-Type: application/json');
+//                // Upload successful, do whatever
+//            } else {
+//                $message = 'Please Supply The Investor\'s Picture';
+//                $this->Session->write('emsg', $message);
+//                return json_encode(array('status' => 'error'));
+//            }
 
             $userType = $this->Session->check('userDetails.usertype_id');
             if ($userType) {
@@ -1373,7 +1373,11 @@ class ReinvestmentsController extends AppController {
 
             $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
             $first_date = $inv_date;
+          $inv_deposit = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                    'amount' => $investment_amount, 'deposit_date' => $first_date);
 
+
+                $this->Session->write('reinv_deposit', $inv_deposit);
             $date = new DateTime($first_date);
             $period = $this->request->data['Reinvestment']['investment_period'];
             $duration = $this->request->data['Reinvestment']['duration'];
@@ -1887,8 +1891,8 @@ class ReinvestmentsController extends AppController {
             }
             $this->Session->write('investment_array_reequity', $investment_array);
             if ($available_amount > $totalamt) {
-                $message = 'Investment amount is more than investor\'s deposit. Consider increasing number of purchased shares. <br/> Click on Submit to ignore and continue';
-                $this->Session->write('bmsg', $message);
+                $message = 'Investment amount is less than investor\'s deposit. Consider increasing number of purchased shares. <br/> Click on Submit to ignore and continue';
+                $this->Session->write('imsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'newInvestment1Equity', $reinvestor_id, $investcash_id));
             }
 
@@ -2355,7 +2359,7 @@ class ReinvestmentsController extends AppController {
         if (!is_null($reinvestor_id) && !empty($reinvestor_id)) {
 //        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
             $this->set('reinvestors', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
-
+             $this->set('reinvestor_id', $reinvestor_id);
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
 //'Reinvestment.payment_status' => 'unpaid'
@@ -2454,13 +2458,12 @@ class ReinvestmentsController extends AppController {
     }
 
     function topupInvestment() {
-        print_r('hello');
-        exit;
-        $this->autoRender = false;
+      
+        $this->autoRender = $this->autoLayout = false;
         if ($this->request->is('post')) {
+             
             if (!empty($this->request->data)) {
-                print_r('hi');
-                exit;
+               
                 $source = $this->request->data['Topup']['paymentmode_id'];
                 $available_cash = $this->request->data['Topup']['topupavailable_cash'];
                 $investment_id = $this->request->data['Topup']['topupinvestment_id'];
@@ -2495,25 +2498,24 @@ class ReinvestmentsController extends AppController {
                         'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]);
 
                     if ($reinvestment_data) {
-
-                        switch ($source) {
-                            case 1:
-                                $payment_name = 'Cash';
+                        
+                       
                                 $amount = $this->request->data['Topup']['topup_amount'];
-
-                                break;
-                            case 2:
-                                $payment_name = 'Cheque';
-                                $amount = $this->request->data['Topup']['topup_amount'];
+//                                print_r($this->request->data);
+                                $cheque_no =null;
+                               
+                                if(!empty($this->request->data['Topup']['cheque_no'])){
+                               
                                 $cheque_no = $this->request->data['Topup']['cheque_no'];
-
-                                break;
-                            default :
-                                $amount = $this->request->data['Topup']['topup_amount'];
-
-                                break;
-                        }
+                                }
+                       
+                        
+                        
+                        $id = $reinvestment_data['ReinvestorCashaccount']['id'];
+                        $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
+                        $grand_total = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $amount;
                     } else {
+                        
                         $message = 'Unable to access Company account. Please try again.';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $investor_id));
@@ -2613,13 +2615,11 @@ class ReinvestmentsController extends AppController {
                         'investment_date' => $first_date);
 
                     $result = $this->Reinvestment->save($investment_array);
+//                    print_r($amount);exit;
                     if ($result) {
                         //subtract from reinvestoraacount fixed balance and probably deposit
 
-                        $id = $reinvestment_data['ReinvestorCashaccount']['id'];
-                        $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
                         $new_balance = $old_balance - $amount;
-                        $grand_total = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $amount;
                         $fixed_data = array('id' => $id, 'fixed_inv_balance' => $new_balance, 'total_balance' => $grand_total);
                         $this->ReinvestorCashaccount->save($fixed_data);
 
@@ -3776,14 +3776,14 @@ class ReinvestmentsController extends AppController {
     }
     
     
-    function delFixedInvestmentDeposits($investor_id = null, $investment_id = null){
+    function delFixedInvestmentDeposits($reinvestor_id = null, $reinvestment_id = null){
         $this->__validateUserType();
-        $this->set('investor_id', $investor_id);
-        $this->set('investment_id', $investment_id);
-        $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $investor_id)));
-        $this->set('investor_name', $investor['Investor']['fullname']);
+        $this->set('reinvestor_id', $reinvestor_id);
+        $this->set('reinvestment_id', $reinvestment_id);
+        $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $reinvestor_id)));
+        $this->set('investor_name', $investor['Reinvestor']['company_name']);
         
-        $data2 = $this->paginate('ReinvestorDeposit', array('ReinvestorDeposit.investment_id' => $investment_id));
+        $data2 = $this->paginate('ReinvestorDeposit', array('ReinvestorDeposit.reinvestment_id' => $reinvestment_id));
         $this->set('data', $data2);        
         
     }

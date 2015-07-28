@@ -6,7 +6,7 @@ class ReportsController extends AppController {
 	public $components = array('RequestHandler', 'Session');
 	var $name = 'Reports';
  var $paginate = array(
-		'ReinvestInterestAccrual' => array('limit' => 1,'group' => array('ReinvestInterestAccrual.reinvestor_id')),
+		'ReinvestInterestAccrual' => array('limit' => 1,'group' => array('ReinvestInterestAccrual.reinvestment_id')),
 		'InterestAccrual'=> array('limit' => 1,'group' => array('InterestAccrual.investor_id'))
 		);
 
@@ -2627,37 +2627,43 @@ if($warehs != "" && $warehs != null){
 
 			
 		  
-			$accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+			$this->paginate = array('order' => array('Investor.fullname' => 'asc'),
 				'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
 					array($start_date, $end_date),
 					'InvestmentPayment.event_type !=' => 'Payment'),
-				));
-
-//, 'group' => array('Expectedinstallment.zone_id')
-			$total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+				);
+		
+		$accounts = $this->paginate('InvestmentPayment');
+			$inv = array();
+                        
+		
+		$total_payment = $this->InvestmentPayment->find('all',array('order' => array('Investor.fullname' => 'asc'),
 				'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
 					array($start_date, $end_date),
 					'InvestmentPayment.event_type' => 'Payment'),
 				'group' => 'InvestmentPayment.investor_id', 'fields' => 
 				array("SUM((InvestmentPayment.amount)) as payment",'InvestmentPayment.investor_id')));
-			
-			$total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                
+		
+		$total = $this->InvestmentPayment->find('all',array('order' => array('Investor.fullname' => 'asc'),
 				'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' => 
 					array($start_date, $end_date),
 					'InvestmentPayment.event_type !=' => 'Payment'),
 				'group' => 'InvestmentPayment.investor_id', 'fields' => 
 				array("SUM((Investment.investment_amount + Investment.interest_accrued)) as totalamount",'InvestmentPayment.investor_id')));
-			$inv = array();
 			if ($accounts) {
+                           
 				$x = 1;
 				
 				foreach($accounts as $val){
-					if($val['InvestmentPayment']['investor_id'] = $x){
+//					if($val['InvestmentPayment']['investor_id'] == $x){
 				   $inv[$x] = $val['InvestmentPayment']['investor_id'];  
-					}
+//					}
 					$x++;
 				}
-				  
+                                
+                                
+//				    print_r($inv);exit;  
 			}
 			$this->set(compact('accounts','total','total_payment','inv'));
 	} 
@@ -2742,7 +2748,7 @@ if($warehs != "" && $warehs != null){
 	
 	function interestAccrued(){
 		$this->__validateUserType3();
-		$this->paginate('InterestAccrual');
+//		$this->paginate('InterestAccrual');
 		$this->set('report_name', 'Interest Accrued');
 		
 		if($this->request->is('post')){
@@ -2862,7 +2868,7 @@ if($warehs != "" && $warehs != null){
 	}
 	function outboundInterestAccrued(){
 	   $this->__validateUserType3();
-	   $this->paginate('ReinvestInterestAccrual');
+//	   $this->paginate('ReinvestInterestAccrual');
 		$this->set('report_name', 'External Investment Accrued Interest');
 		$this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
 		if($this->request->is('post')){
@@ -2939,7 +2945,7 @@ if($warehs != "" && $warehs != null){
 					'ReinvestInterestAccrual.Mar','ReinvestInterestAccrual.Apr','ReinvestInterestAccrual.May','ReinvestInterestAccrual.Jul',
 					'ReinvestInterestAccrual.Jun','ReinvestInterestAccrual.Aug',
 					'ReinvestInterestAccrual.Sep','ReinvestInterestAccrual.Oct','ReinvestInterestAccrual.Nov','ReinvestInterestAccrual.Dec'),
-				'group' => array('ReinvestInterestAccrual.reinvestor_id'),
+				'group' => array('ReinvestInterestAccrual.reinvestment_id'),
 			'limit' => 2));
 		  
 		  if($datacount > 0){
@@ -2953,7 +2959,7 @@ if($warehs != "" && $warehs != null){
 					'ReinvestInterestAccrual.Mar','ReinvestInterestAccrual.Apr','ReinvestInterestAccrual.May','ReinvestInterestAccrual.Jul',
 					'ReinvestInterestAccrual.Jun','ReinvestInterestAccrual.Aug',
 					'ReinvestInterestAccrual.Sep','ReinvestInterestAccrual.Oct','ReinvestInterestAccrual.Nov','ReinvestInterestAccrual.Dec'),
-				'group' => array('ReinvestInterestAccrual.reinvestor_id'),
+				'group' => array('ReinvestInterestAccrual.reinvestment_id'),
 			'limit' => 20);
 		
 		$accounts = $this->paginate('ReinvestInterestAccrual');
@@ -2965,7 +2971,7 @@ if($warehs != "" && $warehs != null){
 					'Reinvestment.investment_destination_id' => $destination_id
 				   ),
 				'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
-				'group' => array('ReinvestInterestAccrual.reinvestor_id'))); 
+				'group' => array('ReinvestInterestAccrual.reinvestment_id'))); 
 			 
 			  $this->set('bbf_total',$bbf_total);
 			  
@@ -2975,7 +2981,7 @@ if($warehs != "" && $warehs != null){
 					'Reinvestment.investment_destination_id' => $destination_id
 				   ),
 				'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
-				'group' => array('ReinvestInterestAccrual.reinvestor_id')));
+				'group' => array('ReinvestInterestAccrual.reinvestment_id')));
 		   }else{
 			$total = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'), 
 				'conditions' => array('Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested','Payment_Requested',
@@ -2983,7 +2989,7 @@ if($warehs != "" && $warehs != null){
 					'Reinvestment.investment_destination_id' => $destination_id
 				   ),
 				'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
-				'group' => array('ReinvestInterestAccrual.reinvestor_id')));
+				'group' => array('ReinvestInterestAccrual.reinvestment_id')));
 		   }
 			if($accounts){
 				$this->set('accounts',$accounts);

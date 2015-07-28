@@ -443,9 +443,28 @@ class InvestmentsController extends AppController {
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
 //            print_r($_FILES);
 //            exit;
-// $file_contents = file_get_contents($_FILES['investor_photo']['tmp_name']);
-//                    $file_name = $_FILES['investor_photo']['name'];
-
+            
+           if(!empty($_FILES['data']['name']['Investor']['investor_photo'])){
+//                $file = $this->request->data['Customer']['customer_photo']; //put the data into a var for easy use
+            $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
+            $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
+            $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
+                $ext = substr(strtolower(strrchr($file_name, '.')), 1); //get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png', 'tiff'); //set allowed extensions
+//return json_encode($file_contents);
+                //only process if the extension is valid
+                if(in_array($ext, $arr_ext))
+                {
+                    //prepare the filename for database entry
+                    $name_date = date('Y-m-d-H_s');
+                    $file_name = $this->request->data['Investor']['surname'].$dob_date.$name_date.'.'.$ext;
+                    $this->request->data['Investor']['investor_photo'] = $file_contents;
+                    $this->request->data['Investor']['GRAPHIC_TYPE'] = $fileType;
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is where we are putting it
+//                    move_uploaded_file($_FILES['investor_photo']['tmp_name'], WWW_ROOT . 'files/uploads/' . $file_name);
+                }
+            }
+//            $this->request->data['Investor']['investor_photo'] = $file_contents;
             $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
@@ -479,7 +498,28 @@ class InvestmentsController extends AppController {
             }
         }
     }
+ function display_user_image($id) {
 
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        $image_upload = $this->Investor->find('first', array(
+            'conditions' => array('Investor.id' => $id),
+            'recursive' => -1));
+
+        // set the header for the image
+        header("Content-type: " . $image_upload['Investor']['GRAPHIC_TYPE']);
+        echo $image_upload['Investor']['investor_photo'];
+    }
+public function countUserImage($id) {
+        $image_count = $this->Investor->find('count', array(
+            'conditions' => array('Investor.id' => $id),
+            'recursive' => -1));
+        if ($image_count) {
+            return $image_count;
+        } else {
+            return 0;
+        }
+    }
     public function commit_comp() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
@@ -540,6 +580,9 @@ class InvestmentsController extends AppController {
 //                $this->Session->write('emsg', $message);
 //                return json_encode(array('status' => 'error'));
 //            }
+//            $file_contents = file_get_contents($_FILES['investor_photo']['tmp_name']);
+//            $file_name = $_FILES['investor_photo']['name'];
+//            $this->request->data['Investor']['investor_photo'] = $file_name;
             $user_id = null;
             $check = $this->Session->check('userDetails');
             if ($check) {
@@ -1060,7 +1103,30 @@ class InvestmentsController extends AppController {
 //                   $this->redirect(array('controller' => 'Investments','action' => 'index'));
 //			// Upload successful, do whatever
 //		}
-
+//            {"data":{"name":{"Investor":{"investor_photo":"120125_184515.jpg"}},"type":{"Investor":{"investor_photo"
+//:"image\/jpeg"}},"tmp_name":{"Investor":{"investor_photo":"C:\\wamp\\tmp\\phpE431.tmp"}},"error":{"Investor"
+//:{"investor_photo":0}},"size":{"Investor":{"investor_photo":180430}}}};
+//            return json_encode($_FILES);
+ if(!empty($_FILES['data']['name']['Investor']['investor_photo'])){
+//                $file = $this->request->data['Customer']['customer_photo']; //put the data into a var for easy use
+            $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
+            $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
+            $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
+                $ext = substr(strtolower(strrchr($file_name, '.')), 1); //get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png', 'tiff'); //set allowed extensions
+//return json_encode(array('pix'=>$_FILES['data']['tmp_name']['Investor']['investor_photo']));
+                //only process if the extension is valid
+                if(in_array($ext, $arr_ext))
+                {
+                    //prepare the filename for database entry
+                    $name_date = date('Y-m-d-H_s');
+                    $file_name = $this->request->data['Investor']['surname'].$dob_date.$name_date.'.'.$ext;
+                    $this->request->data['Investor']['investor_photo'] = $file_contents;
+                    $this->request->data['Investor']['GRAPHIC_TYPE'] = $fileType;
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is where we are putting it
+//                    move_uploaded_file($_FILES['investor_photo']['tmp_name'], WWW_ROOT . 'files/uploads/' . $file_name);
+                }
+            }
             if (isset($this->request->data['userIdentify'])) {
                 $this->request->data['Investor']['user_id'] = $this->request->data['userIdentify'];
             }
@@ -1177,7 +1243,10 @@ class InvestmentsController extends AppController {
         if ($this->Session->check('investment_array_equity')) {
             $this->Session->delete('investment_array_equity');
         }
-
+        if ($this->Session->check('investmt_equities')) {
+            $this->Session->delete('investmt_equities');
+        }
+       
         $check = $this->Session->check('statemt_array');
         if ($check) {
             $this->Session->delete('statemt_array');
@@ -1217,6 +1286,10 @@ class InvestmentsController extends AppController {
             $this->set('investor', $cust);
             $this->Session->delete('ivts');
         }
+        if ($this->Session->check('investmt_equities')) {
+            $this->Session->delete('investmt_equities');
+        }
+       
         $check = $this->Session->check('ledger_data');
         if ($check) {
             $this->Session->delete('ledger_data');
@@ -1230,7 +1303,10 @@ class InvestmentsController extends AppController {
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
-
+        if ($this->Session->check('investmt_equities')) {
+            $this->Session->delete('investmt_equities');
+        }
+       
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
 
         $check = $this->Session->check('interest_accrual');
@@ -1492,6 +1568,10 @@ class InvestmentsController extends AppController {
                     if ($check) {
                         $this->Session->delete('interest_accrual');
                     }
+                    if ($this->Session->check('investmt_equities')) {
+            $this->Session->delete('investmt_equities');
+        }
+       
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1526,10 +1606,13 @@ class InvestmentsController extends AppController {
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
-        $check = $this->Session->check('interest_accrual');
+         $check = $this->Session->check('interest_accrual');
                     if ($check) {
                         $this->Session->delete('interest_accrual');
                     }
+                    if ($this->Session->check('investmt_equities')) {
+            $this->Session->delete('investmt_equities');
+        }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -4973,6 +5056,7 @@ class InvestmentsController extends AppController {
                     $this->InvestorEquity->create();
                     $this->InvestorEquity->save($var);
                 }
+                $this->Session->delete('investmt_equities');
             }
             $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($result) {
@@ -5228,6 +5312,7 @@ class InvestmentsController extends AppController {
                 $invcash_array = array('id' => $cash_id, 'investor_deposit_id' => $dep_id);
                 $this->InvestmentCash->save($invcash_array);
             }
+            $this->Session->delete('inv_deposit');
         }
         if ($this->Session->check('ledger_transactions')) {
 

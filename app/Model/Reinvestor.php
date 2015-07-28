@@ -12,17 +12,17 @@ class Reinvestor extends AppModel {
     var $usesTable = "reinvestors";
     var $displayField = "company_name";
      var $hasMany = array(
-        'ReinvestorDeposit' => array(
-            'className' => 'ReinvestorDeposit',
+         'ReinvestInterestAccrual' => array(
+            'className' => 'ReinvestInterestAccrual',
             'foreignKey' => 'reinvestor_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
             ),
-         'ReinvestInterestAccrual' => array(
-            'className' => 'ReinvestInterestAccrual',
-            'foreignKey' => 'reinvestor_id',
+        'ReinvestorDeposit' => array(
+            'className' => 'ReinvestorDeposit',
+            'foreignKey' => 'reinvestment_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
