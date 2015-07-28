@@ -22,7 +22,7 @@ class Reinvestor extends AppModel {
             ),
         'ReinvestorDeposit' => array(
             'className' => 'ReinvestorDeposit',
-            'foreignKey' => 'reinvestment_id',
+            'foreignKey' => 'reinvestor_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
