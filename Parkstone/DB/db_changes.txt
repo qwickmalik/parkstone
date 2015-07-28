@@ -1770,3 +1770,7 @@ CREATE TABLE IF NOT EXISTS `reinvest_interest_accruals` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-------------------------------------------------------------------------------------------
+ALTER TABLE `investors` ADD `GRAPHIC_TYPE` VARCHAR( 30 ) NULL AFTER `investor_photo`;
+ALTER TABLE `investors` CHANGE `investor_photo` `investor_photo` LONGBLOB NULL DEFAULT NULL 
