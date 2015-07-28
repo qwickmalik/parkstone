@@ -28,14 +28,6 @@ class ReinvestorDeposit extends AppModel {
             'limit' => '',
             'dependent' => true
             ),
-         'InvestmentProduct' => array(
-            'className' => 'InvestmentProduct',
-            'foreignKey' => 'investment_product_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-            ),
          'PaymentMode' => array(
             'className' => 'PaymentMode',
             'foreignKey' => 'payment_mode_id',

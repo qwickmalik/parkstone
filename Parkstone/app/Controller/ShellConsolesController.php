@@ -167,18 +167,18 @@ function __invEOD(){
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($fixed_data);
             }
-            
-        }
-        $data_fixed2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
-        array('InvestmentCash.investment_type' => 'fixed',
-        'InvestmentCash.status' => 'available')));
-    if($data_fixed2){
-        foreach($data_fixed2 as $data){
-            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $this->InvestmentCash->save($updated_datafixed);
         }
-        
-    }
+//        $data_fixed2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+//        array('InvestmentCash.investment_type' => 'fixed',
+//        'InvestmentCash.status' => 'available')));
+//    if($data_fixed2){
+//        foreach($data_fixed2 as $data){
+//            $updated_datafixed = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
+//            $this->InvestmentCash->save($updated_datafixed);
+//        }
+//        
+//    }
     }
     
     
@@ -209,17 +209,18 @@ function __invEOD(){
                 $this->ReinvestorCashaccount->create();
                 $this->ReinvestorCashaccount->save($equity_data);
             }
-        }
-         $data_equity2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
-        array('InvestmentCash.investment_type' => 'equity',
-        'InvestmentCash.status' => 'available')));
-       if($data_equity2){
-        foreach($data_equity2 as $data){
-            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
             $this->InvestmentCash->save($updated_dataequity);
         }
-        
-    }
+//         $data_equity2 = $this->InvestmentCash->find('all',array('recursive' => -1,'conditions' => 
+//        array('InvestmentCash.investment_type' => 'equity',
+//        'InvestmentCash.status' => 'available')));
+//       if($data_equity2){
+//        foreach($data_equity2 as $data){
+//            $updated_dataequity = array('id' => $data['InvestmentCash']['id'],'status' => 'processed');
+//            
+//        }
+//        
+//    }
     }
     
 }

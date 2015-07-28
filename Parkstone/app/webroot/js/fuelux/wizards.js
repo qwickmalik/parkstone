@@ -35,17 +35,22 @@ jQuery(document).ready(function($) {
   $('.wizard').on('finished', function(e, data) {
 //      $('form').submit();
     var form_data = $('form').serialize();
-
+//    var form_data = new FormData();
+//    var fileInput = document.getElementById('investor_photo');
+//    $.each(form,function(key,input){
+//        form_data.append(input.name,input.value);
+//    });
+//           form_data.append('investor_photo',fileInput);
 var query = form_data;
             $.ajax({
                 type: 'POST',
                 url: $('#post_url').val(),
                 dataType: 'json',
-                data: query,
-//                data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-//                contentType: false,       // The content type used when sending data to the server.
+//                data: query,
+                data: new FormData($('.newinvestor')[0]), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                contentType: false,       // The content type used when sending data to the server.
 //            cache: false, // To unable request pages to be cached
-//            processData: false, 
+            processData: false, 
                 success: function (data) {
                     
                     if(data['status'] == 'error'){
