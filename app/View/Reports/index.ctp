@@ -67,6 +67,7 @@
                     $this->Html->link('Statement of Owners Equity', '/Reports/ownersEquity', array('escape' => false)),
                     $this->Html->link('Aggregate Indebtedness', '/Reports/aggregateIndebtedness', array('escape' => false)),
                     $this->Html->link('Bank Reconciliation Statement', '/Reports/bankReconciliation', array('escape' => false)),
+                    $this->Html->link('Statement of Liquid Funds', '/Reports/liquidFunds', array('escape' => false)),
                      );
                 echo '<p class="subtitle-blue">Financial Statements</p>';
                 echo $this->Html->nestedList($financial_statements, array('class' => 'square'), $tag = 'ul');

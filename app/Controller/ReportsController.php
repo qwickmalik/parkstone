@@ -3741,6 +3741,22 @@ class ReportsController extends AppController {
             }
         }
     }
+    
+    function liquidFunds(){
+        $this->__validateUserType();
+        
+        $s_date = $this->request->data['LiquidFunds']['start_date'];
+            $s_day = $s_date['day'];
+            $s_month = $s_date['month'];
+            $s_year = $s_date['year'];
+            $start_date = $s_year . '-' . $s_month . '-' . $s_day;
+            
+        $statement_date1 = implode('-', $s_date);
+        $statement_date = date('F d, Y', strtotime($statement_date1));
+        
+        $this->set('statement_date', $statement_date);
+    }
+    
 
 }
 
