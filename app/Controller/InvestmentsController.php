@@ -296,7 +296,9 @@ class InvestmentsController extends AppController {
                 $this->request->data['Investor']['id_expiry'] = $expiry_date;
             }
 
-
+            
+                $this->request->data['Investor']['investor_photo'] = null;
+            
 
             if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
                 $message = 'Please Supply The Contact Person\'s Nationality';
@@ -463,6 +465,8 @@ class InvestmentsController extends AppController {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is where we are putting it
 //                    move_uploaded_file($_FILES['investor_photo']['tmp_name'], WWW_ROOT . 'files/uploads/' . $file_name);
                 }
+            }else{
+                $this->request->data['Investor']['investor_photo'] = null;
             }
 //            $this->request->data['Investor']['investor_photo'] = $file_contents;
             $user_id = null;
@@ -592,6 +596,8 @@ public function countUserImage($id) {
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
             }
 
+                $this->request->data['Investor']['investor_photo'] = null;
+            
             $this->request->data['Investor']['fullname'] = $this->request->data['Investor']['comp_name'];
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
