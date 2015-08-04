@@ -81,10 +81,10 @@
 
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <?php echo "<p><b>Benchmark Rate:</b></p>"; ?>
+                        <?php echo "<p><b>Interest Rate:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'].'%' : '' ); ?>
+                        <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'] : '' ); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -163,14 +163,10 @@
                                     $("#ReinvestmentInvestmentDateMonth option[value=" + month + "]").attr('selected', true);
                                     $("#ReinvestmentInvestmentDateYear option[value=" + year + "]").attr('selected', true);
                                 </script>
-            <div class="col-lg-5 col-md-5 col-sm-12" >
+            <div class="col-lg-12 col-md-12 col-sm-12" >
                 <?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => '--Please Select--')); ?>
             </div>
-            <div class="col-lg-5 col-md-5 col-sm-12" >
-                                    <?php
-                                  echo  $this->Form->input('instruction_id', array('required','label' => 'Instructions', 'empty' => "--Please Select--"));
-                                    ?>
-                                </div>
+            
             </div>
             
         

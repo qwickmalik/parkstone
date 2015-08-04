@@ -40,7 +40,7 @@
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
                             <?php
-                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", "url" => array('class' => 'basic-form', 'controller' => 'Investments', 'action' => 'edit'), "inputDefaults" => array('div' => false)));
+                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data",'class' => 'basic-form newinvestor', "url" => array('controller' => 'Investments', 'action' => 'edit'), "inputDefaults" => array('div' => false)));
                             ?>
                             <!-- Step 1 Personal Information Form Start -->
                             <div class="step-pane active" id="step1">
@@ -148,17 +148,31 @@
 
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                                <img src="<?php echo $this->webroot . (isset($investor['Investor']['investor_photo']) ? substr($investor['Investor']['investor_photo'], 1) : '' ) ?>" width="100" height="100" alt="Investor Photo" />
-                                                <input type="hidden" name="hiddenphoto" value="<?php echo (isset($investor['Investor']['investor_photo']) ? $investor['Investor']['investor_photo'] : '' ) ?>" />   
+<!--                                                <img src="<?php // echo $this->webroot . (isset($investor['Investor']['investor_photo']) ? substr($investor['Investor']['investor_photo'], 1) : '' ) ?>" width="100" height="100" alt="Investor Photo" />-->
+                                               <?php 
+                            $user_id = $investor['Investor']['id'];
+                            $user_photo = $this->Html->url(array('controller' => 'Investments', 'action' => 'display_user_image', $user_id)); ?>
+                                          
+                                            <?php
+                                            $check = $this->requestAction('/Investments/countUserImage/'.(isset($user_id)? $user_id:''));
+                                            if(isset($user_photo) && !empty($user_photo) && !empty($check)){ ?>
+                                                <img src="<?php echo $user_photo;?>"  width="100" height="100" alt="investor_photo"> 
+                                           <?php
+                                           }else{ ?>
+                                                 <?php echo $this->Html->image('user-default.png', array('width'=>'100','height'=>"100")); ?>   
+                                          <?php 
+                                          }
+                                          ?>
+                                                <input type="hidden" name="hiddenphoto" value="<?php echo (!empty($user_photo) ? $user_photo : '' ) ?>" />   
                                                 <?php
-                                                echo $this->Form->input('investor_photo', array('type' => 'file', 'value' => $this->webroot . (isset($investor['Investor']['investor_photo']) ? $investor['Investor']['investor_photo'] : '' )));
+                                                echo $this->Form->input('investor_photo', array('type' => 'file', 'value' => $user_photo));
 //echo $this->Form->input('investor_photo', array('type' => 'file', 'label' => 'Investor Photo'));
 //'value' => $this->webroot.(isset($investor['Investor']['investor_photo']) ? $investor['Investor']['investor_photo'] : '' )
                                                 ?>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                 <?php
-                                                echo $this->Form->input('investor_signature', array('type' => 'file', 'value' => $this->webroot . (isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
+//                                                echo $this->Form->input('investor_signature', array('type' => 'file', 'value' => $this->webroot . (isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
                                                 ?>
                                             </div>
                                         </div>
@@ -211,16 +225,16 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('acc_name', array('label' => 'Account Name*', 'class' => 'required', 'placeholder' => "Enter investor name as used with the bank", 'value' => (isset($investor['Investor']['acc_name']) ? $investor['Investor']['acc_name'] : '' )));
+                                        echo $this->Form->input('acc_name', array('label' => 'Account Name', 'placeholder' => "Enter investor name as used with the bank", 'value' => (isset($investor['Investor']['acc_name']) ? $investor['Investor']['acc_name'] : '' )));
 //                                        echo $this->Form->input('bank_name', array('label' => 'Bank Name*', 'class' => 'required', 'placeholder' => "Enter name of bank", 'value' => (isset($investor['Investor']['bank_name']) ? $investor['Investor']['bank_name'] : '' )));
-                                        echo $this->Form->input('bank_id', array('label' => 'Bank Name*', 'class' => 'required', 'empty' => "--Select bank--", 'value' => (isset($investor['Investor']['bank_id']) ? $investor['Investor']['bank_id'] : '' )));
+                                        echo $this->Form->input('bank_id', array('label' => 'Bank Name', 'empty' => "--Select bank--", 'value' => (isset($investor['Investor']['bank_id']) ? $investor['Investor']['bank_id'] : '' )));
                                         ?>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <?php
-                                        echo $this->Form->input('bank_branch', array('label' => 'Bank Branch*', 'class' => 'required', 'placeholder' => "Enter bank branch/location", 'value' => (isset($investor['Investor']['bank_branch']) ? $investor['Investor']['bank_branch'] : '' )));
-                                        echo $this->Form->input('acc_number', array('label' => 'Account Number*', 'class' => 'required', 'placeholder' => "Enter account number", 'value' => (isset($investor['Investor']['acc_number']) ? $investor['Investor']['acc_number'] : '' )));
+                                        echo $this->Form->input('bank_branch', array('label' => 'Bank Branch',  'placeholder' => "Enter bank branch/location", 'value' => (isset($investor['Investor']['bank_branch']) ? $investor['Investor']['bank_branch'] : '' )));
+                                        echo $this->Form->input('acc_number', array('label' => 'Account Number',  'placeholder' => "Enter account number", 'value' => (isset($investor['Investor']['acc_number']) ? $investor['Investor']['acc_number'] : '' )));
                                         echo $this->Form->input('inv_freq', array('label' => 'Investment Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));
                                         ?>
                                     </div>

@@ -40,7 +40,7 @@ echo $this->Html->script('icheck/icheck.js');
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
                         <?php
-                        echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", "url" => array('class' => 'basic-form', 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false))); 
+                        echo $this->Form->create('Investor', array("enctype" => "multipart/form-data",'class' => 'basic-form newinvestor', "url" => array('controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false))); 
                         ?>
                             <!-- Step 1 Personal Information Form Start -->
                             <div class="step-pane active" id="step1">
@@ -54,7 +54,7 @@ echo $this->Html->script('icheck/icheck.js');
                                 echo $this->Form->input('user_id', array('default' => 0,'label' => 'Investment Officer*: ','class' => 'required','empty' => '--Please Select--'));
                                 echo $this->Form->input('surname', array('label' => 'Surname*','value' => (isset($investor['Investor']['surname']) ? $investor['Investor']['surname'] : '' ), 'placeholder' => 'Enter surname', 'class' => 'required')); 
                                 echo $this->Form->input('other_names', array('label' => 'Other Names*','value' => (isset($investor['Investor']['other_names']) ? $investor['Investor']['other_names'] : '' ), 'placeholder' => 'Enter other (names)', 'class' => 'required'));
-                                echo $this->Form->input('in_trust_for', array('label' => 'In Trust For (Beneficiary)','value' => (isset($investor['Investor']['in_trust_for']) ? $investor['Investor']['in_trust_for'] : '' ), 'placeholder' => 'Enter name of person for whom investment will be made'));
+//                                echo $this->Form->input('in_trust_for', array('label' => 'In Trust For (Beneficiary)','value' => (isset($investor['Investor']['in_trust_for']) ? $investor['Investor']['in_trust_for'] : '' ), 'placeholder' => 'Enter name of person for whom investment will be made'));
                                 ?>
 
                                         <div class="row">

@@ -130,23 +130,23 @@ echo $this->Html->script('print.js');
             ?>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<!--            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <p><b>Management Fees</b></p>
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 1px gray;">
                     <tr>
                         <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Fee Type</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Base Rate</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px Gray;"><b>Management Fee</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px Gray;"><b>Benchmark Rate</b></td>
                         
                     </tr>
                     <tr>
-                        <td align="left" valign="top"><?php echo $data['Investment']['management_fee_type']; ?></td>
-                         <td align="left" valign="top"><?php if(!empty($data['Investment']['base_rate'])){echo $data['Investment']['base_rate'].'%';}else{ echo '0%'; } ?></td>
-                        <td align="right" valign="top"><?php if(!empty($data['Investment']['benchmark_rate'])){echo $data['Investment']['benchmark_rate'].'%';}else{ echo '0%'; } ?></td>
+                        <td align="left" valign="top"><?php // echo $data['Investment']['management_fee_type']; ?></td>
+                         <td align="left" valign="top"><?php // if(!empty($data['Investment']['base_rate'])){echo $data['Investment']['base_fees'];}else{ echo '0.00'; } ?></td>
+                        <td align="right" valign="top"><?php // if(!empty($data['Investment']['benchmark_rate'])){echo $data['Investment']['benchmark_rate'].'%';}else{ echo '0%'; } ?></td>
                         
                     </tr>
                 </table>
-            </div>
+            </div>-->
             </div>
             <?php 
             echo "<p>&nbsp;</p>";

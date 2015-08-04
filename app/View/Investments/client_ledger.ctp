@@ -75,6 +75,8 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 <td align="left"><b>Voucher Number</b></td>
                 <td align="right"><b><?php echo $this->Paginator->sort('debit', 'Debit'); ?></b></td><!-- not printer-friendly -->
                 <td align="right"><b><?php echo $this->Paginator->sort('credit', 'Credit'); ?></b></td><!-- not printer-friendly -->
+                <td align="center"><b>Benchmark</b></td>
+                <td align="center"><b>Management Fee</b></td>
                 <td align="left"><b>Description</b></td>
                 
 
@@ -110,6 +112,16 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                                 echo $each_item['LedgerTransaction']['credit'];
                             }
                             ?></td>
+                        <td align="center"><?php
+                            if (isset($each_item['LedgerTransaction']['benchmark'])) {
+                                echo $each_item['LedgerTransaction']['benchmark'];
+                            }
+                            ?></td>
+                        <td align="center"><?php
+                            if (isset($each_item['LedgerTransaction']['management_fee'])) {
+                                echo $each_item['LedgerTransaction']['management_fee'];
+                            }
+                            ?></td>
 
                         <td align="left"><?php
                             if (isset($each_item['LedgerTransaction']['description'])) {
@@ -124,7 +136,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 ?>
             </tr>
             <tr>
-                <td align="right" colspan="4"><p><b>Closing Balance</b></p>
+                <td align="right" colspan="6"><p><b>Closing Balance</b></p>
                     </td>
                 <td align="left"><b>
                     

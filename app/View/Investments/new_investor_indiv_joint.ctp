@@ -23,7 +23,7 @@
                                 <!--<li data-target="#step2"><span class="badge">2</span>Investment Details<span class="chevron"></span></li>-->
             <!-- Form Layout Start -->
               <?php
-                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", 'class' => 'basic-form',"url" => array( 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false)));
+                            echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", 'class' => 'basic-form newinvestor',"url" => array( 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false)));
                             ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="boxed no-padding">

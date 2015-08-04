@@ -107,8 +107,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Interest Accrued:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($reinvestments['Reinvestment']['interest_earned']) ? 
-                                            number_format($reinvestments['Reinvestment']['interest_earned'], 2, '.', ',')
+                                    <?php echo (isset($reinvestments['Reinvestment']['accrued_interest']) ? 
+                                            number_format($reinvestments['Reinvestment']['accrued_interest'], 2, '.', ',')
                                              : '' );?>
                                 </div>
                             </div>

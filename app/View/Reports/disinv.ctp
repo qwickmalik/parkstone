@@ -11,7 +11,7 @@ echo $this->Html->script('print.js'); ?>
 
         <!-- Content start here -->
         <div class="row">
-            <?php echo $this->Form->create('RolloverDisinv', array('url' => array('controller' => 'Reports', 'action' => 'rolloverDisinv'))); ?>
+            <?php echo $this->Form->create('RolloverDisinv', array('url' => array('controller' => 'Reports', 'action' => 'disinv'))); ?>
             
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                
@@ -90,7 +90,7 @@ echo $this->Html->script('print.js'); ?>
                         <p style='font-weight: bold; font-size: 14px; text-align: left;'>
                             <?php 
                             echo $this->Session->read('shopName').'<br />'; 
-                            echo 'ROLLOVER REPORT'
+                            echo 'DISINVESTMENTS REPORT'
                             ?></p>
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
@@ -134,7 +134,7 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Amount Invested</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark Rate</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Rollover Date</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Disinv. Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Current Interest</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Total Due</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Payment</b></td>
@@ -177,10 +177,10 @@ echo $this->Html->script('print.js'); ?>
             echo  date('d-m-Y',strtotime($each_item['InvestmentPayment']['event_date']));
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
-            echo  number_format($each_item['Investment']['interest_accrued'],2);
+            echo  number_format($each_item['Investment']['interest_earned'],2);
         } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
-              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_earned']) && isset($each_item['Investment']['investment_amount'])) {
+              $totals = $each_item['Investment']['interest_earned'] + $each_item['Investment']['investment_amount'];
         
             echo number_format($totals,2);
             

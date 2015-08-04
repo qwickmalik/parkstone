@@ -69,6 +69,7 @@
             <li>
                 <?php echo $this->Html->link('Manage Investments', '/Reinvestments/manageInv', array('escape' => false)); ?>
             </li>
+            
             <li>
                 <?php echo $this->Html->link('Daily Maturity List', '/Reinvestments/maturityList', array('escape' => false)); ?>
             </li>

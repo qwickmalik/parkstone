@@ -41,7 +41,7 @@
             <td style="border-bottom: solid 2px dodgerblue;" align="center"><b>Edit</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('interest_rate', 'Benchmark Rate(%)'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark(%)'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('amount_due', 'Amount Due'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
@@ -82,8 +82,8 @@
                         
                         ?></td>
                 <td align="center"><?php
-                        if(isset($each_item['Investment']['interest_rate'])){
-                            echo $each_item['Investment']['interest_rate'];
+                        if(isset($each_item['Investment']['custom_rate'])){
+                            echo $each_item['Investment']['custom_rate'].'%';
                         }
                         
                         ?></td>
