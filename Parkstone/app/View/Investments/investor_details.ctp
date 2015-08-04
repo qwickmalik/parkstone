@@ -292,7 +292,21 @@ echo $this->Html->script('print.js');
                             <b>Photo:</b>
                         </td>
                         <td text-align="left" v-align="middle">
-                            <img src="<?php echo $this->webroot . (isset($investor['Investor']['investor_photo']) ? substr($investor['Investor']['investor_photo'], 1) : '' ) ?>" width="100" height="100" alt="investor_photo" />
+                            <?php 
+                            $user_id = $investor['Investor']['id'];
+                            $user_photo = $this->Html->url(array('controller' => 'Investments', 'action' => 'display_user_image', $user_id)); ?>
+                                          
+                                            <?php
+                                            $check = $this->requestAction('/Investments/countUserImage/'.(isset($user_id)? $user_id:''));
+                                            if(isset($user_photo) && !empty($user_photo) && !empty($check)){ ?>
+                                                <img src="<?php echo $user_photo;?>"  width="100" height="100" alt="investor_photo"> 
+                                           <?php
+                                           }else{ ?>
+                                                 <?php echo $this->Html->image('user-default.png', array('width'=>'100','height'=>"100")); ?>   
+                                          <?php 
+                                          }
+                                          ?>
+                            <!--<img src="<?php // echo $this->webroot . (isset($investor['Investor']['investor_photo']) ? substr($investor['Investor']['investor_photo'], 1) : '' ) ?>" width="100" height="100" alt="investor_photo" />-->
                         </td>
 
                     </tr><tr><td width="30%" text-align="right" v-align="middle">

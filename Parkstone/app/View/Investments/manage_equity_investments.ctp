@@ -47,6 +47,7 @@
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Action</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>
+              <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete</b></td>
             
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
@@ -113,6 +114,7 @@
                         }
                         ?></td>
                 <td align="left"><?php echo $this->Html->Link('Statement', '/Investments/statementInvDetailEq/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
+                <td align="center"><?php echo $this->Html->Link('Delete', '/Investments/deleteEquityInvestments/'.(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' )."/".(isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),array('escape'=>false));?></td>
                 
                 
         <?php  }} ?>

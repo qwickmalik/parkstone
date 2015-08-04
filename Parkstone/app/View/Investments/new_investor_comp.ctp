@@ -37,7 +37,7 @@ echo $this->Html->script('bootstrap.min.js');
                         <div class="step-content">
                             <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
                             <?php
-                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'commit_comp'), "inputDefaults" => array('div' => false)));
+                            echo $this->Form->create('Investor', array('enctype' => 'multipart/form-data', 'class' =>'basic-form newinvestor',"url" => array('controller' => 'Investments', 'action' => 'commit_comp'), "inputDefaults" => array('div' => false)));
                             ?>
                             <!-- Step 1 Company Information Form Start -->
                             <div class="step-pane active" id="step1">
@@ -153,7 +153,7 @@ echo $this->Html->script('fuelux/wizards.js');
         {
              $("#InvestorCompName").mouseout(function () {
                  var name = $(this).val();
-                 var url = '../checkDuplicate';
+                 var url = 'checkDuplicate';
                  var query = "action=checkDuplicate&name=" + name;
                  if (name != ""){
                       $.ajax({

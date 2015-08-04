@@ -455,7 +455,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Benchmark Rate:</span><br>";
+                                    echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Interest :</span><br>";
                                     if (isset($interest)) {
                                         echo $shopCurrency . ' ' . number_format($interest, 2, '.', ',');
                                     } else {

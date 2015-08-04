@@ -41,7 +41,7 @@ echo $this->Html->css('icheck/flat/_all.css');
                             <div class="step-content">
                                 <!--<form method="post" action="#" id="wizard-form-data" class="basic-form horizontal-form">-->
 				<?php
-				echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", "url" => array('class' => 'basic-form', 'controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false))); 
+				echo $this->Form->create('Investor', array("enctype" => "multipart/form-data", 'class' =>'basic-form newinvestor',"url" => array('controller' => 'Investments', 'action' => 'commit_indv'), "inputDefaults" => array('div' => false))); 
 				?>
                                 <!-- Step 1 Personal Information Form Start -->
                                 <div class="step-pane active" id="step1">

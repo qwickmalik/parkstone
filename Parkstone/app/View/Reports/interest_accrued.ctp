@@ -231,7 +231,10 @@ echo $this->Html->script('print.js'); ?>
                
                  
             </div>
-             
+             <?php
+            if(isset($this->Paginator)){
+            
+            ?>
             
            
              <div class="pagination">
@@ -261,6 +264,7 @@ echo $this->Html->script('print.js'); ?>
                                 </ul>-->
                             </div>
               <?php  
+            }
             echo "<p>&nbsp;</p>";
             echo $this->Html->link('Print', "javascript:void(0)", array('style' => 'float: right;', "class" => 'btn btn-lg btn-warning', "id" => "print_receipt"));
             echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-lg btn-info'));

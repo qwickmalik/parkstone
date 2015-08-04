@@ -63,7 +63,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Amount Due:</b></p>";?>
+                                    <?php echo "<p><b>Balance:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($data['Reinvestment']['earned_balance']) ?
@@ -142,7 +142,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         'label' => 'Investment Amount*', 'class' => 'required', 'value' => 
                                             ($this->Session->check('rollreinvesttemp.investment_amount') == true 
                                             ? number_format($this->Session->read('rollreinvesttemp.investment_amount'), 2, '.', ',') :
-                                        ($data['Reinvestment']['investment_amount'] ? $data['Reinvestment']['investment_amount'] : '' ) ))); ?>
+                                        ($data['Reinvestment']['earned_balance'] ? $data['Reinvestment']['earned_balance'] : '' ) ))); ?>
                                 
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
@@ -166,7 +166,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php // echo $this->Form->input('inv_freq', array('label' => 'Frequency', 'value' => (isset($investor['Investor']['inv_freq']) ? $investor['Investor']['inv_freq'] : '' )));  ?>
-                                    <?php echo $this->Form->input('interest_rate', array('required','label' => 'Benchmark Rate(%)*', 'value' => 
+                                    <?php echo $this->Form->input('interest_rate', array('required','label' => 'Rate (%)*', 'value' => 
                                             ($this->Session->check('rollreinvesttemp.interest_rate') == true ? 
                                             $this->Session->read('rollreinvesttemp.interest_rate') : 
                                         ($data['Reinvestment']['interest_rate'] ? $data['Reinvestment']['interest_rate'] : '' )))); ?>

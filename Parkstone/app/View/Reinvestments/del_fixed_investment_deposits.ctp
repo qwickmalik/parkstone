@@ -19,8 +19,8 @@
                         <td align="left" width="200"><p style="font-weight: bold;">Investor ID: </p></td>
                         
                         <td align="left"><p style="font-weight: bold;"><?php
-                        if(isset($investor_id)){
-                            echo $investor_id;
+                        if(isset($reinvestor_id)){
+                            echo $reinvestor_id;
                         }
                         ?></p></td>
                         
@@ -35,8 +35,8 @@
                         <td align="left" width="200"><p style="font-weight: bold;">Investment ID: </p></td>
                         
                         <td align="left"><p style="font-weight: bold;"><?php
-                        if(isset($investment_id)){
-                            echo $investment_id;
+                        if(isset($reinvestment_id)){
+                            echo $reinvestment_id;
                         }
                         ?></p></td>
                         
@@ -47,7 +47,6 @@
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'Deposit ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('deposit_date', 'Deposit Date'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b><?php echo $this->Paginator->sort('ledger_transaction_id', 'Ledger Trans. ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('topup_id', 'Top-up ID'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="right"><b><?php echo $this->Paginator->sort('amount', 'Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('receipt_no', 'Receipt No.'); ?></b></td>
@@ -57,7 +56,6 @@
             <tr>
                 <td align="left"><?php echo $each_item['ReinvestorDeposit']['id']; ?></td>
                 <td align="center"><?php echo $each_item['ReinvestorDeposit']['deposit_date']; ?></td>
-                <td align="center"><?php echo $each_item['ReinvestorDeposit']['ledger_transaction_id']; ?></td>
                 <td align="left"><?php echo $each_item['ReinvestorDeposit']['topup_id']; ?></td>
                 <td align="right"><?php echo $each_item['ReinvestorDeposit']['amount']; ?></td>
                 <td align="left"><?php echo $each_item['ReinvestorDeposit']['receipt_no']; ?></td>
@@ -69,14 +67,18 @@
                 </td>
                 
                 
-        <?php  }} ?>
+        <?php  }
+        
+        } ?>
             </tr>
         <tr>
             <td colspan="14" align="right">
+                
                 <?php 
-				echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".$investor_id."/".$investment_id, array("class" => 'btn btn-md btn-info')); 
+				echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".$reinvestor_id."/".$reinvestment_id, array("class" => 'btn btn-md btn-info')); 
                                 echo $this->Form->button('Delete', array('type' => 'submit', 'class' => 'btn btn-md btn-danger'))
                 ?>
+                
             </td>
         </tr>
     </table>

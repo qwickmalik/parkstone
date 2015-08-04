@@ -44,7 +44,7 @@
         <?php
 //   echo $this->Form->create('Investment', array("url" => array('controller' => 'Investments', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
         ?>
-        <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
+        <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size:85%">
             <tr>
                 <td style="border-bottom: solid 2px dodgerblue;" width="90" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
                 <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('comp_name', 'Company Name'); ?></b></td>

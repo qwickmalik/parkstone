@@ -2608,10 +2608,7 @@ public function countUserImage($id) {
                     }
                     $check = $this->Session->write('interest_accrual',$interest_accruals);
                     
-                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
-                        $this->request->data['Investment']['cashreceiptmode_id'],
-                        'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description);
+                 
                     $base_fee = 0;
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
@@ -2637,7 +2634,11 @@ public function countUserImage($id) {
                             break;
                     }
 
-
+                       $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
+                       
                     $check = $this->Session->check('investment_array_fixed');
                     if ($check) {
                         $this->Session->delete('investment_array_fixed');
@@ -2775,8 +2776,13 @@ public function countUserImage($id) {
 
                             break;
                     }
-
-
+                    
+                    $description = 'Equity investment for '.$total_shares.' shares';
+                      $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
+                       
                     $investment_array = array(
                         'total_amount' => $totalamt,
                         'numb_shares' => $total_shares,
@@ -3883,7 +3889,12 @@ public function countUserImage($id) {
 
                             break;
                     }
-
+                      $description = 'Equity investment for '.$total_shares.' shares';
+                      $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                        $this->request->data['Investment']['cashreceiptmode_id'],
+                        'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
+                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
+                       
 
                     $investment_array = array(
                         'total_amount' => $totalamt,
@@ -5241,6 +5252,12 @@ public function countUserImage($id) {
             $ledger_data = $this->Session->read('rledger_data');
             $cledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
             if (count($cledger) > 0) {
+                if($this->Session->check('rledger_data.rollover')){
+                    $old_rollover = $cledger['ClientLedger']['total_rollover'];
+                    $rollover = $this->Session->read('rledger_data.rollover');
+                    $new_rollover = $rollover + $old_rollover;
+                    $ledger_data['total_rollover'] = $new_rollover;
+                }
                 $this->ClientLedger->id = $cledger['ClientLedger']['id'];
                 $this->ClientLedger->save($ledger_data);
                 $cledger_id = $this->ClientLedger->id;
@@ -5713,7 +5730,7 @@ public function countUserImage($id) {
                         if ($data) {
                             $ledger_data = $this->ClientLedger->find('first', ['conditions' =>
                                 ['ClientLedger.investor_id' => $investor_id]]);
-
+                     
                             $period = $data['Investment']['investment_period'];
                             $first_date = $data['Investment']['investment_date'];
                             $inv_date = new DateTime($first_date);
@@ -5724,7 +5741,7 @@ public function countUserImage($id) {
                             $year = $duration;
                             $custom_rate = $data['Investment']['custom_rate'] - 5;
                             $investment_amount = $data['Investment']['investment_amount'];
-
+                         
                             switch ($period) {
                                 case 'Day(s)':
 
@@ -5781,20 +5798,50 @@ public function countUserImage($id) {
 
                                     break;
                             }
-
+                            
+                               $check_account = $this->ReinvestorCashaccount->find('first', ['recursive' => -1,'conditions' =>
+                        ['ReinvestorCashaccount.reinvestor_id' => 1]]);
+                        if($check_account){
+                            $rebalance = $check_account['ReinvestorCashaccount']['total_balance'];
+                            $investor_name = "";
+                            if(!empty($ledger_data['Investor']['in_trust_for'])){
+                                $investor_name = $ledger_data['Investor']['in_trust_for'];
+                            }elseif(!empty($ledger_data['Investor']['fullname'])){
+                                $investor_name = $ledger_data['Investor']['fullname'];
+                            }elseif(!empty($ledger_data['Investor']['comp_name'])){
+                                $investor_name = $ledger_data['Investor']['comp_name'];
+                            }
+                            if($amount_due > $rebalance){
+                                     $message = 'Termination failed. Insufficient funds to complete process. Please consider terminating an outbound investment first';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations2',$investor_id,$investor_name,$investment_id));
+                      
+                            }
+                        }
+                            $accrued_basefee = $data['Investment']['accrued_basefee'];
+                            
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
                                 'interest_earned' => $interest_amount, 'custom_rate' => $custom_rate, 'total_amount_earned' => $amount_due, 'duration' => $duration,
                                 'status' => "Termination_Approved",'accrued_days' => $duration,'instruction_details' => $instructions);
                             $ltid = null;
                             if ($ledger_data) {
+                                $cledger_id = $ledger_data['ClientLedger']['id'];
+                                   $description = 'Debit on ' . $data['Investment']['investment_no'].' for settlement of accrued management fee';
+                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
+                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
+                                    , 'description' => $description);
+                                $this->LedgerTransaction->create();
+                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
+                                
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
                                 $new_cashathand = $cash_athand + $amount_due;
+//                                $new_cashathand = $new_cashathand - $accrued_basefee;
                                 $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $amount_due;
-                                $cledger_id = $ledger_data['ClientLedger']['id'];
+                                
                                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
                                     'invested_amount' => $total_invested);
-                                $this->ClientLedger->save($client_ledger);
-
+                               $ledger_data =  $this->ClientLedger->save($client_ledger);
+                               
 
                                 //Ledger transaction entry
                                 $description = 'Discounting of ' . $data['Investment']['investment_no'];
@@ -5803,6 +5850,8 @@ public function countUserImage($id) {
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
+                                
+                             
                                 if ($ltresult) {
                                     $ltid = $ltresult['LedgerTransaction']['id'];
                                 }
@@ -5945,6 +5994,7 @@ public function countUserImage($id) {
                         $value['Investment']['investor_id']]]);
                 if ($result) {
                     $result['Investment']['id'] = $value['Investment']['id'];
+                    $result['Investment']['investment_amount'] = $value['Investment']['investment_amount'];
                     $data_array[] = $result;
                 }
             }
@@ -6101,6 +6151,8 @@ public function countUserImage($id) {
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
                 $result = $this->Investment->save($new_investmentdetails);
+                $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' => array('Investment.status' => array("Payment_Requested", 'Disposal_Requested')))));
+
                 if ($result) {
                     $message = 'Payment Request Successfully Sent';
                     $this->Session->write('smsg', $message);
@@ -6234,6 +6286,8 @@ public function countUserImage($id) {
             $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($investment_data) {
                 $earnedbalance = $investment_data['Investment']['earned_balance'];
+                $amount_due = $investment_data['Investment']['amount'];
+                
                 $status = $investment_data['Investment']['status'];
                 if ($sms_amount > $earnedbalance) {
                     $message = 'Payment amount cannot be more than Investment balance';
@@ -6241,13 +6295,14 @@ public function countUserImage($id) {
                     $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
                 }
                 $new_earnedbalance = $earnedbalance - $sms_amount;
-
+                $new_amt_due = $amount_due - $sms_amount;
                 if ($new_earnedbalance <= 0) {
                     $status = 'Paid';
                 } elseif ($new_earnedbalance > 0) {
                     $status = 'Part_payment';
                 }
-                $investment_array = array('id' => $investment_id, 'status' => $status, 'earned_balance' => $new_earnedbalance);
+                $investment_array = array('id' => $investment_id, 'status' => $status, 'earned_balance' => $new_earnedbalance,
+                    'amount_due' => $new_amt_due);
             }
             $date = date('Y-m-d H:i:s');
             //use id to retrieve Investment info
@@ -6556,7 +6611,7 @@ public function countUserImage($id) {
                     $inv_no = $investment_data['Investment']['investment_no'];
                     $ledger = $this->ClientLedger->find('first', ['conditions' =>
                         ['ClientLedger.investor_id' => $investor_id]]);
-
+                    $ledger_transactions = array();
                     if ($ledger) {
 
 
@@ -6570,11 +6625,18 @@ public function countUserImage($id) {
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
                                 $description = 'Fixed Investment Topup for ' . $inv_no;
-                                $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                
+                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source, 'investment_id' => $investment_id,
                                     'cheque_no' => $cheque_no, 'credit' => $amount, 'user_id' => $userid,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
-
+                                
+                            $description2 = 'Debit For Fixed Investment Topup For ' . $inv_no;    
+                               $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                    , 'cash_receipt_mode_id' => $source,
+                        'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
+                        'date' => $inv_date, 'description' => $description2);
+                       
                                 $inv_deposit = array('user_id' => $userid,
                                     'amount' => $amount, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
 
@@ -6588,13 +6650,18 @@ public function countUserImage($id) {
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
                                 $description = 'Fixed Investment Topup for ' . $inv_no;
 
-                                $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
                                     'cheque_no' => $cheque_no, 'credit' => $amount,
                                     'user_id' => $userid, 'investment_id' => $investment_id,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
-
-
+                              
+                                $description2 = 'Debit For Fixed Investment Topup For ' . $inv_no;   
+                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                    ,'cash_receipt_mode_id' => $source,
+                        'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
+                        'date' => $inv_date, 'description' => $description2);
+                                
                                 $inv_deposit = array('user_id' => $userid,
                                     'amount' => $amount, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
 
@@ -6618,13 +6685,13 @@ public function countUserImage($id) {
 
                                 $description = 'Fixed Investment Topup for ' . $inv_no;
 
-                                $ledger_transactions = array('client_ledger_id' => $ledger['ClientLedger']['id']
+                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
                                     'debit' => $amount,
                                     'user_id' => $userid, 'investment_id' => $investment_id,
                                     'date' => $inv_date, 'description' => $description);
-
                                 break;
+                                
                         }
                     } else {
                         $message = 'Investor ledger retrieval error. Please try again.';
@@ -6747,10 +6814,12 @@ public function countUserImage($id) {
                         if (isset($client_ledger)) {
                             $this->ClientLedger->save($client_ledger);
                             if ($ledger_transactions) {
-
+                                foreach($ledger_transactions as $key => $val){
+                                  
                                 $this->LedgerTransaction->create();
-                                $lt_result = $this->LedgerTransaction->save($ledger_transactions);
+                                $lt_result = $this->LedgerTransaction->save($val);
                                 $lt_id = $lt_result['LedgerTransaction']['id'];
+                                }
                             }
                         }
                         if ($topup_result) {
@@ -7518,7 +7587,7 @@ public function countUserImage($id) {
 //move to summary contract function and store in client ledger
 
                 $client_ledger = array('available_cash' => $new_cashathand,
-                    'invested_amount' => $new_cashinvested);
+                    'invested_amount' => $new_cashinvested,'rollover' => $investment_amount);
 
                 $check = $this->Session->check('variabless_fixed');
                 if ($check) {
@@ -7837,7 +7906,7 @@ public function countUserImage($id) {
       }
      */
 
-    function statementInvDetailEq($investor_id = null, $investment_id = null, $investor_name = null) {
+    function statementInvDetailEq($investment_id = null,  $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
@@ -8382,6 +8451,156 @@ public function countUserImage($id) {
             
         }
     }
+    
+    public function deleteEquityInvestments($investment_id = null, $investor_id = null, $investor_name = null){
+         $deposit_data = $this->InvestorDeposit->find('first', ['conditions' =>
+            ['InvestorDeposit.investment_id' => $investment_id],'order' => ['InvestorDeposit.id' => 'asc']]);
+        if ($deposit_data) {
+            $deposit_id = $deposit_data['InvestorDeposit']['id'];
+            $topup_id = $deposit_data['InvestorDeposit']['topup_id'];
+            $total_amt = $deposit_data['Investment']['total_amount'];
+            $deposit_amount = $deposit_data['InvestorDeposit']['amount'] - $total_amt;
+            $investor_id = $deposit_data['Investment']['investor_id'];
+            $investment_no = $deposit_data['Investment']['investment_no'];
+            $ledger_id = $deposit_data['LedgerTransaction']['client_ledger_id'];
+            $transaction_id = $deposit_data['InvestorDeposit']['ledger_transaction_id'];
+            $dep_created = $deposit_data['InvestorDeposit']['created'];
+            $invstatus = $deposit_data['Investment']['status'];
+            $invtype =  $deposit_data['Investment']['investment_product_id'];
+            $current = date('Y-m-d');
+            if (!empty($investment_id)) {
+                $new_invest_amt = $deposit_data['Investment']['investment_amount'];
+
+                if ($new_invest_amt > 0 && $invtype == 3) {
+                    $invtype = 1;
+                    $investment_update = array('id' => $investment_id,'status' => $invstatus
+                        ,'investment_product_id' => $invtype,'total_amount');
+                     $this->Investment->save($investment_update);
+                }else{
+                   $invstatus = 'Cancelled'; 
+                   $this->Investment->delete($investment_id,false);
+                }
+               
+
+               
+                $investor_id = $deposit_data['Investment']['investor_id'];
+
+                
+
+               
+
+                $ledger = $this->ClientLedger->find('first', ['conditions' =>
+                    ['ClientLedger.id' => $ledger_id], 'recursive' => -1]);
+                if ($ledger) {
+                    if (!empty($topup_id)) {
+                        $source = $deposit_data['Topup']['cash_receipt_mode_id'];
+                        switch ($source) {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 5:
+                                $old_invested = $ledger['ClientLedger']['invested_amount'];
+                                $available_cash = $ledger['ClientLedger']['available_cash'];
+                                $new_available = $available_cash;
+                                $new_invested = $ledger['ClientLedger']['invested_amount'];
+//                                if ($deposit_amount > $old_invested) {
+//                                    $newdeposit = $deposit_amount - $old_invested;
+//                                    $new_invested = 0;
+////                                    $new_available = $available_cash - $newdeposit;
+//                                } else {
+                                    $new_invested = $old_invested - $total_amt;
+//                                    $new_available = $available_cash;
+//                                }
+
+                                break;
+
+                            case 4:
+                                $old_invested = $ledger['ClientLedger']['invested_amount'];
+                                $available_cash = $ledger['ClientLedger']['available_cash'];
+                                $new_available = $available_cash + $total_amt;
+                                $new_invested = $old_invested - $total_amt;
+
+                                break;
+                        }
+                        $this->Topup->delete($topup_id, false);
+                    } else {
+                        $old_invested = $ledger['ClientLedger']['invested_amount'];
+                        $available_cash = $ledger['ClientLedger']['available_cash'];
+                        $new_available = $available_cash;
+                        $new_invested = $ledger['ClientLedger']['invested_amount'];
+//                        if ($deposit_amount > $old_invested) {
+//                            $newdeposit = $deposit_amount - $old_invested;
+//                            $new_invested = 0;
+//                            $new_available = $available_cash - $newdeposit;
+//                        } else {
+                            $new_invested = $old_invested - $total_amt;
+                            $new_available = $available_cash;
+//                        }
+                    }
+                    $ledger_array = array('id' => $ledger_id, 'invested_amount' => $new_invested, 'available_cash' => $available_cash);
+
+                    $ledger_result = $this->ClientLedger->save($ledger_array);
+                    if ($ledger_result) {
+                        if ($new_invest_amt <= 0) {
+
+                            $this->LedgerTransaction->deleteAll(array('LedgerTransaction.investment_id' => $investment_id), false);
+                        } else {
+                            $this->LedgerTransaction->delete($transaction_id, false);
+                        }
+                    }
+
+                    $cash_data = $this->InvestmentCash->find('first', array('conditions' =>
+                        array('InvestmentCash.investor_deposit_id' => $deposit_id,'investment_type' => 'equity'), 'recursive' => -1));
+
+                    if ($cash_data) {
+                        $status = $cash_data['InvestmentCash']['status'];
+                        if ($status != 'available') {
+                            $result = $this->ReinvestorCashaccount->find('first', array('recursive' => -1, 'conditions' =>
+                                array('ReinvestorCashaccount.reinvestor_id' => 1)));
+                            if ($result) {
+                                $id = $result['ReinvestorCashaccount']['id'];
+                                $old_balance = $result['ReinvestorCashaccount']['equity_inv_amount'];
+                                
+                                $new_balance = $old_balance - $total_amt;
+                                $grand_total = $result['ReinvestorCashaccount']['total_balance'] - $total_amt;
+                                $fixed_data = array('id' => $id, 'equity_inv_amount' => $new_balance, 'total_balance' => $grand_total);
+                                $this->ReinvestorCashaccount->save($fixed_data);
+                            }
+                        }
+
+
+                        $this->InvestmentCash->deleteAll(array('InvestmentCash.investor_deposit_id' => $deposit_id), false);
+                    }
+
+                    if ($new_invest_amt <= 0) {
+                        $result = $this->InvestorDeposit->deleteAll(array('InvestorDeposit.investment_id' => $investment_id), false);
+                    } else {
+                        $result = $this->InvestorDeposit->delete($deposit_id, false);
+                    }
+                    if ($result) {
+                        $message = 'Equity Investment successfully deleted';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+                    } else {
+
+                        $message = 'Unable to delete deposit. Try again';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+                    }
+                } else {
+                    $message = 'Missing Legder details. Try again';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+                }
+            } else {
+                $message = 'Missing investment details. Try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+            }
+        } else {
+            
+        }
+    }
 
     function statementClient($investor_id = null, $investor_name = null) {
         $this->__validateUserType();
@@ -8391,7 +8610,7 @@ public function countUserImage($id) {
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
-                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
+                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid','Termination_Approved')
             )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment'),
                 'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
                     'Investment.due_date','Investment.id','Investment.earned_balance')));

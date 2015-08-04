@@ -2463,7 +2463,7 @@ class ReinvestmentsController extends AppController {
         if ($this->request->is('post')) {
              
             if (!empty($this->request->data)) {
-               
+//               pr($this->request->data);exit;
                 $source = $this->request->data['Topup']['paymentmode_id'];
                 $available_cash = $this->request->data['Topup']['topupavailable_cash'];
                 $investment_id = $this->request->data['Topup']['topupinvestment_id'];
@@ -2678,11 +2678,13 @@ class ReinvestmentsController extends AppController {
                     $message = 'Rollover Amount cannot be more than amount due';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
-                } elseif ($investment_amount < $amount_available) {
-                    $message = 'Please record cash returned before rollover';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
-                }
+                } 
+                
+//                elseif ($investment_amount < $amount_available) {
+//                    $message = 'Please record cash returned before rollover';
+//                    $this->Session->write('bmsg', $message);
+//                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
+//                }
                 $first_date = $inv_date;
                 $custom_rate = $this->request->data['Reinvestment']['interest_rate'];
                 $date = new DateTime($first_date);
@@ -3630,10 +3632,11 @@ class ReinvestmentsController extends AppController {
                 }
 
                 $data = $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $investment_id]]);
-
+                
+                
                 if ($data) {
-                    $ledger_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
-                        ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]);
+                   $ledger_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
+                        ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]); 
 
                     $to_date = new DateTime($date);
                     $period = $data['Reinvestment']['investment_period'];
@@ -3709,8 +3712,9 @@ class ReinvestmentsController extends AppController {
                     } elseif (isset($received_amt) && $received_amt < $amount_due && $received_amt > 0) {
                         $payment_status = "part_payment";
                     }
-                    $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due,
-                        'interest_earned' => $interest_amount, 'penalty' => $penalty, 'total_amount_earned' => $amount_due, 'duration' => $duration,
+                    $amount_due2 = $amount_due - $received_amt;
+                    $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due2,
+                        'interest_earned' => $interest_amount, 'penalty' => $penalty, 'total_amount_earned' => $amount_due2, 'duration' => $duration,
                         'status' => "Terminated", 'payment_status' => $payment_status);
                     if ($ledger_data) {
                         $cash_athand = $ledger_data['ReinvestorCashaccount']['fixed_inv_returns'];
@@ -3722,7 +3726,7 @@ class ReinvestmentsController extends AppController {
                     }
                     $return_array = array('user_id' => $userid, 'reinvestment_id' => $investment_id,
                         'principal' => $investment_amount, 'rate' => $custom_rate, 'returns' => $received_amt, 'interest' => $interest_amount,
-                        'penalty' => $penalty, 'return_type' => 'Terminated', 'date' => $$termdate, 'cheque_nos' => $cheque_numbers,
+                        'penalty' => $penalty, 'return_type' => 'Terminated', 'date' => $termdate, 'cheque_nos' => $cheque_numbers,
                         'cash_receipt_mode_id' => $this->request->data['Reinvestment']['cashreceiptmode_id']);
                     $check = $this->Session->check('cashaccts');
                     if ($check) {
@@ -3774,7 +3778,21 @@ class ReinvestmentsController extends AppController {
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
-    
+    public function topup($reinvestment_id = null, $reinvestor_id = null) {
+        /* $this->__validateUserType(); */
+        $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
+        $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
+        $this->set('invdestproducts', $this->InvDestProduct->find('list'));
+          $this->set('paymentmodes', $this->PaymentMode->find('list'));
+
+        if (!is_null($reinvestment_id) && !is_null($reinvestor_id)) {
+            $this->set('data', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
+        } else {
+            $message = 'Invalid Selection Made. Try again.';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
+        }
+    }
     
     function delFixedInvestmentDeposits($reinvestor_id = null, $reinvestment_id = null){
         $this->__validateUserType();

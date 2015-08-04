@@ -65,9 +65,12 @@ function __dailyMatured(){
             $ledger_data = $this->ClientLedger->find('first',array('conditions' => array('ClientLedger.investor_id' => 
                 $each['Investment']['investor_id'])));
             if($ledger_data){
+                
+         $accrued_basefee = $each['Investment']['accrued_basefee'];
             $cash_athand = $ledger_data['ClientLedger']['available_cash'];
             $earned_balance = $each['Investment']['earned_balance'];
             $new_cashathand = $cash_athand + $earned_balance;
+//            $new_cashathand = $new_cashathand - $accrued_basefee;
             $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
            $old_tenure = $each['Investment']['total_tenure'];
            $period = $each['Investment']['investment_period'];
@@ -87,8 +90,18 @@ function __dailyMatured(){
                 'total_tenure' => $new_tenure);
             //'earned_balance' => 0.00,
             $this->Investment->save($each_array);
-            //Update Ledger data
-            $cledger_id = $ledger_data['ClientLedger']['id'];     
+            //enter new ledger data for accrued fee deduction
+            
+            $cledger_id = $ledger_data['ClientLedger']['id'];  
+            if($accrued_basefee > 0){
+             $description = 'Debit on ' . $each['Investment']['investment_no'].' for settlement of accrued management fee';
+                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
+                                    'date' => date('Y-m-d'), 'voucher_no' => $each['Investment']['investment_no']
+                                    , 'description' => $description);
+                                $this->LedgerTransaction->create();
+                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
+            }
+            //Update Ledger data   
                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
                     'invested_amount' => $total_invested);
                $this->ClientLedger->save($client_ledger);   
