@@ -56,6 +56,7 @@ if ($this->Session->check('shopCurrency')) {
                         <th align="left">Balance Due</th>
                     </tr>
                     <?php if(isset($data)){ foreach ($data as $each_item): 
+                        
                     $amount = 0;
                     if(!empty($each_item['InvestmentPayment']) ){
                     foreach ($each_item['InvestmentPayment'] as $val):
@@ -104,7 +105,57 @@ if ($this->Session->check('shopCurrency')) {
             echo  number_format($each_item['Investment']['earned_balance'],2);
         } ?></td>
                        </tr>
-                    <?php endforeach;
+                       
+                       
+                    <?php 
+                    if(!empty($each_item['Topup']) ){
+                        ?>
+                       <tr ><td colspan="10">
+                               <table class="table table-condensed" style="font-size:75%">
+                                  <tr>
+                                      <th align="left" width="120">&nbsp;</th>
+                        <th align="left" width="120">&nbsp;</th>
+                        <th align="left" width="150">Topup Amt. &nbsp;</th>
+                        <th align="left">Benchmark(%)</th>
+                        <th align="left">Interest</th>
+                        <th align="left">Topup Date</th>
+                        <th align="left" width="120">Maturity Date</th>
+                        <th align="left">Topup Tenure</th>
+                    </tr>  
+                    <?php
+                    
+                    foreach ($each_item['Topup'] as $val):
+                                    ?>
+                    <tr>
+                        <th align="left" width="120">&nbsp;</th>
+                            <td align="left">&nbsp;</td>
+                            <td align="left"><?php echo  number_format($val['topup_amount'],2); ?></td>
+                            <td align="left"><?php if (isset($each_item['Investment']['custom_rate'])) {
+            echo  $each_item['Investment']['custom_rate'].'%';
+        } ?></td>
+                            <td align="left"><?php echo number_format($val['topup_interest'],2); ?></td>
+                            <td align="left"><?php if (isset($val['investment_date'])) {
+            echo  date('d-M-Y',strtotime($val['investment_date']));
+        } ?></td>
+                            <td align="left"><?php if (isset($each_item['Investment']['due_date'])){
+                                echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
+        } ?></td>
+                            <td align="left"><?php if (isset($val['tenure'])) {
+            echo  $val['tenure'].'Day(s)';
+        } ?></td>
+                            
+                       </tr>
+                       <?php
+                       endforeach;
+                       ?>
+                               </table>
+                           </td> 
+                       </tr>
+                       
+                       <?php
+                        
+                    }
+                    endforeach;
                     
                      
                        }
@@ -147,15 +198,16 @@ if ($this->Session->check('shopCurrency')) {
                 }
                 ?>
                     <tr>
-                        <td align="left" colspan="10" style="border-bottom: solid 1px #ffffff;background: #ffffff;"></td>
+                        <td align="left" colspan="10" style="border-bottom: solid 1px #ffffff;background: #ffffff;">&nbsp;</td>
                     </tr>
+                    
                     <tr>
                         <td align="left" valign="top" colspan="3">PARKSTONE OFFICIAL NAME :</td>
 
-                        <td align="left" valign="top" colspan="2">
-                            <p><b><?php if(isset($issued)){echo $issued;} ?></b></p>
+                        <td align="left" valign="top" colspan="3">
+                            <b><?php if(isset($issued)){echo $issued;} ?></b>
                         </td>
-                        <td align="left" valign="top" >&nbsp;</td>
+                        <!--<td align="left" valign="top" >&nbsp;</td>-->
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                         <td align="right" valign="top">&nbsp;</td>

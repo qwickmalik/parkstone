@@ -14,7 +14,7 @@ class InvestmentsController extends AppController {
         'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
         'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit','InterestAccrual',
         'ReinvestmentsEquity', 'ReinvestorEquity', 'ReinvestorCashaccount',
-        'EquityOrder');
+        'EquityOrder','ManagementFee');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
@@ -5967,6 +5967,43 @@ public function countUserImage($id) {
 
     function monthlyMaturityList() {
         $this->__validateUserType();
+        
+         if ($this->request->is('post')) {
+
+            $sday = $this->request->data['Investment']['from_date']['day'];
+            $smonth = $this->request->data['Investment']['from_date']['month'];
+            $syear = $this->request->data['Investment']['from_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+            $eday = $this->request->data['Investment']['to_date']['day'];
+            $emonth = $this->request->data['Investment']['to_date']['month'];
+            $eyear = $this->request->data['Investment']['to_date']['year'];
+            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
+            $enewdate = strtotime($ends_date);
+            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($end_date);
+            //$date->add(new DateInterval('P1D'));
+            $end_date = $date->format('Y-m-d');
+            $frend_date = date('d F, Y', $enewdate);
+
+
+
+        $this->paginate = array(
+            'conditions' => array(
+                'Investment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
+                'Investment.investment_amount !=' => 0,
+                'Investment.status' => array('Invested', 'Rolled_over'),
+                'Investment.investment_product_id' => array(1, 3)),
+            'limit' => 30,
+            'order' => array('Investment.id' => 'asc'));
+        $data = $this->paginate('Investment');
+        
+            
+         }else{
+           
         $first_date = date('Y-m-d');
         $date = new DateTime($first_date);
         $date->add(new DateInterval('P1M'));
@@ -5978,8 +6015,9 @@ public function countUserImage($id) {
                 'AND' => array(array('Investment.due_date >=' => $first_date), array('Investment.due_date <=' => $date_end))),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
-        $data = $this->paginate('Investment');
-        $this->set('data', $data);
+        $data = $this->paginate('Investment');  
+         }
+         $this->set('data', $data);
     }
 
     function processPayments() {
@@ -6796,6 +6834,7 @@ public function countUserImage($id) {
                         'cash_receipt_mode_id' => $source,
                         'tenure' => $duration,
                         'period' => 'Day(s)',
+                        'topup_interest' => $interest_amount,
                         'investment_id' => $investment_data['Investment']['id'],
                         'user_id' => $userid,
                         'investment_date' => $first_date);
@@ -8617,9 +8656,10 @@ public function countUserImage($id) {
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid','Termination_Approved')
-            )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment'),
-                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
-                    'Investment.due_date','Investment.id','Investment.earned_balance')));
+            )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment','Topup')
+//                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
+//                    'Investment.due_date','Investment.id','Investment.earned_balance')
+                ));
             //,'SUM(InvestmentPayment.amount) as investpay_amount'
 //            pr($data);exit;
             $issued = $this->Session->check('userDetails');
