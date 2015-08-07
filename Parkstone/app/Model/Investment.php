@@ -83,6 +83,14 @@ class Investment extends AppModel{
     
     
      var $hasMany = array(
+        'ManagementFee' => array(
+            'className' => 'ManagementFee',
+            'foreignKey' => 'investment_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
         'InvestmentPayment' => array(
             'className' => 'InvestmentPayment',
             'foreignKey' => 'investment_id',

@@ -12,7 +12,7 @@ class ShellConsolesController extends AppController {
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
          'Equity',  'Customer','InvestmentCash','InterestAccrual',
         'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment','ReinvestInterestAccrual',
-        'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement');
+        'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement','ManagementFee');
 
     function beforeFilter() {
         
@@ -368,7 +368,7 @@ function __dailyReinvestmentInterests(){
        $data = $this->Investment->find('all',array('conditions' => array(
             'Investment.basefee_duedate <=' => date('Y-m-d')
         ),'recursive' => -1));
-       
+       $today = date('Y-m-d');
        if($data){
            foreach($data as $val){
                $id = $val['Investment']['id']; 
@@ -377,10 +377,20 @@ function __dailyReinvestmentInterests(){
                $old_totalfees = $val['Investment']['total_fees'];
                $new_accrued = $old_accrued + $base_fee;
                $new_totalfees = $old_totalfees + $base_fee;
-               
-               $new_data = array('accrued_basefee' => $new_accrued,'total_fees' => $new_totalfees);
+               $basefee_date =  $val['Investment']['basefee_duedate']; 
+               $enewdate = strtotime($basefee_date);
+               $end_date = date('Y-m-d', $enewdate);
+               $basefee_duedate = new DateTime($end_date);
+           
+            $basefee_duedate->add(new DateInterval('P1M'));
+            $basefee_nextdate = $basefee_duedate->format('Y-m-d');
+               $fee_data = array('investment_id' => $id,'base_fee' => $base_fee,'accrued_fee' => $new_accrued,'fee_date' => $basefee_nextdate);
+               $new_data = array('accrued_basefee' => $new_accrued,'total_fees' => $new_totalfees,'basefee_duedate' => $basefee_nextdate);
                $this->Investment->id = $id;
-               $this->Investment->save($new_data);
+               $result = $this->Investment->save($new_data);
+               if($result){
+                   $this->ManagementFee->save($fee_data);
+               }
            }
        }
     }

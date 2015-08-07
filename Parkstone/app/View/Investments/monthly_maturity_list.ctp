@@ -7,11 +7,77 @@
 
         <!-- Content start here -->
         <div class="row">
+            <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Investments', 'action' => 'monthlyMaturityList'))); ?>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               
+                <p style="font-weight: bold; padding: 10px 0px 0px 15px;">From</p>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <?php
+                    $month = date('m');
+                    $day = date('d');
+                    $Year = date('Y');
+                    ?>
+                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
+                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
+                    <?php echo $this->Form->day('from_date', array("selected" => $day)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->month('from_date', array("selected" => $month)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->year('from_date', 2003, date('Y')+5, array("selected" => $Year)); ?>
+                </div>
+                <script>
+                    var day = $("#day").val();
+                    var month = $("#month").val();
+                    var year = $("#year").val();
+                    $("#InvestmentFromDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestmentFromDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestmentFromDateYear option[value=" + year + "]").attr('selected', true);
+                </script>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p style="font-weight: bold; padding: 10px 0px 0px 15px;">To</p>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <?php
+                    $month = date('m');
+                    $day = date('d');
+                    $Year = date('Y');
+                    ?>
+                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
+                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
+                    <?php echo $this->Form->day('to_date', array("selected" => $day)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->month('to_date', array("selected" => $month)); ?>&nbsp;
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <?php echo $this->Form->year('to_date', 2003, date('Y')+5, array("selected" => $Year)); ?>
+                </div>
+                <script>
+                    var day = $("#day").val();
+                    var month = $("#month").val();
+                    var year = $("#year").val();
+                    $("#InvestmentToDateDay option[value=" + day + "]").attr('selected', true);
+                    $("#InvestmentToDateMonth option[value=" + month + "]").attr('selected', true);
+                    $("#InvestmentToDateYear option[value=" + year + "]").attr('selected', true);
+                </script>
+                <?php
+                echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: right;'));
+                ?>
+
+            </div>
+            
+            <?php echo $this->Form->end(); ?>
+            <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px #000000;">&nbsp;</p>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
+                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 85%">
                     <tr >
                         
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
@@ -19,7 +85,7 @@
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark Rate'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
