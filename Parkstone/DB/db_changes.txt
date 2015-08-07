@@ -1771,11 +1771,30 @@ CREATE TABLE IF NOT EXISTS `reinvest_interest_accruals` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+----------
 ALTER TABLE `investors` ADD `GRAPHIC_TYPE` VARCHAR( 30 ) NULL AFTER `investor_photo`;
 ALTER TABLE `investors` CHANGE `investor_photo` `investor_photo` LONGBLOB NULL DEFAULT NULL 
--------------------------------------------------------------------------------------------
 
 ALTER TABLE `ledger_transactions` ADD `management_fee` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `description` ,
 ADD `benchmark` DECIMAL( 6, 2 ) NULL DEFAULT '0.00' AFTER `management_fee`;
 ALTER TABLE `client_ledgers` ADD `total_rollover` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `invested_amount`;
+-------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `management_fees`;
+CREATE TABLE IF NOT EXISTS `management_fees` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `investment_id` int(11) DEFAULT NULL,
+  `base_fee` decimal(11,2) DEFAULT '0.00',
+  `accrued_fee` decimal(11,2) DEFAULT '0.00',
+  `fee_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modifeid` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `period`;
+
+ALTER TABLE `reinvestment_topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `topup_amount` ,
+ADD `topup_tenure` INT( 4 ) NULL DEFAULT '0' AFTER `topup_interest` ,
+ADD `topup_period` VARCHAR( 10 ) NULL AFTER `topup_tenure` 
  
