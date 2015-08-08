@@ -29,10 +29,11 @@ if ($this->Session->check('shopCurrency')) {
                         <p style='font-weight: bold; font-size: 14px; text-align: left;'>
                             <?php 
                             echo $this->Session->read('shopName').'<br />'; 
-                            echo 'CLIENT NAME: '.(isset($investor_name)?$investor_name:'').'<br />'; 
-                            echo 'CLIENT STATEMENT'
+                            echo 'CLIENT STATEMENT'.'<br />';
+                            echo "Generated on ".date('jS F, Y').'<br />';
+                            echo 'CLIENT NAME: '.(isset($investor_name)?$investor_name:''); 
                             ?></p>
-                        <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
+                        
                     </div>
                     
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
@@ -178,7 +179,7 @@ if ($this->Session->check('shopCurrency')) {
             foreach($total as $each_item):
                 ?>
                     <tr>
-                        <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total(<?php echo $shopCurrency; ?>)</td>
+                        <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
@@ -186,7 +187,7 @@ if ($this->Session->check('shopCurrency')) {
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"> &nbsp;</td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total(<?php echo $shopCurrency; ?>)</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
                             <?php   if (isset($each_item[0]['balance_due'])) {
                                 echo number_format($each_item[0]['balance_due'], 2);
@@ -209,24 +210,14 @@ if ($this->Session->check('shopCurrency')) {
                         </td>
                         <!--<td align="left" valign="top" >&nbsp;</td>-->
                         <td align="right" valign="top" >&nbsp;</td>
-                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >SIGNATURE:</td>
                         <td align="right" valign="top">&nbsp;</td>
                         <td align="right" valign="top" >&nbsp;</td>
                     </tr>
                     <tr>
                         <td align="left" colspan="10" style="border-bottom: solid 1px #ffffff;background: #ffffff;"></td>
                     </tr>
-                     <tr>
-                        <td align="left" valign="top" colspan="3">SIGNATURE :</td>
-                        
-                        <td align="right" valign="top" colspan="2">&nbsp;</td>
-                        <td align="left" valign="top" >&nbsp;</td>
-                        <td align="right" valign="top" >&nbsp;</td>
-                        <td align="right" valign="top" >&nbsp;</td>
-                        <td align="right" valign="top">&nbsp;</td>
-                        <td align="right" valign="top" >&nbsp; </td>
-                        
-                    </tr>
+                     
                 </table>
             </div>
             </div>
