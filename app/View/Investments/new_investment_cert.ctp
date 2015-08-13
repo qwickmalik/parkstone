@@ -43,8 +43,21 @@ echo $this->Html->script('print.js');
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <p>Client Name: <?php echo $data['Investor']['fullname']; ?></p>
+                <p>Client Name: <?php if(!empty($data['Investor']['fullname'])){echo $data['Investor']['fullname'];
+                
+                }elseif($data['Investor']['comp_name']){ echo $data['Investor']['comp_name']; } ?></p>
+                
             </div>
+               <?php
+               if(!empty($data['Investor']['in_trust_for'])){
+               ?>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <p>In-Trust-For: <?php echo $data['Investor']['in_trust_for']; ?></p>
+               </div>
+                
+                <?php
+               }
+               ?>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Client Number: <?php echo $data['Investor']['id']; ?></p>
             </div>

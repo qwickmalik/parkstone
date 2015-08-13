@@ -12,7 +12,8 @@ class ReportsController extends AppController {
     );
     var $uses = array('Setting', 'User', 'Currency', 'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal', 'ReinvestInterestAccrual',
         'Investor', 'InterestAccrual', 'ReinvestInterestAccrual', 'TempcashAccount', 'InvestorDeposit', 'Investment', 'InvestmentPayment', 'Reinvestment',
-        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead', 'BankBalance', 'BankTransfer', 'StatedBankBalance',
+        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead', 
+        'BankBalance', 'BankTransfer', 'StatedBankBalance','ManagementFee'
     );
 
     function beforeFilter() {
@@ -3087,17 +3088,150 @@ class ReportsController extends AppController {
         $this->set('report_name', 'Income Spread');
 
         if ($this->request->is('post')) {
-            if ($this->request->data['IncomeSpread']['year'] == "" || $this->request->data['IncomeSpread']['year'] == null) {
+            if(empty($this->request->data['IncomeSpread']['report_date']['year'])) {
                 $message = 'Please indicate year';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reports', 'action' => 'incomeSpread'));
             }
 
+            
+            $year = $this->request->data['IncomeSpread']['report_date']['year'];
+            $jdate_string = $year . "-01-01";
+            $ejdate_string = $year . "-01-31";
+            $this->ReinvestInterestAccrual->virtualFields['Jan'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $jdate_string . '\' AS DATE) AND CAST(\'' . $ejdate_string . '\' AS DATE))';
+            $fdate_string = $year . "-02-01";
+            $efdate_string = $year . "-02-31";
+            $this->ReinvestInterestAccrual->virtualFields['Feb'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $fdate_string . '\' AS DATE) AND CAST(\'' . $efdate_string . '\' AS DATE))';
+            $mardate_string = $year . "-03-01";
+            $emardate_string = $year . "-03-31";
+            $this->ReinvestInterestAccrual->virtualFields['Mar'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $mardate_string . '\' AS DATE) AND CAST(\'' . $emardate_string . '\' AS DATE))';
+            $apdate_string = $year . "-04-01";
+            $eaprdate_string = $year . "-04-30";
+            $this->ReinvestInterestAccrual->virtualFields['Apr'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $apdate_string . '\' AS DATE) AND CAST(\'' . $eaprdate_string . '\' AS DATE))';
+            $mdate_string = $year . "-05-01";
+            $emdate_string = $year . "-05-30";
+            $this->ReinvestInterestAccrual->virtualFields['May'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $mdate_string . '\' AS DATE) AND CAST(\'' . $emdate_string . '\' AS DATE))';
+            $jundate_string = $year . "-06-01";
+            $ejundate_string = $year . "-06-30";
+            $this->ReinvestInterestAccrual->virtualFields['Jun'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $jundate_string . '\' AS DATE) AND CAST(\'' . $ejundate_string . '\' AS DATE))';
+            $juldate_string = $year . "-07-01";
+            $ejuldate_string = $year . "-07-31";
+            $this->ReinvestInterestAccrual->virtualFields['Jul'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $juldate_string . '\' AS DATE) AND CAST(\'' . $ejuldate_string . '\' AS DATE))';
 
-            $year = $this->request->data['IncomeSpread']['year'];
+            $augdate_string = $year . "-08-01";
+            $eaugdate_string = $year . "-08-31";
+            $this->ReinvestInterestAccrual->virtualFields['Aug'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $augdate_string . '\' AS DATE) AND CAST(\'' . $eaugdate_string . '\' AS DATE))';
+            $sepdate_string = $year . "-09-01";
+            $esepdate_string = $year . "-09-30";
+            $this->ReinvestInterestAccrual->virtualFields['Sep'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $sepdate_string . '\' AS DATE) AND CAST(\'' . $esepdate_string . '\' AS DATE))';
+            $octdate_string = $year . "-10-01";
+            $eoctdate_string = $year . "-10-31";
+            $this->ReinvestInterestAccrual->virtualFields['Oct'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $octdate_string . '\' AS DATE) AND CAST(\'' . $eoctdate_string . '\' AS DATE))';
+            $novdate_string = $year . "-11-01";
+            $enovdate_string = $year . "-11-30";
+            $this->ReinvestInterestAccrual->virtualFields['Nov'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $novdate_string . '\' AS DATE) AND CAST(\'' . $enovdate_string . '\' AS DATE))';
+            $decdate_string = $year . "-12-01";
+            $edecdate_string = $year . "-12-31";
+            $this->ReinvestInterestAccrual->virtualFields['Dec'] = '(select SUM(interest_amounts) from reinvest_interest_accruals '
+                    . 'where interest_date BETWEEN CAST(\'' . $decdate_string . '\' AS DATE) AND CAST(\'' . $edecdate_string . '\' AS DATE))';
 
+//                    '(select SUM(interest_amounts) from interest_accruals '
+//                    . 'where CONCAT(YEAR(interest_date)'
+//                    . ',"-",MONTH(interest_date)) = \''.date('Y-m',strtotime($juldate_string)).'\')';
+            $datacount = $this->ReinvestInterestAccrual->find('count', array('order' => array('Reinvestor.company_name' => 'asc'),
+                'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                        'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year
+                ),
+                'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'Reinvestor.company_name',
+                    'SUM(interest_amounts) as interests', 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
+                    'ReinvestInterestAccrual.Mar', 'ReinvestInterestAccrual.Apr', 'ReinvestInterestAccrual.May', 'ReinvestInterestAccrual.Jul',
+                    'ReinvestInterestAccrual.Jun', 'ReinvestInterestAccrual.Aug',
+                    'ReinvestInterestAccrual.Sep', 'ReinvestInterestAccrual.Oct', 'ReinvestInterestAccrual.Nov', 'ReinvestInterestAccrual.Dec')
+                ));
 
+            if ($datacount > 0) {
+                $accounts = $this->ReinvestInterestAccrual->find('all',array(
+                    'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                             'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
+                    ),
+                    'fields' => array(
+                        'MONTH(ReinvestInterestAccrual.interest_date) as month','SUM(interest_amounts) as interests')
+                    ,'group' => array('MONTH(ReinvestInterestAccrual.interest_date)')));
 
+//                , 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
+//                        'ReinvestInterestAccrual.Mar', 'ReinvestInterestAccrual.Apr', 'ReinvestInterestAccrual.May', 'ReinvestInterestAccrual.Jul',
+//                        'ReinvestInterestAccrual.Jun', 'ReinvestInterestAccrual.Aug',
+//                        'ReinvestInterestAccrual.Sep', 'ReinvestInterestAccrual.Oct', 'ReinvestInterestAccrual.Nov', 'ReinvestInterestAccrual.Dec'
+
+                    $total = $this->ReinvestInterestAccrual->find('all', array(
+                        'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                                'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year//,
+//                            'NOT' => array('Reinvestment.status' => array('Cancelled', 'Paid', 'Deleted','Terminated'))
+                        ),
+                        'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests')
+                        ));
+                
+                if ($accounts) {
+                    $this->set('accounts', $accounts);
+                    $this->set('total', $total);
+                } else {
+                    
+                }
+            }
+$datacount = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                        'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year
+                ),
+                    'fields' => array(
+                        'MONTH(InterestAccrual.interest_date) as month','SUM(interest_amounts) as interests'),
+                'group' => array('MONTH(InterestAccrual.interest_date)')));
+if ($datacount) {
+                
+                    $total = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                        'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                                'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year
+                        ),
+                        'fields' => array('InterestAccrual.investor_id', 'SUM(interest_amounts) as total_interests')
+                        ));
+                
+                if ($datacount) {
+                    $this->set('invaccounts', $datacount);
+                    $this->set('invtotal', $total);
+                }
+            }
+            
+            $mg = $this->ManagementFee->find('all', array(
+                'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                        'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ManagementFee.fee_date)' => $year
+                ),
+                    'fields' => array(
+                        'MONTH(ManagementFee.fee_date) as month','SUM(base_fee) as interests'),
+                'group' => array('MONTH(ManagementFee.fee_date)')));
+if ($mg) {
+                
+                    $total = $this->ManagementFee->find('all', array(
+                        'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                                'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ManagementFee.fee_date)' => $year
+                        ),
+                        'fields' => array('SUM(base_fee) as total_interests')
+                        ));
+                
+                if ($mg) {
+                    $this->set('mgaccounts', $mg);
+                    $this->set('mgtotal', $total);
+                }
+            }
             $this->set('year', $year);
         }
     }

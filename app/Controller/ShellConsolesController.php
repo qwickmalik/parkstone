@@ -370,6 +370,7 @@ function __dailyReinvestmentInterests(){
         ),'recursive' => -1));
        $today = date('Y-m-d');
        if($data){
+//           pr($data);exit;
            foreach($data as $val){
                $id = $val['Investment']['id']; 
                $old_accrued = $val['Investment']['accrued_basefee'];
@@ -384,11 +385,12 @@ function __dailyReinvestmentInterests(){
            
             $basefee_duedate->add(new DateInterval('P1M'));
             $basefee_nextdate = $basefee_duedate->format('Y-m-d');
-               $fee_data = array('investment_id' => $id,'base_fee' => $base_fee,'accrued_fee' => $new_accrued,'fee_date' => $basefee_nextdate);
+               $fee_data = array('investment_id' => $id,'base_fee' => $base_fee,'accrued_fee' => $new_accrued,'fee_date' => $today);
                $new_data = array('accrued_basefee' => $new_accrued,'total_fees' => $new_totalfees,'basefee_duedate' => $basefee_nextdate);
                $this->Investment->id = $id;
                $result = $this->Investment->save($new_data);
                if($result){
+                   $this->ManagementFee->create();
                    $this->ManagementFee->save($fee_data);
                }
            }

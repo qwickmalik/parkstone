@@ -157,7 +157,7 @@ echo $this->Html->script('icheck/icheck.js');
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                 <?php
-                                                        echo $this->Form->input('investor_signature', array('type' => 'file','value' => $this->webroot.(isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
+//                                                        echo $this->Form->input('investor_signature', array('type' => 'file','value' => $this->webroot.(isset($investor['Investor']['investor_signature']) ? $investor['Investor']['investor_signature'] : '' )));
                                                 ?>
                                             </div>
                                         </div>
@@ -339,7 +339,7 @@ echo $this->Html->script('fuelux/wizards.js');
         {
              $("#InvestorOtherNames").mouseout(function () {
                  var name = $(this).val();
-                 var url = '../checkDuplicate';
+                 var url = 'checkDuplicate';
                  var query = "action=checkDuplicate&name=" + name;
                  if (name != ""){
                       $.ajax({
