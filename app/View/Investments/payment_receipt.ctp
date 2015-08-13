@@ -54,7 +54,7 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                                 {echo $payment['Investor']['in_trust_for'];} ?></b><br />    
                                     
                              <?php } ?>
-                            <b>Receipt No.: <?php if(isset($voucher_no)){echo $voucher_no; } ?></b><br />
+                            <b>Payment No.: <?php if(isset($voucher_no)){ echo $voucher_no; } ?></b><br />
                             <b>Date: </b><?php $check = $this->Session->check('payment_date');
                             if ($check) {
                                 $pdate = $this->Session->read('payment_date');
