@@ -2449,7 +2449,8 @@ public function countUserImage($id) {
 
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
-                $receipt_no = $this->request->data['Investment']['receipt_no'];
+                $voucher_no = date('mdyhis') . rand(2, 4);
+                $receipt_no = $voucher_no;
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'credit' => $deposit, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -3534,7 +3535,9 @@ public function countUserImage($id) {
                     
                 }
             }
-            $receipt_no = $this->request->data['Investment']['receipt_no'];
+            $voucher_no = date('mdyhis') . rand(2, 4);
+                $receipt_no = $voucher_no;
+//            $receipt_no = $this->request->data['Investment']['receipt_no'];
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
@@ -5206,7 +5209,7 @@ public function countUserImage($id) {
                 if (!empty($ledger_transactions)) {
                     foreach ($ledger_transactions as $key => $val) {
                         $val['client_ledger_id'] = $cledger_id;
-                        $val['voucher_no'] = $investment_number;
+//                        $val['voucher_no'] = $investment_number;
                         $val['investment_id'] = $investment_id;
                         $this->LedgerTransaction->create();
                         $lt_result = $this->LedgerTransaction->save($val);
@@ -5281,8 +5284,9 @@ public function countUserImage($id) {
                 $ledger_transactions = $this->Session->read('ledger_transactions');
                 if (!empty($ledger_transactions)) {
                     foreach ($ledger_transactions as $key => $val) {
+                        
                         $val['client_ledger_id'] = $cledger_id;
-                        $val['voucher_no'] = $investment_number;
+//                        $val['voucher_no'] = $investment_number;
                         $val['investment_id'] = $investment_id;
                         $this->LedgerTransaction->create();
                         $lt_result = $this->LedgerTransaction->save($val);
@@ -5328,7 +5332,9 @@ public function countUserImage($id) {
             $inv_deposit = $this->Session->read('inv_deposit');
             $inv_deposit['investment_id'] = $investment_id;
             $inv_deposit['ledger_transaction_id'] = $lt_id;
+            $receipt = $inv_deposit['receipt_no'];
             $this->InvestorDeposit->create();
+            $this->set('deposit_no',$receipt);
             $dep_result = $this->InvestorDeposit->save($inv_deposit);
             if ($dep_result) {
                 $dep_id = $dep_result['InvestorDeposit']['id'];
@@ -6669,14 +6675,14 @@ public function countUserImage($id) {
                                 $new_investedamount = $ledger['ClientLedger']['invested_amount'] + $amount;
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
-                                $description = 'Fixed Investment Topup for ' . $inv_no;
+                                $description = '’Deposit for Topup on ' . $inv_no;
                                 
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source, 'investment_id' => $investment_id,
                                     'cheque_no' => $cheque_no, 'credit' => $amount, 'user_id' => $userid,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
                                 
-                            $description2 = 'Debit For Fixed Investment Topup For ' . $inv_no;    
+                            $description2 = 'Fixed Income Topup on ' . $inv_no;    
                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
                         'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
@@ -6693,7 +6699,7 @@ public function countUserImage($id) {
                                 $cheque_no = $this->request->data['Topup']['cheque_no'];
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
-                                $description = 'Fixed Investment Topup for ' . $inv_no;
+                                $description = 'Deposit for Topup on' . $inv_no;
 
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
@@ -6701,7 +6707,7 @@ public function countUserImage($id) {
                                     'user_id' => $userid, 'investment_id' => $investment_id,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
                               
-                                $description2 = 'Debit For Fixed Investment Topup For ' . $inv_no;   
+                                $description2 = 'Fixed Income Topup on  ' . $inv_no;   
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     ,'cash_receipt_mode_id' => $source,
                         'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
@@ -6728,7 +6734,7 @@ public function countUserImage($id) {
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'available_cash' => $new_ledgeravailablecash,
                                     'invested_amount' => $new_investedamount);
 
-                                $description = 'Fixed Investment Topup for ' . $inv_no;
+                                $description = 'Fixed Income Topup on ' . $inv_no;
 
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
