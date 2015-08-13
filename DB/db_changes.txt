@@ -1797,4 +1797,4 @@ ALTER TABLE `topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' A
 ALTER TABLE `reinvestment_topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `topup_amount` ,
 ADD `topup_tenure` INT( 4 ) NULL DEFAULT '0' AFTER `topup_interest` ,
 ADD `topup_period` VARCHAR( 10 ) NULL AFTER `topup_tenure` 
- 
+ ALTER TABLE `investment_payments` ADD `receipt_no` VARCHAR( 30 ) NULL AFTER `amount`;
