@@ -29,6 +29,7 @@ echo $this->Html->script('print.js');
                             echo $this->Session->read('shopName').'<br />'; 
                             echo 'NEW TOP-UP RECEIPT'
                             ?></p>
+                        <b>Receipt No.: <?php if(isset($voucher_no)){echo $voucher_no; } ?></b><br />
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
                     
@@ -41,8 +42,23 @@ echo $this->Html->script('print.js');
                 <hr>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <p>Client Name: <?php echo $data2['Investor']['fullname']; ?></p>
+                <p>Client Name: <?php if(!empty($data2['Investor']['fullname'])){ echo $data2['Investor']['fullname'];
+                
+                }elseif($data2['Investor']['comp_name']){
+                    echo $data2['Investor']['comp_name'];
+                }
+                    ?></p>
             </div>
+                <?php
+               if(!empty($data2['Investor']['in_trust_for'])){
+               ?>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <p>In-Trust-For: <?php echo $data2['Investor']['in_trust_for']; ?></p>
+               </div>
+                
+                <?php
+               }
+               ?>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Client ID: <?php echo $data2['Investor']['id']; ?></p>
             </div>
@@ -51,7 +67,7 @@ echo $this->Html->script('print.js');
             </div>
             
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <p>Investment Code: <?php echo $data2['Investment']['investment_no'].' '.$data2['Investment']['investment_no']; ?></p>
+                <p>Investment Code: <?php echo $data2['Investment']['investment_no']; ?></p>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <p>Total Tenure: <?php echo $data2['Investment']['total_tenure'].' '.$data2['Investment']['investment_period']; ?></p>

@@ -46,7 +46,14 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                             &nbsp;
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                            <b style="font-size: 14px;">To: <?php if(isset($payment['Investor']['fullname'])){echo $payment['Investor']['fullname'];} ?></b><br />
+                            <b style="font-size: 14px;">To: <?php if(!empty($payment['Investor']['fullname']))
+                                {echo $payment['Investor']['fullname'];}elseif(!empty($payment['Investor']['comp_name'])){
+                                    echo $payment['Investor']['comp_name'];} ?></b><br />
+                             <?php if(!empty($payment['Investor']['in_trust_for'])){ ?>    
+                               <b style="font-size: 13px;">In-Trust-For:  <?php if(!empty($payment['Investor']['in_trust_for']))
+                                {echo $payment['Investor']['in_trust_for'];} ?></b><br />    
+                                    
+                             <?php } ?>
                             <b>Receipt No.: <?php if(isset($voucher_no)){echo $voucher_no; } ?></b><br />
                             <b>Date: </b><?php $check = $this->Session->check('payment_date');
                             if ($check) {

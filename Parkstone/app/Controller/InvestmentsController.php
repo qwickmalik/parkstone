@@ -6389,6 +6389,7 @@ public function countUserImage($id) {
                         'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
                         'payment_mode_id' => $this->request->data['InvestmentPayment']['paymentmode_id'], 'ledger_transaction_id' => $ltid,
                         'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date, 'event_type' => 'Payment',
+                        'receipt_no' => $voucher_no,
                         'event_date' => $payment_date);
 
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
@@ -8651,7 +8652,7 @@ public function countUserImage($id) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
-            
+            $investor_data = $this->Investor->find('first',array('recursive' => -1,'conditions' => array('Investor.id'=>$investor_id) ));
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
@@ -8680,6 +8681,7 @@ public function countUserImage($id) {
                     $this->set('total', $data_total);
                 }
                 $this->set('data', $data);
+                $this->set('investor_data',$investor_data);
                 $this->set('investor_id', $investor_id);
                 $this->set('investor_name', $investor_name);
             } else {

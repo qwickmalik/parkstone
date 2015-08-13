@@ -45,7 +45,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
         <table border="0" width="100%" cellspacing="5" cellpadding="0" align="left">
 
             <tr>
-                <td align="left" width="200"><p style="font-size: 18px;">Investor ID: </p></td>
+                <td align="left" width="150"><p style="font-size: 18px;">Investor ID: </p></td>
                 <td align="left"><p style="font-size: 18px;"><?php
                         if (isset($investor_id)) {
                             echo $investor_id;
@@ -56,14 +56,26 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                         ?></p>
                     
                 </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td align="left" width="200"><p style="font-size: 18px;">Investor Name: </p></td>
+                <td align="left" width="150"><p style="font-size: 18px;">Investor Name: </p></td>
                 <td align="left"><p style="font-size: 18px;"><?php
                         if (isset($investor_name)) {
                             echo $investor_name;
                         }
                         ?></p></td>
+                <td align="left" width="120"><?php
+                        if (!empty($data['Investor']['in_trust_for'])) {?><p style="font-size: 18px;">In-Trust-For: </p></td>
+                <?php }
+                        ?><td align="left"><?php
+                        if (!empty($data['Investor']['in_trust_for'])) {?><p style="font-size: 18px;"><?php
+                        
+                            echo $data['Investor']['in_trust_for'];
+                       
+                        ?></p><?php }
+                        ?></td>
             </tr>
         </table>
 

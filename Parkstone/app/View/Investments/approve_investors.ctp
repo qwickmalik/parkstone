@@ -66,6 +66,7 @@
                     echo $this->Form->input('approved'.$each_item['Investor']['id'], array( 'type' => 'checkbox',$checked. 'label' => false, 'hiddenField' => false));
                     
                     ?>
+                    
                 </td>
             </tr>
         <?php endforeach; }

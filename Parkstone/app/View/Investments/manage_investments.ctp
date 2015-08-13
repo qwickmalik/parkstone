@@ -95,9 +95,9 @@
                     echo $this->Html->link('Equity', "/Investments/manageEquityInvestments/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ));
                 ?></td>
                 <td align="left"><?php 
-                echo $this->Html->Link('Client Ledger', '/Investments/clientLedger' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
+                echo $this->Html->Link('Client Ledger', '/Investments/clientLedger' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']: '' ). "/" . (!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : (!empty($each_item['Investor']['comp_name']) ? $each_item['Investor']['comp_name'] : '' ) ) , array('escape' => false)); 
                 echo " | ";
-                echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' )."/".(!empty($each_item['Investor']['in_trust_for']) ? $each_item['Investor']['in_trust_for'] : (!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : (isset($each_item['Investor']['comp_name']) ? $each_item['Investor']['comp_name'] : '' ) ) ),array('escape'=>false));
+                echo $this->Html->Link('Statement', '/Investments/statementClient/'.(isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] : '' )."/".(!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : (!empty($each_item['Investor']['comp_name']) ? $each_item['Investor']['comp_name'] : '' ) ),array('escape'=>false));
  
 //                 echo $this->Html->Link('Statement', '/Investments/statementActiveInv' . "/" . (isset($each_item['Investor']['id']) ? $each_item['Investor']['id']. "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false)); 
 //               

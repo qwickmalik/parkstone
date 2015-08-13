@@ -30,14 +30,17 @@ if ($this->Session->check('shopCurrency')) {
                             <?php 
                             echo $this->Session->read('shopName').'<br />'; 
                             echo 'CLIENT STATEMENT'.'<br />';
-                            echo "Generated on ".date('jS F, Y').'<br />';
-                            echo 'CLIENT NAME: '.(isset($investor_name)?$investor_name:''); 
+                            
+                            echo 'CLIENT NAME: '.(!empty($investor_name)?$investor_name:'').'<br />'; 
+                            if(!empty($investor_data['Investor']['in_trust_for'])){
+                             echo 'IN-TRUST-FOR: '.(!empty($investor_data['Investor']['in_trust_for'])?$investor_name:'');    
+                            }
                             ?></p>
                         
                     </div>
                     
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
+                        <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail').'<br />';echo "Generated on ".date('jS F, Y').'<br />'; ?></p>
                     </div>
                 </div>
             </div>
@@ -203,7 +206,7 @@ if ($this->Session->check('shopCurrency')) {
                     </tr>
                     
                     <tr>
-                        <td align="left" valign="top" colspan="3">PARKSTONE OFFICIAL NAME :</td>
+                        <td align="right"  valign="top" colspan="3">PARKSTONE OFFICIAL NAME :</td>
 
                         <td align="left" valign="top" colspan="3">
                             <b><?php if(isset($issued)){echo $issued;} ?></b>
