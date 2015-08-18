@@ -2608,7 +2608,7 @@ public function countUserImage($id) {
                         'interest_amounts' => $ainterest_amount,
                         'interest_date' => $inv_date
                     );
-                    
+                   
                     $check = $this->Session->check('interest_accrual');
                     if ($check) {
                         $this->Session->delete('interest_accrual');
@@ -3435,7 +3435,7 @@ public function countUserImage($id) {
                     $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                 } else {
                     $investment_amount = $this->request->data['Investment']['investment_amount'];
-
+                    
                     if ($investment_amount > $amount_available) {
 
                         $message = 'Investment Amount cannot be more than investor\'s available cash';
@@ -5964,7 +5964,8 @@ public function countUserImage($id) {
         $this->__validateUserType();
         $this->paginate = array(
             'conditions' => array(
-                'Investment.status' => array('Matured', 'Payment_Requested'), 'Investment.investment_product_id' => array(1, 3)),
+                'Investment.status' => array('Matured', 'Payment_Requested'), 'Investment.investment_product_id' => array(1, 3),
+                'Investment.investment_amount >' => 0),
             'limit' => 30,
             'order' => array('Investment.id' => 'asc'));
         $data = $this->paginate('Investment');
@@ -8662,7 +8663,7 @@ public function countUserImage($id) {
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
-                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid','Termination_Approved')
+                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
             )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment','Topup')
 //                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
 //                    'Investment.due_date','Investment.id','Investment.earned_balance')
