@@ -9,6 +9,7 @@
 
 
     <?php
+    $userType = $this->Session->read('userDetails.usertype_id');
 //    echo $this->Form->create('', array("url" => array('controller' => 'Stocks', 'action' => '#'), "inputDefaults" => array('label' => false, 'div' => false)));
     ?>
                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 12px;">
@@ -49,8 +50,9 @@
             <td style="border-bottom: solid 2px dodgerblue" width="60" align="center"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
             <!--<td style="border-bottom: solid 2px dodgerblue" width="60" align="right"><b>Statement</b></td>-->
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Top-up</b></td>
-            <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
+        <?php    if ( $userType == 1) { ?>    <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
+           <?php } ?>
         </tr>
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
@@ -327,6 +329,7 @@
                     <!-- Top-up Pop-up form Ends -->
                
                 </td>
+                <?php  if ( $userType == 1) { ?>
                 <td align="center"><?php
                 if(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Invested' || $each_item['Investment']['status'] == 'Rolled_over' || $each_item['Investment']['status'] == 'Part_payment'){
                         if(isset($each_item['Investment']['id'])){
@@ -343,8 +346,9 @@
                         }
                         ?></td>
                 
-        <?php  }} ?>
+        <?php  } ?>
             </tr>
+            <?php  }} ?>
         <tr>
             <td colspan="14" align="right">
                 <?php 

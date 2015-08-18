@@ -34,7 +34,7 @@ echo $this->Html->script('print.js');
                             echo $this->Session->read('shopName').'<br />'; 
                             echo 'NEW DEPOSIT RECEIPT'
                             ?></p>
-                       <?php if(isset($deposit_no)){ ?><p align='left'>Receipt No.: <?php echo deposit_no;  ?></p><br /><?php } ?>
+                       <?php if(isset($deposit_no)){ ?><p align='left'>Receipt No.: <?php echo $deposit_no;  ?></p><br /><?php } ?>
                            
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
