@@ -1778,7 +1778,7 @@ ALTER TABLE `investors` CHANGE `investor_photo` `investor_photo` LONGBLOB NULL D
 ALTER TABLE `ledger_transactions` ADD `management_fee` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `description` ,
 ADD `benchmark` DECIMAL( 6, 2 ) NULL DEFAULT '0.00' AFTER `management_fee`;
 ALTER TABLE `client_ledgers` ADD `total_rollover` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `invested_amount`;
-
+-------------------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS `management_fees`;
 CREATE TABLE IF NOT EXISTS `management_fees` (
@@ -1796,6 +1796,5 @@ ALTER TABLE `topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' A
 
 ALTER TABLE `reinvestment_topups` ADD `topup_interest` DECIMAL( 11, 2 ) NULL DEFAULT '0.00' AFTER `topup_amount` ,
 ADD `topup_tenure` INT( 4 ) NULL DEFAULT '0' AFTER `topup_interest` ,
-ADD `topup_period` VARCHAR( 10 ) NULL AFTER `topup_tenure`; 
+ADD `topup_period` VARCHAR( 10 ) NULL AFTER `topup_tenure` ;
  ALTER TABLE `investment_payments` ADD `receipt_no` VARCHAR( 30 ) NULL AFTER `amount`;
- -------------------------------------------------------------------------------------------
