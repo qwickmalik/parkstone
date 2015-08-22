@@ -1,8 +1,10 @@
-<?php echo $this->element('header');
+<?php
+echo $this->element('header');
 echo $this->Html->script('jquery.js');
 echo $this->Html->script('jquery.printElement.js');
 
-echo $this->Html->script('print.js'); ?>
+echo $this->Html->script('print.js');
+?>
 
 <h3>Reports: Aggregate Investment Report</h3>
 <div class="boxed">
@@ -12,7 +14,7 @@ echo $this->Html->script('print.js'); ?>
         <!-- Content start here -->
         <div class="row">
             <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Reports', 'action' => 'aggregateInvestment'))); ?>
-            
+
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <p style="font-weight: bold; padding: 10px 0px 0px 0px;">From</p>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -74,10 +76,10 @@ echo $this->Html->script('print.js'); ?>
                 ?>
 
             </div>
-            
+
             <?php echo $this->Form->end(); ?>
             <p style="clear: both; width: 100%; margin-bottom: 20px; border-bottom: solid 2px dodgerblue;">&nbsp;</p>
-            
+
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
                 <?php
 //                echo $this->Element('logo_reports');
@@ -105,23 +107,23 @@ echo $this->Html->script('print.js'); ?>
 //
 //                echo "<p><b>AGGREGATE INVESTMENT REPORT</b></p>";
                 ?>
-                
+
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         &nbsp;
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php 
-                        echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;','width' => 120, 'alt' => $this->Session->read('shopName')));
+                        <?php
+                        echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;', 'width' => 120, 'alt' => $this->Session->read('shopName')));
                         ?>
                         <p style='font-weight: bold; font-size: 14px; text-align: left;'>
-                            <?php 
-                            echo $this->Session->read('shopName').'<br />'; 
+                            <?php
+                            echo $this->Session->read('shopName') . '<br />';
                             echo 'AGGREGATE INVESTMENT REPORT'
                             ?></p>
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
-                    
+
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
                     </div>
@@ -130,74 +132,99 @@ echo $this->Html->script('print.js'); ?>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
-                        <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Name</b></td>
-                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
+                        <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Investor</b></td>
+
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Amount Inv.</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark Rate</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Rate</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Maturity Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest Due on Maturity</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal & Interest Due</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Current Date</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Disinvestment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Interest Due on Current Date</b></td>
-                        <td align="right" valign="top" width="100" style="border-bottom: solid 2px Gray;"><b>Principal & Interest Due on Current Date</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal & Interest Due</b></td>
+                        <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Payment</b></td>
                     </tr>
-                   
-                    <?php if (isset($accounts)) {
-                          
-    foreach ($accounts as $each_item):  
-              
-            ?>
-                    <tr>
-                 
-                        <td align="left" valign="top"><?php if (isset($each_item['Investor']['fullname'])) {
-            echo  $each_item['Investor']['fullname'];
-        } ?></td>
-                        <td align="left" valign="top"><?php if (isset($each_item['Investment']['investment_no'])) {
-            echo  $each_item['Investment']['investment_no'];
-        } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
-            echo  date('d-M-Y',strtotime($each_item['Investment']['investment_date']));
-        } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_amount'])) {
-            echo  number_format($each_item['Investment']['investment_amount'],2);
-        } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
-            echo  $each_item['Investment']['custom_rate'].'%';
-        } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['due_date'])) {
-            echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
-        } ?></td>
-                        <td align="right" valign="top"><?php echo date('d-m-Y'); ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['expected_interest'])) {
-            echo  number_format($each_item['Investment']['expected_interest'],2);
-        } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['amount_due']) 
-                                ) {
-              $totals = $each_item['Investment']['amount_due'] ;
-        
-            echo number_format($totals,2);
-            
-                        } ?></td>
-                              <td align="right" valign="top"><?php 
-            echo  date('d-M-Y');
-         ?></td>
-                                    <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
-            echo  number_format($each_item['Investment']['interest_accrued'],2);
-        } ?></td>
-                                     <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
-              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
-        
-            echo number_format($totals,2);
-            
-                        } ?></td>
-                    </tr>
-                    
+
                     <?php
-    
-    endforeach;
-} ?>
-                    
+                    if (isset($accounts)) {
+
+                        foreach ($accounts as $each_item):
+                            ?>
+                            <tr>
+
+                                <td align="left" valign="top"><?php
+                                    if (isset($each_item['Investor']['fullname'])) {
+                                        echo $each_item['Investor']['fullname'];
+                                    }
+                                    echo " - ";
+                                    if (isset($each_item['Investment']['investment_no'])) {
+                                        echo $each_item['Investment']['investment_no'];
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['investment_date'])) {
+                                        echo date('d-M-Y', strtotime($each_item['Investment']['investment_date']));
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['investment_amount'])) {
+                                        echo number_format($each_item['Investment']['investment_amount'], 2);
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['custom_rate'])) {
+                                        echo $each_item['Investment']['custom_rate'] . '%';
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['due_date'])) {
+                                        echo date('d-M-Y', strtotime($each_item['Investment']['due_date']));
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['interest_earned'])) {
+                                        echo number_format($each_item['Investment']['interest_earned'], 2);
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['amount_due'])
+                                    ) {
+                                        $totals = $each_item['Investment']['amount_due'];
+
+                                        echo number_format($totals, 2);
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    //check investment_payments table: where event_type = terminated
+//                                    echo date('d-M-Y');
+                                if (isset($each_item['InvestmentPayment']['event_date']) && isset($each_item['InvestmentPayment']['event_type'])) {
+                                    if ($each_item['InvestmentPayment']['event_type'] == 'Termination'){
+                                        echo number_format($each_item['InvestmentPayment']['event_date'], 2);
+                                    }else{
+                                        echo "";
+                                    }
+                                    
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['interest_accrued'])) {
+                                        echo number_format($each_item['Investment']['interest_accrued'], 2);
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
+                                        $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php echo number_format($totals, 2); ?></td>
+                            </tr>
+
+                            <?php
+                        endforeach;
+                    }
+                    ?>
+
                 </table>
             </div>
             <?php
