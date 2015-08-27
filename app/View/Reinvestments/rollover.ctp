@@ -138,11 +138,18 @@ if ($this->Session->check('shopCurrency_investment')) {
                         <div class="col-lg-7 col-md-7 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo $this->Form->input('investment_amount', array('required',
-                                        'label' => 'Investment Amount*', 'class' => 'required', 'value' => 
+                                    <?php echo $this->Form->input('investment_amount2', array(
+                                        'label' => 'Investment Amount*', 'disabled' => 'disabled', 'value' => 
                                             ($this->Session->check('rollreinvesttemp.investment_amount') == true 
                                             ? number_format($this->Session->read('rollreinvesttemp.investment_amount'), 2, '.', ',') :
-                                        ($data['Reinvestment']['earned_balance'] ? $data['Reinvestment']['earned_balance'] : '' ) ))); ?>
+                                        ($data['Reinvestment']['earned_balance'] ? $data['Reinvestment']['earned_balance'] : '' ) )));
+                                    
+                                     echo $this->Form->hidden('investment_amount', array(
+                                        'value' => ($this->Session->check('rollreinvesttemp.investment_amount') == true 
+                                            ? number_format($this->Session->read('rollreinvesttemp.investment_amount'), 2, '.', ',') :
+                                        ($data['Reinvestment']['earned_balance'] ? $data['Reinvestment']['earned_balance'] : '' ) )));
+                                    
+                                    ?>
                                 
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">

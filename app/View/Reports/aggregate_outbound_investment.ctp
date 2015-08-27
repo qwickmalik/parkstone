@@ -16,14 +16,14 @@ $due_total = 0;
 $total_expectedi = 0;
 ?>
 
-<h3>Reports: Aggregate Investment Report</h3>
+<h3>Reports: Outbound Aggregate Investment Report</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
 
         <!-- Content start here -->
         <div class="row">
-            <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Reports', 'action' => 'aggregateInvestment'))); ?>
+            <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Reports', 'action' => 'aggregateOutboundInvestment'))); ?>
 
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <p style="font-weight: bold; padding: 10px 0px 0px 0px;">From</p>
@@ -142,7 +142,7 @@ $total_expectedi = 0;
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 inner_print">
                 <table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">
                     <tr>
-                        <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Investor</b></td>
+                        <td align="left" valign="top" width="250" style="border-bottom: solid 2px Gray;"><b>Inv. Destination</b></td>
 
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Amount Inv.</b></td>
@@ -164,44 +164,44 @@ $total_expectedi = 0;
                             <tr>
 
                                 <td align="left" valign="top"><?php
-                                    if (isset($each_item['Investor']['fullname'])) {
-                                        echo $each_item['Investor']['fullname'];
+                                    if (isset($each_item['InvestmentDestination']['company_name'])) {
+                                        echo $each_item['InvestmentDestination']['company_name'];
                                     }
-                                    echo " - ";
-                                    if (isset($each_item['Investment']['investment_no'])) {
-                                        echo $each_item['Investment']['investment_no'];
-                                    }
-                                    ?></td>
-                                <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['investment_date'])) {
-                                        echo date('d-M-Y', strtotime($each_item['Investment']['investment_date']));
+                                     if (isset($each_item['InvDestProduct']['inv_dest_product'])) {
+                                         
+                                        echo " - (". $each_item['InvDestProduct']['inv_dest_product'].")";
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['investment_amount'])) {
-                                        echo number_format($each_item['Investment']['investment_amount'], 2);
+                                    if (isset($each_item['Reinvestment']['investment_date'])) {
+                                        echo date('d-M-Y', strtotime($each_item['Reinvestment']['investment_date']));
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['custom_rate'])) {
-                                        echo $each_item['Investment']['custom_rate'] . '%';
+                                    if (isset($each_item['Reinvestment']['investment_amount'])) {
+                                        echo number_format($each_item['Reinvestment']['investment_amount'], 2);
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['due_date'])) {
-                                        echo date('d-M-Y', strtotime($each_item['Investment']['due_date']));
+                                    if (isset($each_item['Reinvestment']['interest_rate'])) {
+                                        echo $each_item['Reinvestment']['interest_rate'] . '%';
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['expected_interest'])) {
-                                        $total_expectedi += $each_item['Investment']['expected_interest'];
-                                        echo number_format($each_item['Investment']['expected_interest'], 2);
+                                    if (isset($each_item['Reinvestment']['due_date'])) {
+                                        echo date('d-M-Y', strtotime($each_item['Reinvestment']['due_date']));
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['amount_due'])
+                                    if (isset($each_item['Reinvestment']['expected_interest'])) {
+                                        $total_expectedi += $each_item['Reinvestment']['expected_interest'];
+                                        echo number_format($each_item['Reinvestment']['expected_interest'], 2);
+                                    }
+                                    ?></td>
+                                <td align="right" valign="top"><?php
+                                    if (isset($each_item['Reinvestment']['amount_due'])
                                     ) {
-                                        $totals_due = $each_item['Investment']['amount_due'];
+                                        $totals_due = $each_item['Reinvestment']['amount_due'];
                                         $due_total += $totals_due;
                                         echo number_format($totals_due, 2);
                                     }
@@ -209,9 +209,9 @@ $total_expectedi = 0;
                                 <td align="right" valign="top"><?php
                                     //check investment_payments table: where event_type = terminated
 //                                    echo date('d-M-Y');
-                                if (isset($each_item['InvestmentPayment']['event_date']) && isset($each_item['InvestmentPayment']['event_type'])) {
-                                    if ($each_item['InvestmentPayment']['event_type'] == 'Termination'){
-                                        echo date('d-M-Y',$each_item['InvestmentPayment']['event_date']);
+                                if (isset($each_item['InvestmentReturn']['date']) && isset($each_item['InvestmentReturn']['return_type'])) {
+                                    if ($each_item['InvestmentReturn']['return_type'] == 'Termination'){
+                                        echo date('d-M-Y',$each_item['InvestmentPayment']['date']);
                                     }else{
                                         echo "";
                                     }
@@ -219,10 +219,10 @@ $total_expectedi = 0;
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Investment']['interest_accrued'])) {
+                                    if (isset($each_item['Reinvestment']['interest_accrued'])) {
 //                                        echo number_format($each_item['Investment']['interest_accrued'], 2);
-                                        $id = $each_item['Investment']['id'];
-                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                        $id = $each_item['Reinvestment']['id'];
+                               $interest_accrued = $this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
                                
                       $total_interest += $interest_accrued;
 
@@ -233,31 +233,24 @@ $total_expectedi = 0;
 //                                    if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
 //                                        $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
 //                                    }
-                                if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
-                                 $id = $each_item['Investment']['id'];
-                               $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                if (isset($each_item['Reinvestment']['id']) && isset($each_item['Reinvestment']['investment_amount'])) {
+                                 $id = $each_item['Reinvestment']['id'];
+                               $interest_accrued_calc = $this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
                                 
-                                $totals_ia = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
+                                $totals_ia = $interest_accrued_calc + $each_item['Reinvestment']['investment_amount'];
                                 $total_pi += $totals_ia;
             echo number_format($totals_ia,2);
             
                         }
                                     ?></td>
                                 <td align="right" valign="top"><?php 
-//                                 if (isset($each_item['InvestmentPayment']['event_type']) && isset($each_item['InvestmentPayment']['amount'])) {
-//                                    if ($each_item['InvestmentPayment']['event_type'] == 'Payment'){
-//                                        $total_payments += $each_item['InvestmentPayment']['amount'];
-//                                        echo number_format($each_item['InvestmentPayment']['amount'], 2);
-//                                    }
-//                                    
-//                                    }
-                                      if (!empty($each_item['InvestmentPayment'])) {
+                                 if (!empty($each_item['InvestmentReturn'])) {
                                      $returns = 0;
-                                     foreach($each_item['InvestmentPayment'] as $val){
-                                    if ($val['event_type'] == 'Payment'){
-                                        $total_payments += $val['amount'];
+                                     foreach($each_item['InvestmentReturn'] as $val){
+                                    if ($val['return_type'] == 'Terminated' || $val['return_type'] == 'Matured'){
+                                        $total_payments += $val['returns'];
                                         
-                                        $returns += $val['amount'];
+                                        $returns += $val['returns'];
                                     }
                                      }
                                      echo number_format($returns,2);

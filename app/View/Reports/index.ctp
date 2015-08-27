@@ -26,6 +26,7 @@
                    // $this->Html->link('Discounting of Investment','/Reports/discountInvestment', array('escape' => false)),
                     $this->Html->link('Active Investments List','/Reports/activeInvestments', array('escape' => false)),
                     $this->Html->link('Aggregate Investment Report','/Reports/aggregateInvestment', array('escape' => false)),
+                    $this->Html->link('Outbound Inv. Aggregate Report','/Reports/aggregateOutboundInvestment', array('escape' => false)),
                     $this->Html->link('Investor Deposits Report','/Reports/investorDeposits', array('escape' => false)),
                     $this->Html->link('Rollover Report','/Reports/rolloverDisinv', array('escape' => false)),
                     $this->Html->link('Disinvestments Report','/Reports/disinv', array('escape' => false)),

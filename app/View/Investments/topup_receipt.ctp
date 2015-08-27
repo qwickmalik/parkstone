@@ -29,7 +29,7 @@ echo $this->Html->script('print.js');
                             echo $this->Session->read('shopName').'<br />'; 
                             echo 'NEW TOP-UP RECEIPT'
                             ?></p>
-                        <b>Receipt No.: <?php if(isset($voucher_no)){echo $voucher_no; } ?></b><br />
+                        <b>Receipt No.: <?php if(!empty($data['InvestorDeposit']['receipt_no'])){echo $data['InvestorDeposit']['receipt_no']; } ?></b><br />
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
                     
@@ -85,12 +85,12 @@ echo $this->Html->script('print.js');
                     <tr>
                         <td align="left" valign="top" ><b>Top-up Date</b></td>
                         <td align="right" valign="top" ><b>Amount</b></td>
-                        <td align="left" valign="top" ><b>Receipt No.</b></td>
+                        <td align="left" valign="top" ><b>&nbsp;</b></td>
                     </tr>
                     <tr>
                         <td align="left" valign="top"><?php echo date('d-m-Y',strtotime($data['InvestorDeposit']['deposit_date'])); ?></td>
-                        <td align="right" valign="top"><?php echo $data['InvestorDeposit']['amount']; ?></td>
-                        <td align="left" valign="top"><?php echo $data['InvestorDeposit']['receipt_no']; ?></td>
+                        <td align="right" valign="top"><?php echo 'GH$ '.$data['InvestorDeposit']['amount']; ?></td>
+                        <td align="left" valign="top">&nbsp;</td>
 
                     </tr>
                 </table>
