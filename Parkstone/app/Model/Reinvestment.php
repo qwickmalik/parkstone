@@ -4,6 +4,7 @@ class Reinvestment extends AppModel{
     
     var $name = 'Reinvestment';
     var $usesTable = "reinvestments";
+    var $actsAs = array('Containable');
     
     
     var $belongsTo = array(

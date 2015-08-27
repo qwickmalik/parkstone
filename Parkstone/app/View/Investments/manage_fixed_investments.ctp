@@ -304,14 +304,14 @@
                                     'class' => 'required', 'placeholder' => '0.00','value' => 0)); ?> 
                             </div>
                                  </div>
-                              <div class="row">
+<!--                              <div class="row">
                                   <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('receipt_no', array('label' => 'Receipt Number','value' => '',
-                                        'placeholder' =>'Receipt No.'));
+                                    //echo $this->Form->input('receipt_no', array('label' => 'Receipt Number','value' => '',
+                                        //'placeholder' =>'Receipt No.'));
                                     ?>
                                 </div>
-                              </div>
+                              </div>-->
                             </form>
                             
                           </div>

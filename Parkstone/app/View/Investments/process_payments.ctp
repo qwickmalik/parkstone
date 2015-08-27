@@ -28,7 +28,7 @@
                                         (isset($each_item['ClientLedger']['investor_id']) ? $each_item['ClientLedger']['investor_id'] : '' )."/".
                                         (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array()); ?></td>
                                 <td align="left"><?php echo number_format($each_item['ClientLedger']['available_cash']);  ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['investment_amount']); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['earned_balance']); ?></td>
                                 <td align="left"><?php echo $each_item['ClientLedger']['modified']; ?></td>
                               
                             </tr>

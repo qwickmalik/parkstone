@@ -8,6 +8,8 @@ if ($this->Session->check('shopCurrency')) {
 } else {
     $shopCurrency = "";
 }
+$total_interest = 0;
+$total_pi = 0;
 ?>
 
 <h3>Reports: Active Investments List</h3>
@@ -146,12 +148,20 @@ if ($this->Session->check('shopCurrency')) {
             echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
         } ?></td>
                         <td align="right" valign="top"><?php echo date('d-m-Y'); ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
-            echo  number_format($each_item['Investment']['interest_accrued'],2);
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['id'])) {
+                                $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                               
+                      $total_interest += $interest_accrued;
+
+            echo  number_format($interest_accrued,2);
         } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
-              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
-        
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
+                                 $id = $each_item['Investment']['id'];
+                               $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                
+                                $totals = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
+                                $total_pi += $totals;
             echo number_format($totals,2);
             
                         } ?></td>
@@ -177,13 +187,13 @@ if ($this->Session->check('shopCurrency')) {
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                                <?php   if (isset($each_item[0]['interest'])) {
-                    echo  number_format($each_item[0]['interest'], 2);
+                                <?php   if (isset($total_interest)) {
+                    echo  number_format($total_interest,2);
                 }
                 ?></td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                                <?php   if (isset($each_item[0]['total'])) {
-                    echo number_format($each_item[0]['total'], 2);
+                                <?php   if (isset($total_pi)) {
+                    echo number_format($total_pi, 2);
                 }
                 ?></td>
                     </tr>

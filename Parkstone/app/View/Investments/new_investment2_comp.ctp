@@ -228,7 +228,7 @@ if ($this->Session->check('ledger_data')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
                                     echo $this->Form->hidden('total_invested', array('label' => 'Total Invested', 'value' =>
-                                        (isset($total_invested) ? $total_invested : '' )));
+                                        (isset($total_invested) ? $total_invested : $ledger_data['ClientLedger']['invested_amount'] )));
 
                                     echo $this->Form->input('total_invested2', array('disabled', 'label' => 'Total Invested', 'value' =>
                                         (isset($total_invested) ? $total_invested : $ledger_data['ClientLedger']['invested_amount'] )));

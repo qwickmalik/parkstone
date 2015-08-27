@@ -2550,6 +2550,7 @@ public function countUserImage($id) {
                             $finv_date = $inv_date;
                             $date = new DateTime($finv_date);
                             $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -3046,6 +3047,7 @@ public function countUserImage($id) {
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'Y'));
+                        $date->sub(new DateInterval('P1D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -3379,7 +3381,9 @@ public function countUserImage($id) {
 
             $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
             $cashinvested = $this->request->data['Investment']['total_invested'];
+            
             $new_cashinvested = $cashinvested;
+            
             if (isset($this->request->data['fixed_process'])) {
 
                 if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
@@ -3668,6 +3672,7 @@ public function countUserImage($id) {
                             $finv_date = $inv_date;
                             $date = new DateTime($finv_date);
                             $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -6045,7 +6050,7 @@ public function countUserImage($id) {
                         $value['Investment']['investor_id']]]);
                 if ($result) {
                     $result['Investment']['id'] = $value['Investment']['id'];
-                    $result['Investment']['investment_amount'] = $value['Investment']['investment_amount'];
+                    $result['Investment']['earned_balance'] = $value['Investment']['earned_balance'];
                     $data_array[] = $result;
                 }
             }
@@ -6659,7 +6664,7 @@ public function countUserImage($id) {
 
                 $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
                 if ($investment_data) {
-                    $receipt_no = $this->request->data['Topup']['receipt_no'];
+                    $receipt_no = date('mdyhis') . rand(2, 4);
                     $inv_no = $investment_data['Investment']['investment_no'];
                     $ledger = $this->ClientLedger->find('first', ['conditions' =>
                         ['ClientLedger.investor_id' => $investor_id]]);
@@ -6795,6 +6800,7 @@ public function countUserImage($id) {
                             //$finv_date = $inv_date;
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'Y'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -6827,7 +6833,7 @@ public function countUserImage($id) {
                     $investment_array = array(
                         'id' => $investment_data['Investment']['id'],
                         'investment_amount' => $new_investmentamt,
-                        'interest_earned' => $newinterest_amt,
+                        'expected_interest' => $newinterest_amt,
                         'total_amount_earned' => $newtotal_amount_earned,
                         'earned_balance' => $new_earnedbalance,
                         'amount_due' => $newamount_due,
@@ -7541,6 +7547,7 @@ public function countUserImage($id) {
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'Y'));
+                        $date->sub(new DateInterval('P1D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
