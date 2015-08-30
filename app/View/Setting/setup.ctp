@@ -88,7 +88,7 @@ echo $this->Html->script('jquery.js');
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <td align="right"><b>Accounting Year Begins:</b></td>
+                    <td align="right"><b>Accounting Year Ends:</b></td>
                     <td>
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">

@@ -1259,7 +1259,7 @@ class SettingsController extends AppController {
         $this->__validateUserType();
         $this->set('headids', $this->AccountingHead->find('list'));
         
-        $data = $this->paginate('TransactionCategory', array('TransactionCategory.delete' => 0));
+        $data = $this->paginate('TransactionCategory', array('TransactionCategory.deleted' => 0));
         $this->set('data', $data);
         
         
