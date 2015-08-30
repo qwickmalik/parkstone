@@ -64,6 +64,22 @@ if ($this->Session->check('userData')) {
     $username = ucwords(strtolower($username));
 }
 
+  $user_fullname = null;
+        if ($this->Session->check('userDetails.firstname')) {
+            $user_f = $this->Session->read('userDetails.firstname');
+            if ($this->Session->check('userDetails.lastname')) {
+                $user_l = $this->Session->read('userDetails.lastname');
+                $user_fullname = $user_f . ' ' . $user_l;
+                
+            } else {
+                $user_fullname = $user_f;
+                
+            }
+        } elseif ($this->Session->check('userDetails.lastname')) {
+            $user_fullname = $this->Session->read('userDetails.lastname');
+            
+        }
+
 date_default_timezone_set('Africa/Accra');
 $date = date('g:ia');
 ?>
@@ -275,7 +291,7 @@ $date = date('g:ia');
                                     ?>
                                 </li>
                                 <li>
-                                    <?php echo '<span style="font-size: 10px;"><b>' . $username .'</b> is logged in</span>'; ?>
+                                    <?php echo '<span style="font-size: 10px;"><b>' . $user_fullname .'</b> is logged in</span>'; ?>
                                 </li>
                             </ul>
                         </div>

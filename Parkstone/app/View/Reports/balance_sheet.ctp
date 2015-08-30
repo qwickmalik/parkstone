@@ -10,240 +10,255 @@ echo $this->Html->script('print.js');
     <div class="inner">
         <div id="clearer"></div>
 
-<p ><i style="font-size: 14px;">Please select the desired year</i></p>
+        <p ><i style="font-size: 14px;">Please select the desired year</i></p>
 
-<?php echo $this->Form->create('BalanceSheet', array("url" => array('controller' => 'Reports', 'action' => 'balanceSheet'))); ?>
+        <?php echo $this->Form->create('BalanceSheet', array("url" => array('controller' => 'Reports', 'action' => 'balanceSheet'))); ?>
 
-<div class="row" style="background: #eaeaea; padding: 10px 0px 5px 0px;">
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-        <?php echo $this->Form->input('year', array('label' => 'Year*', 'type' => 'date', 'value' => date('Y'), 'dateFormat' => 'Y', 'maxYear' => date('Y'), 'class' => 'form-control', 'div' => array('class' => 'form-inline'))); ?>
-        
-        
-    </div>
+        <div class="row" style="background: #eaeaea; padding: 10px 0px 5px 0px;">
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <?php echo $this->Form->input('year', array('label' => 'Year Ending*', 'type' => 'date', 'value' => date('Y'), 'dateFormat' => 'Y', 'maxYear' => date('Y'), 'class' => 'form-control', 'div' => array('class' => 'form-inline')));
+                ?>
+            </div>
 
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-        <?php echo $this->Form->button('View', array("type" => "submit", "class" => "btn btn-md btn-success")); ?>
-    </div>
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <?php echo $this->Form->button('View', array("type" => "submit", "class" => "btn btn-md btn-success")); ?>
+            </div>
 
-    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-        
-    </div>
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
 
-</div>
-<?php echo $this->Form->end(); ?>
+            </div>
 
-<div id="clearer"></div>
+        </div>
+        <?php echo $this->Form->end(); ?>
 
-
-
-<?php
-if (isset($asset_data) && isset($liability_data)) {
-    ?>
-    <table id="report_content">
-        <tr>
-            <td>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        &nbsp;
-                        <?php
-//                        $malik = array(
-//                            1 => array('Cash Asset', 2000, 3000),
-//                            2 => array('Fixed Asset', 1000, 4000),
-//                            3 => array('Accounts Receivable', 3000, 2000, )
-//                            );
-                        
-                         ?>
-                        
-                            <?php
-                            
-                            
-                            print_r($categories);
-                            
-                            
-                            ?>
-                        
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <?php 
-                        echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;','width' => 120, 'alt' => $this->Session->read('shopName')));
-                        ?>
-                        <p style='font-weight: bold; font-size: 14px; text-align: left;'>
-                            <?php 
-                            echo $this->Session->read('shopName').'<br />'; 
-                            echo 'BALANCE SHEET as at '.$statement_date;
-                            ?></p>
-                        <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
-                    </div>
-                
-                </div>
+        <div id="clearer"></div>
 
 
 
-                    <!--<table border="1" cellspacing="0" cellpadding="5" style="border: solid 2px gray;" align="left" width="100%">-->
-                <table class="table table-striped">
-                    <tr>
-                        <td align="left">&nbsp;</td>
-                        <td align="right" width="150" style="font-weight: bold;"><?php echo $e_date; ?></td>
-                        <td align="right" width="150" style="font-weight: bold;"><?php echo $s_date; ?></td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2" style="font-weight: bold; background: #eaeaea;">ASSETS
-                        <?php 
-                            print_r($asset_data); 
-//                            print_r($start_date);
-//                            print_r($end_date);
-                        ?>
-                        </td>
-                    </tr>
-                    <?php
-                    $total_assets = 0;
-                    foreach ($asset_data as $each_item):
-                        ?>
-                        <tr>
-                            <td align="left"><?php echo $each_item['TransactionCategory']['category_name']; ?></td>
-                            <td align="right" width="150"><?php
-                                if($each_item['Transaction']['transaction_date'] > '2014-08-31'){
-                                    $net_asset = 0;
-                                    $net_asset += $each_item['Transaction']['debit'] - $each_item['Transaction']['credit'];
-//                                        
-//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
-                                    echo number_format($net_asset, 2, '.', ',');
-                                }
+        <?php
+        if (isset($balance_sheet)) {
+            ?>
+            <table id="report_content">
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <?php
                                 
-                                ?></td>
-                            <td align="right" width="150"><?php
-//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
-//                                echo number_format($net_asset, 2, '.', ',');
-                                if($each_item['Transaction']['transaction_date'] < '2014-08-31'){
-                                    $net_asset = 0;
-                                    $net_asset += $each_item['Transaction']['debit'] - $each_item['Transaction']['credit'];
-//                                        
-//                                $net_asset = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
-                                    echo number_format($net_asset, 2, '.', ',');
-                                }
-                                
+//                                print_r("<br />prev start date - " . $prev_start_date);
+//                                print_r("<br />prev end date - " . $prev_end_date);
+//                                print_r("<br />start date - " . $start_date);
+//                                print_r("<br />end date - " . $end_date);
 
-                                ?></td>
-                        </tr>
-                        <?php
-                        $total_assets += $net_asset;
-                    endforeach;
-                    ?>
-                    <?php
-                    $total_accu_depre = 0;
-                    foreach ($accu_depre as $each_item):
-                        ?>
-                        <tr>
-                            <td align="left"><?php echo $each_item['TransactionCategory']['category_name']; ?></td>
-                            <td align="right" width="150"><?php
-                                $net_accu_depre = $each_item[0]['sum_debit'] - $each_item[0]['sum_credit'];
-                                echo '(' . number_format($net_accu_depre, 2, '.', ',') . ')';
-                                ?></td>
-                        </tr>
-                        <?php
-                        $total_accu_depre += $net_accu_depre;
-                    endforeach;
+                                ?>
 
-                    $grand_total_assets = ($total_assets - $total_accu_depre);
-                    ?>
-                    <tr>
-                        <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Assets</td>
-                        <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($grand_total_assets, 2, '.', ','); ?></td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2" style="font-weight: bold; background: #eaeaea;">SHAREHOLDERS' FUNDS & LIABILITIES</td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2" style="font-weight: bold;">Shareholders' Funds</td>
-                    </tr>
-                    <?php
-                    $oe = 0;
-                    $oe_i_empty = array_filter($oe_data);
-                    if (!empty($oe_i_empty)) {
-                        foreach ($oe_data as $each_item):
-                            ?>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <?php
+                                echo $this->Html->image('parkstone_logo2.png', array('style' => 'float: left; margin-right: 20px;', 'width' => 120, 'alt' => $this->Session->read('shopName')));
+                                ?>
+                                <p style='font-weight: bold; font-size: 14px; text-align: left;'>
+                                    <?php
+                                    echo $this->Session->read('shopName') . '<br />';
+                                    echo 'BALANCE SHEET for the year ending ' . $statement_date;
+                                    ?></p>
+                                <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <table class="table table-striped">
                             <tr>
-                                <td align="left"><?php echo $each_item['TransactionCategory']['category_name']; ?></td>
-                                <td align="right" width="150"><?php
-                                    $net_oe = $each_item[0]['sum_credit'] - $each_item[0]['sum_debit'];
-                                    echo number_format($net_oe, 2, '.', ',');
-                                    ?></td>
-                            </tr> 
+                                <td align="left">&nbsp;</td>
+                                <td align="right" width="150" style="font-weight: bold;"><?php echo $e_date; ?></td>
+                                <td align="right" width="150" style="font-weight: bold;"><?php echo $pe_date; ?></td>
+                            </tr>
+                            <tr>
+                                <td align="left" colspan="3" style="font-weight: bold; background: #eaeaea;">ASSETS
+
+                                </td>
+                            </tr>
                             <?php
-                            $oe += $net_oe;
-                        endforeach;
-                        ?>
-                        <?php
-                    }
+                            $tblname = 'balance_sheets_' . $user;
 
-                    else {
-                        ?>
-                        <tr>
-                            <td align="left"><?php echo "Shareholders' Funds"; ?></td>
-                            <td align="right" width="150"><?php echo '(' . number_format('0', 2, '.', ',') . ')'; ?></td>
-                        </tr> 
-                        <?php
-                    }
+                            $assets_req_yr = 0;
+                            $assets_prev_yr = 0;
+                            $oe_req_yr = 0;
+                            $oe_prev_yr = 0;
+                            $lib_req_yr = 0;
+                            $lib_prev_yr = 0;
 
-                   
-                    ?>
-                    <tr>
-                        <td align="left" style="font-weight: bold;">Total Shareholders' Funds</td>
-                        <td align="right" width="150" style="font-weight: bold; text-decoration: underline;"><?php echo number_format($oe, 2, '.', ','); ?></td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2" style="font-weight: bold;">Current & Long-Term Liabilities</td>
-                    </tr>
-                    <?php
-                    $total_liabilities = 0;
-                    foreach ($liability_data as $each_item):
-                        ?>
-                        <tr>
-                            <td align="left"><?php echo $each_item['TransactionCategory']['category_name']; ?></td>
-                            <td align="right" width="150"><?php
-                                $net_liability = $each_item[0]['sum_credit'] - $each_item[0]['sum_debit'];
-                                echo number_format($net_liability, 2, '.', ',');
-                                ?></td>
-                        </tr>
-                        <?php
-                        $total_liabilities += $net_liability;
-                    endforeach;
-                    ?>
-                    <tr>
-                        <td align="left" style="font-weight: bold;">Total Current & Long-term Liabilities</td>
-                        <td align="right" width="150" style="font-weight: bold; text-decoration: underline;"><?php echo number_format($total_liabilities, 2, '.', ','); ?></td>
-                    </tr>
-                    
-                    <tr>
-                        <?php  $grand_total_liabilities = $total_liabilities + $oe; ?>
-                        <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Shareholders' Funds & Liabilities</td>
-                        <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($grand_total_liabilities, 2, '.', ','); ?></td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" colspan="2">
-                            <p style="font-style: italic;">Generated on <?php echo date('d-m-Y'); ?></p>
-                        </td>
-                    </tr>
 
-                </table>
-            </td>
-        </tr>
-    </table>
-    <div id="clearer"></div>
-    <?php
-    echo "<p>&nbsp;</p>";
-    echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-md btn-danger', "id" => "print_report", 'style' => 'float: right;'));
-    echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-md btn-info'));
-}
-?>
-<div id="clearer"></div>
-</div>
-<!-- Content ends here -->
+                            foreach ($balance_sheet as $each_item):
 
-<!-- Footer starts here -->
-<?php echo $this->element('footer'); ?>
-<!-- Footer starts here -->
+                                if ($each_item[$tblname]['head_id'] == 4 && ($each_item[$tblname]['requested_year'] != 0.00 || $each_item[$tblname]['previous_year'] != 0.00)) {
+                                    ?>
+
+
+
+                                    <tr>
+                                        <td align="left"><?php echo $each_item[$tblname]['category_name']; ?></td>
+                                        <td align="right" width="150"><?php
+                                            if ($each_item[$tblname]['id'] == 100) {
+                                                echo "(" . number_format($each_item[$tblname]['requested_year'], 2, '.', ',') . ")";
+                                                $assets_req_yr -= $each_item[$tblname]['requested_year'];
+                                            } else {
+                                                echo number_format($each_item[$tblname]['requested_year'], 2, '.', ',');
+                                                $assets_req_yr += $each_item[$tblname]['requested_year'];
+                                            }
+                                            ?></td>
+                                        <td align="right" width="150"><?php
+                                            if ($each_item[$tblname]['id'] == 100) {
+                                                echo "(" . number_format($each_item[$tblname]['previous_year'], 2, '.', ',') . ")";
+                                                $assets_prev_yr -= $each_item[$tblname]['previous_year'];
+                                            } else {
+                                                echo number_format($each_item[$tblname]['previous_year'], 2, '.', ',');
+                                                $assets_prev_yr += $each_item[$tblname]['previous_year'];
+                                            }
+                                            ?></td>
+                                    </tr>
+
+
+                                    <?php
+                                }
+                            endforeach;
+                            ?>
+                            
+                            <tr>
+                                <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Assets</td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($assets_req_yr, 2, '.', ','); ?></td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($assets_prev_yr, 2, '.', ','); ?></td>
+                            </tr>
+                            
+                            
+                            
+                            <tr>
+                                <td align="left" colspan="3" style="font-weight: bold; background: #eaeaea;">SHAREHOLDERS' FUNDS & LIABILITIES</td>
+                            </tr>
+                            
+                            
+                            
+                            <tr>
+                                <td align="left" colspan="3" style="font-weight: bold;">Shareholders' Funds</td>
+                            </tr>
+                            <?php
+                            foreach ($balance_sheet as $each_item):
+
+                                if ($each_item[$tblname]['head_id'] == 3 && ($each_item[$tblname]['requested_year'] != 0.00 || $each_item[$tblname]['previous_year'] != 0.00)) {
+                                    ?>
+
+
+
+                                    <tr>
+                                        <td align="left"><?php echo $each_item[$tblname]['category_name']; ?></td>
+                                        <td align="right" width="150"><?php
+                                                echo number_format($each_item[$tblname]['requested_year'], 2, '.', ',');
+                                                $oe_req_yr += $each_item[$tblname]['requested_year'];
+                                            
+                                            ?></td>
+                                        <td align="right" width="150"><?php
+                                            
+                                                echo number_format($each_item[$tblname]['previous_year'], 2, '.', ',');
+                                                $oe_prev_yr += $each_item[$tblname]['previous_year'];
+                                            
+                                            ?></td>
+                                    </tr>
+
+
+                                    <?php
+                                }
+                            endforeach;
+                            ?>
+                            
+                            <tr>
+                                <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Shareholder's Funds</td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($oe_req_yr, 2, '.', ','); ?></td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($oe_prev_yr, 2, '.', ','); ?></td>
+                            </tr>
+                            
+                            
+                            
+                            
+                            <tr>
+                                <td align="left" colspan="3" style="font-weight: bold;">Current & Long-Term Liabilities</td>
+                            </tr>
+                            
+                            
+                            <?php
+                            foreach ($balance_sheet as $each_item):
+
+                                if ($each_item[$tblname]['head_id'] == 5 && ($each_item[$tblname]['requested_year'] != 0.00 || $each_item[$tblname]['previous_year'] != 0.00)) {
+                                    ?>
+
+
+
+                                    <tr>
+                                        <td align="left"><?php echo $each_item[$tblname]['category_name']; ?></td>
+                                        <td align="right" width="150"><?php
+                                                echo number_format($each_item[$tblname]['requested_year'], 2, '.', ',');
+                                                $lib_req_yr += $each_item[$tblname]['requested_year'];
+                                            
+                                            ?></td>
+                                        <td align="right" width="150"><?php
+                                            
+                                                echo number_format($each_item[$tblname]['previous_year'], 2, '.', ',');
+                                                $lib_prev_yr += $each_item[$tblname]['previous_year'];
+                                            
+                                            ?></td>
+                                    </tr>
+
+
+                                    <?php
+                                }
+                            endforeach;
+                            ?>
+                            
+                            <tr>
+                                <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Current & Long-term Liabilities</td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($lib_req_yr, 2, '.', ','); ?></td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($lib_prev_yr, 2, '.', ','); ?></td>
+                            </tr>
+                            
+                            
+                            
+
+                            <tr>
+                                <?php 
+                                    $total_req_oe_lib = $oe_req_yr + $lib_req_yr; 
+                                    $total_prev_oe_lib = $oe_prev_yr + $lib_prev_yr; 
+                                ?>
+                                <td align="left" style="font-weight: bold; background: #CDEEFE;">Total Shareholders' Funds & Liabilities</td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($total_req_oe_lib, 2, '.', ','); ?></td>
+                                <td align="right" width="150" style="font-size: 14px; font-weight: bold; text-decoration: underline; background: #CDEEFE;"><?php echo number_format($total_prev_oe_lib, 2, '.', ','); ?></td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top" colspan="3">
+                                    <p style="font-style: italic;">Generated on <?php echo date('d-m-Y'); ?></p>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <div id="clearer"></div>
+            <?php
+            echo "<p>&nbsp;</p>";
+            echo $this->Html->link('Print', "javascript:void(0)", array("class" => 'btn btn-md btn-danger', "id" => "print_report", 'style' => 'float: right;'));
+            echo $this->Html->link('Return', "/Reports/", array('style' => 'float: right;', 'class' => 'btn btn-md btn-info'));
+        }
+        ?>
+        <div id="clearer"></div>
+    </div>
+    <!-- Content ends here -->
+
+    <!-- Footer starts here -->
+    <?php echo $this->element('footer'); ?>
+    <!-- Footer starts here -->

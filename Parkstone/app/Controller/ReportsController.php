@@ -12,8 +12,8 @@ class ReportsController extends AppController {
     );
     var $uses = array('Setting', 'User', 'Currency', 'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal', 'ReinvestInterestAccrual',
         'Investor', 'InterestAccrual', 'ReinvestInterestAccrual', 'TempcashAccount', 'InvestorDeposit', 'Investment', 'InvestmentPayment', 'Reinvestment',
-        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead', 
-        'BankBalance', 'BankTransfer', 'StatedBankBalance','ManagementFee'
+        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead',
+        'BankBalance', 'BankTransfer', 'StatedBankBalance', 'ManagementFee'
     );
 
     function beforeFilter() {
@@ -47,6 +47,25 @@ class ReportsController extends AppController {
             $message = 'You do not have the required privileges to view this page';
             $this->Session->write('bmsg', $message);
             $this->redirect('/Dashboard/');
+        }
+    }
+
+    public function getLoggedInUser() {
+        //set logged in user
+        $user = null;
+        if ($this->Session->check('userDetails.firstname')) {
+            $user_f = $this->Session->read('userDetails.firstname');
+            if ($this->Session->check('userDetails.lastname')) {
+                $user_l = $this->Session->read('userDetails.lastname');
+                $user = $user_f . ' ' . $user_l;
+                return $user;
+            } else {
+                $user = $user_f;
+                return $user;
+            }
+        } elseif ($this->Session->check('userDetails.lastname')) {
+            $user = $this->Session->read('userDetails.lastname');
+            return $user;
         }
     }
 
@@ -2630,19 +2649,19 @@ class ReportsController extends AppController {
 
 
 
-            $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 10,
+            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Rolledover')
             );
 
             $accounts = $this->paginate('InvestmentPayment');
-            $data =  $this->InvestmentPayment->find('all',array('order' => array('Investor.fullname' => 'asc'),
+            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Termination'),
                 'group' => 'InvestmentPayment.investor_id'
-           ));
+            ));
             $inv = array();
 
 
@@ -2704,19 +2723,19 @@ class ReportsController extends AppController {
 
 
 
-            $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 10,
+            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Termination')
             );
 
             $accounts = $this->paginate('InvestmentPayment');
-           $data =  $this->InvestmentPayment->find('all',array('order' => array('Investor.fullname' => 'asc'),
+            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Termination'),
                 'group' => 'InvestmentPayment.investor_id'
-           ));
+            ));
             $inv = array();
 
 
@@ -3143,13 +3162,13 @@ function aggregateOutboundInvestment() {
         $this->set('report_name', 'Income Spread');
 
         if ($this->request->is('post')) {
-            if(empty($this->request->data['IncomeSpread']['report_date']['year'])) {
+            if (empty($this->request->data['IncomeSpread']['report_date']['year'])) {
                 $message = 'Please indicate year';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reports', 'action' => 'incomeSpread'));
             }
 
-            
+
             $year = $this->request->data['IncomeSpread']['report_date']['year'];
             $jdate_string = $year . "-01-01";
             $ejdate_string = $year . "-01-31";
@@ -3213,30 +3232,30 @@ function aggregateOutboundInvestment() {
                     'ReinvestInterestAccrual.Mar', 'ReinvestInterestAccrual.Apr', 'ReinvestInterestAccrual.May', 'ReinvestInterestAccrual.Jul',
                     'ReinvestInterestAccrual.Jun', 'ReinvestInterestAccrual.Aug',
                     'ReinvestInterestAccrual.Sep', 'ReinvestInterestAccrual.Oct', 'ReinvestInterestAccrual.Nov', 'ReinvestInterestAccrual.Dec')
-                ));
+            ));
 
             if ($datacount > 0) {
-                $accounts = $this->ReinvestInterestAccrual->find('all',array(
+                $accounts = $this->ReinvestInterestAccrual->find('all', array(
                     'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                             'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
+                            'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
                     ),
                     'fields' => array(
-                        'MONTH(ReinvestInterestAccrual.interest_date) as month','SUM(interest_amounts) as interests')
-                    ,'group' => array('MONTH(ReinvestInterestAccrual.interest_date)')));
+                        'MONTH(ReinvestInterestAccrual.interest_date) as month', 'SUM(interest_amounts) as interests')
+                    , 'group' => array('MONTH(ReinvestInterestAccrual.interest_date)')));
 
 //                , 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
 //                        'ReinvestInterestAccrual.Mar', 'ReinvestInterestAccrual.Apr', 'ReinvestInterestAccrual.May', 'ReinvestInterestAccrual.Jul',
 //                        'ReinvestInterestAccrual.Jun', 'ReinvestInterestAccrual.Aug',
 //                        'ReinvestInterestAccrual.Sep', 'ReinvestInterestAccrual.Oct', 'ReinvestInterestAccrual.Nov', 'ReinvestInterestAccrual.Dec'
 
-                    $total = $this->ReinvestInterestAccrual->find('all', array(
-                        'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                                'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year//,
+                $total = $this->ReinvestInterestAccrual->find('all', array(
+                    'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year//,
 //                            'NOT' => array('Reinvestment.status' => array('Cancelled', 'Paid', 'Deleted','Terminated'))
-                        ),
-                        'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests')
-                        ));
-                
+                    ),
+                    'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests')
+                ));
+
                 if ($accounts) {
                     $this->set('accounts', $accounts);
                     $this->set('total', $total);
@@ -3244,44 +3263,44 @@ function aggregateOutboundInvestment() {
                     
                 }
             }
-$datacount = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+            $datacount = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
                 'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                         'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year
                 ),
-                    'fields' => array(
-                        'MONTH(InterestAccrual.interest_date) as month','SUM(interest_amounts) as interests'),
+                'fields' => array(
+                    'MONTH(InterestAccrual.interest_date) as month', 'SUM(interest_amounts) as interests'),
                 'group' => array('MONTH(InterestAccrual.interest_date)')));
-if ($datacount) {
-                
-                    $total = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
-                        'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                                'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year
-                        ),
-                        'fields' => array('InterestAccrual.investor_id', 'SUM(interest_amounts) as total_interests')
-                        ));
-                
+            if ($datacount) {
+
+                $total = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                    'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year
+                    ),
+                    'fields' => array('InterestAccrual.investor_id', 'SUM(interest_amounts) as total_interests')
+                ));
+
                 if ($datacount) {
                     $this->set('invaccounts', $datacount);
                     $this->set('invtotal', $total);
                 }
             }
-            
+
             $mg = $this->ManagementFee->find('all', array(
                 'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                         'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ManagementFee.fee_date)' => $year
                 ),
-                    'fields' => array(
-                        'MONTH(ManagementFee.fee_date) as month','SUM(base_fee) as interests'),
+                'fields' => array(
+                    'MONTH(ManagementFee.fee_date) as month', 'SUM(base_fee) as interests'),
                 'group' => array('MONTH(ManagementFee.fee_date)')));
-if ($mg) {
-                
-                    $total = $this->ManagementFee->find('all', array(
-                        'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                                'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ManagementFee.fee_date)' => $year
-                        ),
-                        'fields' => array('SUM(base_fee) as total_interests')
-                        ));
-                
+            if ($mg) {
+
+                $total = $this->ManagementFee->find('all', array(
+                    'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ManagementFee.fee_date)' => $year
+                    ),
+                    'fields' => array('SUM(base_fee) as total_interests')
+                ));
+
                 if ($mg) {
                     $this->set('mgaccounts', $mg);
                     $this->set('mgtotal', $total);
@@ -3324,7 +3343,7 @@ if ($mg) {
 
 
             $all_transactions = $this->Transaction->find('all', array(
-                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array(),
             ));
 
@@ -3369,7 +3388,7 @@ if ($mg) {
 
             $all_transactions = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.debit', 'Transaction.credit', 'Transaction.transaction_date', 'AccountingHead.head_name', 'TransactionCategory.category_name', 'Transaction.category_id'),
-                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3414,7 +3433,7 @@ if ($mg) {
 
             $all_transactions = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.debit', 'Transaction.credit', 'Transaction.transaction_date', 'AccountingHead.head_name', 'TransactionCategory.category_name', 'Transaction.category_id'),
-                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3428,13 +3447,19 @@ if ($mg) {
     function balanceSheet() {
         $this->__validateUserType();
 
+        $user1 = $this->getLoggedInUser();
+        $user2 = strtolower($user1);
+        $user3 = str_replace(" ", "", $user2);
+        $user = preg_replace('/[^A-Za-z0-9\-]/', '', $user3);
+        $this->set('user', $user);
+
+
         if ($this->request->is('post')) {
             if ($this->request->data['BalanceSheet']['year'] == "" || $this->request->data['BalanceSheet']['year'] == null) {
                 $message = 'Please indicate Year';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
             }
-
 
             $year = $this->request->data['BalanceSheet']['year']['year'];
 
@@ -3450,94 +3475,162 @@ if ($mg) {
                 $date = DateTime::createFromFormat('Y-m-d', $end_date);
                 $statement_date = $date->format('F d, Y');
 
-                $start_year = strval($year - 1);
-                $start_date = $start_year . $acc_date;
-//                                $this->set('start_date', $start_date);
-//                                $this->set('end_date', $end_date);
+                
+                $start_date1 = ".$end_date.";
+                $start_date2 = strtotime('-1 year', strtotime($start_date1));
+                $start_date3 = date('Y-m-d' , $start_date2);
+                $start_date4 = ".$start_date3.";
+                $start_date5 = strtotime('+1 day', strtotime($start_date4));
+                $start_date = date('Y-m-d' , $start_date5);
+                
+                $prev_end_date1 = strtotime('-1 year', strtotime($start_date1));
+                $prev_end_date = date('Y-m-d' , $prev_end_date1);
+                
+                $prev_start_date1 = "$start_date";
+                $prev_start_date2 = strtotime('-1 year', strtotime($prev_start_date1));
+                $prev_start_date = date('Y-m-d' , $prev_start_date2);
+                
+//                    $this->set('prev_start_date', $prev_start_date);
+//                    $this->set('prev_end_date', $prev_end_date);
+//                    $this->set('start_date', $start_date);
+//                    $this->set('end_date', $end_date);
 
                 $edate = DateTime::createFromFormat('Y-m-d', $end_date);
                 $e_date = $edate->format('d-M-y');
-                $sdate = DateTime::createFromFormat('Y-m-d', $start_date);
-                $s_date = $sdate->format('d-M-y');
+                    
+                $pedate = DateTime::createFromFormat('Y-m-d', $prev_end_date);
+                $pe_date = $pedate->format('d-M-y');
 
 
                 $prev_start_year = strval($year - 2);
-                $prev_date = $prev_start_year . $acc_date;
+                $pr_date = strval($prev_start_year . $acc_date);
+                $pre_date = strtotime ('+1 day', strtotime ($pr_date));
+                $prev_date = date ( 'Y-m-d' , $pre_date );
+                $this->set('prev_date', $prev_date);
 
-                //requested year
-                $asset_data = $this->Transaction->find('all', array(
-                    'fields' => array(/* 'SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', */ 'Transaction.category_id', 'TransactionCategory.category_name', 'Transaction.transaction_date', 'Transaction.debit', 'Transaction.credit'),
-                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
-                    'group' => array(/* 'Transaction.category_id' */),
-                ));
+                
+                
+                
+                
+                /* search for data for requested and previous years and dump into temporary table */
+                App::import('Model', 'ConnectionManager');
+                $con = new ConnectionManager;
+                $cn = $con->getDataSource('default');
 
-                $accu_depre = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
+                $sql = "DROP TABLE IF EXISTS `balance_sheets_".$user."`;
+                            CREATE TABLE IF NOT EXISTS balance_sheets_".$user."(
+                                id INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+                                head_id INT( 11 ) UNSIGNED NOT NULL,
+                                category_name VARCHAR( 100 ) NOT NULL ,
+                                requested_year DECIMAL(11,2) NOT NULL DEFAULT '0.00',
+                                previous_year DECIMAL(11,2) NOT NULL DEFAULT '0.00',
+                                modified DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                PRIMARY KEY ( `id` ) ,
+                                INDEX ( `category_name` )
+                                )";
+                if ($cn->query($sql)) {
+                    //send category names and ids to temp table
+                    $trans_cats = $this->TransactionCategory->find('all', array(
+                        'fields' => array('id', 'head_id', 'category_name'),
+                        'conditions' => array('deleted' => 0)
+                        ));
+                    
+                    $mystring = null;
+                    foreach($trans_cats as $arr):
+                        
+                        $mystring.= "(".$arr['TransactionCategory']['id'].",".$arr['TransactionCategory']['head_id'].",'".$arr['TransactionCategory']['category_name']."',0.00,0.00,'". date('Y-m-d H:m:s')."'),";
+                    endforeach;
+                    
+                    $mystring1 = substr_replace($mystring,";",-1,1);
+                    
+                    $query = "INSERT INTO `balance_sheets_".$user."` (`id`, `head_id`, `category_name`, `requested_year`, `previous_year`, `modified`) VALUES $mystring1";
+                    
+                    $cn->query($query);
+                    
+                    /* Requested Year */
+                    //send asset transactions to temp table
+                    $asset_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date),'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
+                        'group' => array('Transaction.category_id'),
+                    ));
+                    
 
-                $liability_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
+                    foreach($asset_data as $asset):
+                        $assetquery = "UPDATE `balance_sheets_".$user."` SET `requested_year` = ".($asset[0]['sum_debit'] - $asset[0]['sum_credit'])." WHERE `id` = ".$asset['Transaction']['category_id'];
+                        
+                        $cn->query($assetquery);
+                    endforeach;
+                    
+                    
+                    //send OE and Liability transactions to temp table
+                    $oe_liab_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date),'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
+                        'group' => array('Transaction.category_id'),
+                    ));
+                    
 
-                $oe_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
+                    foreach($oe_liab_data as $oe_liab):
+                        $oe_liab_query = "UPDATE `balance_sheets_".$user."` SET `requested_year` = ".($oe_liab[0]['sum_credit'] - $oe_liab[0]['sum_debit'])." WHERE `id` = ".$oe_liab['Transaction']['category_id'];
+                        
+                        $cn->query($oe_liab_query);
+                    endforeach;
+                    
+                        
+                    /* Previous Year */
+                    //send asset transactions to temp table
+                    $prev_asset_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date),'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
+                        'group' => array('Transaction.category_id'),
+                    ));
+                    
+
+                    foreach($prev_asset_data as $prev_asset):
+                        $prev_assetquery = "UPDATE `balance_sheets_".$user."` SET `previous_year` = ".($prev_asset[0]['sum_debit'] - $prev_asset[0]['sum_credit'])." WHERE `id` = ".$prev_asset['Transaction']['category_id'];
+                        
+                        $cn->query($prev_assetquery);
+                    endforeach;
+                    
+                    
+                    //send OE and Liability transactions to temp table
+                    $prev_oe_liab_data = $this->Transaction->find('all', array(
+                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date),'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
+                        'group' => array('Transaction.category_id'),
+                    ));
+                    
+
+                    foreach($prev_oe_liab_data as $prev_oe_liab):
+                        $prev_oe_liab_query = "UPDATE `balance_sheets_".$user."` SET `previous_year` = ".($prev_oe_liab[0]['sum_credit'] - $prev_oe_liab[0]['sum_debit'])." WHERE `id` = ".$prev_oe_liab['Transaction']['category_id'];
+                        
+                        $cn->query($prev_oe_liab_query);
+                    endforeach;
+                    /*end prev year */
+                        
+                   
+                 
+                    
+                } else {
+                    $message = 'Unable to create temporary balance sheet table';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Reports', 'action' => 'balanceSheet'));
+                }
 
 
-                //previous year
-                $prev_asset_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $start_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
 
-                $prev_accu_depre = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($prev_date, $start_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
-
-                $prev_liability_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($prev_date, $start_date), 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
-
-                $prev_oe_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                    'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($prev_date, $start_date), 'Transaction.delete' => 0),
-                    'group' => array('Transaction.category_id'),
-                ));
-
-                $categories = $this->TransactionCategory->find('list', array('conditions' => array('TransactionCategory.head_id' => 4)));
-
-//                                $x=0;
-//                                foreach ($asset_data as $each_item):
-//                                    $malik = array(
-//                                        $x => array($each_item['TransactionCategory']['category_name'], $each_item['TransactionCategory']['amount'], 3000),
-//                                    );
-//                                    $x++;
-//                                endforeach;
-
-                $this->set('categories', $categories);
-
-                $this->set('s_date', $s_date);
+                $bs_query = "SELECT * FROM `balance_sheets_".$user."`"; 
+                $balance_sheet = $cn->query($bs_query);
+                
+                
+                
                 $this->set('e_date', $e_date);
+                $this->set('pe_date', $pe_date);
+                
                 $this->set('statement_date', $statement_date);
-                $this->set('asset_data', $asset_data);
-                $this->set('accu_depre', $accu_depre);
-                $this->set('liability_data', $liability_data);
-                $this->set('oe_data', $oe_data);
-                $this->set('prev_asset_data', $prev_asset_data);
-                $this->set('prev_accu_depre', $prev_accu_depre);
-                $this->set('prev_liability_data', $prev_liability_data);
-                $this->set('prev_oe_data', $prev_oe_data);
+                $this->set('balance_sheet', $balance_sheet);
+                $this->set('user', $user);
             }
         }
     }
@@ -3574,26 +3667,26 @@ if ($mg) {
 
             $asset_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id NOT LIKE' => 100, 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
             $accu_depre = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id' => 100, 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 4, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.category_id' => 100, 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
 
             $liability_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 5, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
             $oe_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3639,14 +3732,14 @@ if ($mg) {
 
             $income_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
 
             $expense_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3690,14 +3783,14 @@ if ($mg) {
 
             $income_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
 
             $expense_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3740,26 +3833,26 @@ if ($mg) {
 
             $income_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 1, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
 
             $expense_data = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.amount) AS sum_amount', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 2, 'Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
             $oe_investment = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.credit) AS sum_credit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
             $oe_withdrawal = $this->Transaction->find('all', array(
                 'fields' => array('SUM(Transaction.debit) AS sum_debit', 'Transaction.category_id', 'TransactionCategory.category_name'),
-                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.delete' => 0),
+                'conditions' => array('Transaction.head_id' => 3, 'Transaction.transaction_date between ? and ?' => array($start_date, $end_date), 'Transaction.deleted' => 0),
                 'group' => array('Transaction.category_id'),
             ));
 
@@ -3930,22 +4023,21 @@ if ($mg) {
             }
         }
     }
-    
-    function liquidFunds(){
+
+    function liquidFunds() {
         $this->__validateUserType();
-        
+
         $s_date = $this->request->data['LiquidFunds']['start_date'];
-            $s_day = $s_date['day'];
-            $s_month = $s_date['month'];
-            $s_year = $s_date['year'];
-            $start_date = $s_year . '-' . $s_month . '-' . $s_day;
-            
+        $s_day = $s_date['day'];
+        $s_month = $s_date['month'];
+        $s_year = $s_date['year'];
+        $start_date = $s_year . '-' . $s_month . '-' . $s_day;
+
         $statement_date1 = implode('-', $s_date);
         $statement_date = date('F d, Y', strtotime($statement_date1));
-        
+
         $this->set('statement_date', $statement_date);
     }
-    
 
 }
 

@@ -38,21 +38,21 @@ class AccountingController extends AppController {
 
     public function getLoggedInUser(){
         //set logged in user
-                $user = null;
-                if ($this->Session->check('userDetails.firstname')) {
-                    $user_f = $this->Session->read('userDetails.firstname');
-                    if ($this->Session->check('userDetails.lastname')) {
-                        $user_l = $this->Session->read('userDetails.lastname');
-                        $user = $user_f . ' ' . $user_l;
-                        return $user;
-                    } else {
-                        $user = $user_f;
-                        return $user;
-                    }
-                } elseif ($this->Session->check('userDetails.lastname')) {
-                    $user = $this->Session->read('userDetails.lastname');
-                    return $user;
-                }
+        $user = null;
+        if ($this->Session->check('userDetails.firstname')) {
+            $user_f = $this->Session->read('userDetails.firstname');
+            if ($this->Session->check('userDetails.lastname')) {
+                $user_l = $this->Session->read('userDetails.lastname');
+                $user = $user_f . ' ' . $user_l;
+                return $user;
+            } else {
+                $user = $user_f;
+                return $user;
+            }
+        } elseif ($this->Session->check('userDetails.lastname')) {
+            $user = $this->Session->read('userDetails.lastname');
+            return $user;
+        }
     }
     
     
@@ -88,7 +88,7 @@ class AccountingController extends AppController {
     }
     function expenses($transactionid = NULL) {
         $this->__validateUserType();
-        $data = $this->paginate('Transaction', array('Transaction.head_id' => 2, 'Transaction.delete' => 0));
+        $data = $this->paginate('Transaction', array('Transaction.head_id' => 2, 'Transaction.deleted' => 0));
         $this->set('data', $data);
 
         $this->set('headids', $this->AccountingHead->find('list', array('conditions' => array('AccountingHead.id' => 2))));
@@ -495,7 +495,7 @@ class AccountingController extends AppController {
     
     function income($transactionid = NULL) {
         $this->__validateUserType();
-        $data = $this->paginate('Transaction', array('Transaction.head_id' => 1, 'Transaction.delete' => 0));
+        $data = $this->paginate('Transaction', array('Transaction.head_id' => 1, 'Transaction.deleted' => 0));
         $this->set('data', $data);
 
         $this->set('headids', $this->AccountingHead->find('list', array('conditions' => array('AccountingHead.id' => 1))));
@@ -897,7 +897,7 @@ class AccountingController extends AppController {
     
     function assets($transactionid = NULL) {
         $this->__validateUserType();
-        $data = $this->paginate('Transaction', array('Transaction.head_id' => 4, 'Transaction.delete' => 0));
+        $data = $this->paginate('Transaction', array('Transaction.head_id' => 4, 'Transaction.deleted' => 0));
         $this->set('data', $data);
 
         $this->set('headids', $this->AccountingHead->find('list', array('conditions' => array('AccountingHead.id' => 4))));
@@ -1381,7 +1381,7 @@ class AccountingController extends AppController {
     
     function ownerEquity($transaction_id = NULL) {
         $this->__validateUserType();
-        $data = $this->paginate('Transaction', array('Transaction.head_id' => 3, 'Transaction.delete' => 0));
+        $data = $this->paginate('Transaction', array('Transaction.head_id' => 3, 'Transaction.deleted' => 0));
         $this->set('data', $data);
 
         $this->set('headids', $this->AccountingHead->find('list', array('conditions' => array('AccountingHead.id' => 3))));
