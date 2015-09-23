@@ -56,6 +56,10 @@ echo $this->Html->script('jquery.js');
                         <td><?php echo $this->Form->input('email', array("class" => "large", "size" => 40, "value" => $setupResults['Setting']['email'])); ?></td>
                     </tr>
                     <tr>
+                        <td align="right"><b>Termination Penalty:</b></td>
+                        <td><?php echo $this->Form->input('penalty', array("class" => "large", "size" => 40, "value" => $setupResults['Setting']['penalty'])); ?></td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>Currency:</b></td>
                         <td>
                             <?php

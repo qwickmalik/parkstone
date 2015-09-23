@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 
-<h3>Daily Maturity List</h3>
+<h3>Daily Maturity List For <?php echo date('D d M,Y'); ?></h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -11,15 +11,15 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
+                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 87%">
                     <tr >
                         
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
-                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'No.'); ?></b></td>
+                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="center"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="70" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv.Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark Rate'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
@@ -29,7 +29,7 @@
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
-                    <?php if (isset($data)) {
+                    <?php if (!empty($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
@@ -63,7 +63,18 @@
                             ?></td>
                             </tr>
     <?php }
-} ?>
+}else {
+ ?>
+                    <tr>
+                        <td colspan="15">
+                         <div class="alert alert-warning">
+                        <h4><i class="icon-remove"></i> NO MATURED INVESTMENT RECORDS FOUND</h4>
+                    </div>   
+                            
+                        </td> 
+                    </tr>
+                       
+                <?php } ?>
 
                     <tr>
                         <td colspan="11" align="right">

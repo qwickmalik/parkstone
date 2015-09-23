@@ -157,6 +157,7 @@ class UsersController extends AppController {
                 $this->Session->write('shopPostCity', $settings['Setting']['postal_city']);
                 $this->Session->write('shopPostCount', $settings['Setting']['postal_country']);
                 $this->Session->write('accDate', $settings['Setting']['accounting_month']);
+                 $this->Session->write('penalty', $settings['Setting']['penalty']);
                 $this->Session->write('owner', $settings['Setting']['owner_name']);
                 $this->Session->write('userInfo', $result);
                      $this->Session->delete('public_unapproved_investors');

@@ -4,7 +4,7 @@ echo $this->Html->script('jquery.printElement.js');
 
 echo $this->Html->script('print.js'); ?>
 
-<h3>Reports: Rollover/Disinvestments Report</h3>
+<h3>Reports: Rollover</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -133,7 +133,7 @@ echo $this->Html->script('print.js'); ?>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Amount Invested</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark Rate</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Rollover Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Current Interest</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Total Due</b></td>

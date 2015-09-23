@@ -447,13 +447,15 @@ var setup = {
                     $("#progress_msg").hide();
                     $("#welcome_message").show();
                     $("#error_msg").html("Server Error. Check Server and Database Configurations").show('slow');
-                
+                alert('Error saving setup updates.');
+                return false;
                 } else{
                     $("#welcome_message").show();
                     $("#progress_msg").html("Company Setup Information Successfully Saved!!").show('slow').hide(5000);
                     $("#welcome_message").hide(5000);
+                    alert("Setup successfully updated. The system will automatically logout to complete the changes made.");
+                    window.location = '../Users/logout';
                     
-                   
                     return false;
                 }
             },
