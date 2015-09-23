@@ -176,7 +176,7 @@ class SettingsController extends AppController {
         $this->set(compact('setupResults'));
 
         if ($this->request->is('ajax')) {
-            Configure::write('debug', 0);
+//            Configure::write('debug', 0);
             $this->autoRender = false;
             $this->autoLayout = false;
             if (!empty($this->request->data)) {

@@ -60,8 +60,9 @@ if ($this->Session->check('shopCurrency')) {
                         <th align="left">Balance Due</th>
                     </tr>
                     <?php if(isset($data)){ foreach ($data as $each_item): 
-                        
+                    $topup_pt = 0;    
                     $amount = 0;
+                    $topup_in = 0;
                     if(!empty($each_item['InvestmentPayment']) ){
                     foreach ($each_item['InvestmentPayment'] as $val):
                         if($val['event_type'] == 'Payment'){
@@ -76,8 +77,20 @@ if ($this->Session->check('shopCurrency')) {
             echo  date('d-M-Y',strtotime($each_item['Investment']['investment_date']));
         } ?></td>
                             <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
-                            <td align="left"><?php if (isset($each_item['Investment']['investment_amount'])) {
-            echo  number_format($each_item['Investment']['investment_amount'],2);
+                            <td align="left"><?php if (!empty($each_item['Investment']['investment_amount'])) {
+                                if(!empty($topup_principal)){
+                                    
+                                    foreach($topup_principal as $tp_val){
+                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id']){
+                                        $topup_pt += $tp_val[0]['total_topup'];
+                                        }
+                                    }
+                                    $invest_amount = $each_item['Investment']['investment_amount'] - $topup_pt;
+                                    echo  number_format($invest_amount,2);
+                                }else{
+              $invest_amount = number_format($each_item['Investment']['investment_amount'],2);
+            echo $invest_amount;
+                                }
         } ?></td>
                             <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['due_date'])) {
@@ -87,17 +100,37 @@ if ($this->Session->check('shopCurrency')) {
                                 $id = $each_item['Investment']['id'];
                                $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
             echo $accrued_days;
-        } ?></td>
+        
+        
+         
+                                
+                            }
+        
+        ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['id'])) {
                                 $id = $each_item['Investment']['id'];
                                $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
-            echo  number_format($interest_accrued,2);
+            
+            
+            
+//              if(!empty($topup_principal)){
+//                                    
+//                                    foreach($topup_principal as $tp_val){
+//                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id']){
+//                                        $topup_in += $tp_val[0]['topup_in'];
+//                                        }
+//                                    }
+//                                    $invest_int = $interest_accrued - $topup_in;
+//                                    echo  number_format($invest_int,2);
+//                                }else{
+              $invest_int = number_format($interest_accrued,2);
+              echo $invest_int;
+//                                }
         } ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
-                                 $id = $each_item['Investment']['id'];
-                               $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                 
                                 
-                                $totals = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
+                                $totals = $invest_amount + $invest_int;
         
             echo number_format($totals,2);
             
@@ -119,7 +152,7 @@ if ($this->Session->check('shopCurrency')) {
                                   <tr>
                                       <th align="left" width="120">&nbsp;</th>
                         <th align="left" width="120">&nbsp;</th>
-                        <th align="left" width="150">Topup Amt. &nbsp;</th>
+                        <th align="left" width="100">Topup Amt. &nbsp;</th>
                         <th align="left">Benchmark(%)</th>
                         <th align="left">Interest</th>
                         <th align="left">Topup Date</th>

@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 
-<h3>Monthly Maturity List</h3>
+<h3>Monthly Maturity List For Period <?php echo $frstart_date; ?> - <?php echo $frend_date; ?></h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -9,25 +9,25 @@
         <div class="row">
             <?php echo $this->Form->create('Investment', array('url' => array('controller' => 'Investments', 'action' => 'monthlyMaturityList'))); ?>
             
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                
-                <p style="font-weight: bold; padding: 10px 0px 0px 15px;">From</p>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <p style="font-weight: bold; padding: 10px 0px 0px 15px;float: right">Period</p>
+<!--                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <?php
-                    $month = date('m');
-                    $day = date('d');
-                    $Year = date('Y');
+//                    $month = date('m');
+//                    $day = date('d');
+//                    $Year = date('Y');
                     ?>
-                    <input type="hidden" id="month" value="<?php echo $month; ?>"/>
-                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
-                    <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php echo $this->Form->day('from_date', array("selected" => $day)); ?>&nbsp;
+                    <input type="hidden" id="month" value="<?php // echo $month; ?>"/>
+                    <input type="hidden" id="day" value="<?php // echo $day; ?>"/>
+                    <input type="hidden" id="year" value="<?php // echo $Year; ?>"/>
+                    <?php // echo $this->Form->day('from_date', array("selected" => $day)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->month('from_date', array("selected" => $month)); ?>&nbsp;
+                    <?php // echo $this->Form->month('from_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('from_date', 2003, date('Y')+5, array("selected" => $Year)); ?>
+                    <?php // echo $this->Form->year('from_date', 2003, date('Y')+5, array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
@@ -36,22 +36,33 @@
                     $("#InvestmentFromDateDay option[value=" + day + "]").attr('selected', true);
                     $("#InvestmentFromDateMonth option[value=" + month + "]").attr('selected', true);
                     $("#InvestmentFromDateYear option[value=" + year + "]").attr('selected', true);
-                </script>
+                </script>-->
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p style="font-weight: bold; padding: 10px 0px 0px 15px;">To</p>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                
+<!--                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    
+                    <?php
+//                    $month = date('m');
+//                    $day = date('d');
+//                    $Year = date('Y');
+                    ?>
+                    <input type="hidden" id="month" value="<?php // echo $month; ?>"/>
+                    <input type="hidden" id="day" value="<?php // echo $day; ?>"/>
+                    <input type="hidden" id="year" value="<?php // echo $Year; ?>"/>
+                    <?php // echo $this->Form->day('to_date', array("selected" => $day)); ?>&nbsp;
+                </div>-->
+                    
+                    
+                <div class="col-lg-4 col-md-4 col-sm-12">
                     <?php
                     $month = date('m');
-                    $day = date('d');
+//                    $day = date('d');
                     $Year = date('Y');
                     ?>
                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
-                    <input type="hidden" id="day" value="<?php echo $day; ?>"/>
+                    <!--<input type="hidden" id="day" value="<?php // echo $day; ?>"/>-->
                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                    <?php echo $this->Form->day('to_date', array("selected" => $day)); ?>&nbsp;
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12">
                     <?php echo $this->Form->month('to_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -65,9 +76,12 @@
                     $("#InvestmentToDateMonth option[value=" + month + "]").attr('selected', true);
                     $("#InvestmentToDateYear option[value=" + year + "]").attr('selected', true);
                 </script>
-                <?php
-                echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: right;'));
+                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <?php
+                echo $this->Form->button('Find', array('type' => 'submit', 'class' => 'btn btn-lg btn-success', 'style' => 'float: left;'));
                 ?>
+                </div>
+                
 
             </div>
             
@@ -77,25 +91,25 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 85%">
+                 <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 87%">
                     <tr >
                         
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'Inv. No.'); ?></b></td>
-                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('total_tenure', 'Tenure Left'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo 'No.'; ?></b></td>
+                       <td style="border-bottom: solid 2px dodgerblue" width="200" align="center"><b><?php echo 'Name'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="70" align="left"><b><?php echo 'Inv.Date'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo 'Maturity'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo  'Principal'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo 'Benchmark'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo 'Interest'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo 'Maturity Amt.'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo 'Elapsed Tenure'; ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo 'Tenure Left'; ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('status', 'Status'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo 'Status'; ?></b></td>
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
-                    <?php if (isset($data)) {
+                    <?php if (!empty($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
@@ -128,10 +142,7 @@
                                 echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ) , array('escape' => false));
                             ?></td>
                             </tr>
-    <?php }
-} ?>
-
-                    <tr>
+                                <tr>
                         <td colspan="11" align="right">
 <?php //echo $this->Form->end();
 ?>
@@ -150,6 +161,21 @@
                             ?>
                         </td>
                     </tr>
+    <?php }
+}else {
+ ?>
+                    <tr>
+                        <td colspan="15">
+                         <div class="alert alert-warning">
+                        <h4><i class="icon-remove"></i> NO MATURED INVESTMENT RECORDS FOUND FOR THIS SEARCH</h4>
+                    </div>   
+                            
+                        </td> 
+                    </tr>
+                       
+                <?php } ?>
+
+                
 
                 </table>
             </div>

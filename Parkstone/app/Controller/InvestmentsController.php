@@ -12,9 +12,9 @@ class InvestmentsController extends AppController {
         'InvestmentStatement', 'GrossRevenue', 'GrossIncome', 'InvestmentTerm', 'PaymentSchedule',
         'PaymentMode', 'CashReceiptMode', 'InvestmentProduct', 'Instruction', 'InstitutionType', 'Bank', 'EquitiesList',
         'InvestmentCash', 'DailyInterestStatement', 'ClientLedger'/* , 'ReinvestorEquity' */,
-        'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit','InterestAccrual',
+        'InvestorEquity', 'LedgerTransaction', 'Topup', 'InvestorDeposit', 'InterestAccrual',
         'ReinvestmentsEquity', 'ReinvestorEquity', 'ReinvestorCashaccount',
-        'EquityOrder','ManagementFee');
+        'EquityOrder', 'ManagementFee');
     var $paginate = array(
         'Investment' => array('limit' => 15, 'order' => array('Investment.id' => 'asc'), 'group' => array('Investment.investor_id')),
         'Investor' => array('limit' => 5, 'order' => array('Investor.investor_type_id' => 'asc'),
@@ -296,9 +296,9 @@ class InvestmentsController extends AppController {
                 $this->request->data['Investor']['id_expiry'] = $expiry_date;
             }
 
-            
-                $this->request->data['Investor']['investor_photo'] = null;
-            
+
+            $this->request->data['Investor']['investor_photo'] = null;
+
 
             if ($this->request->data['Investor']['nationality'] == "" || $this->request->data['Investor']['nationality'] == null) {
                 $message = 'Please Supply The Contact Person\'s Nationality';
@@ -445,27 +445,26 @@ class InvestmentsController extends AppController {
             $photo = $this->request->data['Investor']['surname'] . "_" . "photo" . "_" . $dob_date;
 //            print_r($_FILES);
 //            exit;
-            
-           if(!empty($_FILES['data']['name']['Investor']['investor_photo'])){
+
+            if (!empty($_FILES['data']['name']['Investor']['investor_photo'])) {
 //                $file = $this->request->data['Customer']['customer_photo']; //put the data into a var for easy use
-            $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
-            $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
-            $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
+                $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
+                $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
+                $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
                 $ext = substr(strtolower(strrchr($file_name, '.')), 1); //get the extension
                 $arr_ext = array('jpg', 'jpeg', 'gif', 'png', 'tiff'); //set allowed extensions
 //return json_encode($file_contents);
                 //only process if the extension is valid
-                if(in_array($ext, $arr_ext))
-                {
+                if (in_array($ext, $arr_ext)) {
                     //prepare the filename for database entry
                     $name_date = date('Y-m-d-H_s');
-                    $file_name = $this->request->data['Investor']['surname'].$dob_date.$name_date.'.'.$ext;
+                    $file_name = $this->request->data['Investor']['surname'] . $dob_date . $name_date . '.' . $ext;
                     $this->request->data['Investor']['investor_photo'] = $file_contents;
                     $this->request->data['Investor']['GRAPHIC_TYPE'] = $fileType;
                     //do the actual uploading of the file. First arg is the tmp name, second arg is where we are putting it
 //                    move_uploaded_file($_FILES['investor_photo']['tmp_name'], WWW_ROOT . 'files/uploads/' . $file_name);
                 }
-            }else{
+            } else {
                 $this->request->data['Investor']['investor_photo'] = null;
             }
 //            $this->request->data['Investor']['investor_photo'] = $file_contents;
@@ -502,7 +501,8 @@ class InvestmentsController extends AppController {
             }
         }
     }
- function display_user_image($id) {
+
+    function display_user_image($id) {
 
         $this->autoRender = false;
         $this->autoLayout = false;
@@ -514,7 +514,8 @@ class InvestmentsController extends AppController {
         header("Content-type: " . $image_upload['Investor']['GRAPHIC_TYPE']);
         echo $image_upload['Investor']['investor_photo'];
     }
-public function countUserImage($id) {
+
+    public function countUserImage($id) {
         $image_count = $this->Investor->find('count', array(
             'conditions' => array('Investor.id' => $id),
             'recursive' => -1));
@@ -524,6 +525,7 @@ public function countUserImage($id) {
             return 0;
         }
     }
+
     public function commit_comp() {
         $this->autoLayout = $this->autoRender = false;
         if ($this->request->is('ajax')) {
@@ -596,8 +598,8 @@ public function countUserImage($id) {
                 $this->request->data['Investor']['entryclerk_name'] = $user_f . ' ' . $user_l;
             }
 
-                $this->request->data['Investor']['investor_photo'] = null;
-            
+            $this->request->data['Investor']['investor_photo'] = null;
+
             $this->request->data['Investor']['fullname'] = $this->request->data['Investor']['comp_name'];
             $result = $this->Investor->save($this->request->data);
             $Investorid = $this->Investor->id;
@@ -1113,20 +1115,19 @@ public function countUserImage($id) {
 //:"image\/jpeg"}},"tmp_name":{"Investor":{"investor_photo":"C:\\wamp\\tmp\\phpE431.tmp"}},"error":{"Investor"
 //:{"investor_photo":0}},"size":{"Investor":{"investor_photo":180430}}}};
 //            return json_encode($_FILES);
- if(!empty($_FILES['data']['name']['Investor']['investor_photo'])){
+            if (!empty($_FILES['data']['name']['Investor']['investor_photo'])) {
 //                $file = $this->request->data['Customer']['customer_photo']; //put the data into a var for easy use
-            $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
-            $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
-            $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
+                $file_contents = file_get_contents($_FILES['data']['tmp_name']['Investor']['investor_photo']);
+                $file_name = $_FILES['data']['name']['Investor']['investor_photo'];
+                $fileType = $_FILES['data']['type']['Investor']['investor_photo'];
                 $ext = substr(strtolower(strrchr($file_name, '.')), 1); //get the extension
                 $arr_ext = array('jpg', 'jpeg', 'gif', 'png', 'tiff'); //set allowed extensions
 //return json_encode(array('pix'=>$_FILES['data']['tmp_name']['Investor']['investor_photo']));
                 //only process if the extension is valid
-                if(in_array($ext, $arr_ext))
-                {
+                if (in_array($ext, $arr_ext)) {
                     //prepare the filename for database entry
                     $name_date = date('Y-m-d-H_s');
-                    $file_name = $this->request->data['Investor']['surname'].$dob_date.$name_date.'.'.$ext;
+                    $file_name = $this->request->data['Investor']['surname'] . $dob_date . $name_date . '.' . $ext;
                     $this->request->data['Investor']['investor_photo'] = $file_contents;
                     $this->request->data['Investor']['GRAPHIC_TYPE'] = $fileType;
                     //do the actual uploading of the file. First arg is the tmp name, second arg is where we are putting it
@@ -1216,10 +1217,10 @@ public function countUserImage($id) {
 
             //$this->Session->delete('ivt');
         }
-          $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
+        $check = $this->Session->check('interest_accrual');
+        if ($check) {
+            $this->Session->delete('interest_accrual');
+        }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->delete('ivt');
@@ -1252,7 +1253,7 @@ public function countUserImage($id) {
         if ($this->Session->check('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
-       
+
         $check = $this->Session->check('statemt_array');
         if ($check) {
             $this->Session->delete('statemt_array');
@@ -1276,9 +1277,9 @@ public function countUserImage($id) {
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
         $this->set('investor', $data);
         $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
+        if ($check) {
+            $this->Session->delete('interest_accrual');
+        }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1295,7 +1296,7 @@ public function countUserImage($id) {
         if ($this->Session->check('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
-       
+
         $check = $this->Session->check('ledger_data');
         if ($check) {
             $this->Session->delete('ledger_data');
@@ -1312,13 +1313,13 @@ public function countUserImage($id) {
         if ($this->Session->check('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
-       
+
         $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
 
         $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
+        if ($check) {
+            $this->Session->delete('interest_accrual');
+        }
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1571,13 +1572,13 @@ public function countUserImage($id) {
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
         $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
-                    if ($this->Session->check('investmt_equities')) {
+        if ($check) {
+            $this->Session->delete('interest_accrual');
+        }
+        if ($this->Session->check('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
-       
+
         $check = $this->Session->check('ivt');
         if ($check) {
             $cust = $this->Session->read('ivt');
@@ -1612,11 +1613,11 @@ public function countUserImage($id) {
             'limit' => 5, 'order' => array('Investor.id' => 'asc'));
         $data = $this->paginate('Investor');
         $this->set('investor', $data);
-         $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
-                    if ($this->Session->check('investmt_equities')) {
+        $check = $this->Session->check('interest_accrual');
+        if ($check) {
+            $this->Session->delete('interest_accrual');
+        }
+        if ($this->Session->check('investmt_equities')) {
             $this->Session->delete('investmt_equities');
         }
         $check = $this->Session->check('ivt');
@@ -2516,7 +2517,7 @@ public function countUserImage($id) {
                     $ainv_date = new DateTime($inv_date);
                     $aduration = date_diff($ainv_date, $to_date);
                     $aduration = $aduration->format("%a");
-                    
+
                     switch ($period) {
                         case 'Day(s)':
 
@@ -2525,7 +2526,7 @@ public function countUserImage($id) {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            
+
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -2557,7 +2558,7 @@ public function countUserImage($id) {
                             $rate = $custom_rate;
 
                             $YEAR2DAYS = 365 * $duration;
-                             $aYEAR2DAYS = 365 * $aduration;
+                            $aYEAR2DAYS = 365 * $aduration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -2600,23 +2601,23 @@ public function countUserImage($id) {
                         'earned_balance' => $aamount_due,
                         'accrued_days' => $aduration,
                         'interest_accrued' => $ainterest_amount,
-                        'amount_due' => $amount_due, 
+                        'amount_due' => $amount_due,
                         'due_date' => $date->format('Y-m-d')
                     );
-                    
+
                     $interest_accruals = array(
                         'investor_id' => $this->request->data['Investment']['investor_id'],
                         'interest_amounts' => $ainterest_amount,
                         'interest_date' => $inv_date
                     );
-                   
+
                     $check = $this->Session->check('interest_accrual');
                     if ($check) {
                         $this->Session->delete('interest_accrual');
                     }
-                    $check = $this->Session->write('interest_accrual',$interest_accruals);
-                    
-                 
+                    $check = $this->Session->write('interest_accrual', $interest_accruals);
+
+
                     $base_fee = 0;
                     $benchmark_fee = 0;
                     switch ($management_fee_type) {
@@ -2642,11 +2643,11 @@ public function countUserImage($id) {
                             break;
                     }
 
-                       $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
-                       
+                        'date' => $inv_date, 'description' => $description, 'management_fee' => $base_fee, 'benchmark' => $custom_rate);
+
                     $check = $this->Session->check('investment_array_fixed');
                     if ($check) {
                         $this->Session->delete('investment_array_fixed');
@@ -2784,13 +2785,13 @@ public function countUserImage($id) {
 
                             break;
                     }
-                    
-                    $description = 'Equity investment for '.$total_shares.' shares';
-                      $ledger_transactions[] = array('cash_receipt_mode_id' =>
+
+                    $description = 'Equity investment for ' . $total_shares . ' shares';
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
-                       
+                        'date' => $inv_date, 'description' => $description, 'management_fee' => $base_fee, 'benchmark' => $custom_rate);
+
                     $investment_array = array(
                         'total_amount' => $totalamt,
                         'numb_shares' => $total_shares,
@@ -3007,11 +3008,11 @@ public function countUserImage($id) {
                 $period = $this->request->data['Investment']['investment_period'];
                 $duration = $this->request->data['Investment']['duration'];
                 $year = $duration;
-                 $to_date = date('Y-m-d');
-                    $to_date = new DateTime($to_date);
-                    $ainv_date = new DateTime($inv_date);
-                    $aduration = date_diff($ainv_date, $to_date);
-                    $aduration = $aduration->format("%a");
+                $to_date = date('Y-m-d');
+                $to_date = new DateTime($to_date);
+                $ainv_date = new DateTime($inv_date);
+                $aduration = date_diff($ainv_date, $to_date);
+                $aduration = $aduration->format("%a");
                 switch ($period) {
                     case 'Day(s)':
 
@@ -3027,7 +3028,7 @@ public function countUserImage($id) {
                         $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
                         $ainterest_amount = $interest_amount1 * ($aduration / 365);
-                            $aamount_due = $ainterest_amount + $investment_amount;
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1D'));
                             $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -3054,12 +3055,12 @@ public function countUserImage($id) {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
-                         $aYEAR2DAYS = 365 * $aduration;
+                        $aYEAR2DAYS = 365 * $aduration;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
-                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
-                            $aamount_due = $ainterest_amount + $investment_amount;
+                        $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1Y'));
                             $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -3101,17 +3102,17 @@ public function countUserImage($id) {
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                 );
                 $interest_accruals = array(
-                        'investor_id' => $this->request->data['Investment']['investor_id'],
-                        'interest_amounts' => $ainterest_amount,
-                        'interest_date' => $inv_date
-                    );
-                    
-                    $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
-                    $check = $this->Session->write('interest_accrual',$interest_accruals);
-                    
+                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                    'interest_amounts' => $ainterest_amount,
+                    'interest_date' => $inv_date
+                );
+
+                $check = $this->Session->check('interest_accrual');
+                if ($check) {
+                    $this->Session->delete('interest_accrual');
+                }
+                $check = $this->Session->write('interest_accrual', $interest_accruals);
+
                 $ledger_transactions[] = array('cash_receipt_mode_id' =>
                     $this->request->data['Investment']['cashreceiptmode_id'],
                     'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -3381,9 +3382,9 @@ public function countUserImage($id) {
 
             $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
             $cashinvested = $this->request->data['Investment']['total_invested'];
-            
+
             $new_cashinvested = $cashinvested;
-            
+
             if (isset($this->request->data['fixed_process'])) {
 
                 if ($this->request->data['Investment']['investmentproduct_id'] == "" || $this->request->data['Investment']['investmentproduct_id'] == null) {
@@ -3439,7 +3440,7 @@ public function countUserImage($id) {
                     $this->redirect(array('controller' => 'Investments', 'action' => $page, $investor_id));
                 } else {
                     $investment_amount = $this->request->data['Investment']['investment_amount'];
-                    
+
                     if ($investment_amount > $amount_available) {
 
                         $message = 'Investment Amount cannot be more than investor\'s available cash';
@@ -3540,7 +3541,7 @@ public function countUserImage($id) {
                 }
             }
             $voucher_no = date('mdyhis') . rand(2, 4);
-                $receipt_no = $voucher_no;
+            $receipt_no = $voucher_no;
 //            $receipt_no = $this->request->data['Investment']['receipt_no'];
             $deposit = $this->request->data['Investment']['amount_deposited'];
             if ($deposit > 0) {
@@ -3723,19 +3724,19 @@ public function countUserImage($id) {
                         'interest_accrued' => $ainterest_amount,
                         'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d')
                     );
-                    
+
                     $interest_accruals = array(
                         'investor_id' => $this->request->data['Investment']['investor_id'],
                         'interest_amounts' => $ainterest_amount,
                         'interest_date' => $inv_date
                     );
-                    
+
                     $check = $this->Session->check('interest_accrual');
                     if ($check) {
                         $this->Session->delete('interest_accrual');
                     }
-                    $check = $this->Session->write('interest_accrual',$interest_accruals);
-                    
+                    $check = $this->Session->write('interest_accrual', $interest_accruals);
+
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
@@ -3903,12 +3904,12 @@ public function countUserImage($id) {
 
                             break;
                     }
-                      $description = 'Equity investment for '.$total_shares.' shares';
-                      $ledger_transactions[] = array('cash_receipt_mode_id' =>
+                    $description = 'Equity investment for ' . $total_shares . ' shares';
+                    $ledger_transactions[] = array('cash_receipt_mode_id' =>
                         $this->request->data['Investment']['cashreceiptmode_id'],
                         'cheque_no' => $cheque_no, 'debit' => $totalamt, 'user_id' => $this->request->data['Investment']['user_id'],
-                        'date' => $inv_date, 'description' => $description,'management_fee' => $base_fee,'benchmark' => $custom_rate);
-                       
+                        'date' => $inv_date, 'description' => $description, 'management_fee' => $base_fee, 'benchmark' => $custom_rate);
+
 
                     $investment_array = array(
                         'total_amount' => $totalamt,
@@ -4950,37 +4951,37 @@ public function countUserImage($id) {
 
             $this->Investment->id = $investment_id;
             $investmt_result = $this->Investment->save($investment_array);
-            if($investmt_result){
-                
-            $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
-            if ($result) {
-            
-                    
+            if ($investmt_result) {
+
+                $result = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+                if ($result) {
+
+
                     $check = $this->Session->check('interest_accrual');
                     if ($check) {
-                         $interest_accruals = $this->Session->read('interest_accrual');
-                         $interest_accruals['investment_id'] = $investment_id;
+                        $interest_accruals = $this->Session->read('interest_accrual');
+                        $interest_accruals['investment_id'] = $investment_id;
                         $this->InterestAccrual->save($interest_accruals);
                         $this->Session->delete('interest_accrual');
                     }
-                       
-                $payment_name = '';
-                $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
-                if ($payment_mode) {
-                    $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
-                }
-                $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
-                    'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
-                    'amount' => $result['Investment']['investment_amount'],
-                    'available_amount' => $result['Investment']['investment_amount'],
-                    'investment_type' => 'fixed', 'payment_mode' => $payment_name,
-                    'investment_date' => $result['Investment']['investment_date']);
 
-                $this->InvestmentCash->create();
-                $cash_save = $this->InvestmentCash->save($investmentcash_data);
-                if ($cash_save) {
-                    $cash_id = $cash_save['InvestmentCash']['id'];
-                }
+                    $payment_name = '';
+                    $payment_mode = $this->PaymentMode->find('first', array('conditions' => array('PaymentMode.id' => $paymentmodeid)));
+                    if ($payment_mode) {
+                        $payment_name = $payment_mode['PaymentMode']['payment_mode_name'];
+                    }
+                    $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
+                        'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
+                        'amount' => $result['Investment']['investment_amount'],
+                        'available_amount' => $result['Investment']['investment_amount'],
+                        'investment_type' => 'fixed', 'payment_mode' => $payment_name,
+                        'investment_date' => $result['Investment']['investment_date']);
+
+                    $this->InvestmentCash->create();
+                    $cash_save = $this->InvestmentCash->save($investmentcash_data);
+                    if ($cash_save) {
+                        $cash_id = $cash_save['InvestmentCash']['id'];
+                    }
 //                $check = $this->get_investors();
 //                if (count($check) > 0) {
 //                    $this->set('investors', $check);
@@ -4995,77 +4996,77 @@ public function countUserImage($id) {
 //                    $this->Session->write('emsg', $message);
 //                    $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment0'));
 //                }
-                if (isset($investment_number) && !empty($investment_number)) {
-                    $investment_number = $investment_number;
-                } else {
-                    $investment_number = 'PARKST-INV-00' . $investment_id;
-                }
-                $this->set('investment_number', $investment_number);
-                $date = date('Y-m-d H:i:s');
+                    if (isset($investment_number) && !empty($investment_number)) {
+                        $investment_number = $investment_number;
+                    } else {
+                        $investment_number = 'PARKST-INV-00' . $investment_id;
+                    }
+                    $this->set('investment_number', $investment_number);
+                    $date = date('Y-m-d H:i:s');
 
 
 
 
-                $rollover_details = $this->Session->check('rollover_details');
-                if ($rollover_details) {
-                    $rollover_details = $this->Session->read('rollover_details');
-                    $this->Rollover->save($rollover_details);
-                    $this->set('rollover_details', $rollover_details);
-                    $this->Session->delete('rollover_details');
-                    if ($this->Session->check('investpayments')) {
-                        $investment_paymentdetails = $this->Session->read('investpayments');
-                        $this->InvestmentPayment->create();
-                        $resultIP = $this->InvestmentPayment->save($investment_paymentdetails);
-                        if ($resultIP) {
-                            $ip_id = $resultIP['InvestmentPayment']['id'];
+                    $rollover_details = $this->Session->check('rollover_details');
+                    if ($rollover_details) {
+                        $rollover_details = $this->Session->read('rollover_details');
+                        $this->Rollover->save($rollover_details);
+                        $this->set('rollover_details', $rollover_details);
+                        $this->Session->delete('rollover_details');
+                        if ($this->Session->check('investpayments')) {
+                            $investment_paymentdetails = $this->Session->read('investpayments');
+                            $this->InvestmentPayment->create();
+                            $resultIP = $this->InvestmentPayment->save($investment_paymentdetails);
+                            if ($resultIP) {
+                                $ip_id = $resultIP['InvestmentPayment']['id'];
+                            }
+                            $this->Session->delete('investpayments');
                         }
-                        $this->Session->delete('investpayments');
-                    }
 
-                    $statemt_array = $this->Session->check('statemt_array_fixed');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_fixed');
+                        $statemt_array = $this->Session->check('statemt_array_fixed');
+                        if ($statemt_array) {
+                            $statemt_array = $this->Session->read('statemt_array_fixed');
 
-                        $this->InvestmentStatement->saveAll($statemt_array);
-                        $this->Session->delete('statemt_array_fixed');
-                    }
-                } else {
-                    $statemt_array = $this->Session->check('statemt_array_fixed');
-                    if ($statemt_array) {
-                        $statemt_array = $this->Session->read('statemt_array_fixed');
-
-
-                        foreach ($statemt_array as $key => $val) {
-                            $val['investment_id'] = $investment_id;
-
-                            $this->InvestmentStatement->create();
-                            $this->InvestmentStatement->save($val);
+                            $this->InvestmentStatement->saveAll($statemt_array);
+                            $this->Session->delete('statemt_array_fixed');
                         }
-                        $this->Session->delete('statemt_array_fixed');
+                    } else {
+                        $statemt_array = $this->Session->check('statemt_array_fixed');
+                        if ($statemt_array) {
+                            $statemt_array = $this->Session->read('statemt_array_fixed');
+
+
+                            foreach ($statemt_array as $key => $val) {
+                                $val['investment_id'] = $investment_id;
+
+                                $this->InvestmentStatement->create();
+                                $this->InvestmentStatement->save($val);
+                            }
+                            $this->Session->delete('statemt_array_fixed');
+                        }
+
+                        $this->request->data = null;
+                        $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
+                        $this->Investment->save($investment_updates);
+                    }
+                    $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+                    if ($data) {
+                        $this->set('investment_array_fixed', $data);
+                        $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
+                        $issued = $this->Session->check('userData');
+                        if ($issued) {
+                            $issued = $this->Session->read('userData');
+                            $this->set('issued', $issued);
+                        }
                     }
 
-                    $this->request->data = null;
-                    $investment_updates = array('id' => $investment_id, 'investment_no' => $investment_number);
-                    $this->Investment->save($investment_updates);
+                    $this->Session->delete('variabless_fixed');
+                } else {
+                    $message = "Sorry No Investment To Display";
+                    $this->Session->write('imsg', $message);
+                    $this->redirect('/Investments/');
                 }
-                $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
-                if ($data) {
-                    $this->set('investment_array_fixed', $data);
-                    $this->Session->write('shopCurrency_investment', $data['Currency']['currency_name']);
-                    $issued = $this->Session->check('userData');
-                    if ($issued) {
-                        $issued = $this->Session->read('userData');
-                        $this->set('issued', $issued);
-                    }
-                }
-
-                $this->Session->delete('variabless_fixed');
-            }else {
-                $message = "Sorry No Investment To Display";
-                $this->Session->write('imsg', $message);
-                $this->redirect('/Investments/');
             }
-        }
         }
 
         $investment_array = $this->Session->check('investment_array_equity');
@@ -5234,7 +5235,7 @@ public function countUserImage($id) {
                                 $this->LedgerTransaction->delete($lt_id, false);
                                 $created = $lt_result['LedgerTransaction']['created'];
                             }
-                             $this->InterestAccrual->deleteAll(array('investment_id' => $investment_id),false);
+                            $this->InterestAccrual->deleteAll(array('investment_id' => $investment_id), false);
                             $created = new DateTime($created);
                             $created = $created->add(new DateInterval('PT30M'));
                             $created = $created->format('Y-m-d H:i:s');
@@ -5266,7 +5267,7 @@ public function countUserImage($id) {
             $ledger_data = $this->Session->read('rledger_data');
             $cledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
             if (count($cledger) > 0) {
-                if($this->Session->check('rledger_data.rollover')){
+                if ($this->Session->check('rledger_data.rollover')) {
                     $old_rollover = $cledger['ClientLedger']['total_rollover'];
                     $rollover = $this->Session->read('rledger_data.rollover');
                     $new_rollover = $rollover + $old_rollover;
@@ -5289,7 +5290,7 @@ public function countUserImage($id) {
                 $ledger_transactions = $this->Session->read('ledger_transactions');
                 if (!empty($ledger_transactions)) {
                     foreach ($ledger_transactions as $key => $val) {
-                        
+
                         $val['client_ledger_id'] = $cledger_id;
 //                        $val['voucher_no'] = $investment_number;
                         $val['investment_id'] = $investment_id;
@@ -5339,7 +5340,7 @@ public function countUserImage($id) {
             $inv_deposit['ledger_transaction_id'] = $lt_id;
             $receipt = $inv_deposit['receipt_no'];
             $this->InvestorDeposit->create();
-            $this->set('deposit_no',$receipt);
+            $this->set('deposit_no', $receipt);
             $dep_result = $this->InvestorDeposit->save($inv_deposit);
             if ($dep_result) {
                 $dep_id = $dep_result['InvestorDeposit']['id'];
@@ -5719,10 +5720,15 @@ public function countUserImage($id) {
                 $investor_id = $this->request->data['Investment']['investor_id'];
                 $instructions = $this->request->data['ApproveInvestments']['instructions'];
                 $userid = null;
+                $penalty = 5;
                 $check = $this->Session->check('userDetails');
                 if ($check) {
                     $userid = $this->Session->read('userDetails.id');
                 }
+//                $check = $this->Session->check('penalty');
+//                if ($check) {
+//                    $penalty = $this->Session->read('penalty');
+//                }
                 $data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
                 switch ($approval_status) {
                     case "0":
@@ -5747,7 +5753,7 @@ public function countUserImage($id) {
                         if ($data) {
                             $ledger_data = $this->ClientLedger->find('first', ['conditions' =>
                                 ['ClientLedger.investor_id' => $investor_id]]);
-                     
+
                             $period = $data['Investment']['investment_period'];
                             $first_date = $data['Investment']['investment_date'];
                             $inv_date = new DateTime($first_date);
@@ -5756,9 +5762,9 @@ public function countUserImage($id) {
                             $duration = date_diff($inv_date, $to_date);
                             $duration = $duration->format("%a");
                             $year = $duration;
-                            $custom_rate = $data['Investment']['custom_rate'] - 5;
+                            $custom_rate = $data['Investment']['custom_rate'] - $penalty;
                             $investment_amount = $data['Investment']['investment_amount'];
-                         
+
                             switch ($period) {
                                 case 'Day(s)':
 
@@ -5815,50 +5821,49 @@ public function countUserImage($id) {
 
                                     break;
                             }
-                            
-                               $check_account = $this->ReinvestorCashaccount->find('first', ['recursive' => -1,'conditions' =>
-                        ['ReinvestorCashaccount.reinvestor_id' => 1]]);
-                        if($check_account){
-                            $rebalance = $check_account['ReinvestorCashaccount']['total_balance'];
-                            $investor_name = "";
-                            if(!empty($ledger_data['Investor']['in_trust_for'])){
-                                $investor_name = $ledger_data['Investor']['in_trust_for'];
-                            }elseif(!empty($ledger_data['Investor']['fullname'])){
-                                $investor_name = $ledger_data['Investor']['fullname'];
-                            }elseif(!empty($ledger_data['Investor']['comp_name'])){
-                                $investor_name = $ledger_data['Investor']['comp_name'];
+
+                            $check_account = $this->ReinvestorCashaccount->find('first', ['recursive' => -1, 'conditions' =>
+                                ['ReinvestorCashaccount.reinvestor_id' => 1]]);
+                            if ($check_account) {
+                                $rebalance = $check_account['ReinvestorCashaccount']['total_balance'];
+                                $investor_name = "";
+                                if (!empty($ledger_data['Investor']['in_trust_for'])) {
+                                    $investor_name = $ledger_data['Investor']['in_trust_for'];
+                                } elseif (!empty($ledger_data['Investor']['fullname'])) {
+                                    $investor_name = $ledger_data['Investor']['fullname'];
+                                } elseif (!empty($ledger_data['Investor']['comp_name'])) {
+                                    $investor_name = $ledger_data['Investor']['comp_name'];
+                                }
+                                if ($amount_due > $rebalance) {
+                                    $message = 'Termination failed. Insufficient funds to complete process. Please consider terminating an outbound investment first';
+                                    $this->Session->write('bmsg', $message);
+                                    $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations2', $investor_id, $investor_name, $investment_id));
+                                }
                             }
-                            if($amount_due > $rebalance){
-                                     $message = 'Termination failed. Insufficient funds to complete process. Please consider terminating an outbound investment first';
-                            $this->Session->write('bmsg', $message);
-                            $this->redirect(array('controller' => 'Investments', 'action' => 'approveTerminations2',$investor_id,$investor_name,$investment_id));
-                      
-                            }
-                        }
                             $accrued_basefee = $data['Investment']['accrued_basefee'];
-                            
+
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
                                 'interest_earned' => $interest_amount, 'custom_rate' => $custom_rate, 'total_amount_earned' => $amount_due, 'duration' => $duration,
-                                'status' => "Termination_Approved",'accrued_days' => $duration,'instruction_details' => $instructions);
+                                'status' => "Termination_Approved", 'accrued_days' => $duration, 'instruction_details' => $instructions);
                             $ltid = null;
                             if ($ledger_data) {
                                 $cledger_id = $ledger_data['ClientLedger']['id'];
-                                   $description = 'Debit on ' . $data['Investment']['investment_no'].' for settlement of accrued management fee';
+                                $description = 'Debit on ' . $data['Investment']['investment_no'] . ' for settlement of accrued management fee';
                                 $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
                                     'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-                                
+
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
                                 $new_cashathand = $cash_athand + $amount_due;
 //                                $new_cashathand = $new_cashathand - $accrued_basefee;
                                 $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $amount_due;
-                                
+
                                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
                                     'invested_amount' => $total_invested);
-                               $ledger_data =  $this->ClientLedger->save($client_ledger);
-                               
+                                $ledger_data = $this->ClientLedger->save($client_ledger);
+
 
                                 //Ledger transaction entry
                                 $description = 'Discounting of ' . $data['Investment']['investment_no'];
@@ -5867,8 +5872,8 @@ public function countUserImage($id) {
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-                                
-                             
+
+
                                 if ($ltresult) {
                                     $ltid = $ltresult['LedgerTransaction']['id'];
                                 }
@@ -5877,7 +5882,7 @@ public function countUserImage($id) {
                             //insert into investmentpayments for rollover
                             $investment_paymentdetails = array('investment_id' => $investment_id,
                                 'investor_id' => $investor_id, 'amount' => $amount_due, 'ledger_transaction_id' => $ltid,
-                                'user_id' => $userid, 'payment_date' => date('Y-m-d'), 'event_type' => 'Termination',
+                                'user_id' => $userid, 'payment_date' => date('Y-m-d'), 'penalty' => $penalty, 'event_type' => 'Termination',
                                 'event_date' => date('Y-m-d'));
 
                             $this->InvestmentPayment->create();
@@ -5979,57 +5984,59 @@ public function countUserImage($id) {
 
     function monthlyMaturityList() {
         $this->__validateUserType();
-        
-         if ($this->request->is('post')) {
+        $data = array();
+        $frend_date = '';
+        $frstart_date = '';
+        if ($this->request->is('post')) {
 
-            $sday = $this->request->data['Investment']['from_date']['day'];
-            $smonth = $this->request->data['Investment']['from_date']['month'];
-            $syear = $this->request->data['Investment']['from_date']['year'];
+            $sday = '01';
+            $smonth = $this->request->data['Investment']['to_date']['month'];
+            $syear = $this->request->data['Investment']['to_date']['year'];
             $starts_date = $syear . "-" . $smonth . "-" . $sday;
             $snewdate = strtotime($starts_date);
             $start_date = date('Y-m-d', $snewdate);
             $frstart_date = date('d F, Y', $snewdate);
 
-            $eday = $this->request->data['Investment']['to_date']['day'];
-            $emonth = $this->request->data['Investment']['to_date']['month'];
-            $eyear = $this->request->data['Investment']['to_date']['year'];
-            $ends_date = $eyear . "-" . $emonth . "-" . $eday;
-            $enewdate = strtotime($ends_date);
-            $end_date = date('Y-m-d', $enewdate);
-            $date = new DateTime($end_date);
-            //$date->add(new DateInterval('P1D'));
+
+
+//            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($start_date);
+            $date->add(new DateInterval('P1M'));
+            $date->sub(new DateInterval('P1D'));
             $end_date = $date->format('Y-m-d');
+            $enewdate = strtotime($end_date);
+//            pr($end_date);exit;
             $frend_date = date('d F, Y', $enewdate);
 
 
 
-        $this->paginate = array(
-            'conditions' => array(
-                'Investment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
-                'Investment.investment_amount !=' => 0,
-                'Investment.status' => array('Invested', 'Rolled_over'),
-                'Investment.investment_product_id' => array(1, 3)),
-            'limit' => 30,
-            'order' => array('Investment.id' => 'asc'));
-        $data = $this->paginate('Investment');
-        
-            
-         }else{
-           
-        $first_date = date('Y-m-d');
-        $date = new DateTime($first_date);
-        $date->add(new DateInterval('P1M'));
-        $date_end = $date->format('Y-m-d');
-        $this->paginate = array(
-            'conditions' => array(
-                'Investment.status' => array('Invested', 'Rolled_over'),
-                'Investment.investment_product_id' => array(1, 3),
-                'AND' => array(array('Investment.due_date >=' => $first_date), array('Investment.due_date <=' => $date_end))),
-            'limit' => 30,
-            'order' => array('Investment.id' => 'asc'));
-        $data = $this->paginate('Investment');  
-         }
-         $this->set('data', $data);
+
+            $this->paginate = array(
+                'conditions' => array(
+                    'Investment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
+                    'Investment.investment_amount !=' => 0,
+                    'Investment.status' => array('Invested', 'Rolled_over'),
+                    'Investment.investment_product_id' => array(1, 3)),
+                'limit' => 30,
+                'order' => array('Investment.id' => 'asc'));
+            $data = $this->paginate('Investment');
+        }
+//         else{
+//           
+//        $first_date = date('Y-m-d');
+//        $date = new DateTime($first_date);
+//        $date->add(new DateInterval('P1M'));
+//        $date_end = $date->format('Y-m-d');
+//        $this->paginate = array(
+//            'conditions' => array(
+//                'Investment.status' => array('Invested', 'Rolled_over'),
+//                'Investment.investment_product_id' => array(1, 3),
+//                'AND' => array(array('Investment.due_date >=' => $first_date), array('Investment.due_date <=' => $date_end))),
+//            'limit' => 30,
+//            'order' => array('Investment.id' => 'asc'));
+//        $data = $this->paginate('Investment');  
+//         }
+        $this->set(compact('data', 'frend_date', 'frstart_date'));
     }
 
     function processPayments() {
@@ -6292,7 +6299,7 @@ public function countUserImage($id) {
             }
             $this->request->data['InvestmentPayment']['payment_date'] = $inv_date;
             $this->Session->write('payinvesttemp', $this->request->data['InvestmentPayment']);
-            $this->Session->write('payment_date',$inv_date);
+            $this->Session->write('payment_date', $inv_date);
 
             if ($this->request->data['InvestmentPayment']['paymentmode_id'] == "" || $this->request->data['InvestmentPayment']['paymentmode_id'] == null) {
                 $message = 'Please Select A Mode of Payment.';
@@ -6343,7 +6350,7 @@ public function countUserImage($id) {
             if ($investment_data) {
                 $earnedbalance = $investment_data['Investment']['earned_balance'];
                 $amount_due = $investment_data['Investment']['amount'];
-                
+
                 $status = $investment_data['Investment']['status'];
                 if ($sms_amount > $earnedbalance) {
                     $message = 'Payment amount cannot be more than Investment balance';
@@ -6407,7 +6414,6 @@ public function countUserImage($id) {
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if (!empty($investment_array)) {
                         $this->Investment->save($investment_array);
-                        
                     }
                     if ($ledger_transactions) {
 
@@ -6682,18 +6688,18 @@ public function countUserImage($id) {
 
                                 $client_ledger = array('id' => $ledger['ClientLedger']['id'], 'invested_amount' => $new_investedamount);
                                 $description = '’Deposit for Topup on ' . $inv_no;
-                                
+
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source, 'investment_id' => $investment_id,
                                     'cheque_no' => $cheque_no, 'credit' => $amount, 'user_id' => $userid,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
-                                
-                            $description2 = 'Fixed Income Topup on ' . $inv_no;    
-                               $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
+
+                                $description2 = 'Fixed Income Topup on ' . $inv_no;
+                                $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
                                     , 'cash_receipt_mode_id' => $source,
-                        'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
-                        'date' => $inv_date, 'description' => $description2);
-                       
+                                    'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
+                                    'date' => $inv_date, 'description' => $description2);
+
                                 $inv_deposit = array('user_id' => $userid,
                                     'amount' => $amount, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
 
@@ -6712,13 +6718,13 @@ public function countUserImage($id) {
                                     'cheque_no' => $cheque_no, 'credit' => $amount,
                                     'user_id' => $userid, 'investment_id' => $investment_id,
                                     'date' => $inv_date, 'description' => $description, 'voucher_no' => $receipt_no);
-                              
-                                $description2 = 'Fixed Income Topup on  ' . $inv_no;   
+
+                                $description2 = 'Fixed Income Topup on  ' . $inv_no;
                                 $ledger_transactions[] = array('client_ledger_id' => $ledger['ClientLedger']['id']
-                                    ,'cash_receipt_mode_id' => $source,
-                        'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
-                        'date' => $inv_date, 'description' => $description2);
-                                
+                                    , 'cash_receipt_mode_id' => $source,
+                                    'cheque_no' => $cheque_no, 'debit' => $amount, 'user_id' => $userid,
+                                    'date' => $inv_date, 'description' => $description2);
+
                                 $inv_deposit = array('user_id' => $userid,
                                     'amount' => $amount, 'receipt_no' => $receipt_no, 'deposit_date' => $inv_date);
 
@@ -6748,7 +6754,6 @@ public function countUserImage($id) {
                                     'user_id' => $userid, 'investment_id' => $investment_id,
                                     'date' => $inv_date, 'description' => $description);
                                 break;
-                                
                         }
                     } else {
                         $message = 'Investor ledger retrieval error. Please try again.';
@@ -6799,8 +6804,8 @@ public function countUserImage($id) {
 
                             //$finv_date = $inv_date;
                             $date = new DateTime($first_date);
-                            $date->add(new DateInterval('P' . $duration . 'Y'));
-                            $date->sub(new DateInterval('P1D'));
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+//                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -6873,11 +6878,11 @@ public function countUserImage($id) {
                         if (isset($client_ledger)) {
                             $this->ClientLedger->save($client_ledger);
                             if ($ledger_transactions) {
-                                foreach($ledger_transactions as $key => $val){
-                                  
-                                $this->LedgerTransaction->create();
-                                $lt_result = $this->LedgerTransaction->save($val);
-                                $lt_id = $lt_result['LedgerTransaction']['id'];
+                                foreach ($ledger_transactions as $key => $val) {
+
+                                    $this->LedgerTransaction->create();
+                                    $lt_result = $this->LedgerTransaction->save($val);
+                                    $lt_id = $lt_result['LedgerTransaction']['id'];
                                 }
                             }
                         }
@@ -7508,10 +7513,10 @@ public function countUserImage($id) {
                 $custom_rate = $this->request->data['Investment']['custom_rate'];
                 $year = $duration;
                 $to_date = date('Y-m-d');
-                    $to_date = new DateTime($to_date);
-                    $ainv_date = new DateTime($inv_date);
-                    $aduration = date_diff($ainv_date, $to_date);
-                    $aduration = $aduration->format("%a");
+                $to_date = new DateTime($to_date);
+                $ainv_date = new DateTime($inv_date);
+                $aduration = date_diff($ainv_date, $to_date);
+                $aduration = $aduration->format("%a");
                 switch ($period) {
                     case 'Day(s)':
 
@@ -7527,7 +7532,7 @@ public function countUserImage($id) {
                         $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
                         $ainterest_amount = $interest_amount1 * ($aduration / 365);
-                            $aamount_due = $ainterest_amount + $investment_amount;
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1D'));
                             $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -7554,12 +7559,12 @@ public function countUserImage($id) {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
-                         $aYEAR2DAYS = 365 * $aduration;
+                        $aYEAR2DAYS = 365 * $aduration;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
-                            $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
-                            $aamount_due = $ainterest_amount + $investment_amount;
+                        $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1Y'));
                             $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -7577,7 +7582,7 @@ public function countUserImage($id) {
                 }
 
 
-                    
+
                 $total_tenure = $this->request->data['Investment']['total_tenure'];
                 $description = 'Reinvestment of ' . $data["Investment"]["investment_no"] . ' for ' . $duration . ' ' . $period;
                 //'cash_athand' => $new_cashathand, 'total_invested' => $new_cashinvested,
@@ -7589,17 +7594,17 @@ public function countUserImage($id) {
                     'earned_balance' => $aamount_due,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
                 $interest_accruals = array(
-                        'investor_id' => $this->request->data['Investment']['investor_id'],
-                        'interest_amounts' => $ainterest_amount,
-                        'interest_date' => $inv_date
-                    );
-                    
-                    $check = $this->Session->check('interest_accrual');
-                    if ($check) {
-                        $this->Session->delete('interest_accrual');
-                    }
-                    $check = $this->Session->write('interest_accrual',$interest_accruals);
-                    
+                    'investor_id' => $this->request->data['Investment']['investor_id'],
+                    'interest_amounts' => $ainterest_amount,
+                    'interest_date' => $inv_date
+                );
+
+                $check = $this->Session->check('interest_accrual');
+                if ($check) {
+                    $this->Session->delete('interest_accrual');
+                }
+                $check = $this->Session->write('interest_accrual', $interest_accruals);
+
                 $ledger_transactions[] = array('debit' => $investment_amount, 'user_id' => $this->request->data['Investment']['user_id'],
                     'date' => $inv_date, 'description' => $description);
 
@@ -7647,7 +7652,7 @@ public function countUserImage($id) {
 //move to summary contract function and store in client ledger
 
                 $client_ledger = array('available_cash' => $new_cashathand,
-                    'invested_amount' => $new_cashinvested,'rollover' => $investment_amount);
+                    'invested_amount' => $new_cashinvested, 'rollover' => $investment_amount);
 
                 $check = $this->Session->check('variabless_fixed');
                 if ($check) {
@@ -7966,7 +7971,7 @@ public function countUserImage($id) {
       }
      */
 
-    function statementInvDetailEq($investment_id = null,  $investor_id = null, $investor_name = null) {
+    function statementInvDetailEq($investment_id = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
@@ -8511,10 +8516,10 @@ public function countUserImage($id) {
             
         }
     }
-    
-    public function deleteEquityInvestments($investment_id = null, $investor_id = null, $investor_name = null){
-         $deposit_data = $this->InvestorDeposit->find('first', ['conditions' =>
-            ['InvestorDeposit.investment_id' => $investment_id],'order' => ['InvestorDeposit.id' => 'asc']]);
+
+    public function deleteEquityInvestments($investment_id = null, $investor_id = null, $investor_name = null) {
+        $deposit_data = $this->InvestorDeposit->find('first', ['conditions' =>
+            ['InvestorDeposit.investment_id' => $investment_id], 'order' => ['InvestorDeposit.id' => 'asc']]);
         if ($deposit_data) {
             $deposit_id = $deposit_data['InvestorDeposit']['id'];
             $topup_id = $deposit_data['InvestorDeposit']['topup_id'];
@@ -8526,28 +8531,28 @@ public function countUserImage($id) {
             $transaction_id = $deposit_data['InvestorDeposit']['ledger_transaction_id'];
             $dep_created = $deposit_data['InvestorDeposit']['created'];
             $invstatus = $deposit_data['Investment']['status'];
-            $invtype =  $deposit_data['Investment']['investment_product_id'];
+            $invtype = $deposit_data['Investment']['investment_product_id'];
             $current = date('Y-m-d');
             if (!empty($investment_id)) {
                 $new_invest_amt = $deposit_data['Investment']['investment_amount'];
 
                 if ($new_invest_amt > 0 && $invtype == 3) {
                     $invtype = 1;
-                    $investment_update = array('id' => $investment_id,'status' => $invstatus
-                        ,'investment_product_id' => $invtype,'total_amount');
-                     $this->Investment->save($investment_update);
-                }else{
-                   $invstatus = 'Cancelled'; 
-                   $this->Investment->delete($investment_id,false);
+                    $investment_update = array('id' => $investment_id, 'status' => $invstatus
+                        , 'investment_product_id' => $invtype, 'total_amount');
+                    $this->Investment->save($investment_update);
+                } else {
+                    $invstatus = 'Cancelled';
+                    $this->Investment->delete($investment_id, false);
                 }
-               
 
-               
+
+
                 $investor_id = $deposit_data['Investment']['investor_id'];
 
-                
 
-               
+
+
 
                 $ledger = $this->ClientLedger->find('first', ['conditions' =>
                     ['ClientLedger.id' => $ledger_id], 'recursive' => -1]);
@@ -8568,7 +8573,7 @@ public function countUserImage($id) {
 //                                    $new_invested = 0;
 ////                                    $new_available = $available_cash - $newdeposit;
 //                                } else {
-                                    $new_invested = $old_invested - $total_amt;
+                                $new_invested = $old_invested - $total_amt;
 //                                    $new_available = $available_cash;
 //                                }
 
@@ -8593,8 +8598,8 @@ public function countUserImage($id) {
 //                            $new_invested = 0;
 //                            $new_available = $available_cash - $newdeposit;
 //                        } else {
-                            $new_invested = $old_invested - $total_amt;
-                            $new_available = $available_cash;
+                        $new_invested = $old_invested - $total_amt;
+                        $new_available = $available_cash;
 //                        }
                     }
                     $ledger_array = array('id' => $ledger_id, 'invested_amount' => $new_invested, 'available_cash' => $available_cash);
@@ -8610,7 +8615,7 @@ public function countUserImage($id) {
                     }
 
                     $cash_data = $this->InvestmentCash->find('first', array('conditions' =>
-                        array('InvestmentCash.investor_deposit_id' => $deposit_id,'investment_type' => 'equity'), 'recursive' => -1));
+                        array('InvestmentCash.investor_deposit_id' => $deposit_id, 'investment_type' => 'equity'), 'recursive' => -1));
 
                     if ($cash_data) {
                         $status = $cash_data['InvestmentCash']['status'];
@@ -8620,7 +8625,7 @@ public function countUserImage($id) {
                             if ($result) {
                                 $id = $result['ReinvestorCashaccount']['id'];
                                 $old_balance = $result['ReinvestorCashaccount']['equity_inv_amount'];
-                                
+
                                 $new_balance = $old_balance - $total_amt;
                                 $grand_total = $result['ReinvestorCashaccount']['total_balance'] - $total_amt;
                                 $fixed_data = array('id' => $id, 'equity_inv_amount' => $new_balance, 'total_balance' => $grand_total);
@@ -8666,17 +8671,23 @@ public function countUserImage($id) {
         $this->__validateUserType();
 
         if (!is_null($investor_id)) {
-            $investor_data = $this->Investor->find('first',array('recursive' => -1,'conditions' => array('Investor.id'=>$investor_id) ));
+            $investor_data = $this->Investor->find('first', array('recursive' => -1, 'conditions' => array('Investor.id' => $investor_id)));
             $data = $this->Investment->find('all', array('conditions' =>
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
-            )),'order' => array('Investment.investment_date'),'contain' => array('InvestmentPayment','Topup')
+                    )), 'order' => array('Investment.investment_date'), 'contain' => array('InvestmentPayment', 'Topup')
 //                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
 //                    'Investment.due_date','Investment.id','Investment.earned_balance')
-                ));
+            ));
             //,'SUM(InvestmentPayment.amount) as investpay_amount'
 //            pr($data);exit;
+            $topup_principal = $this->Topup->find('all', array(
+                'conditions' => array('Investment.investor_id' => $investor_id),
+                'order' => array('Investment.investment_date'),
+                'fields' => array('SUM(Topup.topup_amount) AS total_topup', 'Topup.investment_id', 'Investment.investor_id', 'SUM(Topup.topup_interest) As topup_in'),
+                'group' => array('Topup.investment_id')));
+
             $issued = $this->Session->check('userDetails');
             if ($issued) {
                 $issued = $this->Session->read('userDetails.firstname');
@@ -8694,8 +8705,9 @@ public function countUserImage($id) {
                 if ($data_total) {
                     $this->set('total', $data_total);
                 }
+                $this->set('topup_principal', $topup_principal);
                 $this->set('data', $data);
-                $this->set('investor_data',$investor_data);
+                $this->set('investor_data', $investor_data);
                 $this->set('investor_id', $investor_id);
                 $this->set('investor_name', $investor_name);
             } else {
@@ -8751,26 +8763,79 @@ public function countUserImage($id) {
     }
 
     public function get_accruedinterest($investment_id = null) {
-        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
 
         if ($data) {
+
+            $investment_amount = $data['Investment']['investment_amount'];
+            $period = $data['Investment']['investment_period'];
+            $first_date = $data['Investment']['investment_date'];
+            $custom_rate = $data['Investment']['custom_rate'];
+            $interest_amount = 0;
+            $interest_amountt = 0;
+            $interest_amount2 = 0;
             $status = $data['Investment']['status'];
+            $topup_data = $this->Topup->find('all', array('conditions' => array('Topup.investment_id' => $investment_id), 'recursive' => -1));
+            if ($topup_data) {
+                foreach ($topup_data as $val) {
+                    switch ($period) {
+                        case 'Day(s)':
+                            $tfirst_date = $val['Topup']['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $inv_date->add(new DateInterval('P' . $tduration . 'D'));
+                            $principal = $val['Topup']['topup_amount'];
+                            $investment_amount = $investment_amount - $principal;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt += $interest_amount1 * ($tduration / 365);
+
+
+
+                            break;
+                        case 'Year(s)':
+
+                            $tfirst_date = $val['Topup']['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $inv_date->add(new DateInterval('P' . $duration . 'D'));
+//                            $date->sub(new DateInterval('P1D'));
+                            $principal = $val['Topup']['topup_amount'];
+                            $investment_amount = $investment_amount - $principal;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt += $interest_amount1 * ($duration / 365);
+
+
+
+                            break;
+                    }
+                }
+            }
+            $interest_amount2 = $interest_amountt;
             switch ($status) {
                 case 'Rolled_over':
                 case 'Invested':
                 case 'Termination_Requested':
                 case 'Payment_Requested':
-                    $period = $data['Investment']['investment_period'];
-                    $first_date = $data['Investment']['investment_date'];
+
                     $inv_date = new DateTime($first_date);
                     $date = date('Y-m-d');
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
                     $year = $duration;
-                    $custom_rate = $data['Investment']['custom_rate'];
-                    $investment_amount = $data['Investment']['investment_amount'];
-                    $interest_amount = '0.00';
+//                    $interest_amount = '0.00';
                     switch ($period) {
                         case 'Day(s)':
 
@@ -8783,7 +8848,6 @@ public function countUserImage($id) {
 
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
-                            $amount_due = $interest_amount + $investment_amount;
 
 
                             break;
@@ -8800,18 +8864,17 @@ public function countUserImage($id) {
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
-                            $amount_due = $interest_amount + $investment_amount;
                             break;
                     }
-                    $accrued_interest = $interest_amount;
+                    $accrued_interest = $interest_amount - $interest_amount2;
                     return $accrued_interest;
                     break;
-                        case 'Termination_Approved':
-                        case 'Cancelled':
-                       $accrued_interest = $data['Investment']['interest_accrued'];
+                case 'Termination_Approved':
+                case 'Cancelled':
+                    $accrued_interest = $data['Investment']['interest_accrued'];
                     return $accrued_interest;
                 default:
-                     $period = $data['Investment']['investment_period'];
+                    $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
                     $date = $data['Investment']['due_date'];
@@ -8820,7 +8883,6 @@ public function countUserImage($id) {
                     $duration = $duration->format("%a");
                     $year = $duration;
                     $custom_rate = $data['Investment']['custom_rate'];
-                    $investment_amount = $data['Investment']['investment_amount'];
                     switch ($period) {
                         case 'Day(s)':
 
@@ -8833,7 +8895,6 @@ public function countUserImage($id) {
 
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
-                            $amount_due = $interest_amount + $investment_amount;
 
 
                             break;
@@ -8849,21 +8910,20 @@ public function countUserImage($id) {
 
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
-                            $interest_amount = $interest_amount1 * ($duration / 365);
-                            $amount_due = $interest_amount + $investment_amount;
+                            $interest_amount += $interest_amount1 * ($duration / 365);
                             break;
                     }
-                    $accrued_interest = $interest_amount;
+                    $accrued_interest = $interest_amount - $interest_amount2;
                     return $accrued_interest;
                     break;
             }
-        }else{
+        } else {
             return 'Invesment details missing';
         }
     }
-    
-    function get_accrueddays($investment_id = null){
-        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+    function get_accrueddays($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
 
         if ($data) {
             $status = $data['Investment']['status'];
@@ -8879,28 +8939,28 @@ public function countUserImage($id) {
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    
+
                     $accrued_days = $duration;
                     return $accrued_days;
                     break;
-                        case 'Termination_Approved':
-                        case 'Cancelled':
-                       $accrued_days = $data['Investment']['accrued_days'];
+                case 'Termination_Approved':
+                case 'Cancelled':
+                    $accrued_days = $data['Investment']['accrued_days'];
                     return $accrued_days;
                 default:
-                     $period = $data['Investment']['investment_period'];
+                    $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
                     $date = $data['Investment']['due_date'];
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    
+
                     $accrued_days = $duration;
                     return $accrued_days;
                     break;
             }
-        }else{
+        } else {
             return 'Invesment details missing';
         }
     }

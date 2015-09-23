@@ -4,7 +4,7 @@ echo $this->Html->script('jquery.printElement.js');
 
 echo $this->Html->script('print.js'); ?>
 
-<h3>Reports: Rollover/Disinvestments Report</h3>
+<h3>Reports: Disinvestments Report</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -133,7 +133,8 @@ echo $this->Html->script('print.js'); ?>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment No.</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investment Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Amount Invested</b></td>
-                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark Rate</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Benchmark</b></td>
+                        <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Penalty</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Disinv. Date</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Current Interest</b></td>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Total Due</b></td>
@@ -173,6 +174,10 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
             echo  $each_item['Investment']['custom_rate'].'%';
         } ?></td>
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['penalty'])) {
+            echo  $each_item['InvestmentPayment']['penalty'];
+        } ?></td>
+                   
                         <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['event_date'])) {
             echo  date('d-m-Y',strtotime($each_item['InvestmentPayment']['event_date']));
         } ?></td>
