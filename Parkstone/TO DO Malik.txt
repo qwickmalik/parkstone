@@ -38,6 +38,7 @@ T0 D0
 
 #########   DONE    ###########
 =============================================
+DONE Edit investments
 DONE 2. Cannot save new bank/cash account
 DONE 3. Financial categories' database errorDONE 3. Financial categories' database error
 DONE 4.	Outbound Maturity list should replicate that of inbound.

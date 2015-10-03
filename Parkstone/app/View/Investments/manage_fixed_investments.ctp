@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
+            <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'Inv. No.'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue;" align="center"><b>Edit</b></td>
             <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
@@ -57,8 +57,8 @@
         <?php  if(isset($data)){ foreach ($data as $each_item) { ?>
             <tr>
                 <td align="left"><?php
-                        if(isset($each_item['Investment']['id'])){
-                            echo $each_item['Investment']['id'];
+                        if(isset($each_item['Investment']['investment_no'])){
+                            echo $each_item['Investment']['investment_no'];
                             $investment_id = $each_item['Investment']['id'];
                         }
                         
@@ -67,7 +67,7 @@
 //                        if(isset($each_item['Investment']['id'])){
 //                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-info'));
                 if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array());
+                            echo $this->Html->link('Edit', '/Investments/editFixedInvestments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-primary',));
                         }
                         ?></td>
                 
