@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 
-<h3>Daily Maturity List For <?php echo date('D d M,Y'); ?></h3>
+<h3>Daily Maturity List For <?php echo date('D d M, Y'); ?></h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>

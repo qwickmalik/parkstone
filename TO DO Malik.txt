@@ -1,12 +1,12 @@
 
 
 3.	Aggregate Investment report should give detailed account of client investments (with each transaction showing)
-4.	Outbound Maturity list should replicate that of inbound.
+
 6.	Client ledger at the equity section should specify the breakdown of shares as reflected in the statement.
-1. To create a setting that enables to create company details for other companies for which they will be managing funds and investments but will not go through their books.
-2. Cannot save new bank/cash account
-3. Financial categories' database error
-4. Equities list won't load existing equities for changes to be made
+
+
+
+
 
 
 
@@ -38,6 +38,18 @@ T0 D0
 
 #########   DONE    ###########
 =============================================
+DONE 2. Cannot save new bank/cash account
+DONE 3. Financial categories' database errorDONE 3. Financial categories' database error
+DONE 4.	Outbound Maturity list should replicate that of inbound.
+DONE 4. Equities list won't load existing equities for changes to be made
+
+
+
+
+
+
+
+
 DONE --pls look at format for /mask.js for validation and implement in new investor pages   
 
 BROWSER PRINT DEFAULT CONFIGURATION ISSUE. CANNOT BE HANDLED BY CSS OR JAVASCRIPT 4.       Kindly omit the last sentence in the receipt when we have to print it.  (i.e Return(/investments/new/investment0) (Print)- this shouldn’t show in print out.

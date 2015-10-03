@@ -53,26 +53,90 @@ class SettingsController extends AppController {
         $this->__validateUserType(); 
     }
 
-    function equitiesList() {
+    function equitiesList($eq_id = null) {
         $this->__validateUserType();
-        if (!empty($this->request->data)) {
-            $result = $this->EquitiesList->save($this->request->data);
-            if ($result) {
-                $this->request->data = null;
-                $message = 'Equity/Stock successfully saved';
-                $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
-            } else {
-                $message = 'Unable to save';
-                $this->Session->write('emsg', $message);
-                $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
-            }
+        
+        $data = $this->paginate('EquitiesList');
+        $this->set('data', $data);
+
+        if ($eq_id != null && $eq_id != '') {
+            $this->set('equity', $this->EquitiesList->find('first', ['conditions' => ['EquitiesList.id' => $eq_id]]));
         } else {
-            $data = $this->paginate('EquitiesList');
-            $this->set('data', $data);
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data['EquitiesList']['id'])) {
+                    if ($this->request->data['EquitiesList']['equity_name'] == "" || $this->request->data['EquitiesList']['equity_name'] == null) {
+                        $message = 'Please Enter Equity Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    }
+
+                    $equity_id = $this->request->data['EquitiesList']['id'];
+
+//                    $this->EquitiesList->delete($bank_id, false);
+                    $result = $this->EquitiesList->save($this->request->data);
+
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Equity Updated';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    } else {
+                        $message = 'Could not update Equity';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    }
+                } else {
+                    if ($this->request->data['EquitiesList']['equity_name'] == "" || $this->request->data['EquitiesList']['equity_name'] == null) {
+                        $message = 'Please Enter Equity Name';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    }
+                    $result = $this->EquitiesList->save($this->request->data);
+
+                    if ($result) {
+                        $this->request->data = null;
+
+                        $message = 'Equity successfully added';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    } else {
+                        $message = 'Could not add new Equity. Please report to System Administrator';
+                        $this->Session->write('emsg', $message);
+                        $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                    }
+                }
+            }
         }
     }
+    
+    /*
+    function equitiesList($equity_id = null) {
+        $this->__validateUserType();
+        if ($equity_id != null && $equity_id != '') {
+            $this->set('equity', $this->EquitiesList->find('first', ['conditions' => ['EquitiesList.id' => $equity_id]]));
+        } else {
 
+            if (!empty($this->request->data)) {
+                $result = $this->EquitiesList->save($this->request->data);
+                if ($result) {
+                    $this->request->data = null;
+                    $message = 'Equity/Stock successfully saved';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                } else {
+                    $message = 'Unable to save';
+                    $this->Session->write('emsg', $message);
+                    $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+                }
+            } else {
+                $data = $this->paginate('EquitiesList');
+                $this->set('data', $data);
+            }
+        }
+    }
+*/
     function delEquityName($equity_id) {
         if (!is_null($equity_id)) {
 

@@ -2,7 +2,7 @@
 
 
 <!-- Content starts here -->
-<h3>Settings: Equities List</h3>
+<h3>SETTINGS: Equities List</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -14,19 +14,27 @@
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <?php
-                    echo $this->Form->input('equity_name', []);
-                    echo $this->Form->hidden('id');
+//                    echo $this->Form->input('equity_name', []);
+//                    echo $this->Form->hidden('id');
+                    
+                    echo $this->Form->input('equity_name', ['label' => 'Equity Name*', 'value' => isset($equity['EquitiesList']['equity_name']) ? $equity['EquitiesList']['equity_name'] : '', 'required']);
+                    echo $this->Form->hidden('id', ['value' => isset($equity['EquitiesList']['id']) ? $equity['EquitiesList']['id'] : '']);
+                    echo $this->Form->hidden('created', array('type' => 'date', 'value' => isset($ex['EquitiesList']['created']) ? $ex['EquitiesList']['created'] : date('Y-m-d H:i:s')));
                     ?>
                 
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <?php 
-                echo $this->Form->input('equity_abbrev', []); 
+                
+                echo $this->Form->input('equity_abbrev', ['label' => 'Equity Abbrev*', 'value' => isset($equity['EquitiesList']['equity_abbrev']) ? $equity['EquitiesList']['equity_abbrev'] : '', 'required']);
                 ?>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <?php 
-                echo $this->Form->input('share_price', ['default' => 0.00]); 
+                
+//                echo $this->Form->input('share_price', ['default' => 0.00]); 
+                
+                echo $this->Form->input('share_price', ['label' => 'Share Price*', 'value' => isset($equity['EquitiesList']['share_price']) ? $equity['EquitiesList']['share_price'] : 0.00, 'required']);
                 echo $this->Form->button('Save', ["type" => "submit", "id" => "equityBtn", "class" => "btn btn-lg btn-success", "style" => "float: right;"]);
                 ?>
             </div>
@@ -35,8 +43,8 @@
         ?>
         <div id="clearer"></div>
 
-        <form id="transaction_names" action="#" method="post">
-            <table border="0" width="100%" cellspacing="10" cellpadding="0" align="left">
+        
+            <table  class="table table-striped">
                 <tr>
                     <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left"><b><?php echo $this->Paginator->sort('id', 'ID'); ?></b></td>
                     <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('equity_name', 'Equity Name'); ?></b></td>
@@ -49,31 +57,25 @@
                         <td width="50" align="left">
                             <?php echo $each_item['EquitiesList']['id']; ?>
                         </td>
-                        <td align="left" class="clientAnchor">
+                        <td align="left">
                             <?php
 //                            echo $this->Html->link($each_item['EquitiesList']['equity_name'], "#", array("class" => $each_item['EquitiesList']['id']));
-                            echo $this->Html->link($each_item['EquitiesList']['equity_name'], "/Settings/equitiesList/".$each_item['EquitiesList']['id'], array("class" => $each_item['EquitiesList']['id']));
+                            echo $this->Html->link($each_item['EquitiesList']['equity_name'], "/Settings/equitiesList/".$each_item['EquitiesList']['id']);
                             ?>
-                        </td> <!-- Link to enable editing -->
-                        <td align="left" class="clientAnchor">
+                        </td> 
+                        <td align="left" >
                             <?php echo $each_item['EquitiesList']['equity_abbrev']; ?>
                         </td> 
-                        <td align="left" class="clientAnchor">
+                        <td align="left" >
                             <?php echo $each_item['EquitiesList']['share_price']; ?>
                         </td> 
                         <td width="20" align="left">
-                            <?php echo $this->Html->link("Delete", "/Settings/delEquityName/" . $each_item['EquitiesList']['id'], array("class" => $each_item['EquitiesList']['id']));
+                            <?php echo $this->Html->link("Delete", "/Settings/delEquityName/" . $each_item['EquitiesList']['id']);
                             ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
-                <tr>
-                    <td colspan="5" align="right">
-                        <?php
-                        //echo $this->Form->button('Delete',array("type" => "#","class" => "button_red"));           //check the parameters here
-                        ?>
-                    </td>
-                </tr>
+                
                 <tr>
                     <td colspan="5" align="center">
                         <?php
@@ -88,7 +90,7 @@
                     </td>
                 </tr>
             </table>
-        </form>
+        
     </div>
     </div>
     <!-- Content ends here -->

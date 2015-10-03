@@ -2800,7 +2800,7 @@ class ReportsController extends AppController {
             $lateday = date('Y-m-t');
             $firstday = date('Y-m-01');
             $accounts = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
-                'contains' => array('InvestmentPayment'),
+                'contains' => array('InvestmentPayment', 'Topup'),
                 'conditions' => array('Investment.investment_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
                     'Investment.investment_amount > 0',

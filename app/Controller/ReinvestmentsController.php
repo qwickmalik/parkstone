@@ -3287,24 +3287,124 @@ class ReinvestmentsController extends AppController {
         $data = $this->paginate('Reinvestment');
         $this->set('data', $data);
     }
+    
+    function monthlyMaturityList() {
+        $this->__validateUserType();
+        $data = array();
+        $frend_date = '';
+        $frstart_date = '';
+        if ($this->request->is('post')) {
 
+            $sday = '01';
+            $smonth = $this->request->data['Reinvestment']['to_date']['month'];
+            $syear = $this->request->data['Reinvestment']['to_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+
+
+//            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($start_date);
+            $date->add(new DateInterval('P1M'));
+            $date->sub(new DateInterval('P1D'));
+            $end_date = $date->format('Y-m-d');
+            $enewdate = strtotime($end_date);
+//            pr($end_date);exit;
+            $frend_date = date('d F, Y', $enewdate);
+
+
+
+        $this->paginate = array(
+                'conditions' => array(
+                    'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
+                    'Reinvestment.investment_type' => array('fixed'),
+                    'Reinvestment.status' => array('Invested', 'Rolled_over')),
+                'limit' => 30,
+                'order' => array('Reinvestment.id' => 'asc'));
+            $data = $this->paginate('Reinvestment');
+            
+            
+        }
+//         else{
+//           
+//        $first_date = date('Y-m-d');
+//        $date = new DateTime($first_date);
+//        $date->add(new DateInterval('P1M'));
+//        $date_end = $date->format('Y-m-d');
+//        $this->paginate = array(
+//            'conditions' => array(
+//                'Reinvestment.status' => array('Invested', 'Rolled_over'),
+//                'Reinvestment.investment_product_id' => array(1, 3),
+//                'AND' => array(array('Reinvestment.due_date >=' => $first_date), array('Reinvestment.due_date <=' => $date_end))),
+//            'limit' => 30,
+//            'order' => array('Reinvestment.id' => 'asc'));
+//        $data = $this->paginate('Reinvestment');  
+//         }
+        $this->set(compact('data', 'frend_date', 'frstart_date'));
+    }
+
+
+/*
     function monthlyMaturityList() {
 //        $this->__validateUserType3();
-        $first_date = date('Y-m-d');
-        $date = new DateTime($first_date);
-        $date->add(new DateInterval('P1M'));
-        $date_end = $date->format('Y-m-d');
+//        $first_date = date('Y-m-d');
+//        $date = new DateTime($first_date);
+//        $date->add(new DateInterval('P1M'));
+//        $date_end = $date->format('Y-m-d');
+        
+        $this->__validateUserType();
+        $data = array();
+        $frend_date = '';
+        $frstart_date = '';
+        if ($this->request->is('post')) {
+
+            $sday = '01';
+            $smonth = $this->request->data['Reinvestment']['to_date']['month'];
+            $syear = $this->request->data['Reinvestment']['to_date']['year'];
+            $starts_date = $syear . "-" . $smonth . "-" . $sday;
+            $snewdate = strtotime($starts_date);
+            $start_date = date('Y-m-d', $snewdate);
+            $frstart_date = date('d F, Y', $snewdate);
+
+
+
+//            $end_date = date('Y-m-d', $enewdate);
+            $date = new DateTime($start_date);
+            $date->add(new DateInterval('P1M'));
+            $date->sub(new DateInterval('P1D'));
+            $end_date = $date->format('Y-m-d');
+            $enewdate = strtotime($end_date);
+//            pr($end_date);exit;
+            $frend_date = date('d F, Y', $enewdate);
+            
+            
         $this->paginate = array(
             'conditions' => array(
                 'Reinvestment.status' => array('Invested', 'Rolled_over'),
                 'Reinvestment.investment_type' => array('fixed'),
-                'AND' => array(array('Reinvestment.due_date >=' => $first_date), array('Reinvestment.due_date <=' => $date_end))),
+                'AND' => array(array('Reinvestment.due_date >=' => $start_date), array('Reinvestment.due_date <=' => $end_date))),
             'limit' => 30,
-            'order' => array('Reinvestment.id' => 'asc'));
+            'order' => array('Reinvestment.id' => 'asc')
+            );
         $data = $this->paginate('Reinvestment');
-        $this->set('data', $data);
+        
+//        $this->paginate = array(
+//                'conditions' => array(
+//                    'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
+//                    'Reinvestment.investment_type' => array('fixed'),
+//                    'Reinvestment.status' => array('Invested', 'Rolled_over')),
+//                'limit' => 30,
+//                'order' => array('Reinvestment.id' => 'asc'));
+//            $data = $this->paginate('Reinvestment');
+        
+        
+        }
+//        $this->set('data', $data);
+        $this->set(compact('data', 'frend_date', 'frstart_date'));
     }
-
+*/
     function manageClientInvestments(/* $investor_id = null, $investor_name = null */) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name) && $investor_id != '' && $investor_name != '') {
