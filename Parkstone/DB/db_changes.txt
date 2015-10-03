@@ -1808,3 +1808,10 @@ ALTER TABLE `settings` CHANGE `penalty` `penalty` INT( 11 ) NULL DEFAULT '0'
 -----------------------
 ALTER TABLE `transactions` CHANGE `delete` `deleted` INT(1) NULL DEFAULT '0';
 ALTER TABLE `transaction_categories` CHANGE `delete` `deleted` INT(1) NULL DEFAULT '0';
+
+
+
+02 OCTOBER 2015
+----------------------
+ALTER TABLE `transactions` CHANGE `delete` `deleted` INT(1) NULL DEFAULT '0';
+ALTER TABLE `transaction_categories` CHANGE `delete` `deleted` INT(1) NULL DEFAULT '0';

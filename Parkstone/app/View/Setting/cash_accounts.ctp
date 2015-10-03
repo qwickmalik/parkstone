@@ -41,6 +41,10 @@
                         <?php echo $this->Form->input('branch', ['required','label' => 'Bank Branch', 'value' => isset($ca['CashAccount']['branch']) ? $ca['CashAccount']['branch'] : '']);?>
                     </div>
                 </div>
+                
+                <?php
+                echo $this->Form->button('Save', array("type" => "submit", "class" => "btn btn-md btn-success", 'style' => 'float: right;'));
+                ?>
             </div>
         </div>
 

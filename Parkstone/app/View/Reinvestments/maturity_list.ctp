@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<h3>Daily Maturity List</h3>
+<h3>Daily Maturity List (OUTBOUND) For <?php echo date('D d M, Y'); ?></h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -27,7 +27,7 @@
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
-                    <?php if (isset($data)) {
+                    <?php if (!empty($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
                                 <td align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
@@ -52,7 +52,19 @@
                             ?></td>
                             </tr>
     <?php }
-} ?>
+
+    }else {
+ ?>
+                    <tr>
+                        <td colspan="15">
+                         <div class="alert alert-warning">
+                        <h4><i class="icon-remove"></i> NO MATURED INVESTMENT RECORDS FOUND</h4>
+                    </div>   
+                            
+                        </td> 
+                    </tr>
+                       
+                <?php } ?>
 
                     <tr>
                         <td colspan="11" align="right">

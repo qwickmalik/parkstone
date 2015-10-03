@@ -45,7 +45,7 @@ if (isset($income_data) && isset($expense_data)) {
                         <p style='font-weight: bold; font-size: 14px; text-align: left;'>
                             <?php 
                             echo $this->Session->read('shopName').'<br />'; 
-                            echo 'INCOME STATEMENT for the quarter ended '.$statement_date;
+                            echo 'INCOME STATEMENT for the period '.$start_date. ' to ' . $end_date;
                             ?></p>
                         <p align='left'>Generated on <?php echo date('jS F, Y'); ?></p>
                     </div>
