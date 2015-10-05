@@ -157,7 +157,7 @@ echo $this->Html->script('print.js');
         <div class="col-lg-12 col-md-12 col-sm-12" >
             <?php
             echo "<p>&nbsp;</p>";
-            echo $this->Html->link('Back', "/Reinvestments/manageInvFixed/".(isset($reinvestments['Reinvestment']['reinvestor_id']) ? $reinvestments['Reinvestment']['reinvestor_id'] : ''), array("style"=>"float: right;","class" => 'btn btn-lg btn-info'));
+            echo $this->Html->link('Done', "/Reinvestments/manageInvFixed/".(isset($reinvestments['Reinvestment']['reinvestor_id']) ? $reinvestments['Reinvestment']['reinvestor_id'] : ''), array("style"=>"float: right;","class" => 'btn btn-lg btn-info'));
 
             echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement", 'style' => 'float: right;'));
             ?>

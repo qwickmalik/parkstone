@@ -830,6 +830,7 @@ class InvestmentsController extends AppController {
         $this->paginate('Investor');
         $data = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
         if ($data) {
+            $this->set('investor_id',$investor_id);
             $this->set('investor', $data);
         } else {
 
@@ -2872,7 +2873,7 @@ class InvestmentsController extends AppController {
             $cheque_no = "";
             $management_fee_type = $this->request->data['Investment']['management_fee_type'];
             $ledger_info = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
-            if ($ledger_info) {
+            if ($ledger_info){
 
                 $oldAmount = 0;
                 $oldAmount = $this->request->data['Investment']['old_investmentamount'];
@@ -6014,7 +6015,7 @@ class InvestmentsController extends AppController {
             $this->paginate = array(
                 'conditions' => array(
                     'Investment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
-                    'Investment.investment_amount !=' => 0,
+                    'Investment.investment_amount >' => 0,
                     'Investment.status' => array('Invested', 'Rolled_over'),
                     'Investment.investment_product_id' => array(1, 3)),
                 'limit' => 30,
@@ -8835,7 +8836,167 @@ class InvestmentsController extends AppController {
             $interest_amountt = 0;
             $interest_amount2 = 0;
             $status = $data['Investment']['status'];
-            $topup_data = $this->Topup->find('all', array('conditions' => array('Topup.investment_id' => $investment_id), 'recursive' => -1));
+            $topup_data = $this->Topup->find('all', array('conditions' => array('Topup.investment_id' => $investment_id),'recursive' => -1));
+            if ($topup_data) {
+                foreach ($topup_data as $val) {
+                    switch ($period) {
+                        case 'Day(s)':
+                            $tfirst_date = $val['Topup']['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $inv_date->add(new DateInterval('P' . $tduration . 'D'));
+                            $principal = $val['Topup']['topup_amount'];
+                            $investment_amount = $investment_amount - $principal;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt += $interest_amount1 * ($tduration / 365);
+
+
+
+                            break;
+                        case 'Year(s)':
+
+                            $tfirst_date = $val['Topup']['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $inv_date->add(new DateInterval('P' . $duration . 'D'));
+//                            $date->sub(new DateInterval('P1D'));
+                            $principal = $val['Topup']['topup_amount'];
+                            $investment_amount = $investment_amount - $principal;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt += $interest_amount1 * ($duration / 365);
+
+
+
+                            break;
+                    }
+                }
+            }
+            //$interest_amount2 = $interest_amountt;
+            switch ($status) {
+                case 'Rolled_over':
+                case 'Invested':
+                case 'Termination_Requested':
+                case 'Payment_Requested':
+
+                    $inv_date = new DateTime($first_date);
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+//                    $interest_amount = '0.00';
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;// - $interest_amount2;
+                    return $accrued_interest;
+                    break;
+                case 'Termination_Approved':
+                case 'Cancelled':
+                    $accrued_interest = $data['Investment']['interest_accrued'];
+                    return $accrued_interest;
+                default:
+                    $period = $data['Investment']['investment_period'];
+                    $first_date = $data['Investment']['investment_date'];
+                    $inv_date = new DateTime($first_date);
+                    $date = $data['Investment']['due_date'];
+                    $to_date = new DateTime($date);
+                    $duration = date_diff($inv_date, $to_date);
+                    $duration = $duration->format("%a");
+                    $year = $duration;
+                    $custom_rate = $data['Investment']['custom_rate'];
+                    switch ($period) {
+                        case 'Day(s)':
+
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount = $interest_amount1 * ($duration / 365);
+
+
+                            break;
+                        case 'Year(s)':
+
+                            //$finv_date = $inv_date;
+                            $date = new DateTime($first_date);
+                            $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date_statemt = new DateTime($first_date);
+                            $principal = $investment_amount;
+                            $statemt_array = array();
+                            $rate = $custom_rate;
+
+                            //$YEAR2DAYS = 365 * $duration;
+                            $interest_amount1 = ($rate / 100) * $investment_amount;
+                            $interest_amount += $interest_amount1 * ($duration / 365);
+                            break;
+                    }
+                    $accrued_interest = $interest_amount;// - $interest_amount2;
+                    return $accrued_interest;
+                    break;
+            }
+        } else {
+            return 'Invesment details missing';
+        }
+    }
+
+    public function get_totalaccruedinterest($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
+
+        if ($data) {
+
+            $investment_amount = $data['Investment']['investment_amount'];
+            $period = $data['Investment']['investment_period'];
+            $first_date = $data['Investment']['investment_date'];
+            $custom_rate = $data['Investment']['custom_rate'];
+            $interest_amount = 0;
+            $interest_amountt = 0;
+            $interest_amount2 = 0;
+            $status = $data['Investment']['status'];
+            $topup_data = $this->Topup->find('all', array('conditions' => array('Topup.investment_id' => $investment_id),'recursive' => -1));
             if ($topup_data) {
                 foreach ($topup_data as $val) {
                     switch ($period) {
@@ -8926,7 +9087,7 @@ class InvestmentsController extends AppController {
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             break;
                     }
-                    $accrued_interest = $interest_amount - $interest_amount2;
+                    $accrued_interest = $interest_amount + $interest_amount2;
                     return $accrued_interest;
                     break;
                 case 'Termination_Approved':
@@ -8973,7 +9134,7 @@ class InvestmentsController extends AppController {
                             $interest_amount += $interest_amount1 * ($duration / 365);
                             break;
                     }
-                    $accrued_interest = $interest_amount - $interest_amount2;
+                    $accrued_interest = $interest_amount + $interest_amount2;
                     return $accrued_interest;
                     break;
             }
@@ -8981,7 +9142,7 @@ class InvestmentsController extends AppController {
             return 'Invesment details missing';
         }
     }
-
+    
     function get_accrueddays($investment_id = null) {
         $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
 

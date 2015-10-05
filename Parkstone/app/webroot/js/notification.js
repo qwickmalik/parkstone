@@ -834,20 +834,62 @@ var user = {
         $("button#userBtn").click(function(event) {
             
             
+            var username = $("#UserUsername").val();
+            var firstname = $("#UserFirstname").val();
+            var lastname = $("#UserLastname").val();
+            var departmt = $("#UserUserdepartmentId").val();
+            var usertype = $("#UserUsertypeId").val();
             
+            if(username == ""){
+                alert("Enter a username!!");
+                $("#UserUsername").css("border-color", "red").focus();
+                return false;  
+            }
+            
+            $("#UserUsername").css("border-color", "dodgerblue");
             var passwd = $("#UserConfirmPassword").val();
             var confirmp = $("#UserPass").val();
+            
             if(passwd != confirmp){
-                $("#welcome_message").show();
-                $("#error_msg").html("Passwords Do Not Match!!").show('slow').hide(6000);
-                $("#welcome_message").hide(6000);
+                alert("Passwords Do Not Match!!");
                 $("#UserPass").css("border-color", "red").focus();
-                
                 $("#UserConfirmPassword").css("border-color", "red");
                 return false;
                 
             }
+            
+            $("#UserConfirmPassword").css("border-color", "dodgerblue");
+            $("#UserPass").css("border-color", "dodgerblue");
+            if(firstname == ""){
+                alert("Enter user's firstname!!");
+                $("#UserFirstname").css("border-color", "red").focus();
+                return false;  
+            }
+             $("#UserFirstname").css("border-color", "dodgerblue");
+             
+            if(lastname == ""){
+                alert("Enter user's lastname!!");
+                $("#UserLastname").css("border-color", "red").focus();
+                return false;  
+            }
+            $("#UserLastname").css("border-color", "dodgerblue");
+            
+            if(departmt == ""){
+                alert("Select user's department!!");
+                $("#UserUserdepartmentId").css("border-color", "red").focus();
+                return false;  
+            }
+            $("#UserUserdepartmentId").css("border-color", "dodgerblue");
+            
+            if(usertype == ""){
+                alert("Select a usertype!!");
+                $("#UserUsertypeId").css("border-color", "red").focus();
+                return false;  
+            }
+            $("#UserUsertypeId").css("border-color", "dodgerblue");
          
+                
+                
             user.doUser();
             $("#welcome_message").hide();
             //event.preventDefault();

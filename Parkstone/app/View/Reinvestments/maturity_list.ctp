@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<h3>Daily Maturity List (OUTBOUND) For <?php echo date('D d M, Y'); ?></h3>
+<h3>(OUTBOUND)Daily Maturity List For <?php echo date('D d M,Y'); ?></h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -10,28 +10,29 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left">
+                <table border="0" width="100%" cellspacing="5" cellpadding="5" align="left" style="font-size: 87%">
                     <tr >
                         
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('id', 'Inv. No.'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('id', 'ID.'); ?></b></td>
                        <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('company_name', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="70" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv.Date'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_rate', 'Benchmark Rate'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_rate', 'Benchmark'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="80" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
                        
-                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('payment_status', 'Payment Status'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo $this->Paginator->sort('payment_status', 'Paymt Status'); ?></b></td>
 
                         <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
                     </tr>
+                    
                     <?php if (!empty($data)) {
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
                                 <td align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
-                                <td align="left"><?php echo $this->Html->link((!empty($each_item['Reinvestor']['company_name']) ? $each_item['Reinvestor']['company_name'] : '' ),"/Reinvestments/approvePayments2/".(isset($each_item['Reinvestor']['id']) ? $each_item['Reinvestor']['id']."/".$each_item['Reinvestor']['company_name'] : '' ),array());  ?></td>
+                                   <td align="left"><?php echo  $each_item['InvestmentDestination']['company_name'].'('.$each_item['InvDestProduct']['inv_dest_product'].')';  ?></td>
                             
                                 <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
@@ -41,7 +42,7 @@
                                 <td align="left"><?php echo $each_item['Reinvestment']['amount_due']; ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['duration'].' '.$each_item['Reinvestment']['investment_period']; ?></td>
                                 
-                                <td align="left"><?php echo $each_item['Reinvestment']['payment_status']; ?></td>
+                                <td align="center"><?php echo $each_item['Reinvestment']['payment_status']; ?></td>
                                 <td align="center" style="border-bottom: solid 1px Gray;">
 
                             <?php
@@ -53,7 +54,7 @@
                             </tr>
     <?php }
 
-    }else {
+} else {
  ?>
                     <tr>
                         <td colspan="15">

@@ -150,7 +150,7 @@ $total_pi = 0;
                         <td align="right" valign="top"><?php echo date('d-m-Y'); ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['id'])) {
                                 $id = $each_item['Investment']['id'];
-                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                               $interest_accrued = $this->requestAction('/Investments/get_totalaccruedinterest/'.$id);
                                
                       $total_interest += $interest_accrued;
 
@@ -158,7 +158,7 @@ $total_pi = 0;
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
                                  $id = $each_item['Investment']['id'];
-                               $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                               $interest_accrued_calc = $this->requestAction('/Investments/get_totalaccruedinterest/'.$id);
                                 
                                 $totals = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
                                 $total_pi += $totals;

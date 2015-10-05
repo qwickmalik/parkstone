@@ -2527,14 +2527,14 @@ class ReportsController extends AppController {
             $accounts = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'conditions' => array('Investment.investment_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
-                    'Investment.investment_product_id' => array(1, 3),
+                    'Investment.investment_amount >' => 0,
                     'Investment.status' => array('Invested', 'Rolled_over', 'Termination_Requested'))));
 
 //, 'group' => array('Expectedinstallment.zone_id')
             $total = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'conditions' => array('Investment.investment_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
-                    'Investment.investment_product_id' => array(1, 3),
+                    'Investment.investment_amount >' => 0,
                     'Investment.status' => array('Invested', 'Rolled_over', 'Termination_Requested')), 'fields' =>
                 array("SUM((Investment.investment_amount)) as principal",
                     "SUM((Investment.interest_accrued)) as interest",
