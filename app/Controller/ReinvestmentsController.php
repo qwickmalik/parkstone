@@ -3319,8 +3319,8 @@ class ReinvestmentsController extends AppController {
         $this->paginate = array(
                 'conditions' => array(
                     'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
-                    'Reinvestment.investment_type' => array('fixed'),
-                    'Reinvestment.status' => array('Invested', 'Rolled_over')),
+                    'Reinvestment.investment_amount >' => 0,
+                    'Reinvestment.status' => array('Invested', 'Rolled_over','Matured')),
                 'limit' => 30,
                 'order' => array('Reinvestment.id' => 'asc'));
             $data = $this->paginate('Reinvestment');

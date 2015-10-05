@@ -217,7 +217,7 @@ class UsersController extends AppController {
                 }
                 
             $password = $this->request->data['User']['pass'];
-            if(!is_null($password) || $password == ""){
+            if(!empty($password)){
                 $this->request->data['User']['password'] = md5($this->request->data['User']['pass']);
             
             }
