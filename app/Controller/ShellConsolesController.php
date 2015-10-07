@@ -74,6 +74,7 @@ function __dailyMatured(){
             $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
            $old_tenure = $each['Investment']['total_tenure'];
            $period = $each['Investment']['investment_period'];
+           $new_tenure = 0;
            switch ($period){
                case 'Year(s)':
                    $new_tenure = $old_tenure - 1;

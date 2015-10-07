@@ -290,7 +290,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->input('investment_amount', array('required', 'label' => 'Investment Amount',
                                 'class' => 'required', 'value' => ($this->Session->check('editinvesttemp.investment_amount') ==
                                 true ? $this->Session->read('editinvesttemp.investment_amount') :
-                                        $data['Investment']['investment_amount'] )));
+                                        $data['InvestmentCash']['amount'] )));
                             ?>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
