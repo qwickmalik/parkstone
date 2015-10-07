@@ -22,9 +22,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `qwickfu1_parkstone_inv2`
 --
-DROP DATABASE `qwickfu1_parkstone_inv2`;
-CREATE DATABASE IF NOT EXISTS `qwickfu1_parkstone_inv2` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `qwickfu1_parkstone_inv2`;
+DROP DATABASE `qwickfu1_parkstone_inv`;
+CREATE DATABASE IF NOT EXISTS `qwickfu1_parkstone_inv` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `qwickfu1_parkstone_inv`;
 
 -- --------------------------------------------------------
 
