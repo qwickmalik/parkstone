@@ -6987,23 +6987,11 @@ class InvestmentsController extends AppController {
 
         if (!is_null($investor_id)) {
             $investor_data = $this->Investor->find('first', array('recursive' => -1, 'conditions' => array('Investor.id' => $investor_id)));
-            $data = $this->Investment->find('all', array('conditions' =>
-                array('Investment.investor_id' => $investor_id,
-                    'Investment.id' => $investment_id,
-                    'Investment.investment_product_id' => array(1, 3),
-                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
-                    )), 'order' => array('Investment.investment_date'), 'contain' => array('InvestmentPayment', 'Topup')
-//                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
-//                    'Investment.due_date','Investment.id','Investment.earned_balance')
-            ));
-            //,'SUM(InvestmentPayment.amount) as investpay_amount'
-//            pr($data);exit;
-            $topup_principal = $this->Topup->find('all', array(
-                'conditions' => array('Investment.investor_id' => $investor_id),
-                'Topup.investment_id' => $investment_id,
-                'order' => array('Investment.investment_date'),
-                'fields' => array('SUM(Topup.topup_amount) AS total_topup', 'Topup.investment_id', 'Investment.investor_id', 'SUM(Topup.topup_interest) As topup_in'),
-                'group' => array('Topup.investment_id')));
+            $data = $this->InvestmentCash->find('all', array('conditions' =>
+                array(
+                    'InvestmentCash.investment_id' => $investment_id, 'InvestmentCash.investment_type' => 'fixed'
+            )));
+          
 
             $issued = $this->Session->check('userDetails');
             if ($issued) {
@@ -7022,7 +7010,6 @@ class InvestmentsController extends AppController {
                 if ($data_total) {
                     $this->set('total', $data_total);
                 }
-                $this->set('topup_principal', $topup_principal);
                 $this->set('data', $data);
                 $this->set('investor_data', $investor_data);
                 $this->set('investor_id', $investor_id);
@@ -7042,7 +7029,7 @@ class InvestmentsController extends AppController {
         }
     }
     
-    function editFixedInvestment($investor_id = null, $investment_id = null) {
+    function editFixedInvestment($investor_id = null, $investment_id = null, $investmentcash_id = null) {
         $this->__validateUserType();
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -7064,7 +7051,7 @@ class InvestmentsController extends AppController {
         }
 
         if (!is_null($investment_id)) {
-            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id)));
+            $data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $investmentcash_id)));
             if ($data) {
                 $this->set('data', $data);
                 $this->set('investment_id', $investment_id);

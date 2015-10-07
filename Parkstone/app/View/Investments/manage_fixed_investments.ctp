@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('id', 'Inv. No.'); ?></b></td>
-            <td style="border-bottom: solid 2px dodgerblue;" align="center"><b>Edit</b></td>
+            <!--<td style="border-bottom: solid 2px dodgerblue;" align="center"><b>Edit</b></td>-->
             <td style="border-bottom: solid 2px dodgerblue" width="80" align="center"><b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="right"><b><?php echo $this->Paginator->sort('investment_amount', 'Inv. Amount'); ?></b></td>
             <td style="border-bottom: solid 2px dodgerblue" align="center"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark(%)'); ?></b></td>
@@ -63,13 +63,13 @@
                         }
                         
                         ?></td>
-                <td align="center"><?php
+<!--                <td align="center"><?php
 //                        if(isset($each_item['Investment']['id'])){
 //                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-info'));
-                if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Edit', '/Investments/editFixedInvestments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-primary',));
-                        }
-                        ?></td>
+//                if(isset($each_item['Investment']['id'])){
+//                            echo $this->Html->link('Edit', '/Investments/editFixedInvestments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-primary',));
+//                        }
+                        ?></td>-->
                 
                 <td align="center"><?php
                         if(isset($each_item['Investment']['investment_date'])){
