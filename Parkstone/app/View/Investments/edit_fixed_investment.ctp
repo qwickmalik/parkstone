@@ -138,12 +138,13 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '')));
                             echo $this->Form->hidden('investor_type_id', array('value' => (isset($data['Investment']['investor_type_id']) ? $data['Investment']['investor_type_id'] : 2)));
                             echo $this->Form->hidden('investor_page', array('value' => 'editFixedInvestment'));
+                            echo $this->Form->hidden('ledger_transaction_id', array('value' => (isset($data['InvestorDeposit']['ledger_transaction_id']) ? $data['InvestorDeposit']['ledger_transaction_id'] : '')));
                             echo $this->Form->hidden('investor_id', array('value' => (isset($inv['Investor']['id']) ?
                                         $inv['Investor']['id'] : $data['Investment']['investor_id'])));
 
                              echo $this->Form->hidden('old_investmentamount', array('value' => 
                                         ($this->Session->check('editinvesttemp.old_investmentamount') == true ?
-                                                $this->Session->read('editinvesttemp.old_investmentamount') : $data['Investment']['investment_amount'] )));
+                                                $this->Session->read('editinvesttemp.old_investmentamount') : $data['InvestmentCash']['amount'] )));
 
                             echo $this->Form->input('investmentproduct_id', array('disabled', 'label' => 'Investment Product',
                                 'empty' => "--Please Select--", 'selected' => '1', 'style' => 'background: lilac;'));
@@ -151,7 +152,14 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row"> 
                                 <div class="col-lg-5 col-md-5 col-sm-12">
                                     <?php
-                                    echo $this->Form->input('management_fee_type', ['type' => 'select', 'options' =>
+                                    echo $this->Form->input('management_fee_type2', ['type' => 'select', 'disabled' ,'options' =>
+                                        array('No Fee' => 'No Fee', 'Management Fee' => 'Management Fee', 'Performance Fee' => 'Performance Fee',
+                                            'Management & Performance Fee' => 'Management & Performance Fee'),
+                                        'empty' => '--Select Fee Type--', 'selected' =>
+                                        ($this->Session->check('editinvesttemp.management_fee_type') == true ?
+                                                $this->Session->read('editinvesttemp.management_fee_type') : $data['Investment']['management_fee_type'] )]);
+                                    
+                                    echo $this->Form->hidden('management_fee_type', ['type' => 'select', 'options' =>
                                         array('No Fee' => 'No Fee', 'Management Fee' => 'Management Fee', 'Performance Fee' => 'Performance Fee',
                                             'Management & Performance Fee' => 'Management & Performance Fee'),
                                         'empty' => '--Select Fee Type--', 'selected' =>
@@ -162,7 +170,11 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-3 col-md-3 col-sm-12 hidden-fee">
                                     <?php
-                                    echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' =>
+                                    echo $this->Form->input('base_fees2', array('label' => 'Base Fee(%)', 'disabled' ,'class' => 'required', 'value' =>
+                                        ($this->Session->check('editinvesttemp.base_fees') == true ?
+                                                $this->Session->read('editinvesttemp.base_fees') : $data['Investment']['base_fees'] )));
+                                    
+                                          echo $this->Form->hidden('base_fees', array('value' =>
                                         ($this->Session->check('editinvesttemp.base_fees') == true ?
                                                 $this->Session->read('editinvesttemp.base_fees') : $data['Investment']['base_fees'] )));
                                     ?> 
@@ -170,7 +182,10 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 BenchmarkRate">
                                     <?php
-                                    echo $this->Form->input('benchmark_rate', array('label' => 'Benchmark(%)', 'value' =>
+                                    echo $this->Form->input('benchmark_rate2', array('label' => 'Benchmark(%)','disabled' ,'value' =>
+                                        ($this->Session->check('editinvesttemp.benchmark_rate') == true ?
+                                                $this->Session->read('editinvesttemp.benchmark_rate') : $data['Investment']['benchmark_rate'] )));
+                                    echo $this->Form->hidden('benchmark_rate', array('value' =>
                                         ($this->Session->check('editinvesttemp.benchmark_rate') == true ?
                                                 $this->Session->read('editinvesttemp.benchmark_rate') : $data['Investment']['benchmark_rate'] )));
                                     ?>
@@ -179,36 +194,55 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row"> 
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <?php
-                                    if ($this->Session->check('editinvesttemp.investment_date') == true) {
-
-                                        $dob_string = $this->Session->read('editinvesttemp.investment_date');
-                                        $month = date('m', strtotime($dob_string));
-                                        $day = date('d', strtotime($dob_string));
-                                        $Year = date('Y', strtotime($dob_string));
-                                    } else {
-                                        if (isset($data['Investment']['investment_date'])) {
-                                            $dob_string = $data['Investment']['investment_date'];
+                                    if(!empty($data['InvestmentCash']['investment_date'])){
+                                        
+                                            $dob_string = $data['InvestmentCash']['investment_date'];
+                                            echo $this->Form->hidden('deposit_date', array('value' => $dob_string));
                                             $month = date('m', strtotime($dob_string));
                                             $day = date('d', strtotime($dob_string));
                                             $Year = date('Y', strtotime($dob_string));
-                                        } else {
+                                    }else {
 
                                             $month = date('m');
                                             $day = date('d');
                                             $Year = date('Y');
                                         }
-                                    }
+                                    
+                                    
+//                                    if ($this->Session->check('editinvesttemp.investment_date') == true) {
+//
+//                                        $dob_string = $this->Session->read('editinvesttemp.investment_date');
+//                                        $month = date('m', strtotime($dob_string));
+//                                        $day = date('d', strtotime($dob_string));
+//                                        $Year = date('Y', strtotime($dob_string));
+//                                    } else {
+//                                        if (!empty($dob_string)) {
+//                                            $month = date('m', strtotime($dob_string));
+//                                            $day = date('d', strtotime($dob_string));
+//                                            $Year = date('Y', strtotime($dob_string));
+//                                        } else {
+//
+//                                            $month = date('m');
+//                                            $day = date('d');
+//                                            $Year = date('Y');
+//                                        }
+//                                    }
                                     ?>
                                     <input type="hidden" id="month" value="<?php echo $month; ?>"/>
                                     <input type="hidden" id="day" value="<?php echo $day; ?>"/>
                                     <input type="hidden" id="year" value="<?php echo $Year; ?>"/>
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("selected" => $day)); ?>
+                                    
+                                    <input type="hidden" name="data[Investment][investment_date][month]" value="<?php echo $month; ?>"/>
+                                    <input type="hidden" name="data[Investment][investment_date][day]" value="<?php echo $day; ?>"/>
+                                    <input type="hidden" name="data[Investment][investment_date][year]" value="<?php echo $Year; ?>"/>
+                                    
+                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>Inv. Date*:</span>" . $this->Form->day('investment_date', array("selected" => $day,'disabled')); ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("selected" => $month)); ?>
+                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->month('investment_date', array("selected" => $month,'disabled')); ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year)); ?>
+                                    <?php echo "<span style='font-size: 14px;font-weight: bold;line-height: 40px; padding: 10px 0px 10px 0px;'>&nbsp;</span>" . $this->Form->year('investment_date', 1950, date('Y'), array("selected" => $Year,'disabled')); ?>
                                 </div>
                                 <script>
                                     var day = $("#day").val();
@@ -295,7 +329,13 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                             <?php
-                            echo $this->Form->input('custom_rate', array('label' => 'Benchmark(%)*',
+                            echo $this->Form->input('custom_rate2', array('label' => 'Benchmark(%)*','disabled' ,
+                                'empty' => "--Please Select--", 'value' =>
+                                ($this->Session->check('editinvesttemp.custom_rate') == true ?
+                                        $this->Session->read('editinvesttemp.custom_rate') :
+                                        $data['Investment']['custom_rate'] )));
+                            
+                            echo $this->Form->hidden('custom_rate', array(
                                 'empty' => "--Please Select--", 'value' =>
                                 ($this->Session->check('editinvesttemp.custom_rate') == true ?
                                         $this->Session->read('editinvesttemp.custom_rate') :
@@ -307,14 +347,24 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
-                                echo $this->Form->input('duration', array('required', 'label' => 'Duration*',
+                                echo $this->Form->input('duration2', array('required', 'label' => 'Duration*','disabled' ,
+                                    'value' => ($this->Session->check('editinvesttemp.duration') == true ?
+                                            $this->Session->read('editinvesttemp.duration') : $data['Investment']['duration'] ),
+                                    'width' => '50px'));
+                                echo $this->Form->hidden('duration', array(
                                     'value' => ($this->Session->check('editinvesttemp.duration') == true ?
                                             $this->Session->read('editinvesttemp.duration') : $data['Investment']['duration'] ),
                                     'width' => '50px'));
                                 ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">  <?php
-                                    echo $this->Form->input('investment_period', array('required', 'label' => 'Inv. Period*',
+                                    echo $this->Form->input('investment_period2', array('required', 'label' => 'Inv. Period*','disabled' ,
+                                        'empty' => "--Please Select--",
+                                        'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),
+                                        'value' => ($this->Session->check('editinvesttemp.investment_period') == true ?
+                                                $this->Session->read('editinvesttemp.investment_period') : $data['Investment']['investment_period'] )
+                                    ));
+                                    echo $this->Form->hidden('investment_period', array(
                                         'empty' => "--Please Select--",
                                         'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),
                                         'value' => ($this->Session->check('editinvesttemp.investment_period') == true ?
@@ -325,8 +375,10 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php
-                                echo $this->Form->input('total_tenure', array('label' => 'Total Tenure', 'required',
+                                echo $this->Form->input('total_tenure2', array('label' => 'Total Tenure', 'required','disabled' ,
                                     'placeholder' => "0", 'value' => ($this->Session->check('editinvesttemp.total_tenure') == true ?
+                                            $this->Session->read('editinvesttemp.total_tenure') : $data['Investment']['total_tenure'] )));
+                                echo $this->Form->hidden('total_tenure', array( 'value' => ($this->Session->check('editinvesttemp.total_tenure') == true ?
                                             $this->Session->read('editinvesttemp.total_tenure') : $data['Investment']['total_tenure'] )));
                                 ?>
 
