@@ -650,11 +650,13 @@ echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class
     <script lang="javascript">
         jQuery(document).ready(function ($) {
             function hide_benchmark() {
+//                  var prod_val = $("#InvestmentInvestmentproductId").val();
                 var fee_type = $("#InvestmentManagementFeeType").val();
                 $(".BenchmarkRate").show();
                 $(".hidden-fee").show();
                 if (fee_type == "Performance Fee") {
                     $(".hidden-fee").hide();
+                   
                     return false;
                 }
                 if (fee_type == "Management Fee") {
