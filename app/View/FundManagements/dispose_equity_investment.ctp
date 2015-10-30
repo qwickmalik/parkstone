@@ -13,7 +13,7 @@
                 <td align="left" valign="top" width="50%">
                     <table width="100%" cellspacing="10" cellpadding="0" border="0">
                         <tr>
-                            <td align="left" width="200"><b align="right">Company ID:</b></td>
+                            <td align="left" width="200"><b align="right">Investor ID:</b></td>
                             <td align="left"><?php
                                 if (isset($data['inv']['Investment']['investor_id'])) {
                                     echo $data['inv']['Investment']['investor_id'];
@@ -21,7 +21,7 @@
                                 ?></td>
                         </tr>
                         <tr>
-                            <td align="left" width="200"><b align="right">Company:</b></td>
+                            <td align="left" width="200"><b align="right">Investor Name:</b></td>
                             <td align="left"><?php
                                 if (isset($data['inv']['Investor']['fullname'])) {
                                     echo $data['inv']['Investor']['fullname'];

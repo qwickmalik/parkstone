@@ -87,48 +87,52 @@
             </li> 
         </ul>
     </li>
-<!--    <li class="parent cream">
+    <li class="parent cream">
         <a href="#">
             <span class="menu-icon"><i class="fa fa-money"></i></span>
             <span class="menu-text">Fund Management</span>
         </a>
         <ul class="child">
             <li>
-                <?php // echo $this->Html->link('New/Edit Client', '/FundManagement/newReinvestor', array('escape' => false)); ?>
+                <?php echo $this->Html->link('New/Edit Client', '/FundManagements/newReinvestor', array('escape' => false)); ?>
             </li>
             <li>
-                <?php // echo $this->Html->link('Client Cash Deposit', '/FundManagement/newCashDeposit', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Client Cash Deposit', '/FundManagements/newCashDeposit', array('escape' => false)); ?>
             </li>
             <li>
-                <?php // echo $this->Html->link('List/Edit Cash Deposits', '/FundManagement/listCashDeposits', array('escape' => false)); ?>
+                <?php echo $this->Html->link('List/Edit Cash Deposits', '/FundManagements/listCashDeposits', array('escape' => false)); ?>
             </li>
-            <li>
+<!--            <li>
                 <?php // echo $this->Html->link('Investment Destinations', '#', array('escape' => false)); ?>
+            </li>-->
+            <li>
+                <?php echo $this->Html->link('New/Edit Inv. Destination', '/FundManagements/newInvestmentDestination', array('escape' => false)); ?>
             </li>
             <li>
-                <?php // echo $this->Html->link('New/Edit Inv. Destination', '/FundManagement/newInvestmentDestination', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Inv. Destination Products', '/FundManagement/invDestProduct', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Inv. Destination Products', '/FundManagements/invDestProduct', array('escape' => false)); ?>
             </li> 
             
+           
+             <li>
+                <?php echo $this->Html->link('Invest Fund', '/FundManagements/newInvestment', array('escape' => false)); ?>
+            </li>
             <li>
-                <?php // echo $this->Html->link('Pay Client Funds', '/FundManagement/manageInv', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Manage Invested Funds', '/FundManagements/manageInv', array('escape' => false)); ?>
+            </li>
+          <li>
+                <?php echo $this->Html->link('Daily Maturity List', '/FundManagements/maturityList', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Monthly Maturity List', '/FundManagements/monthlyMaturityList', array('escape' => false)); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link('Disposal Requests', '/FundManagements/disposalList', array('escape' => false)); ?>
             </li>
              <li>
-                <?php // echo $this->Html->link('Invest Fund', '/FundManagement/newInvestment', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Manage Invested Funds', '/FundManagement/manageInv', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('New/Edit Inv. Destination', '/FundManagement/newInvestmentDestination', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Inv. Destination Products', '/FundManagement/invDestProduct', array('escape' => false)); ?>
+                <?php echo $this->Html->link('Pay Client Funds', '/FundManagements/payReinvestorFixed', array('escape' => false)); ?>
             </li>
         </ul>
-        </li>-->
+        </li>
     <!--<li class="lightyellow">-->
     <?php
 //        echo $this->Html->link('

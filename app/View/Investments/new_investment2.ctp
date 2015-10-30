@@ -581,7 +581,7 @@ echo $this->Form->input('max_share_price5', array('label' => 'Max Price', 'class
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Total Equity Purchased:</span><br>";
                                     if (isset($share_price)) {
-                                        echo $shopCurrency . ' ' . number_format($share_price, 2, '.', ',');
+                                        echo $share_price.' Shares';
                                     } else {
                                         echo '';
                                     }
