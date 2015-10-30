@@ -8978,7 +8978,7 @@ class InvestmentsController extends AppController {
                             $to_date = new DateTime($date);
                             $tduration = date_diff($inv_date, $to_date);
                             $tduration = $tduration->format("%a");
-                            $inv_date->add(new DateInterval('P' . $duration . 'D'));
+                            $inv_date->add(new DateInterval('P' . $tduration . 'D'));
 //                            $date->sub(new DateInterval('P1D'));
                             $principal = $val['Topup']['topup_amount'];
                             $investment_amount = $investment_amount - $principal;
@@ -8986,7 +8986,7 @@ class InvestmentsController extends AppController {
                             $rate = $custom_rate;
 
                             $interest_amount1 = ($rate / 100) * $principal;
-                            $interest_amountt += $interest_amount1 * ($duration / 365);
+                            $interest_amountt += $interest_amount1 * ($tduration / 365);
 
 
 
