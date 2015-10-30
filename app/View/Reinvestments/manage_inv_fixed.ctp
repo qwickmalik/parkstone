@@ -71,8 +71,8 @@
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="center"><?php echo "Action"; ?></td>
                 <td style="border-bottom: solid 2px dodgerblue" width="100" align="center"><b>Statement</b></td>
                 <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b>Top-up</b></td>
-                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
-                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>
+<!--                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Deposits</b></td>
+                <td style="border-bottom: solid 2px dodgerblue" align="center"><b>Delete Payments</b></td>-->
             </tr>
             
             <?php foreach ($data as $each_item): ?>
@@ -136,16 +136,16 @@
                
                 </td>
                     
-                <td align="center"><?php
-                        if(isset($each_item['Reinvestment']['id'])){
-//                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentDeposits/'.$reinvestor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-warning'));
-                        }
+<!--                <td align="center"><?php
+//                        if(isset($each_item['Reinvestment']['id'])){
+////                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentDeposits/'.$reinvestor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-warning'));
+//                        }
                         ?></td>
                 <td align="center"><?php
-                        if(isset($each_item['Reinvestment']['id'])){
-//                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentPayments/'.$reinvestor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-danger'));
-                        }
-                        ?></td>
+//                        if(isset($each_item['Reinvestment']['id'])){
+////                            echo $this->Html->link('Delete', '/Reinvestments/delFixedInvestmentPayments/'.$reinvestor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-danger'));
+//                        }
+                        ?></td>-->
                 </tr>
 <?php endforeach; ?>
             <tr>
