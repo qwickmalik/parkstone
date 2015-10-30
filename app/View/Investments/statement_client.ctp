@@ -259,6 +259,18 @@ if ($this->Session->check('shopCurrency')) {
                         ?>
                         </td>
                     </tr>
+                    <tr>
+                        <td align="left" valign="top" ></td>
+                        <td align="left" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" > &nbsp;</td>
+                        <td align="left" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top">&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp; </td>
+                        <td align="right" valign="top" > &nbsp;</td>
+                    </tr>
                     
                     <?php
                     endforeach;
@@ -267,6 +279,18 @@ if ($this->Session->check('shopCurrency')) {
                        }
                     ?>
                    
+                    <tr>
+                        <td align="left" valign="top" ></td>
+                        <td align="left" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" > &nbsp;</td>
+                        <td align="left" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top">&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp; </td>
+                        <td align="right" valign="top" > &nbsp;</td>
+                    </tr>
                     <tr>
                         <td align="left" valign="top" ></td>
                         <td align="left" valign="top" >&nbsp;</td>
