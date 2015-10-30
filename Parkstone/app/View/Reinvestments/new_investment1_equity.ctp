@@ -7,7 +7,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 }
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">Process Investment</h3>
+<h3 style="color: red;">Process Outbound Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -21,7 +21,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <p></p>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Re-investor Company:</b></p>";?>
+                                    <?php echo "<p><b>Company:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <?php echo (isset($equitydetails['Reinvestor']['company_name']) ? $equitydetails['Reinvestor']['company_name'] : '' );?>

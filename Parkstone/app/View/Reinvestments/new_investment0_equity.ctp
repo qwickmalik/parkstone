@@ -58,7 +58,7 @@
                     <b><?php echo $this->Paginator->sort('investment_type', 'Investment Type'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('amount', 'Available Amount'); ?></b>
+                    <b><?php echo $this->Paginator->sort('available_amount', 'Available Amount'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Select"; ?></td>
             </tr>
@@ -69,7 +69,7 @@
                     <td align="left" ><?php echo $each_item['Reinvestor']['company_name']; ?></td> 
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
                     <td align="left"><?php echo $each_item['InvestmentCash']['investment_type']; ?></td>
-                    <td align="left"><?php echo $each_item['InvestmentCash']['amount']; ?></td>
+                    <td align="left"><?php echo $each_item['InvestmentCash']['available_amount']; ?></td>
                     <td align="left">
                         <?php 
                         //some "if" logic here to check if the investment type is FIXED or EQUITY and then echo the appropriate link for reinvesting

@@ -13,7 +13,7 @@ if ($this->Session->check('shopCurrency_investment')) {
 }
 ?>
 <!-- Content starts here -->
-<h3 style="color: red;">New Re-investment</h3>
+<h3 style="color: red;">New Outbound Investment</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -134,7 +134,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right;">
                     <?php
                     echo "<p>&nbsp;</p>";
-                    echo $this->Html->link('New Re-investment', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
+                    echo $this->Html->link('New Investment', "/Reinvestments/newInvestment", array("class" => 'btn btn-lg btn-info'));
                     echo "&nbsp;&nbsp;";
                     echo $this->Html->link('Print Statement', "javascript:void(0)", array("class" => 'btn btn-lg btn-warning', "id" => "print_statement"));
                     ?>

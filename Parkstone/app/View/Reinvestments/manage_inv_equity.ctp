@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 
-<h3 style="color: red;">Manage Re-investments</h3>
+<h3 style="color: red;">Manage Investments</h3>
 <div class="boxed">
     <div class="inner">
         <div id="clearer"></div>
@@ -20,7 +20,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12" style="align: center; float: none;">
                         
                         <?php
-                        echo $this->Form->input('company_name', array('label' => 'Re-investor Company','empty' => '--Select Company--', 'default' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
+                        echo $this->Form->input('company_name', array('label' => 'Company','empty' => '--Select Company--', 'default' => (isset($reinvestors['Reinvestor']['company_name']) ? $reinvestors['Reinvestor']['company_name'] : '' ),'disabled'));
                         
                         ?>
                         <span style="color: red;"></span>
@@ -47,13 +47,10 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('investment_date', '(Re-)investment Date'); ?></b>
+                    <b><?php echo $this->Paginator->sort('reinvestment_date', 'Investment Date'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('due_date', 'Due Date'); ?></b>
-                </td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('company_name', 'Re-investor Company'); ?></b>
+                    <b><?php echo $this->Paginator->sort('company_name', 'Company'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('currency_id', 'Currency'); ?></b>
@@ -61,28 +58,23 @@ echo $this->Form->create('', array("url" => array('controller' => 'Reinvestments
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('investment_amount', 'Amount Invested'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="left">
-                    <b><?php echo $this->Paginator->sort('custom_rate', 'Rate'); ?></b>
-                </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="left"><?php echo "Action"; ?></td>
             </tr>
             
             <?php foreach ($data as $each_item): ?>
                 <tr>
-                    <td width="50" align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
+                    <td width="50" align="left"><?php echo $each_item['ReinvestmentsEquity']['id']; ?></td>
+                    <td align="left"><?php echo $each_item['ReinvestmentsEquity']['reinvestment_date']; ?></td>
                     <td align="left" ><?php echo $each_item['Reinvestor']['company_name']; ?></td> 
                     <td align="left"><?php echo $each_item['Currency']['symbol']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
-                    <td align="left"><?php echo $each_item['Reinvestment']['custom_rate']; ?></td>
+                    <td align="left"><?php echo $each_item['ReinvestmentsEquity']['investment_amount']; ?></td>
                     <td align="left">
                         <?php 
-                            echo $this->Html->link("Details","/Reinvestments/manageInvEquityDetails/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Details","/Reinvestments/manageInvEquityDetails/".$each_item['ReinvestmentsEquity']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Cancel","/Reinvestments/manageInvEquityCancel/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Cancel","/Reinvestments/manageInvEquityCancel/".$each_item['ReinvestmentsEquity']['id']);  
                             echo " | ";
-                            echo $this->Html->link("Pay","/Reinvestments/payReinvestor/".$each_item['Reinvestment']['id']);  
+                            echo $this->Html->link("Pay","/Reinvestments/payReinvestor/".$each_item['ReinvestmentsEquity']['id']);  
                         ?>
                     </td>
                     
