@@ -212,7 +212,9 @@ if ($this->Session->check('shopCurrency')) {
                             ?></td>
                             <td align="left"><?php
                             $princ =  number_format($val['topup_amount'],2);
-                            $int =  number_format($val['topup_interest'],2);
+                            if(isset($interest_amountt)){
+                            $int =  number_format($interest_amountt,2);
+                            }
                             $totaltop = $int + $princ;
                             echo number_format($totaltop,2); ?></td>
                             <td align="left"><?php if (isset($val['investment_date'])) {
