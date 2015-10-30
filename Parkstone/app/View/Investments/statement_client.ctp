@@ -58,11 +58,17 @@ if ($this->Session->check('shopCurrency')) {
                         <th align="left">Principal Plus Interest</th>
                         <th align="left">Payments</th>
                         <th align="left">Balance Due</th>
+                        
                     </tr>
-                    <?php if(isset($data)){ foreach ($data as $each_item): 
+                    <?php 
+                    
+                   $account_tot_bal = 0;
+                    
+                    if(isset($data)){ foreach ($data as $each_item): 
                     $topup_pt = 0;    
                     $amount = 0;
                     $topup_in = 0;
+                     $total_bal = 0;
                     if(!empty($each_item['InvestmentPayment']) ){
                     foreach ($each_item['InvestmentPayment'] as $val):
                         if($val['event_type'] == 'Payment'){
@@ -136,11 +142,29 @@ if ($this->Session->check('shopCurrency')) {
             
                         } ?></td>
                             <td align="left"><?php if (isset($amount)) {
+//                                $total_bal -= $amount;
             echo  number_format($amount,2);
+            
         } ?></td>
-                            <td align="left"><?php if (isset($each_item['Investment']['earned_balance'])) {
-            echo  number_format($each_item['Investment']['earned_balance'],2);
-        } ?></td>
+                            <td align="left"><?php 
+                            
+//                            if (isset($each_item['Investment']['earned_balance'])) {
+//                               
+//            echo  number_format($each_item['Investment']['earned_balance'],2);
+//        }
+        
+                            
+                            
+                            if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
+                                 
+                                
+                                $earnbtotals = $invest_amount + $invest_int;
+        
+                    $total_bal += $earnbtotals;
+            echo number_format($earnbtotals,2);
+            
+                        }
+        ?></td>
                        </tr>
                        
                        
@@ -155,6 +179,7 @@ if ($this->Session->check('shopCurrency')) {
                         <th align="left" width="100">Topup Amt. &nbsp;</th>
                         <th align="left">Benchmark(%)</th>
                         <th align="left">Interest</th>
+                        <th align="left">Total</th>
                         <th align="left">Topup Date</th>
                         <th align="left" width="120">Maturity Date</th>
                         <th align="left">Topup Tenure</th>
@@ -170,7 +195,26 @@ if ($this->Session->check('shopCurrency')) {
                             <td align="left"><?php if (isset($each_item['Investment']['custom_rate'])) {
             echo  $each_item['Investment']['custom_rate'].'%';
         } ?></td>
-                            <td align="left"><?php echo number_format($val['topup_interest'],2); ?></td>
+                            <td align="left"><?php // echo number_format($val['topup_interest'],2);
+                            
+                            $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $principal = $val['topup_amount'];
+                            $rate = $each_item['Investment']['custom_rate'];
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            $total_bal += $interest_amountt;
+                             echo number_format($interest_amountt,2);
+                            ?></td>
+                            <td align="left"><?php
+                            $princ =  number_format($val['topup_amount'],2);
+                            $int =  number_format($val['topup_interest'],2);
+                            $totaltop = $int + $princ;
+                            echo number_format($totaltop,2); ?></td>
                             <td align="left"><?php if (isset($val['investment_date'])) {
             echo  date('d-M-Y',strtotime($val['investment_date']));
         } ?></td>
@@ -192,6 +236,29 @@ if ($this->Session->check('shopCurrency')) {
                        <?php
                         
                     }
+                    ?>
+                          
+                     <tr>
+                         <td align="left" valign="top" colspan="2"><b>Investment Balance</b></td>
+                        <!--<td align="left" valign="top" >&nbsp;</td>-->
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" > &nbsp;</td>
+                        <td align="left" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp;</td>
+                        <td align="right" valign="top">&nbsp;</td>
+                        <td align="right" valign="top" >&nbsp; </td>
+                        <td align="right" valign="top" > <?php
+                         if (isset($total_bal)) {
+                                echo number_format($total_bal, 2);
+                                $account_tot_bal+=$total_bal;
+                            }
+                        
+                        ?>
+                        </td>
+                    </tr>
+                    
+                    <?php
                     endforeach;
                     
                      
@@ -215,19 +282,25 @@ if ($this->Session->check('shopCurrency')) {
             foreach($total as $each_item):
                 ?>
                     <tr>
+                        <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;"><b>Account Balance</b></td>
                         <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
-                        <td align="left" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">&nbsp;</td>
-                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">Total(<?php echo $shopCurrency; ?>)</td>
+                        <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">(<?php echo $shopCurrency; ?>)</td>
                         <td align="right" valign="top" style="border-bottom: solid 1px #ffffff; background: #eaeaea; font-weight: bold;">
-                            <?php   if (isset($each_item[0]['balance_due'])) {
-                                echo number_format($each_item[0]['balance_due'], 2);
+                            <?php // if (isset($each_item[0]['balance_due'])) {
+//                                echo number_format($each_item[0]['balance_due'], 2);
+//                            }
+                            
+                             if (isset($account_tot_bal)) {
+                                echo number_format($account_tot_bal, 2);
                             }
+                             $account_tot_bal 
+                            
                             ?>
                         </td>
                     </tr>
