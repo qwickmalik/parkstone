@@ -1845,7 +1845,7 @@ class ReinvestmentsController extends AppController {
                 $this->Session->delete('variabless_reequity');
             }
 
-            $variables = array('totalamt' => $totalamt, 'share_price' => $this->request->data['Reinvestment']['share_price'], 'total_fees' => $this->request->data['Reinvestment']['total_fees'], 'equity' => $equity_name);
+            $variables = array('totalamt' => $totalamt,/* 'share_price' => $this->request->data['Reinvestment']['share_price'], */'total_fees' => $this->request->data['Reinvestment']['total_fees'], 'equity' => $equity_name);
 
             $this->Session->write('variabless_reequity', $variables);
 
@@ -1955,12 +1955,12 @@ class ReinvestmentsController extends AppController {
                 if ($balance > 0) {
                     $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'part_investment',
                         'modified_by' => ($this->Session->check('userDetails.id') == true ?
-                                $this->Session->read('userDetails.id') : '' ));
+                                $this->Session->read('userDetails.id') : '' ),'available_amount' => $balance);
                 } else {
 
                     $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'invested',
                         'modified_by' => ($this->Session->check('userDetails.id') == true ?
-                                $this->Session->read('userDetails.id') : '' ));
+                                $this->Session->read('userDetails.id') : '' ),'available_amount' => $balance);
                 }
                 $this->InvestmentCash->save($investmencash_array);
             }
@@ -2349,7 +2349,7 @@ class ReinvestmentsController extends AppController {
                 if ($investment_type == 1) {
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/' . $reinvestor_id));
                 } elseif ($investment_type == 2) {
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvEquity/' . $reinvestor_id));
+                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
                 }
             }
         }
@@ -2382,9 +2382,9 @@ class ReinvestmentsController extends AppController {
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
 
         $this->paginate = array(
-            'conditions' => array('Reinvestment.investment_type' => 'equity', 'Reinvestment.reinvestor_id' => $reinvestor_id, 'Reinvestment.payment_status' => 'unpaid'),
+            'conditions' => array('ReinvestmentsEquity.investment_type' => 'equity', 'ReinvestmentsEquity.reinvestor_id' => $reinvestor_id, 'ReinvestmentsEquity.payment_status' => 'unpaid'),
             'limit' => 30, 'order' => array('Reinvestment.id' => 'asc'));
-        $data = $this->paginate('Reinvestment');
+        $data = $this->paginate('ReinvestmentsEquity');
         $this->set('data', $data);
     }
 
@@ -3777,7 +3777,7 @@ class ReinvestmentsController extends AppController {
                                 $interest_amount2 = $interest_amount1 * (1 / 365);
                                 $total = $interest_amount2 + $principal;
                                 $statemt_array[] = array('user_id' => $userid,
-                                    'reinvestor_id' => $this->request->data['Reinvestment']['investor_id'],
+                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
                                     'principal' => $principal,
                                     'interest' => $interest_amount2,
                                     'maturity_date' => $date_statemt->format('Y-m-d'),
@@ -3805,7 +3805,7 @@ class ReinvestmentsController extends AppController {
                                 $interest_amount2 = $interest_amount1 * (365 / 365);
                                 $total = $interest_amount2 + $principal;
                                 $statemt_array[] = array('user_id' => $userid,
-                                    'reinvestor_id' => $this->request->data['Reinvestment']['investor_id'],
+                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
                                     'principal' => $principal,
                                     'interest' => $interest_amount2,
                                     'maturity_date' => $date_statemt->format('Y-m-d'),
