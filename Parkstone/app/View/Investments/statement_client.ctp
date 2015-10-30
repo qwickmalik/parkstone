@@ -196,7 +196,7 @@ if ($this->Session->check('shopCurrency')) {
             echo  $each_item['Investment']['custom_rate'].'%';
         } ?></td>
                             <td align="left"><?php // echo number_format($val['topup_interest'],2);
-                            
+                            $interest_amountt = 0;
                             $tfirst_date = $val['investment_date'];
                             $inv_date = new DateTime($tfirst_date);
                             $date = date('Y-m-d');
@@ -207,7 +207,8 @@ if ($this->Session->check('shopCurrency')) {
                             $rate = $each_item['Investment']['custom_rate'];
                             $interest_amount1 = ($rate / 100) * $principal;
                             $interest_amountt = $interest_amount1 * ($tduration / 365);
-                            $total_bal += $interest_amountt;
+                           
+                            
                              echo number_format($interest_amountt,2);
                             ?></td>
                             <td align="left"><?php
@@ -216,6 +217,7 @@ if ($this->Session->check('shopCurrency')) {
                             $int =  number_format($interest_amountt,2);
                             }
                             $totaltop = $int + $princ;
+                            $total_bal += $totaltop;
                             echo number_format($totaltop,2); ?></td>
                             <td align="left"><?php if (isset($val['investment_date'])) {
             echo  date('d-M-Y',strtotime($val['investment_date']));
