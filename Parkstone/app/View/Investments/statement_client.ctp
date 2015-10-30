@@ -191,7 +191,10 @@ if ($this->Session->check('shopCurrency')) {
                     <tr>
                         <th align="left" width="120">&nbsp;</th>
                             <td align="left">&nbsp;</td>
-                            <td align="left"><?php echo  number_format($val['topup_amount'],2); ?></td>
+                            <td align="left"><?php
+                            $princ=0;
+                            $princ =  number_format($val['topup_amount'],2);
+                            echo  number_format($val['topup_amount'],2); ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['custom_rate'])) {
             echo  $each_item['Investment']['custom_rate'].'%';
         } ?></td>
@@ -212,8 +215,7 @@ if ($this->Session->check('shopCurrency')) {
                              echo number_format($interest_amountt,2);
                             ?></td>
                             <td align="left"><?php
-                            $int = 0;$princ=0;
-                            $princ =  number_format($val['topup_amount'],2);
+                            $int = 0;
                             if(isset($interest_amountt)){
                             $int =  number_format($interest_amountt,2);
                             }
