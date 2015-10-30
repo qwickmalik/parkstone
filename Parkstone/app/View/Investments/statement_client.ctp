@@ -212,6 +212,7 @@ if ($this->Session->check('shopCurrency')) {
                              echo number_format($interest_amountt,2);
                             ?></td>
                             <td align="left"><?php
+                            $int = 0;$princ=0;
                             $princ =  number_format($val['topup_amount'],2);
                             if(isset($interest_amountt)){
                             $int =  number_format($interest_amountt,2);
