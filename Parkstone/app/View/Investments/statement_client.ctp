@@ -161,7 +161,7 @@ if ($this->Session->check('shopCurrency')) {
                                 $earnbtotals = $invest_amount + $invest_int;
         
                     $total_bal += $earnbtotals;
-            echo number_format($earnbtotals,2,',','.');
+            echo number_format($earnbtotals,2,'.',',');
             
                         }
         ?></td>
@@ -212,7 +212,7 @@ if ($this->Session->check('shopCurrency')) {
                             $interest_amountt = $interest_amount1 * ($tduration / 365);
                            
                             
-                             echo number_format($interest_amountt,2,',','.');
+                             echo number_format($interest_amountt,2,'.',',');
                             ?></td>
                             <td align="left"><?php
                             $int = 0;
@@ -221,7 +221,7 @@ if ($this->Session->check('shopCurrency')) {
                             }
                             $totaltop = $int + $val['topup_amount'];
                             $total_bal += $totaltop;
-                            echo number_format($totaltop,2,',','.'); ?></td>
+                            echo number_format($totaltop,2,'.',','); ?></td>
                             <td align="left"><?php if (isset($val['investment_date'])) {
             echo  date('d-M-Y',strtotime($val['investment_date']));
         } ?></td>
@@ -257,7 +257,7 @@ if ($this->Session->check('shopCurrency')) {
                         <td align="right" valign="top" >&nbsp; </td>
                         <td align="right" valign="top" > <?php
                          if (isset($total_bal)) {
-                                echo number_format($total_bal, 2,',','.');
+                                echo number_format($total_bal, 2,'.',',');
                                 $account_tot_bal+=$total_bal;
                             }
                         
@@ -327,7 +327,7 @@ if ($this->Session->check('shopCurrency')) {
 //                            }
                             
                              if (isset($account_tot_bal)) {
-                                echo number_format($account_tot_bal, 2,',','.');
+                                echo number_format($account_tot_bal, 2,'.',',');
                             }
                              $account_tot_bal 
                             
