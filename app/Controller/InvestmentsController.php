@@ -3203,7 +3203,7 @@ class InvestmentsController extends AppController {
             $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
             $currency_id = $this->request->data['Investment']['currency_id'];
             $custom_rate = $this->request->data['Investment']['custom_rate'];
-
+            $interest_amount = 0;
             $investor_id = $this->request->data['Investment']['investor_id'];
             $investmentproduct_id = $this->request->data['Investment']['investmentproduct_id'];
             $management_fee_type = $this->request->data['Investment']['management_fee_type'];
@@ -3862,6 +3862,11 @@ class InvestmentsController extends AppController {
 
                             $equities+=$equity_data;
                             $this->set_equity($equities);
+                            $numb0fshares = $this->request->data['Investment']['numb_shares' . $x];
+                            $equity_price = $this->request->data['Investment']['max_share_price' . $x];
+                            $total_shares += $numb0fshares;
+                            $totalamt += ($numb0fshares * $equity_price);
+                            $this->request->data['Investment']['total_amount'] = $totalamt;
                         }
                         $x++;
                     }
@@ -3932,7 +3937,7 @@ class InvestmentsController extends AppController {
 
 
 
-                $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
+//                $variables = array('duedate' => $date->format('jS F,Y'), 'interest' => $interest_amount, 'totaldue' => $amount_due);
 
 
 //store total_invested and cash at hand in session so can save in investment when storing array in summary view

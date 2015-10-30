@@ -97,6 +97,9 @@ class Reinvestor extends AppModel {
         return $result;
     }
      
-    
+     function getCompanies2(){
+        $result = $this->find('all',array('conditions' => array('Reinvestor.id !=' => 1)));
+        return $result;
+    }
 }
 ?>
