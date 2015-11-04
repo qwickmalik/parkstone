@@ -304,7 +304,8 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     echo $this->Form->hidden('investment_period', array('value' => 'Day(s)'));
                                     echo $this->Form->input('investment_period2', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
                                         'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),
-                                        'default' => 'Day(s)', 'value' => 'Day(s)'));
+                                        'default' => 'Day(s)', 'value' => ($this->Session->check('investtemp.investment_period') == true ?
+                                                $this->Session->read('investtemp.investment_period') : '' )));
                                     ?>
 
                                 </div>
