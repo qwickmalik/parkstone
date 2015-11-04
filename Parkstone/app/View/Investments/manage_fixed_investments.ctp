@@ -63,11 +63,11 @@
                         }
                         
                         ?></td>
-                <td align="center"><?php
+<!--                <td align="center"><?php
 //                         if(isset($each_item['Investment']['id'])){
 //                            echo $this->Html->link('Edit', '/Investments/editFixedInvestments/'.$investor_id.'/'.$each_item['Investment']['id'], array('class' => 'btn btn-xs btn-primary',));
 //                        }
-                        ?></td>
+                        ?></td>-->
                 
                 <td align="center"><?php
                         if(isset($each_item['Investment']['investment_date'])){
