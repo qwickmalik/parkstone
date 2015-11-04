@@ -2867,6 +2867,7 @@ class InvestmentsController extends AppController {
 
             $page = $this->request->data['Investment']['investor_page'];
             
+            $deposit_id = $this->request->data['Investment']['deposit_id'];
             $payment_schedule = $this->request->data['Investment']['paymentschedule_id'];
             $custom_rate = $this->request->data['Investment']['custom_rate'];
             $investor_id = $this->request->data['Investment']['investor_id'];
@@ -3182,7 +3183,7 @@ class InvestmentsController extends AppController {
 //move to summary contract function and store in client ledger
                 $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand,
                     'invested_amount' => $new_cashinvested);
-                $cash_array = array('id' => $investment_cash_id, 'amount' => $investment_amount);
+                $cash_array = array('id' => $investment_cash_id, 'amount' => $investment_amount,'deposit_id' => $deposit_id);
                 $this->Session->write('cash_array',$cash_array);
                 $this->Session->write('generic_array', $generic_array);
                 $this->Session->write('ledger_data', $client_ledger);
@@ -4986,8 +4987,11 @@ class InvestmentsController extends AppController {
                         'status' => 'available'
                                 );
                          $this->Session->delete('cash_array');
-
+                       
                     $cash_save = $this->InvestmentCash->save($investmentcash_data);
+                    
+                    $deposit_id = $cash_array['deposit_id'];
+                    $deposit_data = $this->InvestorDeposit->find('first',array('InvestorDeposit.id'));
                     }else{
                     $investmentcash_data = array('reinvestor_id' => 1, 'user_id' => $userid,
                         'investment_id' => $investment_id, 'currency_id' => $result['Investment']['currency_id'],
