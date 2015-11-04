@@ -139,7 +139,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('investor_type_id', array('value' => (isset($data['Investment']['investor_type_id']) ? $data['Investment']['investor_type_id'] : 2)));
                             echo $this->Form->hidden('investor_page', array('value' => 'editFixedInvestment'));
                              echo $this->Form->hidden('investment_cash_id', array('value' => (isset($data['InvestmentCash']['id']) ? $data['InvestmentCash']['id'] : '')));
-                           
+                           echo $this->Form->hidden('deposit_id', array('value' => (isset($data['InvestmentCash']['investor_deposit_id']) ? $data['InvestmentCash']['investor_deposit_id'] : '')));
+                           echo $this->Form->hidden('topup_id', array('value' => (isset($data['InvestorDeposit']['topup_id']) ? $data['InvestorDeposit']['topup_id'] : '')));
+                          
                             echo $this->Form->hidden('ledger_transaction_id', array('value' => (isset($data['InvestorDeposit']['ledger_transaction_id']) ? $data['InvestorDeposit']['ledger_transaction_id'] : '')));
                             echo $this->Form->hidden('investor_id', array('value' => (isset($inv['Investor']['id']) ?
                                         $inv['Investor']['id'] : $data['Investment']['investor_id'])));

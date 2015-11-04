@@ -137,7 +137,7 @@ if ($this->Session->check('shopCurrency')) {
 //                                }
         } ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
-                                 
+                                 $invest_amount = $each_item['Investment']['investment_amount'];
                                 $id = $each_item['Investment']['id'];
                                $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
                                $invest_int = $interest_accrued;
