@@ -304,8 +304,8 @@ if ($this->Session->check('ledger_data')) {
                                     ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">  <?php
-                                    echo $this->Form->hidden('investment_period', array('value' => 'Day(s)'));
-                                    echo $this->Form->input('investment_period2', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
+//                                    echo $this->Form->hidden('investment_period', array('value' => 'Day(s)'));
+                                    echo $this->Form->input('investment_period', array('required', 'label' => 'Inv. Period*', 'empty' => "--Please Select--",
                                         'options' => array('Day(s)' => 'Day(s)', 'Year(s)' => 'Year(s)'),
                                         'default' => 'Day(s)', 'value' => ($this->Session->check('investtemp.investment_period') == true ?
                                                 $this->Session->read('investtemp.investment_period') : '' )));
