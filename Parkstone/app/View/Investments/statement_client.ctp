@@ -69,6 +69,9 @@ if ($this->Session->check('shopCurrency')) {
                     $amount = 0;
                     $topup_in = 0;
                      $total_bal = 0;
+                     $invest_int = 0;
+                     $invest_amount = 0;
+                     $interest_accrued = 0;
                     if(!empty($each_item['InvestmentPayment']) ){
                     foreach ($each_item['InvestmentPayment'] as $val):
                         if($val['event_type'] == 'Payment'){
@@ -135,7 +138,9 @@ if ($this->Session->check('shopCurrency')) {
         } ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
                                  
-                                
+                                $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                               $invest_int = $interest_accrued;
                                 $totals = $invest_amount + $invest_int;
         
             echo number_format($totals,2);
@@ -156,8 +161,10 @@ if ($this->Session->check('shopCurrency')) {
                             
                             
                             if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
-                                 
-                                
+                                 $invest_amount = $each_item['Investment']['investment_amount'];
+                                 $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                $invest_int = $interest_accrued;
                                 $earnbtotals = $invest_amount + $invest_int;
         
                     $total_bal += $earnbtotals;
