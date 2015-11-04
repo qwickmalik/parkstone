@@ -134,10 +134,12 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                             <?php
                             echo $this->Form->hidden('id', array('value' => (isset($data['Investment']['id']) ? $data['Investment']['id'] : $investment_id)));
-
+                            echo $this->Form->hidden('count',array('value' => (isset($count) ? $count : 0)));
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '')));
                             echo $this->Form->hidden('investor_type_id', array('value' => (isset($data['Investment']['investor_type_id']) ? $data['Investment']['investor_type_id'] : 2)));
                             echo $this->Form->hidden('investor_page', array('value' => 'editFixedInvestment'));
+                             echo $this->Form->hidden('investment_cash_id', array('value' => (isset($data['InvestmentCash']['id']) ? $data['InvestmentCash']['id'] : '')));
+                           
                             echo $this->Form->hidden('ledger_transaction_id', array('value' => (isset($data['InvestorDeposit']['ledger_transaction_id']) ? $data['InvestorDeposit']['ledger_transaction_id'] : '')));
                             echo $this->Form->hidden('investor_id', array('value' => (isset($inv['Investor']['id']) ?
                                         $inv['Investor']['id'] : $data['Investment']['investor_id'])));
@@ -281,12 +283,12 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                             <?php echo $this->Form->input('cashreceiptmode_id', array('required', 'label' => 'Cash Receipt Mode',
                                 'empty' => "--Please Select--", 'value' => ($this->Session->check('editinvesttemp.cashreceiptmode_id') == 
-                                    true ? $this->Session->read('editinvesttemp.cashreceiptmode_id') : '' ))); ?>
+                                    true ? $this->Session->read('editinvesttemp.cashreceiptmode_id') : $data['Investment']['cash_receipt_mode_id'] ))); ?>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                             <?php echo $this->Form->input('cheque_no', array('disabled', 'label' => 'Cheque No.', 'placeholder' => 
                                 "Cheque number(s)", 'value' => ($this->Session->check('editinvesttemp.cheque_no') == true ? 
-                                    $this->Session->read('editinvesttemp.cheque_no') : '' ))); ?>
+                                    $this->Session->read('editinvesttemp.cheque_no') : $data['Investment']['cheque_no']  ))); ?>
                                 </div>
                             </div>
                         </div>
@@ -405,7 +407,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Interest:</span><br>";
                                     if (isset($interest)) {
-                                        echo $shopCurrency . ' ' . $interest;
+                                        echo $shopCurrency . ' ' . number_format($interest,2,'.',',');
                                     } else {
                                         echo '';
                                     }
@@ -416,7 +418,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php
                                     echo "<span style='font-weight: bold; font-size: 11px; color: red;'>Expected Amt Due:</span><br>";
                                     if (isset($totaldue)) {
-                                        echo $shopCurrency . ' ' . $totaldue;
+                                        echo $shopCurrency . ' ' . number_format($totaldue,2,'.',',');
                                     } else {
                                         echo '';
                                     }

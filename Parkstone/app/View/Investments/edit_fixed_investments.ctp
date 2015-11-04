@@ -54,6 +54,7 @@ if ($this->Session->check('shopCurrency')) {
                     </tr>
                     <?php
                     if (isset($data)) {
+                        $x = 1;
                         foreach ($data as $each_item):
                            
                             ?>
@@ -61,7 +62,7 @@ if ($this->Session->check('shopCurrency')) {
                             <tr>
                                  <td align="left"><?php
                                   if(isset($each_item['Investment']['id'])){
-                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'].'/'.$each_item['InvestmentCash']['id'], array('class' => 'btn btn-xs btn-success',));
+                            echo $this->Html->link('Edit', '/Investments/editFixedInvestment/'.$investor_id.'/'.$each_item['Investment']['id'].'/'.$each_item['InvestmentCash']['id'].'/'.$x, array('class' => 'btn btn-xs btn-success',));
                         }
                                     ?></td>
                                 <td align="left"><?php
@@ -72,7 +73,7 @@ if ($this->Session->check('shopCurrency')) {
                                 <td align="left"><?php
                                     if (!empty($each_item['InvestmentCash']['amount'])) {
 
-                                        $invest_amount = number_format($each_item['InvestmentCash']['amount'], 2,'.',',');
+                                        $invest_amount = number_format($each_item['InvestmentCash']['amount'], 2);
                                         echo $invest_amount;
 
 //                                        echo $this->Form->input('amount', array('style' => 'width:65%','label' => false, 'required',
@@ -117,7 +118,7 @@ if ($this->Session->check('shopCurrency')) {
                            
 
                                 <?php
-                            
+                            $x++;
                         endforeach;
                     }
                     ?>
