@@ -1825,3 +1825,7 @@ ALTER TABLE `investments` CHANGE `cashreceiptmode_id` `cash_receipt_mode_id` INT
 ----------------
 ALTER TABLE `reinvestor_cashaccounts` CHANGE `equity_amount_paidout` `equity_amount_paidout` DECIMAL(11,2) NULL DEFAULT '0.00';
 ALTER TABLE `reinvestments_equities` CHANGE `investor_id` `investor_id` INT(11) NULL;
+
+11 NOVEMBER, 2015
+----------------------
+ALTER TABLE `investments` ADD `rollover_date` DATE NULL DEFAULT NULL AFTER `due_date`;
