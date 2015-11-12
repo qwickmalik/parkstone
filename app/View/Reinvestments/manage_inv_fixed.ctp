@@ -47,6 +47,9 @@
                 <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left">
                     <b><?php echo $this->Paginator->sort('id', 'ID'); ?></b>
                 </td>
+<!--                <td style="border-bottom: solid 2px dodgerblue;" width="50" align="left">
+                    <b><?php echo 'Edit' ?></b>
+                </td>-->
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('investment_date', 'Inv. Date'); ?></b>
                 </td>
@@ -65,7 +68,7 @@
                 <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('earned_balance', 'Balance'); ?></b>
                 </td>
-                <td style="border-bottom: solid 2px dodgerblue;" align="center">
+                <td style="border-bottom: solid 2px dodgerblue;" align="left">
                     <b><?php echo $this->Paginator->sort('investment_destination_id', 'Destination'); ?></b>
                 </td>
                 <td style="border-bottom: solid 2px dodgerblue; font-weight: bold;" align="center"><?php echo "Action"; ?></td>
@@ -78,6 +81,11 @@
             <?php foreach ($data as $each_item): ?>
                 <tr>
                     <td width="50" align="left"><?php echo $each_item['Reinvestment']['id']; ?></td>
+<!--                    <td width="50" align="left"><?php 
+//                    if(isset($each_item['Reinvestment']['id'])){
+//                            echo $this->Html->link('Edit', '/Reinvestments/editFixedInvestments/'.$reinvestor_id.'/'.$each_item['Reinvestment']['id'], array('class' => 'btn btn-xs btn-primary',));
+//                        }
+                    ?></td>-->
                     <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
                     <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
                     <!--<td align="left"><?php // echo $each_item['Currency']['symbol']; ?></td>-->

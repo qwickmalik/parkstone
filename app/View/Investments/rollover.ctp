@@ -251,7 +251,9 @@ if ($this->Session->check('shopCurrency_investment')) {
                             echo $this->Form->hidden('investor_type_id', array('value' => 2));
                             echo $this->Form->hidden('investor_page', array('value' => 'rollover'));
                             echo $this->Form->hidden('investor_id', array('value' => (isset($data['Investment']['investor_id']) ? $data['Investment']['investor_id'] : '')));
-
+//                            echo $this->Form->hidden('investmentproduct_id', array('empty' => "--Please Select--",
+//                                'selected' => ($data['Investment']['investment_product_id'] ? $data['Investment']['investment_product_id'] : '' ), 'style' => 'background: lilac;'));
+                            
                             echo $this->Form->input('investmentproduct_id', array('disabled', 'label' => 'Investment Product', 'empty' => "--Please Select--",
                                 'selected' => ($data['Investment']['investment_product_id'] ? $data['Investment']['investment_product_id'] : '' ), 'style' => 'background: lilac;'));
                             ?>

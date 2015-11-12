@@ -29,7 +29,9 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                                         echo $data['ClientLedger']['id'];
                                     } ?>" name="hid_ledgerid" /><input type="hidden" value="<?php if (isset($inv_data['Investment']['id'])) {
                                         echo $inv_data['Investment']['id'];
-                                    } ?>" name="hid_investid" /></td>
+                                    } ?>" name="hid_investid" /><input type="hidden" value="<?php if (isset($data['ClientLedger']['investor_id'])) {
+                                        echo $data['ClientLedger']['investor_id'];
+                                    } ?>" name="hid_investorid" /></td>
                                 
                         </tr>
                         <tr>
