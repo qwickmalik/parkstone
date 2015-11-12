@@ -1393,7 +1393,7 @@ class ReinvestmentsController extends AppController {
                     $date->add(new DateInterval('P' . $duration . 'D'));
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
-                    $statemt_array = array();
+//                    $statemt_array = array();
                     $rate = $custom_rate;
 
                     $interest_amount1 = ($rate / 100) * $investment_amount;
@@ -1401,18 +1401,18 @@ class ReinvestmentsController extends AppController {
                     $amount_due = $interest_amount + $investment_amount;
                     $ainterest_amount = $interest_amount1 * ($aduration / 365);
                     $aamount_due = $ainterest_amount + $investment_amount;
-                    for ($n = 1; $n <= $duration; $n++) {
-                        $date_statemt->add(new DateInterval('P1D'));
-                        $interest_amount2 = $interest_amount1 * (1 / 365);
-                        $total = $interest_amount2 + $principal;
-                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                            'principal' => $principal,
-                            'interest' => $interest_amount2,
-                            'maturity_date' => $date_statemt->format('Y-m-d'),
-                            'total' => $total);
-//                        $principal = $total;
-                    }
+//                    for ($n = 1; $n <= $duration; $n++) {
+//                        $date_statemt->add(new DateInterval('P1D'));
+//                        $interest_amount2 = $interest_amount1 * (1 / 365);
+//                        $total = $interest_amount2 + $principal;
+//                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+//                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+//                            'principal' => $principal,
+//                            'interest' => $interest_amount2,
+//                            'maturity_date' => $date_statemt->format('Y-m-d'),
+//                            'total' => $total);
+////                        $principal = $total;
+//                    }
 
                     break;
 //
@@ -1448,7 +1448,7 @@ class ReinvestmentsController extends AppController {
                     $date->sub(new DateInterval('P1D'));
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
-                    $statemt_array = array();
+//                    $statemt_array = array();
                     $rate = $custom_rate;
 
                     $YEAR2DAYS = 365 * $duration;
@@ -1459,19 +1459,19 @@ class ReinvestmentsController extends AppController {
                      $aYEAR2DAYS = 365 * $aduration;
                     $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
                     $aamount_due = $ainterest_amount + $investment_amount;
-                    for ($n = 1; $n <= $duration; $n++) {
-                        $date_statemt->add(new DateInterval('P1Y'));
-
-                        $interest_amount2 = $interest_amount1 * (365 / 365);
-                        $total = $interest_amount2 + $principal;
-                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                            'principal' => $principal,
-                            'interest' => $interest_amount2,
-                            'maturity_date' => $date_statemt->format('Y-m-d'),
-                            'total' => $total);
-//                        $principal = $total;
-                    }
+//                    for ($n = 1; $n <= $duration; $n++) {
+//                        $date_statemt->add(new DateInterval('P1Y'));
+//
+//                        $interest_amount2 = $interest_amount1 * (365 / 365);
+//                        $total = $interest_amount2 + $principal;
+//                        $statemt_array[] = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+//                            'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+//                            'principal' => $principal,
+//                            'interest' => $interest_amount2,
+//                            'maturity_date' => $date_statemt->format('Y-m-d'),
+//                            'total' => $total);
+////                        $principal = $total;
+//                    }
 
 
                     break;
@@ -1515,7 +1515,7 @@ class ReinvestmentsController extends AppController {
             if ($check) {
                 $this->Session->delete('statemt_array_refixed');
             }
-            $this->Session->write('statemt_array_refixed', $statemt_array);
+//            $this->Session->write('statemt_array_refixed', $statemt_array);
             $check = $this->Session->check('investment_array_refixed');
             if ($check) {
                 $this->Session->delete('investment_array_refixed');
@@ -1564,19 +1564,19 @@ class ReinvestmentsController extends AppController {
             if ($check) {
                 $this->Session->delete('reinvesttemp');
             }
-            $statemt_array = $this->Session->check('statemt_array_fixed');
-            if ($statemt_array) {
-                $statemt_array = $this->Session->read('statemt_array_fixed');
-
-
-                foreach ($statemt_array as $key => $val) {
-                    $val['reinvestment_id'] = $reinvestment_id;
-
-                    $this->ReinvestmentStatement->create();
-                    $this->ReinvestmentStatement->save($val);
-                }
-                $this->Session->delete('statemt_array_fixed');
-            }
+//            $statemt_array = $this->Session->check('statemt_array_fixed');
+//            if ($statemt_array) {
+//                $statemt_array = $this->Session->read('statemt_array_fixed');
+//
+//
+//                foreach ($statemt_array as $key => $val) {
+//                    $val['reinvestment_id'] = $reinvestment_id;
+//
+//                    $this->ReinvestmentStatement->create();
+//                    $this->ReinvestmentStatement->save($val);
+//                }
+//                $this->Session->delete('statemt_array_fixed');
+//            }
             //subtract from reinvestoraacount fixed balance and probably deposit
             $reinvestment_data = $this->ReinvestorCashaccount->find('first', ['recursive' => -1, 'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]);
             if ($reinvestment_data) {
@@ -2376,6 +2376,106 @@ class ReinvestmentsController extends AppController {
         }
     }
 
+    
+    function editFixedInvestments($investor_id = null, $investment_id = null) {
+        $this->__validateUserType();
+
+        if (!is_null($investor_id)) {
+            $investor_data = $this->Investor->find('first', array('recursive' => -1, 'conditions' => array('Investor.id' => $investor_id)));
+            $data = $this->InvestmentCash->find('all', array('conditions' =>
+                array(
+                    'InvestmentCash.investment_id' => $investment_id, 'InvestmentCash.investment_type' => 'fixed'
+            )));
+          
+if ($this->Session->check('editinvesttemp')) {
+          $this->Session->delete('editinvesttemp');
+         }
+            $issued = $this->Session->check('userDetails');
+            if ($issued) {
+                $issued = $this->Session->read('userDetails.firstname');
+                $issued .= ' ' . $this->Session->read('userDetails.lastname');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+                $data_total = $this->Investment->find('all', array('fields' =>
+                    array("SUM(Investment.earned_balance) as 'balance_due'"),
+                    'conditions' => array('Investment.investor_id' => $investor_id,
+                        'NOT' => array('Investment.status' => array('Cancelled', 'Paid')))));
+
+
+                if ($data_total) {
+                    $this->set('total', $data_total);
+                }
+                $this->set('data', $data);
+                $this->set('investor_data', $investor_data);
+                $this->set('investor_id', $investor_id);
+                $this->set('investor_name', $investor_data['Investor']['fullname']);
+            } else {
+
+//print_r('11');exit;
+                $message = 'Sorry, Investment Details Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        } else {
+//print_r('oo');exit;
+            $message = 'Sorry, Investor Details Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+        }
+    }
+    
+    function editFixedInvestment($investor_id = null, $investment_id = null, $investmentcash_id = null,$count= null) {
+        $this->__validateUserType();
+        $this->set('portfolios', $this->Portfolio->find('list'));
+        $this->set('currencies', $this->Currency->find('list'));
+        $this->set('investmentterms', $this->InvestmentTerm->find('list'));
+        $this->set('paymentschedules', $this->PaymentSchedule->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('cashreceiptmodes', $this->CashReceiptMode->find('list'));
+        $this->set('investmentproducts', $this->InvestmentProduct->find('list'));
+        $this->set('instructions', $this->Instruction->find('list'));
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+
+        if (!is_null($investor_id)) {
+
+            $ledger = $this->ClientLedger->find('first', ['conditions' => ['ClientLedger.investor_id' => $investor_id]]);
+
+            if ($ledger) {
+                $this->set('inv', $ledger);
+            }
+        }
+
+        if (!is_null($investment_id)) {
+            $data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $investmentcash_id)));
+            if ($data) {
+                $this->set('count',$count);
+                $this->set('data', $data);
+                $this->set('investment_id', $investment_id);
+                $check = $this->Session->check('variabless_fixed');
+                if ($check) {
+                    $check = $this->Session->check('variabless_fixed.duedate');
+                    if ($check) {
+                        $this->set('duedate', $this->Session->read('variabless_fixed.duedate'));
+                    }
+                    $check = $this->Session->check('variabless_fixed.interest');
+                    if ($check) {
+                        $this->set('interest', $this->Session->read('variabless_fixed.interest'));
+                    }
+                    $check = $this->Session->check('variabless_fixed.totaldue');
+                    if ($check) {
+                        $this->set('totaldue', $this->Session->read('variabless_fixed.totaldue'));
+                    }
+                }
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+            }
+        }
+    }
     function manageInvEquity($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
@@ -3281,7 +3381,8 @@ class ReinvestmentsController extends AppController {
 //        $this->__validateUserType3();
         $this->paginate = array(
             'conditions' => array(
-                'Reinvestment.status' => array('Matured', 'Payment_Requested'), 'Reinvestment.investment_type' => array('fixed')),
+                'Reinvestment.status' => array('Matured', 'Payment_Requested'), 
+                 'Reinvestment.investment_type' => array('fixed')),
             'limit' => 30,
             'order' => array('Reinvestment.id' => 'asc'));
         $data = $this->paginate('Reinvestment');
@@ -3756,7 +3857,11 @@ class ReinvestmentsController extends AppController {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
                     $year = $duration;
+                    if($data['Reinvestment']['due_date'] <= date('Y-m-d')){
+                         $custom_rate = $data['Reinvestment']['interest_rate'];
+                    }else{
                     $custom_rate = $data['Reinvestment']['interest_rate'] - $penalty;
+                    }
                     $investment_amount = $data['Reinvestment']['investment_amount'];
 
                     switch ($period) {
@@ -3766,24 +3871,24 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
-                            for ($n = 1; $n <= $duration; $n++) {
-                                $date_statemt->add(new DateInterval('P1D'));
-                                $interest_amount2 = $interest_amount1 * (1 / 365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $userid,
-                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
-//                                $principal = $total;
-                            }
+//                            for ($n = 1; $n <= $duration; $n++) {
+//                                $date_statemt->add(new DateInterval('P1D'));
+//                                $interest_amount2 = $interest_amount1 * (1 / 365);
+//                                $total = $interest_amount2 + $principal;
+//                                $statemt_array[] = array('user_id' => $userid,
+//                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+//                                    'principal' => $principal,
+//                                    'interest' => $interest_amount2,
+//                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                    'total' => $total);
+////                                $principal = $total;
+//                            }
 
                             break;
                         case 'Year(s)':
@@ -3793,25 +3898,25 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
-                            for ($n = 1; $n <= $duration; $n++) {
-                                $date_statemt->add(new DateInterval('P1D'));
-                                $interest_amount2 = $interest_amount1 * (365 / 365);
-                                $total = $interest_amount2 + $principal;
-                                $statemt_array[] = array('user_id' => $userid,
-                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                                    'principal' => $principal,
-                                    'interest' => $interest_amount2,
-                                    'maturity_date' => $date_statemt->format('Y-m-d'),
-                                    'total' => $total);
-//                            $principal = $total;
-                            }
+//                            for ($n = 1; $n <= $duration; $n++) {
+//                                $date_statemt->add(new DateInterval('P1D'));
+//                                $interest_amount2 = $interest_amount1 * (365 / 365);
+//                                $total = $interest_amount2 + $principal;
+//                                $statemt_array[] = array('user_id' => $userid,
+//                                    'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+//                                    'principal' => $principal,
+//                                    'interest' => $interest_amount2,
+//                                    'maturity_date' => $date_statemt->format('Y-m-d'),
+//                                    'total' => $total);
+////                            $principal = $total;
+//                            }
 
                             break;
                     }
@@ -3957,7 +4062,7 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             $interest_amount1 = ($rate / 100) * $investment_amount;
@@ -3973,7 +4078,7 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             //$YEAR2DAYS = 365 * $duration;
@@ -4007,7 +4112,7 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             $interest_amount1 = ($rate / 100) * $investment_amount;
@@ -4023,7 +4128,7 @@ class ReinvestmentsController extends AppController {
                             $date->add(new DateInterval('P' . $duration . 'D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
-                            $statemt_array = array();
+//                            $statemt_array = array();
                             $rate = $custom_rate;
 
                             //$YEAR2DAYS = 365 * $duration;
@@ -4059,7 +4164,7 @@ class ReinvestmentsController extends AppController {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
                     
-                    $accrued_days = $duration;
+                    $accrued_days = $duration+1;
                     return $accrued_days;
                     break;
                         case 'Termination_Approved':
@@ -4075,7 +4180,7 @@ class ReinvestmentsController extends AppController {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
                     
-                    $accrued_days = $duration;
+                    $accrued_days = $duration+1;
                     return $accrued_days;
                     break;
             }

@@ -89,9 +89,21 @@ if ($this->Session->check('shopCurrency')) {
                             <td align="left"><?php if (!empty($each_item['Investment']['investment_amount'])) {
                                 if(!empty($topup_principal)){
                                     
+//                                    foreach($topup_principal as $tp_val){
+//                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id']){
+//                                        $topup_pt += $tp_val[0]['total_topup'];
+//                                        }
+//                                    }
+                                    
                                     foreach($topup_principal as $tp_val){
-                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id']){
-                                        $topup_pt += $tp_val[0]['total_topup'];
+                                        
+                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id'] ){
+                                            if(!empty($each_item['Investment']['rollover_date']) && $each_item['Investment']['rollover_date'] <= $tp_val['Topup']['investment_date']){
+                                               $topup_pt += $tp_val[0]['total_topup']; 
+                                            }elseif(empty($each_item['Investment']['rollover_date'])){
+                                               $topup_pt += $tp_val[0]['total_topup'];  
+                                            }
+                                        
                                         }
                                     }
                                     $invest_amount = $each_item['Investment']['investment_amount'] - $topup_pt;
@@ -137,7 +149,26 @@ if ($this->Session->check('shopCurrency')) {
 //                                }
         } ?></td>
                             <td align="left"><?php if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
+                                $invest_amount = 0;
+                                $invest_int= 0;
                                  $invest_amount = $each_item['Investment']['investment_amount'];
+                                 $topup_pt = 0;
+                                  if(!empty($topup_principal)){
+                                    
+                                    foreach($topup_principal as $tp_val){
+                                        
+                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id'] ){
+                                            if(!empty($each_item['Investment']['rollover_date']) && $each_item['Investment']['rollover_date'] <= $tp_val['Topup']['investment_date']){
+                                               $topup_pt += $tp_val[0]['total_topup']; 
+                                            }elseif(empty($each_item['Investment']['rollover_date'])){
+                                               $topup_pt += $tp_val[0]['total_topup'];  
+                                            }
+                                        
+                                        }
+                                    }
+                                    $invest_amount = $each_item['Investment']['investment_amount'] - $topup_pt;
+                                   
+                                }
                                 $id = $each_item['Investment']['id'];
                                $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
                                $invest_int = $interest_accrued;
@@ -161,12 +192,37 @@ if ($this->Session->check('shopCurrency')) {
                             
                             
                             if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
+                                
+                                  $invest_amount = 0;
+                                $invest_int= 0;
                                  $invest_amount = $each_item['Investment']['investment_amount'];
+                                 $topup_pt = 0;
+                                  if(!empty($topup_principal)){
+                                    
+//                                    foreach($topup_principal as $tp_val){
+//                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id']){
+//                                        $topup_pt += $tp_val[0]['total_topup'];
+//                                        }
+//                                    }
+                                      foreach($topup_principal as $tp_val){
+                                        
+                                        if($tp_val['Topup']['investment_id'] == $each_item['Investment']['id'] ){
+                                            if(!empty($each_item['Investment']['rollover_date']) && $each_item['Investment']['rollover_date'] <= $tp_val['Topup']['investment_date']){
+                                               $topup_pt += $tp_val[0]['total_topup']; 
+                                            }elseif(empty($each_item['Investment']['rollover_date'])){
+                                               $topup_pt += $tp_val[0]['total_topup'];  
+                                            }
+                                        
+                                        }
+                                    }
+                                    $invest_amount = $each_item['Investment']['investment_amount'] - $topup_pt;
+                                   
+                                }
                                  $id = $each_item['Investment']['id'];
                                $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
                                 $invest_int = $interest_accrued;
                                 $earnbtotals = $invest_amount + $invest_int;
-        
+                                $earnbtotals= $earnbtotals - $amount;
                     $total_bal += $earnbtotals;
             echo number_format($earnbtotals,2,'.',',');
             
@@ -177,8 +233,85 @@ if ($this->Session->check('shopCurrency')) {
                        
                     <?php 
                     if(!empty($each_item['Topup']) ){
+                        if(!empty($each_item['Investment']['rollover_date'])){
+                                            
                         ?>
                        <tr ><td colspan="10">
+                               <table class="table table-condensed" style="font-size:75%">
+                                  <tr>
+                                      <th align="left" width="120">&nbsp;</th>
+                        <th align="left" width="120">&nbsp;</th>
+                        <th align="left" width="100">Topup Amt. &nbsp;</th>
+                        <th align="left">Benchmark(%)</th>
+                        <th align="left">Interest</th>
+                        <th align="left">Total</th>
+                        <th align="left">Topup Date</th>
+                        <th align="left" width="120">Maturity Date</th>
+                        <th align="left">Topup Tenure</th>
+                    </tr>  
+                    <?php
+                    
+                    foreach ($each_item['Topup'] as $val):
+                        if($each_item['Investment']['rollover_date'] <= $val['investment_date']){
+                                    ?>
+                    <tr>
+                        <th align="left" width="120">&nbsp;</th>
+                            <td align="left">&nbsp;</td>
+                            <td align="left"><?php
+                            $princ=0;
+                            $princ =  number_format($val['topup_amount'],2);
+                            echo  number_format($val['topup_amount'],2); ?></td>
+                            <td align="left"><?php if (isset($each_item['Investment']['custom_rate'])) {
+            echo  $each_item['Investment']['custom_rate'].'%';
+        } ?></td>
+                            <td align="left"><?php // echo number_format($val['topup_interest'],2);
+                            $interest_amountt = 0;
+                            $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $principal = $val['topup_amount'];
+                            $rate = $each_item['Investment']['custom_rate'];
+                            $interest_amount1 = ($rate / 100) * $principal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                           
+                            
+                             echo number_format($interest_amountt,2,'.',',');
+                            ?></td>
+                            <td align="left"><?php
+                            $int = 0;
+                            if(isset($interest_amountt)){
+                            $int =  $interest_amountt;
+                            }
+                            $totaltop = $int + $val['topup_amount'];
+                            $total_bal += $totaltop;
+                            echo number_format($totaltop,2,'.',','); ?></td>
+                            <td align="left"><?php if (isset($val['investment_date'])) {
+            echo  date('d-M-Y',strtotime($val['investment_date']));
+        } ?></td>
+                            <td align="left"><?php if (isset($each_item['Investment']['due_date'])){
+                                echo  date('d-M-Y',strtotime($each_item['Investment']['due_date']));
+        } ?></td>
+                            <td align="left"><?php if (isset($val['tenure'])) {
+            echo  $val['tenure'].'Day(s)';
+        } ?></td>
+                            
+                       </tr>
+                       <?php
+                        }
+                       endforeach;
+                       ?>
+                               </table>
+                           </td> 
+                       </tr>
+                       
+                       <?php
+                    }elseif(empty($each_item['Investment']['rollover_date'])){
+                        
+                        ?>
+                    <tr ><td colspan="10">
                                <table class="table table-condensed" style="font-size:75%">
                                   <tr>
                                       <th align="left" width="120">&nbsp;</th>
@@ -246,9 +379,8 @@ if ($this->Session->check('shopCurrency')) {
                                </table>
                            </td> 
                        </tr>
-                       
                        <?php
-                        
+                    } 
                     }
                     ?>
                           

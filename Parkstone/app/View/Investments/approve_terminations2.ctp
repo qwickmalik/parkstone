@@ -119,7 +119,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                                 <label for="ApproveInvestmentsApprovals2">Pending Approval</label>
                             </fieldset></td>
                 <td align="right"></td>
-                <td align="right">Closing Balance</td>
+                <td align="right">Closing Ledger Balance</td>
                 <td align="right" colspan="2">
                     
                     <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GH$ '.number_format($data['ClientLedger']['available_cash']); } ?>
