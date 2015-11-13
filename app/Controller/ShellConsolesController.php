@@ -12,7 +12,7 @@ class ShellConsolesController extends AppController {
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
          'Equity',  'Customer','InvestmentCash','InterestAccrual',
         'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment','ReinvestInterestAccrual',
-        'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement','ManagementFee');
+        'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement','ManagementFee','ReinvestmentTopup');
 
     function beforeFilter() {
         
@@ -242,38 +242,106 @@ function __invEOD(){
 
 function __dailyInterests(){
     
-    $investment_data = $this->Investment->find('all',['recursive' => -1,
-        'conditions' => ['Investment.status' => array('Rolled_over','Invested','Termination_Requested')]]);
+//    $investment_data = $this->Investment->find('all',['recursive' => -1,
+//        'conditions' => ['Investment.status' => array('Rolled_over','Invested','Termination_Requested')]]);
+     $investment_data = $this->Investment->find('all', array('conditions' =>
+                array(
+                    'Investment.investment_amount >' => 0,
+                    'Investment.investment_product_id' => array(1, 3),
+                    'Investment.status' => array('Rolled_over','Invested','Termination_Requested')
+                    ),'contain' => array('Topup')
+            ));
+     
     if($investment_data){
         foreach($investment_data as $value){
-        $term_id = $value['Investment']['investment_term_id'];
-        
-        
+            
+        $status = $value['Investment']['status']; 
         $investment_amount1 = $value['Investment']['total_amount_earned'];
         $investment_amount = $value['Investment']['earned_balance'];
         $principal_amount  = $value['Investment']['investment_amount'];
+        $due_date = $value['Investment']['due_date'];
         $rate = $value['Investment']['custom_rate'];
-        $date = date('Y-m-d');
-        $yearly_interest = ($rate / 100) * $principal_amount;
-        $daily_interest = $yearly_interest/365;
-        $old_accrued_interest = $value['Investment']['interest_accrued'];
-        $new_accrued_interest = $old_accrued_interest + $daily_interest;
-        $new_balanced_earned = $investment_amount + $daily_interest;
-        $new_total_earned = $investment_amount1 + $daily_interest;
+        $period = $value['Investment']['investment_period']; 
+        $topup_interestaccrued = 0;
+        switch ($status){
+            case 'Rolled_over':
+                if(!empty($value['Topup'])){
+                    foreach ($value['Topup'] as $val):
+                        if($value['Investment']['rollover_date'] <= $val['investment_date']){
+                           $principal_amount = $principal_amount -  $val['topup_amount'];
+                           
+                           $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            if($due_date <= $date){
+                                $date = $due_date;
+                            }
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $tprincipal = $val['topup_amount'];
+                            
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            $topup_interestaccrued += $interest_amountt;
+                               
+                        }
+            
+                    endforeach;
+                }
+                break;
+           default:
+                  if(!empty($value['Topup'])){
+                    foreach ($value['Topup'] as $val):
+                    
+                           $principal_amount = $principal_amount -  $val['topup_amount'];
+                           $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            if($due_date <= $date){
+                                $date = $due_date;
+                            }
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $tprincipal = $val['topup_amount'];
+                            
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            $topup_interestaccrued += $interest_amountt;
+                        
+            
+                    endforeach;
+                }  
+                
+                break;
+        }
         $afirst_date = $value['Investment']['investment_date'];
+        $due_date = $value['Investment']['due_date'];
         $ainv_date = new DateTime($afirst_date);
         $aend_date = date('Y-m-d');
+        if($due_date <= $aend_date){
+            $aend_date = $due_date;
+        }
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
          $aduration = $aduration->format("%a");
-                            $statemt_array = array(
-                                'investment_id' => $value['Investment']['id'],
-                                'investor_id' => $value['Investment']['investor_id'],
-                                'principal' => round($principal_amount,2),
-                                'interest' => round($daily_interest,2),
-                                'date' => $date,
-                                'accrued_days' => $aduration,
-                                'total' => round($new_balanced_earned,2));
+        $date = date('Y-m-d');
+        $yearly_interest = ($rate / 100) * $principal_amount;
+        $daily_interest = $yearly_interest * ($aduration/365);
+//        $old_accrued_interest = $value['Investment']['interest_accrued'];
+        $new_accrued_interest = $daily_interest + $topup_interestaccrued;
+        $new_balanced_earned = $investment_amount + $new_accrued_interest;
+        $new_total_earned = $investment_amount1 + $new_accrued_interest;
+        
+//                            $statemt_array = array(
+//                                'investment_id' => $value['Investment']['id'],
+//                                'investor_id' => $value['Investment']['investor_id'],
+//                                'principal' => round($principal_amount,2),
+//                                'interest' => round($daily_interest,2),
+//                                'date' => $date,
+//                                'accrued_days' => $aduration,
+//                                'total' => round($new_balanced_earned,2));
                             
                              $investment_array = array(
                                  'id' => $value['Investment']['id'],
@@ -282,15 +350,15 @@ function __dailyInterests(){
                                  'accrued_days' => $aduration,
                             'interest_accrued' => round($new_accrued_interest,2)
                         );
-                    $this->DailyInterestStatement->create();       
-                    $this->DailyInterestStatement->save($statemt_array);
+//                    $this->DailyInterestStatement->create();       
+//                    $this->DailyInterestStatement->save($statemt_array);
                     
                      $this->Investment->save($investment_array);
                        $interest_accruals = array(
                         'investor_id' => $value['Investment']['investor_id'],
                            'investment_id' => $value['Investment']['id'],
                         'interest_amounts' => round($daily_interest,2),
-                        'interest_date' => $aend_date
+                        'interest_date' => $date
                     );
                        $this->InterestAccrual->create();
                $this->InterestAccrual->save($interest_accruals);     
@@ -301,39 +369,108 @@ function __dailyInterests(){
 }
 function __dailyReinvestmentInterests(){
     
-    $investment_data = $this->Reinvestment->find('all',['recursive' => -1,
-        'conditions' => ['Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested')]]);
+     $investment_data = $this->Reinvestment->find('all', array('conditions' =>
+                array(
+                    'Reinvestment.investment_amount >' => 0,
+                    'Reinvestment.status' => array('Rolled_over','Invested','Termination_Requested')
+                    ),  'contain' => array('ReinvestmentTopup')
+            ));
     if($investment_data){
         foreach($investment_data as $value){
-//        $term_id = $value['Reinvestment']['investment_term_id'];
-        
-        
+        $status = $value['Reinvestment']['status']; 
+        $period = $value['Reinvestment']['investment_period']; 
         $investment_amount1 = $value['Reinvestment']['total_amount_earned'];
         $investment_amount = $value['Reinvestment']['earned_balance'];
         $principal_amount  = $value['Reinvestment']['investment_amount'];
+        $due_date = $value['Reinvestment']['due_date'];
         $rate = $value['Reinvestment']['interest_rate'];
-        $date = date('Y-m-d');
-        $yearly_interest = ($rate / 100) * $principal_amount;
-        $daily_interest = $yearly_interest/365;
-        $old_accrued_interest = $value['Reinvestment']['interest_earned'];
-        $new_accrued_interest = $old_accrued_interest + $daily_interest;
-        $new_balanced_earned = $investment_amount + $daily_interest;
-        $new_total_earned = $investment_amount1 + $daily_interest;
-        $afirst_date = $value['Reinvestment']['investment_date'];
+        $topup_interestaccrued = 0;
+      switch ($status){
+            case 'Rolled_over':
+                if(!empty($value['ReinvestmentTopup'])){
+                    foreach ($value['ReinvestmentTopup'] as $val):
+                        if($value['Reinvestment']['rollover_date'] <= $val['investment_date']){
+                           $principal_amount = $principal_amount -  $val['topup_amount'];
+                           
+                           $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            if($due_date <= $date){
+                                $date = $due_date;
+                            }
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $tprincipal = $val['topup_amount'];
+                            
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            $topup_interestaccrued += $interest_amountt;
+                               
+                        }
+            
+                    endforeach;
+                }
+                break;
+           default:
+                  if(!empty($value['ReinvestmentTopup'])){
+                    foreach ($value['ReinvestmentTopup'] as $val):
+                    
+                           $principal_amount = $principal_amount -  $val['topup_amount'];
+                           $tfirst_date = $val['investment_date'];
+                            $inv_date = new DateTime($tfirst_date);
+                            $date = date('Y-m-d');
+                            if($due_date <= $date){
+                                $date = $due_date;
+                            }
+                            $to_date = new DateTime($date);
+                            $tduration = date_diff($inv_date, $to_date);
+                            $tduration = $tduration->format("%a");
+                            $tprincipal = $val['topup_amount'];
+                            
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            $topup_interestaccrued += $interest_amountt;
+                        
+            
+                    endforeach;
+                }  
+                
+                break;
+        }
+          $afirst_date = $value['Reinvestment']['investment_date'];
+        $due_date = $value['Reinvestment']['due_date'];
         $ainv_date = new DateTime($afirst_date);
         $aend_date = date('Y-m-d');
+        if($due_date <= $aend_date){
+            $aend_date = $due_date;
+        }
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
          $aduration = $aduration->format("%a");
+        $date = date('Y-m-d');
+        $yearly_interest = ($rate / 100) * $principal_amount;
+        $daily_interest = $yearly_interest * ($aduration/365);
+//        $old_accrued_interest = $value['Investment']['interest_accrued'];
+        $new_accrued_interest = $daily_interest + $topup_interestaccrued;
+        $new_balanced_earned = $investment_amount + $new_accrued_interest;
+        $new_total_earned = $investment_amount1 + $new_accrued_interest;
+        
+        
+        
+        
        
-                            $statemt_array = array(
-                                'reinvestment_id' => $value['Reinvestment']['id'],
-                                'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
-                                'principal' => $principal_amount,
-                                'interest' => round($daily_interest,2),
-                                'date' => $date,
-                                'accrued_days' => $aduration,
-                                'total' => round($new_balanced_earned,2));
+        
+        
+       
+//                            $statemt_array = array(
+//                                'reinvestment_id' => $value['Reinvestment']['id'],
+//                                'reinvestor_id' => $value['Reinvestment']['reinvestor_id'],
+//                                'principal' => $principal_amount,
+//                                'interest' => round($daily_interest,2),
+//                                'date' => $date,
+//                                'accrued_days' => $aduration,
+//                                'total' => round($new_balanced_earned,2));
                             
                              $investment_array = array(
                                  'id' => $value['Reinvestment']['id'],
@@ -343,8 +480,8 @@ function __dailyReinvestmentInterests(){
                             'interest_earned' => round($new_accrued_interest,2)
                         );
                              
-                    $this->DailyReinvestinterestStatement->create();       
-                    $this->DailyReinvestinterestStatement->save($statemt_array);
+//                    $this->DailyReinvestinterestStatement->create();       
+//                    $this->DailyReinvestinterestStatement->save($statemt_array);
                     
                      $this->Reinvestment->save($investment_array);
                       $interest_accruals = array(
