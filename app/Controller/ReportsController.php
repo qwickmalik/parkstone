@@ -2859,7 +2859,7 @@ function aggregateOutboundInvestment() {
             $accounts = $this->Reinvestment->find('all', array('order' => array('InvestmentDestination.company_name' => 'asc'),
                 'contains' => array('InvestmentReturn'),
                 'conditions' => array('Reinvestment.investment_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date),
+                    array($start_date, $end_date),'Reinvestment.reinvestor_id' => 1,
                     'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested','Terminated'))));
 //pr($accounts);exit;
 //, 'group' => array('Expectedinstallment.zone_id')
@@ -3093,7 +3093,7 @@ function aggregateOutboundInvestment() {
             $datacount = $this->ReinvestInterestAccrual->find('count', array('order' => array('Reinvestor.company_name' => 'asc'),
                 'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                         'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
-                    'Reinvestment.investment_destination_id' => $destination_id
+                    'Reinvestment.investment_destination_id' => $destination_id,'Reinvestment.reinvestor_id' => 1,
                 ),
                 'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'Reinvestor.company_name',
                     'SUM(interest_amounts) as interests', 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
@@ -3107,7 +3107,7 @@ function aggregateOutboundInvestment() {
                 $this->paginate = array('order' => array('Reinvestor.company_name' => 'asc'),
                     'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                             'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
-                        'Reinvestment.investment_destination_id' => $destination_id
+                        'Reinvestment.investment_destination_id' => $destination_id,'Reinvestment.reinvestor_id' => 1,
                     ),
                     'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'Reinvestor.company_name',
                         'SUM(interest_amounts) as interests', 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
@@ -3123,7 +3123,7 @@ function aggregateOutboundInvestment() {
                     $bbf_total = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'),
                         'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                                 'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date) <' => $year,
-                            'Reinvestment.investment_destination_id' => $destination_id
+                            'Reinvestment.investment_destination_id' => $destination_id,'Reinvestment.reinvestor_id' => 1,
                         ),
                         'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
                         'group' => array('ReinvestInterestAccrual.reinvestment_id')));
@@ -3133,7 +3133,7 @@ function aggregateOutboundInvestment() {
                     $total = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'),
                         'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                                 'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date) <=' => $year,
-                            'Reinvestment.investment_destination_id' => $destination_id
+                            'Reinvestment.investment_destination_id' => $destination_id,'Reinvestment.reinvestor_id' => 1,
                         ),
                         'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
                         'group' => array('ReinvestInterestAccrual.reinvestment_id')));
@@ -3141,7 +3141,7 @@ function aggregateOutboundInvestment() {
                     $total = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'),
                         'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                                 'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
-                            'Reinvestment.investment_destination_id' => $destination_id
+                            'Reinvestment.investment_destination_id' => $destination_id,'Reinvestment.reinvestor_id' => 1,
                         ),
                         'fields' => array('ReinvestInterestAccrual.reinvestor_id', 'SUM(interest_amounts) as total_interests'),
                         'group' => array('ReinvestInterestAccrual.reinvestment_id')));

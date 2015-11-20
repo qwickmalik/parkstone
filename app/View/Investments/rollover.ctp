@@ -324,7 +324,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 <?php
                                 echo $this->Form->input('base_fees', array('label' => 'Base Fee(%)', 'class' => 'required', 'value' =>
                                     ($this->Session->check('rollovertemp.base_fees') == true ?
-                                            $this->Session->read('rollovertemp.base_fees') : $data['Investment']['base_fees']  )));
+                                            $this->Session->read('rollovertemp.base_fees') : $data['Investment']['base_rate']  )));
                                 ?> 
                             </div>  
                             <div class="col-lg-4 col-md-4 col-sm-12 BenchmarkRate">

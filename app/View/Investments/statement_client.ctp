@@ -79,6 +79,8 @@ if ($this->Session->check('shopCurrency')) {
                         }
                         endforeach;
                     }
+                    
+//                    if(empty($each_item['Investment']['rollover_date'])){
                         ?>
                     
                        <tr>
