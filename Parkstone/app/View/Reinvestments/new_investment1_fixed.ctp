@@ -40,15 +40,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                             $reinvestorcashaccounts['ReinvestorCashaccount']['modified'] : '' );?>
                                 </div>
                             </div>
-<!--                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php // echo "<p><b>Currency:</b></p>";?>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php // echo (isset($reinvestorcashaccounts['Currency']['symbol']) ? 
-//                                            $reinvestorcashaccounts['Currency']['symbol'] : '' );?>
-                                </div>
-                            </div>-->
+             
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     <?php echo "<p><b>Deposited Amount:</b></p>";?>
@@ -58,7 +50,24 @@ if ($this->Session->check('shopCurrency_investment')) {
                                             $shopCurrency." ".number_format($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_amount'], 2) : '' );?>
                                 </div>
                             </div>
-                            
+                                           <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <?php echo "<p><b>Invested Amount:</b></p>";?>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <?php  if(isset($reinvest_totals)){ 
+                                        $total_fixed = 0;
+                                        
+                                        foreach($reinvest_totals as $val){
+                                  $total_fixed +=  $val[0]['invest_amt'];
+                                        }
+                                    echo $total_fixed;  
+                                    }
+                                    
+                                    
+                                    ?>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     <?php echo "<p><b>Available Amount:</b></p>";?>

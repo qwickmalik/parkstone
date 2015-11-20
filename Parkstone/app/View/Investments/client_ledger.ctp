@@ -87,7 +87,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 <td align="left"><b>Voucher Number</b></td>
                 <td align="right"><b><?php echo $this->Paginator->sort('debit', 'Debit'); ?></b></td><!-- not printer-friendly -->
                 <td align="right"><b><?php echo $this->Paginator->sort('credit', 'Credit'); ?></b></td><!-- not printer-friendly -->
-                <td align="center"><b>Benchmark</b></td>
+                <td align="center"><b>Benchmark(%)</b></td>
                 <td align="center"><b>Management Fee</b></td>
                 <td align="left"><b>Description</b></td>
                 
@@ -152,12 +152,46 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                     </td>
                 <td align="left"><b>
                     
-                    <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GH$ '.number_format($data['ClientLedger']['available_cash']); } ?>
+                    <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GH$ '.number_format($data['ClientLedger']['available_cash'],2); } ?>
                </b> </td>
             </tr>
         </table>
     </div>
-
+     <?php
+            if(isset($this->Paginator)){
+            
+            ?>
+            
+           
+             <div class="pagination">
+                                 <table>
+                                <tbody>
+                       
+                                <tr>
+                                    <td colspan="6" align="center">
+                                        <?php
+                                        echo $this->Paginator->first($this->Html->image('first.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'First', 'title' => 'First')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->prev($this->Html->image('prev.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Previous', 'title' => 'Previous')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->numbers() . "&nbsp;&nbsp;";
+                                        echo $this->Paginator->next($this->Html->image('next.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Next', 'title' => 'Next')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        echo $this->Paginator->last($this->Html->image('last.png', array('width' => 15, 'height' => 15, 'valign' => 'middle', 'alt' => 'Last', 'title' => 'Last')), array('escape' => false), null, null, array('class' => 'disabled')) . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                        //prints X of Y, where X is current page and Y is number of pages
+                                        echo $this->Paginator->counter(array('format' => 'Page %page% of %pages%, showing %current% items out of %count% total'));
+                                        ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+<!--                                <ul>
+                                    <li><a href="#">Prev</a></li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">Next</a></li>
+                                </ul>-->
+                            </div>
+              <?php  
+            }
+            ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <?php
             echo $this->Html->link('Back', "/Investments/manageInvestments", array('style' => 'float: right;',"class" => 'btn btn-md btn-info'));

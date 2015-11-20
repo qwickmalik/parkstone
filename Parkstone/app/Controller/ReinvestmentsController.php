@@ -1275,8 +1275,15 @@ class ReinvestmentsController extends AppController {
 
     function newInvestment1Fixed($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
+        
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
+        $rein_data = $this->Reinvestment->find('all', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id,
+            'Reinvestment.status' => ['Invested','Rolled_over','Termination_Requested']],
+                'fields' => ['Sum(Reinvestment.investment_amount) As invest_amt']
+                ]);
+      
+        $this->set('reinvest_totals',$rein_data);
         $check = $this->Session->check('variabless_refixed');
         if ($check) {
             $check = $this->Session->check('variabless_refixed.duedate');
@@ -2349,9 +2356,577 @@ class ReinvestmentsController extends AppController {
                 if ($investment_type == 1) {
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed/' . $reinvestor_id));
                 } elseif ($investment_type == 2) {
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
                 }
             }
+        }
+    }
+    
+    function searchInvest4mInvest2($investorID = null, $condition = null) {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investname = $this->request->data['investor_search'];
+            $investors = $this->Investor->find('all', array('conditions' => array('OR' => array(array('Investor.surname LIKE' => "%$investname%"), array('Investor.other_names LIKE' => "%$investname%"), array('Investor.fullname LIKE' => "%$investname%")), 'Investor.approved' => 1)));
+            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorID)));
+
+            $condition = $this->request->data['conditions'];
+            if ($investors) {
+                $check = $this->Session->check('mivts');
+                if ($check) {
+                    $this->Session->delete('mivts');
+                }
+
+                $cust = $this->Session->write('mivts', $investors);
+                switch ($condition) {
+                    case "manage":
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+                        break;
+                    case "payments":
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                        break;
+                }
+            } else {
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                switch ($condition) {
+                    case "manage":
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+                        break;
+                    case "payments":
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                        break;
+                }
+            }
+        } else {
+
+            $investors = $this->Investor->find('all', array('conditions' => array('Investor.id' => $investorID)));
+            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorID)));
+            if ($investors) {
+                $check = $this->Session->check('mivts');
+                if ($check) {
+                    $this->Session->delete('mivts');
+                }
+                $check = $this->Session->check('mivt');
+                if ($check) {
+                    $this->Session->delete('mivt');
+                }
+                $cust = $this->Session->write('mivts', $investors);
+                if ($investor) {
+                    $check = $this->Session->check('mivt');
+                    if ($check) {
+                        $this->Session->delete('mivt');
+                    }
+                    $this->Session->write('mivt', $investor);
+                }
+                switch ($condition) {
+                    case "manage":
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+                        break;
+                    case "payments":
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                        break;
+                }
+            } else {
+
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                switch ($condition) {
+                    case "manage":
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+                        break;
+                    case "payments":
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'processPayments'));
+                        break;
+                }
+            }
+        }
+    }
+      function manageInvestments() {
+        $this->__validateUserType();
+
+        $data = $this->paginate('Investor');
+
+        $this->set('data', $data);
+        $check = $this->Session->check('mivt');
+        if ($check) {
+            $cust = $this->Session->read('mivt');
+//            pr($cust);
+            $this->set('int', $cust);
+            $this->Session->delete('mivt');
+        }
+        $check = $this->Session->check('mivts');
+        if ($check) {
+            $cust = $this->Session->read('mivts');
+            $this->set('data', $cust);
+
+            $this->Session->delete('mivts');
+        }
+    }
+
+    function manageEquityInvestments($investor_id = null, $investor_name = null) {
+        $this->__validateUserType();
+        $check = $this->Session->check('disposetemp');
+        if ($check) {
+            $this->Session->delete('disposetemp');
+        }
+        $check = $this->Session->check('new_investmentdetails');
+        if ($check) {
+            $this->Session->delete('new_investmentdetails');
+        }
+        $check = $this->Session->check('investment_paymentdetails');
+        if ($check) {
+            $this->Session->delete('investment_paymentdetails');
+        }
+        if (!is_null($investor_id) && !is_null($investor_name)) {
+            
+            $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(2, 3)), 'order' => array('Investment.id')));
+            $this->set('investor_id', $investor_id);
+            $this->set('investor_name', $investor_name);
+            $data2 = array();
+            if ($data) {
+                foreach($data as $val){
+                    $re_data = $this->ReinvestmentsEquity->find('count', array('conditions' =>
+                array('ReinvestmentsEquity.investment_no' => $val['Investment']['investment_no'])));
+                    if($re_data > 0){
+                     $data2[] = $val;   
+                    }
+                
+                
+                }
+                $this->set('data', $data2);
+            } else {
+
+                $message = 'Sorry, No Equity Investments Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+            }
+        } else {
+
+            $message = 'Sorry, Investor Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+        }
+        $this->paginate('Investment');
+    }
+    
+     function disposeEquityInvestment($investment_id = null, $investment_no = null) {
+        $this->__validateUserType();
+//        $this->set('paymentmodes', $this->PaymentMode->find('list'));
+
+        $this->set('equitieslists', $this->EquitiesList->find('list'));
+        if (!is_null($investment_no) && !is_null($investment_id)) {
+
+            $data = $this->ReinvestmentsEquity->find('first', array('conditions' =>
+                array('ReinvestmentsEquity.investment_no' => $investment_no)));
+            if ($data) {
+                $data['inv'] = $this->Investment->find('first', array('conditions' =>
+                    array('Investment.id' => $investment_id)));
+
+                $data['EquitiesList'] = $this->ReinvestorEquity->find('all', array('conditions' =>
+                    array('ReinvestorEquity.reinvestment_id' => $data['ReinvestmentsEquity']['id'])));
+                if ($data['EquitiesList']) {
+                    $x = 1;
+                    $equity_array = array();
+                    foreach ($data['EquitiesList'] as $val) {
+                        $equity_array[$x] = $val;
+                        $x++;
+                    }
+                    $this->set('equity_array', $equity_array);
+                }
+                $this->set('data', $data);
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+            }
+        } else {
+
+            $message = 'Sorry, Investment Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+        }
+    }
+
+    function disposeEquityReceipt($investment_id = null) {
+        $this->__validateUserType();
+        if ($investment_id == '' || is_null($investment_id)) {
+            $message = 'Investment details missing. Try again';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+        } elseif (!$this->Session->check('new_investmentdetails')) {
+            $message = 'Please process investment first.';
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposeEquityInvestment', $investment_id));
+        }
+        $payment_amt = $this->Session->read('disposetemp.amount');
+        $new_investmentdetails = $this->Session->read('new_investmentdetails');
+        $result = $this->Investment->save($new_investmentdetails);
+        if ($result) {
+//                      print_r($result);
+//            exit;
+            $investment_paymentdetails = $this->Session->read('investment_paymentdetails');
+            $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
+            if ($result2) {
+                $this->Session->delete('investment_paymentdetails');
+                $this->Session->delete('new_investmentdetails');
+                $this->Session->delete('disposetemp');
+                $check = $this->Session->check('ipayment_receipt');
+                if ($check) {
+                    $this->Session->delete('ipayment_receipt');
+                }
+                $check = $this->Session->check('ireceipt_items');
+                if ($check) {
+                    $this->Session->delete('ireceipt_items');
+                }
+
+                $message = 'Investment Payout Successful';
+                $this->Session->write('smsg', $message);
+
+                //$this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments',$investor,$investor_name));
+            } else {
+
+                $message = 'Investment Payout Saved With Errors';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposeEquityInvestment', $investment_id));
+            }
+        } else {
+
+            $message = 'Investment Payout Unsuccessful';
+            $this->Session->write('emsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposeEquityInvestment', $investment_id));
+        }
+
+        $Investment_data = $this->InvestmentPayment->find('first', array('conditions' => array('InvestmentPayment.investment_id' => $investment_id)));
+        //  $check = $this->Session->check('payment_receipt');
+        if ($Investment_data) {
+            $investment_name = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' =>
+                    $Investment_data['Investment']['equities_list_id']), 'recursive' => -1));
+            // $payment = $this->Session->read('payment_receipt');
+            if ($investment_name) {
+                $this->set('investment_name', $investment_name);
+            }
+
+            $this->set('payment', $Investment_data);
+            $this->set('payment_amt', $payment_amt);
+        } else {
+            $message = "Payment successful But Investment Details not found";
+            $this->Session->write('bmsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments'));
+        }
+        $issuedcheck = $this->Session->check('userData');
+        if ($issuedcheck) {
+            $issued = $this->Session->read('userData');
+            $this->set('issued', $issued);
+        }
+    }
+    public function makeEquityOrder() {
+        $this->autoRender = $this->autoLayout = false;
+        if ($this->request->is('post')) {
+
+            $investment_id = $_POST['hid_investid'];
+            $invest_no = $this->request->data['EquityOrder']['invest_no'];
+            //$investor_id = $this->request->data['EquityOrder']['invest_no']
+            //$this->request->data['EquityOrder']['investor_id'];
+
+            $totalamt = 0;
+            $total_shares = 0;
+            $equities_list_id = $this->request->data['EquityOrder']['equities_list_id'];
+            if ($this->Session->check('investmt_equities')) {
+                $this->Session->delete('investmt_equities');
+            }
+            $equities = $this->get_equity();
+            $shares_rem = $this->request->data['EquityOrder']['shares_rem'];
+            $shares_ordered = $this->request->data['EquityOrder']['numb_shares'];
+            $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $equities_list_id), 'recursive' => -1));
+            if ($equity) {
+                $equity_name = $equity['EquitiesList']['equity_abbrev'];
+            }
+            if ($shares_ordered > $shares_rem) {
+                $message = 'Shares ordered for ' . $equity_name . '  are more than remaining shares.';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposeEquityInvestment', $investment_id, $invest_no));
+            }
+            $equity_data = array($equities_list_id => array(
+                    'equities_list_id' => $equities_list_id,
+                    'investment_id' => $investment_id,
+                    'shares_req' => $shares_ordered
+            ));
+
+            $equities+=$equity_data;
+            $this->set_equity($equities);
+            $x = 2;
+            while ($x <= 5) {
+                $equities = $this->get_equity();
+
+                //equity already exists, add to equity_details
+                if (isset($this->request->data['EquityOrder']['equities_list_id' . $x]) &&
+                        !empty($this->request->data['EquityOrder']['equities_list_id' . $x])) {
+
+                    $shares_rem = $this->request->data['EquityOrder']['shares_rem' . $x];
+                    $shares_ordered = $this->request->data['EquityOrder']['numb_shares' . $x];
+                    $newequities_list_id = $this->request->data['EquityOrder']['equities_list_id' . $x];
+                    $equity = $this->EquitiesList->find('first', array('conditions' => array('EquitiesList.id' => $newequities_list_id), 'recursive' => -1));
+                    if ($equity) {
+                        $equity_name = $equity['EquitiesList']['equity_abbrev'];
+                    }
+                    if ($shares_ordered > $shares_rem) {
+                        $message = 'Shares ordered for ' . $equity_name . '  are more than remaining shares.';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposeEquityInvestment', $investment_id, $invest_no));
+                    }
+
+                    $equity_data = array($newequities_list_id => array(
+                            'equities_list_id' => $newequities_list_id,
+                            'investment_id' => $investment_id,
+                            'shares_req' => $shares_ordered
+                    ));
+
+                    $equities+=$equity_data;
+                    $this->set_equity($equities);
+                }
+                $x++;
+            }
+
+            $equities = $this->get_equity();
+            if (!empty($equities)) {
+                foreach ($equities as $key => $var) {
+                    $this->EquityOrder->create();
+                    $this->EquityOrder->save($var);
+                }
+                $this->Session->delete('investmt_equities');
+            }
+            $investment = array('id' => $investment_id, 'status' => 'Disposal_Requested');
+            $result = $this->Investment->save($investment);
+
+            if ($result) {
+                $message = 'Disposal Request Successful';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+            }
+        }
+    }
+
+function ReinstateEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {
+        $this->__validateUserType();
+
+        if (!is_null($investment_id)) {
+            $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'order' => array('Investment.id')));
+            if ($data) {
+                $new_investmentdetails = array('id' => $investment_id, 'status' => $data['Investment']['old_status'], 'old_status' => 'Cancelled');
+
+                $result = $this->Investment->save($new_investmentdetails);
+                if ($result) {
+                    $message = 'Investment Re-instated Successfully';
+                    $this->Session->write('smsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
+                }
+            } else {
+
+                $message = 'Sorry, Investment Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
+            }
+        } else {
+
+            $message = 'Sorry, Investment Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
+        }
+    }
+    
+    function statementInvDetailEq($investment_id = null, $investor_id = null, $investor_name = null) {
+        $this->__validateUserType();
+
+        if (!is_null($investor_id)) {
+            $data = $this->Investment->find('all', array('conditions' =>
+                array('Investment.investor_id' => $investor_id,
+                    'Investment.investment_product_id' => array(2, 3),
+                    'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
+            ))));
+            $issued = $this->Session->check('userDetails');
+            if ($issued) {
+                $issued = $this->Session->read('userDetails.firstname');
+                $issued .= ' ' . $this->Session->read('userDetails.lastname');
+                $this->set('issued', $issued);
+            }
+
+            if ($data) {
+                $data_total = $this->InvestorEquity->find('all', array(
+//                    'fields' => array("SUM(Investment.earned_balance) as 'balance_due'"),
+                    'conditions' => array('InvestorEquity.investment_id' => $investment_id,
+                        'NOT' => array('InvestorEquity.numb_shares_left' => 0))
+                ));
+
+
+                if ($data_total) {
+                    $this->set('total', $data_total);
+                }
+                $this->set('data', $data);
+                $this->set('investor_id', $investor_id);
+                $this->set('investor_name', $investor_name);
+            } else {
+
+//print_r('11');exit;
+                $message = 'Sorry, Investment Details Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+            }
+        } else {
+//print_r('oo');exit;
+            $message = 'Sorry, Investor Details Not Found';
+            $this->Session->write('imsg', $message);
+            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+        }
+    }
+    
+    public function deleteEquityInvestments($investment_id = null, $investor_id = null, $investor_name = null) {
+        $deposit_data = $this->InvestorDeposit->find('first', ['conditions' =>
+            ['InvestorDeposit.investment_id' => $investment_id], 'order' => ['InvestorDeposit.id' => 'asc']]);
+        if ($deposit_data) {
+            $deposit_id = $deposit_data['InvestorDeposit']['id'];
+            $topup_id = $deposit_data['InvestorDeposit']['topup_id'];
+            $total_amt = $deposit_data['Investment']['total_amount'];
+            $deposit_amount = $deposit_data['InvestorDeposit']['amount'] - $total_amt;
+            $investor_id = $deposit_data['Investment']['investor_id'];
+            $investment_no = $deposit_data['Investment']['investment_no'];
+            $ledger_id = $deposit_data['LedgerTransaction']['client_ledger_id'];
+            $transaction_id = $deposit_data['InvestorDeposit']['ledger_transaction_id'];
+            $dep_created = $deposit_data['InvestorDeposit']['created'];
+            $invstatus = $deposit_data['Investment']['status'];
+            $invtype = $deposit_data['Investment']['investment_product_id'];
+            $current = date('Y-m-d');
+            if (!empty($investment_id)) {
+                $new_invest_amt = $deposit_data['Investment']['investment_amount'];
+
+                if ($new_invest_amt > 0 && $invtype == 3) {
+                    $invtype = 1;
+                    $investment_update = array('id' => $investment_id, 'status' => $invstatus
+                        , 'investment_product_id' => $invtype, 'total_amount');
+                    $this->Investment->save($investment_update);
+                } else {
+                    $invstatus = 'Cancelled';
+                    $this->Investment->delete($investment_id, false);
+                }
+
+
+
+                $investor_id = $deposit_data['Investment']['investor_id'];
+
+
+
+
+
+                $ledger = $this->ClientLedger->find('first', ['conditions' =>
+                    ['ClientLedger.id' => $ledger_id], 'recursive' => -1]);
+                if ($ledger) {
+                    if (!empty($topup_id)) {
+                        $source = $deposit_data['Topup']['cash_receipt_mode_id'];
+                        switch ($source) {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 5:
+                                $old_invested = $ledger['ClientLedger']['invested_amount'];
+                                $available_cash = $ledger['ClientLedger']['available_cash'];
+                                $new_available = $available_cash;
+                                $new_invested = $ledger['ClientLedger']['invested_amount'];
+//                                if ($deposit_amount > $old_invested) {
+//                                    $newdeposit = $deposit_amount - $old_invested;
+//                                    $new_invested = 0;
+////                                    $new_available = $available_cash - $newdeposit;
+//                                } else {
+                                $new_invested = $old_invested - $total_amt;
+//                                    $new_available = $available_cash;
+//                                }
+
+                                break;
+
+                            case 4:
+                                $old_invested = $ledger['ClientLedger']['invested_amount'];
+                                $available_cash = $ledger['ClientLedger']['available_cash'];
+                                $new_available = $available_cash + $total_amt;
+                                $new_invested = $old_invested - $total_amt;
+
+                                break;
+                        }
+                        $this->Topup->delete($topup_id, false);
+                    } else {
+                        $old_invested = $ledger['ClientLedger']['invested_amount'];
+                        $available_cash = $ledger['ClientLedger']['available_cash'];
+                        $new_available = $available_cash;
+                        $new_invested = $ledger['ClientLedger']['invested_amount'];
+//                        if ($deposit_amount > $old_invested) {
+//                            $newdeposit = $deposit_amount - $old_invested;
+//                            $new_invested = 0;
+//                            $new_available = $available_cash - $newdeposit;
+//                        } else {
+                        $new_invested = $old_invested - $total_amt;
+                        $new_available = $available_cash;
+//                        }
+                    }
+                    $ledger_array = array('id' => $ledger_id, 'invested_amount' => $new_invested, 'available_cash' => $available_cash);
+
+                    $ledger_result = $this->ClientLedger->save($ledger_array);
+                    if ($ledger_result) {
+                        if ($new_invest_amt <= 0) {
+
+                            $this->LedgerTransaction->deleteAll(array('LedgerTransaction.investment_id' => $investment_id), false);
+                        } else {
+                            $this->LedgerTransaction->delete($transaction_id, false);
+                        }
+                    }
+
+                    $cash_data = $this->InvestmentCash->find('first', array('conditions' =>
+                        array('InvestmentCash.investor_deposit_id' => $deposit_id, 'investment_type' => 'equity'), 'recursive' => -1));
+
+                    if ($cash_data) {
+                        $status = $cash_data['InvestmentCash']['status'];
+                        if ($status != 'available') {
+                            $result = $this->ReinvestorCashaccount->find('first', array('recursive' => -1, 'conditions' =>
+                                array('ReinvestorCashaccount.reinvestor_id' => 1)));
+                            if ($result) {
+                                $id = $result['ReinvestorCashaccount']['id'];
+                                $old_balance = $result['ReinvestorCashaccount']['equity_inv_amount'];
+
+                                $new_balance = $old_balance - $total_amt;
+                                $grand_total = $result['ReinvestorCashaccount']['total_balance'] - $total_amt;
+                                $fixed_data = array('id' => $id, 'equity_inv_amount' => $new_balance, 'total_balance' => $grand_total);
+                                $this->ReinvestorCashaccount->save($fixed_data);
+                            }
+                        }
+
+
+                        $this->InvestmentCash->deleteAll(array('InvestmentCash.investor_deposit_id' => $deposit_id), false);
+                    }
+
+                    if ($new_invest_amt <= 0) {
+                        $result = $this->InvestorDeposit->deleteAll(array('InvestorDeposit.investment_id' => $investment_id), false);
+                    } else {
+                        $result = $this->InvestorDeposit->delete($deposit_id, false);
+                    }
+                    if ($result) {
+                        $message = 'Equity Investment successfully deleted';
+                        $this->Session->write('smsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+                    } else {
+
+                        $message = 'Unable to delete deposit. Try again';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+                    }
+                } else {
+                    $message = 'Missing Legder details. Try again';
+                    $this->Session->write('bmsg', $message);
+                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
+                }
+            } else {
+                $message = 'Missing investment details. Try again';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor_id, $investor_name));
+            }
+        } else {
+            
         }
     }
 
@@ -3125,7 +3700,7 @@ if ($this->Session->check('editinvesttemp')) {
             
             $re_result = $this->ReinvestmentsEquity->save($reinv_array);
               if($re_result){
-               $message = 'Equity Sale Processed Successfully. Try again';
+               $message = 'Equity Sale Processed Successfully.';
                 $this->Session->write('smsg', $message);
                 $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
               }    else {

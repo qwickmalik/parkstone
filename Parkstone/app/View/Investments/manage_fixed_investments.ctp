@@ -112,7 +112,7 @@
                     }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Paid' || $each_item['Investment']['status'] == 'Payment_Requested' || $each_item['Investment']['status'] == 'Termination_Requested'){
                    echo "No-Action Necessary";
                     
-                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured'|| $each_item['Investment']['status'] == 'Part_payment'){
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Matured' || $each_item['Investment']['status'] == 'Part_payment'  || $each_item['Investment']['status'] == 'Termination_Approved'){
                      echo $this->Html->Link('Rollover', '/Investments/clearRolloverSession/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));?> 
                     | <?php 
                       echo $this->Html->Link('Request Paymt', '/Investments/requestPayment4managefixedinvestments/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ).'/'. (isset($each_item['Investor']['id']) ? $each_item['Investor']['id'] . "/" . $each_item['Investor']['fullname'] : '' ), array('escape' => false));
@@ -125,10 +125,11 @@
                             $each_item['Investment']['investor_id'] : '' )."/".
                             (isset($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : '' ),
                             array('escape'=>false));
-                    }
+                    }elseif(isset($each_item['Investment']['status']) && $each_item['Investment']['status'] == 'Termination_Approved'){
                     
                     
-                    ?></td>
+                     echo $this->Html->Link('Rollover', '/Investments/clearRolloverSession/'."/".(isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' )."/".(isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape'=>false));
+                    } ?></td>
                 <td align="center"><?php
                         if(isset($each_item['Investment']['status'])){
                             echo $each_item['Investment']['status'];

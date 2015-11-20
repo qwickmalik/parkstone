@@ -5848,18 +5848,19 @@ class InvestmentsController extends AppController {
                             $accrued_basefee = $data['Investment']['accrued_basefee'];
 
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
-                                'interest_earned' => $interest_amount, 'custom_rate' => $custom_rate, 'total_amount_earned' => $amount_due, 'duration' => $duration,
+                                'interest_earned' => $interest_amount, 'total_amount_earned' => $amount_due, 'duration' => $duration,
                                 'status' => "Termination_Approved", 'accrued_days' => $duration, 'instruction_details' => $instructions);
                             $ltid = null;
                             if ($ledger_data) {
                                 $cledger_id = $ledger_data['ClientLedger']['id'];
+                            if($accrued_basefee > 0){
                                 $description = 'Debit on ' . $data['Investment']['investment_no'] . ' for settlement of accrued management fee';
-                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
+                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,'investment_id' => $data['Investment']['id'],
                                     'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-
+                            }
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
                                 $new_cashathand = $cash_athand + $amount_due;
 //                                $new_cashathand = $new_cashathand - $accrued_basefee;
@@ -5872,8 +5873,8 @@ class InvestmentsController extends AppController {
 //$amount_due > $rebalance;
                                 //Ledger transaction entry
                                 $description = 'Discounting of ' . $data['Investment']['investment_no'];
-                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'credit' => $amount_due, 'user_id' => $userid,
-                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
+                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'credit' => $amount_due, 'user_id' => $userid,'investment_id' => $data['Investment']['id'],
+                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no'],'benchmark' =>$custom_rate
                                     , 'description' => $description);
                                 $this->LedgerTransaction->create();
                                 $ltresult = $this->LedgerTransaction->save($ledger_transactions);
@@ -6351,8 +6352,10 @@ class InvestmentsController extends AppController {
             $balance = 0;
             $old_balance = 0;
 
+            
             $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
             if ($investment_data) {
+               
                 $earnedbalance = $investment_data['Investment']['earned_balance'];
                 $amount_due = $investment_data['Investment']['amount_due'];
 
@@ -6381,6 +6384,8 @@ class InvestmentsController extends AppController {
                 }
                 $investment_array = array('id' => $investment_id, 'status' => $status, 'earned_balance' => $new_earnedbalance,
                     'amount_due' => $new_amt_due);
+                
+                
             }
             $date = date('Y-m-d H:i:s');
             //use id to retrieve Investment info
@@ -6428,7 +6433,8 @@ class InvestmentsController extends AppController {
 
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if (!empty($investment_array)) {
-                        $this->Investment->save($investment_array);
+                      $result_ia =  $this->Investment->save($investment_array);
+                       pr($result_ia);exit;
                     }
                     if ($ledger_transactions) {
 
@@ -7657,10 +7663,11 @@ class InvestmentsController extends AppController {
                 $investment_array = array('balance' => $amount_due,
                     'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
                     'interest_accrued' => $ainterest_amount, 'accrued_days' => $aduration,
-                    'custom_rate' => $custom_rate, 'investment_amount' => $investment_amount,
+                    'custom_rate' => $custom_rate, 
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $aamount_due,
                     'earned_balance' => $aamount_due, 'rollover_date' => $inv_date,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
+                
                 $interest_accruals = array(
                     'investor_id' => $this->request->data['Investment']['investor_id'],
                     'interest_amounts' => $ainterest_amount,
@@ -7678,7 +7685,7 @@ class InvestmentsController extends AppController {
 
                 $rollover_details = array('user_id' => $data['Investment']['user_id'], 'investment_id' => $data['Investment']['id'],
                     'investor_id' => $data['Investment']['investor_id'], 'old_investment_amount' => $data["Investment"]["investment_amount"],
-                    'old_interest_accrued' => $data["Investment"]["interest_accrued"],
+                    'old_interest_accrued' => $data["Investment"]["interest_accrued"],'rollover_amount' => $investment_amount,
                     'custom_rate' => $custom_rate, 'old_custom_rate' => $data["Investment"]["custom_rate"], 'rollover_date' => $date->format('Y-m-d'));
 
                 $base_fee = 0;
@@ -7898,7 +7905,10 @@ class InvestmentsController extends AppController {
 //                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
                 $this->paginate = array(
                     'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
-                    'order' => array('LedgerTransaction.id' => 'asc'));
+                    'order' => array('LedgerTransaction.id' => 'asc'),
+                    'limit' => 15
+                    
+                    );
                 $transactions = $this->paginate('LedgerTransaction');
                 if ($transactions) {
                     $this->set('transactions', $transactions);
@@ -8744,7 +8754,7 @@ class InvestmentsController extends AppController {
                 array('Investment.investor_id' => $investor_id,
                     'Investment.investment_product_id' => array(1, 3),
                     'NOT' => array('Investment.status' => array('Cancelled', 'Paid')
-                    )), 'order' => array('Investment.investment_date'), 'contain' => array('InvestmentPayment', 'Topup')
+                    )), 'order' => array('Investment.investment_date'), 'contain' => array('InvestmentPayment', 'Topup','Rollover')
 //                'fields' => array('Investment.investment_date','Investment.investment_no','Investment.investment_amount','Investment.custom_rate',
 //                    'Investment.due_date','Investment.id','Investment.earned_balance')
             ));
@@ -9177,7 +9187,11 @@ class InvestmentsController extends AppController {
                     $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
+                    $due_date = $data['Investment']['due_date'];
                     $date = date('Y-m-d');
+                    if($due_date <= $date){
+                       $date =  $due_date;
+                    }
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
@@ -9187,6 +9201,8 @@ class InvestmentsController extends AppController {
                     break;
                 case 'Termination_Approved':
                 case 'Cancelled':
+                case 'Paid':
+                case 'Part_payment':
                     $accrued_days = $data['Investment']['accrued_days'];
                     return $accrued_days;
                 default:
