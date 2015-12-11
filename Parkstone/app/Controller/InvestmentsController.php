@@ -2624,7 +2624,7 @@ class InvestmentsController extends AppController {
                     switch ($management_fee_type) {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
-
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
 //                                $this->Session->write('bmsg', $message);
@@ -2634,6 +2634,7 @@ class InvestmentsController extends AppController {
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
 //                                $this->Session->write('bmsg', $message);
