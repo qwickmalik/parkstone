@@ -2523,6 +2523,7 @@ class InvestmentsController extends AppController {
                         case 'Day(s)':
 
                             $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -2559,6 +2560,7 @@ class InvestmentsController extends AppController {
                             $rate = $custom_rate;
 
                             $YEAR2DAYS = 365 * $duration;
+                            $duration = $YEAR2DAYS;
                             $aYEAR2DAYS = 365 * $aduration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
@@ -2624,6 +2626,7 @@ class InvestmentsController extends AppController {
                     switch ($management_fee_type) {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -2634,6 +2637,7 @@ class InvestmentsController extends AppController {
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
                              $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
@@ -2765,28 +2769,28 @@ class InvestmentsController extends AppController {
 //                        'date' => $inv_date, 'description' => $description);
                     $base_fee = 0;
                     $benchmark_fee = 0;
-                    switch ($management_fee_type) {
-                        case 'Management Fee':
-                            $base_fee = ($base_rate / 100) * $totalamt;
-
-//                            if ($base_fee > $new_cashathand) {
-//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-//                                $this->Session->write('bmsg', $message);
-//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                            }
-//                            $new_cashathand = $new_cashathand - $base_fee;
-                            break;
-                        case 'Management & Performance Fee':
-                            $base_fee = ($base_rate / 100) * $totalamt;
-//                            if ($base_fee > $new_cashathand) {
-//                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
-//                                $this->Session->write('bmsg', $message);
-//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
-//                            }
-//                            $new_cashathand = $new_cashathand - $base_fee;
-
-                            break;
-                    }
+//                    switch ($management_fee_type) {
+//                        case 'Management Fee':
+//                            $base_fee = ($base_rate / 100) * $totalamt;
+//                            
+////                            if ($base_fee > $new_cashathand) {
+////                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+////                                $this->Session->write('bmsg', $message);
+////                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+////                            }
+////                            $new_cashathand = $new_cashathand - $base_fee;
+//                            break;
+//                        case 'Management & Performance Fee':
+//                            $base_fee = ($base_rate / 100) * $totalamt;
+////                            if ($base_fee > $new_cashathand) {
+////                                $message = 'Manage Fee + Total equity cost cannot be more than investor\'s availalbe cash';
+////                                $this->Session->write('bmsg', $message);
+////                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+////                            }
+////                            $new_cashathand = $new_cashathand - $base_fee;
+//
+//                            break;
+//                    }
 
                     $description = 'Equity investment for ' . $total_shares . ' shares';
                     $ledger_transactions[] = array('cash_receipt_mode_id' =>
@@ -2940,6 +2944,7 @@ class InvestmentsController extends AppController {
                         $rate = $custom_rate;
 
                         $aYEAR2DAYS = 365 * $aduration;
+                        $aduration = $aYEAR2DAYS;
                         $interest_amount1 = ($rate / 100) * $principal;
                         $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
                         $aamount_due = $ainterest_amount + $principal;
@@ -2950,7 +2955,39 @@ class InvestmentsController extends AppController {
                         $new_amount_due = $old_amount_due - $aamount_due;
                         break;
                 }
+                $management_fee_type = $old_investment_data['Investment']['management_fee_type'];
+                    $base_rate = $old_investment_data['Investment']['base_rate'];
+                    $management_fee =  $old_investment_data['Investment']['base_fees'];
+                    $accrued_basefee = $old_investment_data['Investment']['accrued_basefee'];
+                         $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_rate / 100) * $oldAmount;
+                            $YEAR2DAYS = 365 * $aduration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_rate / 100) * $oldAmount;
+                            $YEAR2DAYS = 365 * $aduration;
+                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
+                            break;
+                    }
+                    $management_fee -= $base_fee;
+                   $accrued_basefee -= $base_fee;
                 $inv_day = $this->request->data['Investment']['investment_date']['day'];
                 if (!empty($inv_day)) {
                     $inv_month = $this->request->data['Investment']['investment_date']['month'];
@@ -3077,6 +3114,7 @@ class InvestmentsController extends AppController {
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'D'));
+                        $date->sub(new DateInterval('P1D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -3104,6 +3142,7 @@ class InvestmentsController extends AppController {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
+                        $duration = $YEAR2DAYS;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
@@ -3144,15 +3183,22 @@ class InvestmentsController extends AppController {
                     switch ($management_fee_type) {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
 
 
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
 
 
                             break;
                     }
+                    
+                    $management_fee += $base_fee;
+                   $accrued_basefee += $base_fee;
                 }
 
                 $check = $this->Session->check('investment_array_fixed');
@@ -3177,8 +3223,9 @@ class InvestmentsController extends AppController {
                     'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                     'cash_receipt_mode_id' => $this->request->data['Investment']['cashreceiptmode_id'],
                     'base_rate' => $base_rate,
-                    'base_fees' => $base_fee,
+                    'base_fees' => $management_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
+                    'accrued_basefee' => $accrued_basefee,
                     'benchmark_rate' => $benchmark_rate,
                     'investment_date' => $inv_date);
 
@@ -3629,6 +3676,7 @@ class InvestmentsController extends AppController {
                         case 'Day(s)':
 
                             $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -3692,6 +3740,7 @@ class InvestmentsController extends AppController {
 //                            $statemt_array = array();
                             $rate = $custom_rate;
                             $YEAR2DAYS = 365 * $duration;
+                            $duration = $YEAR2DAYS;
                             $aYEAR2DAYS = 365 * $aduration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
@@ -3759,7 +3808,9 @@ class InvestmentsController extends AppController {
                     switch ($management_fee_type) {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
-
+                            
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
 //                                $this->Session->write('bmsg', $message);
@@ -3769,6 +3820,9 @@ class InvestmentsController extends AppController {
                             break;
                         case 'Management & Performance Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
+                            
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
 //                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
 //                                $this->Session->write('bmsg', $message);
@@ -5781,6 +5835,7 @@ class InvestmentsController extends AppController {
 
                                     $date = new DateTime($first_date);
                                     $date->add(new DateInterval('P' . $duration . 'D'));
+                                    $date->sub(new DateInterval('P1D'));
                                     $date_statemt = new DateTime($first_date);
                                     $principal = $investment_amount;
 //                                    $statemt_array = array();
@@ -5808,6 +5863,7 @@ class InvestmentsController extends AppController {
                                     //$finv_date = $inv_date;
                                     $date = new DateTime($first_date);
                                     $date->add(new DateInterval('P' . $duration . 'D'));
+                                    $date->sub(new DateInterval('P1D'));
                                     $date_statemt = new DateTime($first_date);
                                     $principal = $investment_amount;
 //                                    $statemt_array = array();
@@ -5846,7 +5902,7 @@ class InvestmentsController extends AppController {
                                     $investor_name = $ledger_data['Investor']['comp_name'];
                                 }
                             }
-                            $accrued_basefee = $data['Investment']['accrued_basefee'];
+//                            $accrued_basefee = $data['Investment']['accrued_basefee'];
 
                             $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
                                 'interest_earned' => $interest_amount, 'total_amount_earned' => $amount_due, 'duration' => $duration,
@@ -5854,14 +5910,14 @@ class InvestmentsController extends AppController {
                             $ltid = null;
                             if ($ledger_data) {
                                 $cledger_id = $ledger_data['ClientLedger']['id'];
-                            if($accrued_basefee > 0){
-                                $description = 'Debit on ' . $data['Investment']['investment_no'] . ' for settlement of accrued management fee';
-                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,'investment_id' => $data['Investment']['id'],
-                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
-                                    , 'description' => $description);
-                                $this->LedgerTransaction->create();
-                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-                            }
+//                            if($accrued_basefee > 0){
+//                                $description = 'Debit on ' . $data['Investment']['investment_no'] . ' for settlement of accrued management fee';
+//                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,'investment_id' => $data['Investment']['id'],
+//                                    'date' => date('Y-m-d'), 'voucher_no' => $data['Investment']['investment_no']
+//                                    , 'description' => $description);
+//                                $this->LedgerTransaction->create();
+//                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
+//                            }
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
                                 $new_cashathand = $cash_athand + $amount_due;
 //                                $new_cashathand = $new_cashathand - $accrued_basefee;
@@ -6802,6 +6858,7 @@ class InvestmentsController extends AppController {
 
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -6829,7 +6886,7 @@ class InvestmentsController extends AppController {
                             //$finv_date = $inv_date;
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
-//                            $date->sub(new DateInterval('P1D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
@@ -6854,12 +6911,47 @@ class InvestmentsController extends AppController {
 
                             break;
                     }
+                    $management_fee_type = $investment_data['Investment']['management_fee_type'];
+                    $base_rate = $investment_data['Investment']['base_rate'];
+                    $management_fee =  $investment_data['Investment']['base_fees'];
+                    $accrued_basefee = $investment_data['Investment']['accrued_basefee'];
+                         $base_fee = 0;
+                    $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
+
+                            break;
+                    }
+                    $management_fee += $base_fee;
+                   $accrued_basefee += $base_fee;
                     $new_investmentamt = $investment_data['Investment']['investment_amount'] + $amount;
                     $newinterest_amt = $investment_data['Investment']['expected_interest'] + $interest_amount;
                     $newtotal_amount_earned = $investment_data['Investment']['total_amount_earned'] + $amount;
                     $new_earnedbalance = $investment_data['Investment']['earned_balance'] + $amount;
                     $newamount_due = $investment_data['Investment']['amount_due'] + $amount_due;
                     $investment_array = array(
+                        'base_fees' => $management_fee,
+                        'accrued_basefee' => $accrued_basefee,
                         'id' => $investment_data['Investment']['id'],
                         'investment_amount' => $new_investmentamt,
                         'expected_interest' => $newinterest_amt,
@@ -7497,6 +7589,7 @@ class InvestmentsController extends AppController {
             $management_fee_type = $this->request->data['Investment']['management_fee_type'];
             $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $invesmentID)));
             if ($data) {
+                $manage_fee = $data['Investment']['accrued_basefee'];
 //                $portfolio_id = $data['Investment']['investment_term_id'];
 //                $portfolio = $this->InvestmentTerm->find('first', array('conditions' => array('InvestmentTerm.id' => $portfolio_id), 'recursive' => -1));
 //
@@ -7598,6 +7691,7 @@ class InvestmentsController extends AppController {
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'D'));
+                        $date->sub(new DateInterval('P1D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -7634,6 +7728,7 @@ class InvestmentsController extends AppController {
                         $rate = $custom_rate;
 
                         $YEAR2DAYS = 365 * $duration;
+                        $duration = $YEAR2DAYS;
                         $aYEAR2DAYS = 365 * $aduration;
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
@@ -7690,35 +7785,40 @@ class InvestmentsController extends AppController {
                     'custom_rate' => $custom_rate, 'old_custom_rate' => $data["Investment"]["custom_rate"], 'rollover_date' => $date->format('Y-m-d'));
 
                 $base_fee = 0;
-                $benchmark_fee = 0;
-                switch ($management_fee_type) {
-                    case 'Management Fee':
-                        $base_fee = ($base_rate / 100) * $investment_amount;
+               $benchmark_fee = 0;
+                    switch ($management_fee_type) {
+                        case 'Management Fee':
+                            $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                            $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
+                            break;
+                        case 'Management & Performance Fee':
+                            $base_fee = ($base_rate / 100) * $investment_amount;
+                            $YEAR2DAYS = 365 * $duration;
+                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
+//                            if ($base_fee > $new_cashathand) {
+//                                $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
+//                                $this->Session->write('bmsg', $message);
+//                                $this->redirect(array('controller' => 'Investments', 'action' => $page));
+//                            }
+//                            $new_cashathand = $new_cashathand - $base_fee;
 
-//                        if ($base_fee > $new_cashathand) {
-//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-//                        }
-//                        $new_cashathand = $new_cashathand - $base_fee;
-                        break;
-                    case 'Management & Performance Fee':
-                        $base_fee = ($base_rate / 100) * $investment_amount;
-//                        if ($base_fee > $new_cashathand) {
-//                            $message = 'Manage Fee + Investment amount cannot be more than investor\'s availalbe cash';
-//                            $this->Session->write('bmsg', $message);
-//                            $this->redirect(array('controller' => 'Investments', 'action' => 'rollover', $invesmentID, $investor_id));
-//                        }
-//                        $new_cashathand = $new_cashathand - $base_fee;
-
-                        break;
-                }
+                            break;
+                    }
+                    $manage_fee += $base_fee;
                 $generic_array = array('id' => $data['Investment']['id'], 'investor_id' => $data['Investment']['investor_id'],
                     'payment_schedule_id' => $this->request->data['Investment']['paymentschedule_id'],
                     'payment_mode_id' => $this->request->data['Investment']['paymentmode_id'],
                     'management_fee_type' => $this->request->data['Investment']['management_fee_type'],
                     'base_rate' => $base_rate,
                     'base_fees' => $base_fee,
+                    'accrued_basefee' => $manage_fee,
                     'basefee_duedate' => $basefee_duedate->format('Y-m-d'),
                     'benchmark_rate' => $benchmark_rate,
                     'investment_date' => $inv_date);

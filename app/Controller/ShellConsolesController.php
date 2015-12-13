@@ -94,14 +94,14 @@ function __dailyMatured(){
             //enter new ledger data for accrued fee deduction
             
             $cledger_id = $ledger_data['ClientLedger']['id'];  
-            if($accrued_basefee > 0){
-             $description = 'Debit on ' . $each['Investment']['investment_no'].' for settlement of accrued management fee';
-                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
-                                    'date' => date('Y-m-d'), 'voucher_no' => $each['Investment']['investment_no']
-                                    , 'description' => $description);
-                                $this->LedgerTransaction->create();
-                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
-            }
+//            if($accrued_basefee > 0){
+//             $description = 'Debit on ' . $each['Investment']['investment_no'].' for settlement of accrued management fee';
+//                                $ledger_transactions = array('client_ledger_id' => $cledger_id, 'debit' => $accrued_basefee, 'user_id' => $userid,
+//                                    'date' => date('Y-m-d'), 'voucher_no' => $each['Investment']['investment_no']
+//                                    , 'description' => $description);
+//                                $this->LedgerTransaction->create();
+//                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
+//            }
             //Update Ledger data   
                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
                     'invested_amount' => $total_invested);

@@ -1398,6 +1398,7 @@ class ReinvestmentsController extends AppController {
                 case 'Day(s)':
 
                     $date->add(new DateInterval('P' . $duration . 'D'));
+                    $date->sub(new DateInterval('P1D'));
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
 //                    $statemt_array = array();
@@ -3380,6 +3381,7 @@ if ($this->Session->check('editinvesttemp')) {
                     case 'Day(s)':
 
                         $date->add(new DateInterval('P' . $duration . 'D'));
+                        $date->sub(new DateInterval('P1D'));
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -4444,6 +4446,7 @@ if ($this->Session->check('editinvesttemp')) {
 
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -4471,6 +4474,7 @@ if ($this->Session->check('editinvesttemp')) {
                             //$finv_date = $inv_date;
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
+                            $date->sub(new DateInterval('P1D'));
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -4742,8 +4746,8 @@ if ($this->Session->check('editinvesttemp')) {
                     $accrued_days = $duration+1;
                     return $accrued_days;
                     break;
-                        case 'Termination_Approved':
-                        case 'Cancelled':
+                 case 'Termination_Approved':
+                 case 'Cancelled':
                        $accrued_days = $data['Investment']['accrued_days'];
                     return $accrued_days;
                 default:
