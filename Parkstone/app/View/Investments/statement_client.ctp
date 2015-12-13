@@ -33,7 +33,7 @@ if ($this->Session->check('shopCurrency')) {
                             
                             echo 'CLIENT NAME: '.(!empty($investor_name)?$investor_name:'').'<br />'; 
                             if(!empty($investor_data['Investor']['in_trust_for'])){
-                             echo 'IN-TRUST-FOR: '.(!empty($investor_data['Investor']['in_trust_for'])?$investor_name:'');    
+                             echo 'IN-TRUST-FOR: '.(!empty($investor_data['Investor']['in_trust_for'])?$investor_data['Investor']['in_trust_for']:'');    
                             }
                             ?></p>
                         
