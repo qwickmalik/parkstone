@@ -106,7 +106,7 @@
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo 'Maturity Amt.'; ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="80" align="left"><b><?php echo 'Elapsed Tenure'; ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo 'Payment Status'; ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
+                        <!--<td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>-->
                     </tr>
                   
                     <?php if (!empty($data)) {
@@ -117,20 +117,20 @@
                             
                                 <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['investment_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['interest_rate'].'%'; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['interest_earned']; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['amount_due']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['interest_earned'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['amount_due'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['duration'].' '.$each_item['Reinvestment']['investment_period']; ?></td>
                                 
                                 <td align="center"><?php echo $each_item['Reinvestment']['payment_status']; ?></td>
-                                <td align="center" style="border-bottom: solid 1px Gray;">
+<!--                                <td align="center" style="border-bottom: solid 1px Gray;">
 
                             <?php
-                               echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
+//                               echo $this->Html->link("Record Inv. Returns","/Reinvestments/payReinvestorFixed/".$each_item['Reinvestment']['id']); 
                          ?> | <?php
-                                echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
-                            ?></td>
+//                                echo $this->Html->link("Roll-over","/Reinvestments/rollover/".$each_item['Reinvestment']['id']."/".$each_item['Reinvestment']['reinvestor_id']);
+                            ?></td>-->
                             </tr>
 
                                    

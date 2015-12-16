@@ -98,12 +98,12 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                             ?></td>
                         <td align="left" style="border-bottom: solid 1px Gray;"><?php
                             if (isset($each_item['LedgerTransaction']['debit'])) {
-                                echo $each_item['LedgerTransaction']['debit'];
+                                echo number_format($each_item['LedgerTransaction']['debit'],2);
                             }
                             ?></td>
                         <td align="left" style="border-bottom: solid 1px Gray;"><?php
                             if (isset($each_item['LedgerTransaction']['credit'])) {
-                                echo $each_item['LedgerTransaction']['credit'];
+                                echo number_format($each_item['LedgerTransaction']['credit'],2);
                             }
                             ?></td>
 
@@ -150,7 +150,7 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                 <td align="right">Closing Balance</td>
                 <td align="right" colspan="2">
                     
-                    <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GH$ '.number_format($data['ClientLedger']['available_cash']); } ?>
+                    <?php if(isset($data['ClientLedger']['available_cash'])){echo 'GHc '.number_format($data['ClientLedger']['available_cash'],2); } ?>
                 </td>
             </tr>
         </table>

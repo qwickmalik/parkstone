@@ -96,10 +96,10 @@ echo $this->Html->script('print.js');
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['duration'].' '.$data['Investment']['investment_period']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['investment_amount']; ?></td>
+                        <td align="right" valign="top"><?php echo number_format($data['Investment']['investment_amount'],2); ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['custom_rate'].'%'; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['expected_interest']; ?></td>
-                        <td align="right" valign="top"><?php echo $data['Investment']['amount_due']; ?></td>
+                        <td align="right" valign="top"><?php echo number_format($data['Investment']['expected_interest'],2); ?></td>
+                        <td align="right" valign="top"><?php echo number_format($data['Investment']['amount_due'],2); ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['due_date']; ?></td>
                         <!--<td align="left" valign="top"><?php // echo $data['Instruction']['instruction_name']; ?></td>-->
                     </tr>

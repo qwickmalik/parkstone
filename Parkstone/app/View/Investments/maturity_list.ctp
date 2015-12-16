@@ -37,10 +37,10 @@
                             
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['investment_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['interest_earned'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['amount_due'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){

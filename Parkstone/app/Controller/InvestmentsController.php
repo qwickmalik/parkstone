@@ -2955,15 +2955,15 @@ class InvestmentsController extends AppController {
                         $new_amount_due = $old_amount_due - $aamount_due;
                         break;
                 }
-                $management_fee_type = $old_investment_data['Investment']['management_fee_type'];
-                    $base_rate = $old_investment_data['Investment']['base_rate'];
+                $fee_type = $old_investment_data['Investment']['management_fee_type'];
+                    $oldbase_rate = $old_investment_data['Investment']['base_rate'];
                     $management_fee =  $old_investment_data['Investment']['base_fees'];
                     $accrued_basefee = $old_investment_data['Investment']['accrued_basefee'];
                          $base_fee = 0;
                     $benchmark_fee = 0;
-                    switch ($management_fee_type) {
+                    switch ($fee_type) {
                         case 'Management Fee':
-                            $base_fee = ($base_rate / 100) * $oldAmount;
+                            $base_fee = ($oldbase_rate / 100) * $oldAmount;
                             $YEAR2DAYS = 365 * $aduration;
                             $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
@@ -2974,7 +2974,7 @@ class InvestmentsController extends AppController {
 //                            $new_cashathand = $new_cashathand - $base_fee;
                             break;
                         case 'Management & Performance Fee':
-                            $base_fee = ($base_rate / 100) * $oldAmount;
+                            $base_fee = ($oldbase_rate / 100) * $oldAmount;
                             $YEAR2DAYS = 365 * $aduration;
                              $base_fee = $base_fee * ($YEAR2DAYS / 365);
 //                            if ($base_fee > $new_cashathand) {
@@ -3087,7 +3087,7 @@ class InvestmentsController extends AppController {
                 $base_rate = 0;
                 $benchmark_rate = 0;
                 if (!empty($old_investment_data['Investment']['base_fees'])) {
-                    $base_rate = $old_investment_data['Investment']['base_fees'];
+                    $base_rate = $old_investment_data['Investment']['base_rate'];
                 }
                 if (!empty($old_investment_data['Investment']['benchmark_rate'])) {
                     $benchmark_rate = $old_investment_data['Investment']['benchmark_rate'];
@@ -3178,8 +3178,7 @@ class InvestmentsController extends AppController {
 
                 $base_fee = $old_investment_data['Investment']['base_fees'];
 //                $benchmark_fee = $old_investment_data['Investment'][''];
-                if ($count == "1") {
-
+          
                     switch ($management_fee_type) {
                         case 'Management Fee':
                             $base_fee = ($base_rate / 100) * $investment_amount;
@@ -3199,7 +3198,7 @@ class InvestmentsController extends AppController {
                     
                     $management_fee += $base_fee;
                    $accrued_basefee += $base_fee;
-                }
+                
 
                 $check = $this->Session->check('investment_array_fixed');
                 if ($check) {
@@ -6169,8 +6168,9 @@ class InvestmentsController extends AppController {
                                 $update_array = array('id' => $investment_id,
                                     'status' => "Disposal_Approved", 'instruction_details' => $instructions);
                             } else {
-                                $update_array = array('id' => $investment_id,
+                                $update_array = array('id' => $investment_id,'earned_balance' => 0.00,
                                     'status' => "Payment_Approved", 'instruction_details' => $instructions);
+                                
                             }
                             $result = $this->Investment->save($update_array);
 
@@ -6190,6 +6190,7 @@ class InvestmentsController extends AppController {
                     case "2":
                         if ($data) {
                             $update_array = array('id' => $investment_id, 'status' => "Payment_requested");
+                            
                             $this->Investment->save($update_array);
                             $this->Session->delete('public_payment_req');
                             $this->Session->write('public_payment_req', $this->Investment->find('count', array('conditions' =>
@@ -6216,7 +6217,7 @@ class InvestmentsController extends AppController {
             $data = $this->Investment->find('first', array('recursive' => -1, 'conditions' => array('Investment.id' => $investment_id),
                 'order' => array('Investment.id')));
             if ($data) {
-
+                
                 $new_investmentdetails = array('id' => $investment_id, 'status' => 'Payment_Requested', 'old_status' => $data['Investment']['status']);
 
                 $result = $this->Investment->save($new_investmentdetails);
@@ -6410,18 +6411,14 @@ class InvestmentsController extends AppController {
             $old_balance = 0;
 
             
-            $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id]]);
+            $investment_data = $this->Investment->find('first', ['conditions' => ['Investment.id' => $investment_id],'recursive' => -1]);
             if ($investment_data) {
                
                 $earnedbalance = $investment_data['Investment']['earned_balance'];
                 $amount_due = $investment_data['Investment']['amount_due'];
 
                 $status = $investment_data['Investment']['status'];
-                if ($sms_amount > $earnedbalance) {
-                    $message = 'Payment amount cannot be more than Investment balance';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid,$investment_id));
-                }
+                
                 $check_account = $this->ReinvestorCashaccount->find('first', ['recursive' => -1, 'conditions' =>
                                 ['ReinvestorCashaccount.reinvestor_id' => 1]]);
                 if($check_account){
@@ -6432,15 +6429,11 @@ class InvestmentsController extends AppController {
                     $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid,$investment_id));
                 }
                 }
-                $new_earnedbalance = $earnedbalance - $sms_amount;
-                $new_amt_due = $amount_due - $sms_amount;
-                if ($new_earnedbalance <= 0) {
+                
+                
                     $status = 'Paid';
-                } elseif ($new_earnedbalance > 0) {
-                    $status = 'Part_payment';
-                }
-                $investment_array = array('id' => $investment_id, 'status' => $status, 'earned_balance' => $new_earnedbalance,
-                    'amount_due' => $new_amt_due);
+               
+                $investment_array = array('id' => $investment_id, 'status' => $status,'amount_due' => 0.00);
                 
                 
             }
@@ -6491,7 +6484,7 @@ class InvestmentsController extends AppController {
                     $result2 = $this->InvestmentPayment->save($investment_paymentdetails);
                     if (!empty($investment_array)) {
                       $result_ia =  $this->Investment->save($investment_array);
-                       pr($result_ia);exit;
+                      
                     }
                     if ($ledger_transactions) {
 

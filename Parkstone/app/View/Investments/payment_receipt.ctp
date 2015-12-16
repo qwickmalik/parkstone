@@ -80,7 +80,7 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                                     <td><b align="right">Total Amount Invested:</b></td>
                                       <td>
                                           <?php if (isset($payment['ClientLedger']['invested_amount'])) {
-                                                echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['invested_amount']);
+                                                echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['invested_amount'],2);
                                             } ?>
                                       </td>
                                   </tr>
@@ -88,7 +88,7 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                                     <td><b align="right">Closing Balance:</b></td>
                                       <td>
                                           <?php  if (isset($payment['ClientLedger']['available_cash'])) {
-                                                echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['available_cash']);
+                                                echo $shopCurrency. ' ' .number_format($payment['ClientLedger']['available_cash'],2);
                                               } ?>
                                       </td>
                                   </tr>

@@ -142,52 +142,8 @@
     ?>
     <!--</li>-->
     <!--    <li class="lightyellow">
-    <?php
-//        echo $this->Html->link('
-//        		<span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
-//            	<span class="menu-text">Company Accounts</span>'
-//                , '/CompanyAccounts/', array('escape' => false));
-    ?>
-        </li>-->
-<!--    <li class="parent lightyellow">
-        <a href="#">
-            <span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
-            <span class="menu-text">Company Accounts</span>
-        </a>
-        <ul class="child">
-            <li>
-                <?php // echo $this->Html->link('Dashboard', '/CompanyAccounts/', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Bank Transactions', '/CompanyAccounts/bankTransactions', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Asset Management', '/CashAccounts/listAssets', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Petty Cash Expenses', '/CashAccounts/pettyCash', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Receivables', '/CashAccounts/receivables', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Expenses', '/CashAccounts/expenses', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('New Cash Entry', '/CashAccounts/', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Find Cash Entry', '/CashAccounts/findEntry', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Delete Cash Entry', '/CashAccounts/deleteEntry', array('escape' => false)); ?>
-            </li>
-            <li>
-                <?php // echo $this->Html->link('Authorize Cash Entry', '/CashAccounts/authorizeEntry', array('escape' => false)); ?>
-            </li>
-        </ul>
-    </li>-->
-<li class="parent lightyellow">
+
+<!--<li class="parent lightyellow">
         <a href="#">
             <span class="menu-icon"><i class="fa fa-columns"></i></span>
             <span class="menu-text">Accounting</span>
@@ -218,13 +174,21 @@
                 <?php echo $this->Html->link('Stated Bank Account Balances', '/Accounting/statedBankBalances', array('escape' => false)); ?>
             </li>
         </ul>
-    </li>
+    </li>-->
     <li class="lightorange">
         <?php
         echo $this->Html->link('
         		<span class="menu-icon"><i class="fa fa-signal"></i></span>
             	<span class="menu-text">Reports</span>'
                 , '/Reports/', array('escape' => false));
+        ?>
+    </li>
+    <li class="pink">
+        <?php
+        echo $this->Html->link('
+        		<span class="menu-icon"><i class="fa fa-tachometer"></i></span>
+            	<span class="menu-text">Batch Processes</span>'
+                , '/Settings/batchProcesses', array('escape' => false));
         ?>
     </li>
     <li class="pink">
