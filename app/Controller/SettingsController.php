@@ -25,37 +25,35 @@ class SettingsController extends AppController {
         'CashAccount' => array('limit' => 25, 'order' => array('CashAccount.id' => 'asc')),
     );
 
-    
-      function beforeFilter() {
-      $this->__validateLoginStatus();
-      }
+    function beforeFilter() {
+        $this->__validateLoginStatus();
+    }
 
-      function __validateLoginStatus() {
-      if ($this->action != 'login' && $this->action != 'logout') {
-      if ($this->Session->check('userData') == false) {
-      $this->redirect('/');
-      }
-      }
-      }
+    function __validateLoginStatus() {
+        if ($this->action != 'login' && $this->action != 'logout') {
+            if ($this->Session->check('userData') == false) {
+                $this->redirect('/');
+            }
+        }
+    }
 
-      function __validateUserType() {
+    function __validateUserType() {
 
-      $userType = $this->Session->read('userDetails.usertype_id');
-      if ($userType != 1) {
-      $message = 'You Don\'t Have The Priviledges To View The Chosen Resource';
-      $this->Session->write('bmsg', $message);
-      $this->redirect('/Dashboard/');
-      }
-      }
-     
+        $userType = $this->Session->read('userDetails.usertype_id');
+        if ($userType != 1) {
+            $message = 'You Don\'t Have The Priviledges To View The Chosen Resource';
+            $this->Session->write('bmsg', $message);
+            $this->redirect('/Dashboard/');
+        }
+    }
 
     function index() {
-        $this->__validateUserType(); 
+        $this->__validateUserType();
     }
 
     function equitiesList($eq_id = null) {
         $this->__validateUserType();
-        
+
         $data = $this->paginate('EquitiesList');
         $this->set('data', $data);
 
@@ -110,33 +108,34 @@ class SettingsController extends AppController {
             }
         }
     }
-    
-    /*
-    function equitiesList($equity_id = null) {
-        $this->__validateUserType();
-        if ($equity_id != null && $equity_id != '') {
-            $this->set('equity', $this->EquitiesList->find('first', ['conditions' => ['EquitiesList.id' => $equity_id]]));
-        } else {
 
-            if (!empty($this->request->data)) {
-                $result = $this->EquitiesList->save($this->request->data);
-                if ($result) {
-                    $this->request->data = null;
-                    $message = 'Equity/Stock successfully saved';
-                    $this->Session->write('smsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
-                } else {
-                    $message = 'Unable to save';
-                    $this->Session->write('emsg', $message);
-                    $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
-                }
-            } else {
-                $data = $this->paginate('EquitiesList');
-                $this->set('data', $data);
-            }
-        }
-    }
-*/
+    /*
+      function equitiesList($equity_id = null) {
+      $this->__validateUserType();
+      if ($equity_id != null && $equity_id != '') {
+      $this->set('equity', $this->EquitiesList->find('first', ['conditions' => ['EquitiesList.id' => $equity_id]]));
+      } else {
+
+      if (!empty($this->request->data)) {
+      $result = $this->EquitiesList->save($this->request->data);
+      if ($result) {
+      $this->request->data = null;
+      $message = 'Equity/Stock successfully saved';
+      $this->Session->write('smsg', $message);
+      $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+      } else {
+      $message = 'Unable to save';
+      $this->Session->write('emsg', $message);
+      $this->redirect(array('controller' => 'Settings', 'action' => 'equitiesList'));
+      }
+      } else {
+      $data = $this->paginate('EquitiesList');
+      $this->set('data', $data);
+      }
+      }
+      }
+     */
+
     function delEquityName($equity_id) {
         if (!is_null($equity_id)) {
 
@@ -838,7 +837,7 @@ class SettingsController extends AppController {
 //        }
 
         $this->set('default_rates', $rateResults);
-        
+
         if ($this->request->is('post')) {
 
             if (!empty($this->request->data)) {
@@ -960,7 +959,7 @@ class SettingsController extends AppController {
 
     function banks($ba_id = null) {
         $this->__validateUserType();
-        
+
         $data = $this->paginate('Bank');
         $this->set('data', $data);
 
@@ -1032,7 +1031,6 @@ class SettingsController extends AppController {
         }
     }
 
-
     function cashAccounts($cashaccount_id = null) {
         $this->__validateUserType();
         $data = $this->paginate('CashAccount');
@@ -1040,15 +1038,15 @@ class SettingsController extends AppController {
         $this->set('banks', $this->Bank->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
         $this->set('company', $this->Setting->find('first'));
-        
-        
-        $zones = $this->Zone->find('all', array('fields' => array('id', 'zone', 'suburb')));
-            foreach($zones as $each_item){
-                $list[$each_item['Zone']['id']] = $each_item['Zone']['zone'].' '.$each_item['Zone']['suburb'];
-            }
 
-            $this->set('zones', $list);
-        
+
+        $zones = $this->Zone->find('all', array('fields' => array('id', 'zone', 'suburb')));
+        foreach ($zones as $each_item) {
+            $list[$each_item['Zone']['id']] = $each_item['Zone']['zone'] . ' ' . $each_item['Zone']['suburb'];
+        }
+
+        $this->set('zones', $list);
+
         if ($cashaccount_id != null && $cashaccount_id != '') {
             $this->set('ca', $this->CashAccount->find('first', ['conditions' => ['CashAccount.id' => $cashaccount_id]]));
         } else {
@@ -1073,7 +1071,7 @@ class SettingsController extends AppController {
                     $this->Session->write('emsg', $message);
                     $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
                 }
-                    
+
                 if (!empty($this->request->data['CashAccount']['id'])) {
 
                     $ca_id = $this->request->data['CashAccount']['id'];
@@ -1094,7 +1092,7 @@ class SettingsController extends AppController {
                         $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
                     }
                 } else {
-                    
+
                     $result = $this->CashAccount->save($this->request->data);
 
                     if ($result) {
@@ -1166,7 +1164,6 @@ class SettingsController extends AppController {
             $this->redirect(array('controller' => 'Settings', 'action' => 'cashAccounts'));
         }
     }
-    
 
     public function currencies($curr_id = NULL) {
 
@@ -1242,9 +1239,9 @@ class SettingsController extends AppController {
         $this->set('curr', $this->Currency->find('first', ['conditions' => ['Currency.is_local' => 1]]));
         $data = $this->paginate('ExchangeRate');
         $this->set('data', $data);
-        
+
         $message = '';
-        
+
         if ($this->request->is('post')) {
             //Configure::write('debug', 0);
             //$this->autoRender = false;
@@ -1318,21 +1315,21 @@ class SettingsController extends AppController {
             }
         }
     }
-    
+
     function transactionCategories($category_id = null) {
         $this->__validateUserType();
         $this->set('headids', $this->AccountingHead->find('list'));
-        
+
         $data = $this->paginate('TransactionCategory', array('TransactionCategory.deleted' => 0));
         $this->set('data', $data);
-        
-        
+
+
         if ($category_id != null && $category_id != '') {
             $this->set('transcat', $this->TransactionCategory->find('first', ['conditions' => ['TransactionCategory.id' => $category_id]]));
         } else {
             if ($this->request->is('post')) {
                 if (!empty($this->request->data['TransactionCategory']['id'])) {
-                    
+
                     if ($this->request->data['TransactionCategory']['category_name'] == "" || $this->request->data['TransactionCategory']['category_name'] == null) {
                         $message = 'Please Enter Transaction Category Name';
                         $this->Session->write('emsg', $message);
@@ -1393,30 +1390,32 @@ class SettingsController extends AppController {
     }
 
     function delTransactionCategory($catID = null) {
-        $this->autoRender =  $this->autoLayout = false;
-           
-       
-            if (!is_null($catID)) {
+        $this->autoRender = $this->autoLayout = false;
 
 
-               // $catID = $_POST['paymentnameId'];
-                $result = $this->TransactionCategory->delete($catID,false);
+        if (!is_null($catID)) {
+
+
+            // $catID = $_POST['paymentnameId'];
+            $result = $this->TransactionCategory->delete($catID, false);
 
 
 
-                if ($result) {
-                      $message = 'Transaction Category Deleted';
-                   $this->Session->write('smsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'transactionCategories'));
-                } else {
-                     $message = 'Could not Delete Transaction Category';
-                   $this->Session->write('bmsg', $message);
-                   $this->redirect(array('controller' => 'Settings','action' => 'transactionCategories'));
-                }
+            if ($result) {
+                $message = 'Transaction Category Deleted';
+                $this->Session->write('smsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
+            } else {
+                $message = 'Could not Delete Transaction Category';
+                $this->Session->write('bmsg', $message);
+                $this->redirect(array('controller' => 'Settings', 'action' => 'transactionCategories'));
             }
-        
+        }
     }
 
+    function batchProcesses() {
+        
+    }
 
 }
 

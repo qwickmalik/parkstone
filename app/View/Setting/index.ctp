@@ -119,8 +119,8 @@
         <?php // echo $this->Html->link('
 //		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
 //			<div id="innertext">
-//				<h3>Transaction Names</h3>
-//				<p>Create names for various expenses done by company here. Names will be used in Cash Accounts Module</p>
+//				<h3>Batch Server Processes</h3>
+//				<p>Run batch server processes here (Matured Payments,Daily Interests,etc)</p>
 //			</div>
 //		</div>', '/Settings/createExpenses', array('escape' => false)); ?>
 

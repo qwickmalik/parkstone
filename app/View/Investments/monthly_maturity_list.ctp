@@ -107,7 +107,7 @@
                         <td style="border-bottom: solid 2px dodgerblue;" align="left"><b>Instructions</b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="center" style="border-bottom: solid 2px Gray;"><b><?php echo 'Status'; ?></b></td>
 
-                        <td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>
+                        <!--<td style="border-bottom: solid 2px dodgerblue;" width="200" align="center" style="border-bottom: solid 2px Gray;"><b>Action</b></td>-->
                     </tr>
                     <?php if (!empty($data)) {
                         foreach ($data as $each_item) {
@@ -118,10 +118,10 @@
 
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['investment_amount']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['investment_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate'] . '%'; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['interest_earned']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['amount_due']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['interest_earned'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['amount_due'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['duration'] . ' ' . $each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['total_tenure'] . ' ' . $each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php
@@ -136,13 +136,13 @@
                                         echo $each_item['Investment']['status'];
                                     }
                                     ?></td>
-                                <td align="center" style="border-bottom: solid 1px Gray;">
+<!--                                <td align="center" style="border-bottom: solid 1px Gray;">
 
                                     <?php
-                                    echo $this->Html->Link('Request Paymt', '/Investments/requestPayment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
+//                                    echo $this->Html->Link('Request Paymt', '/Investments/requestPayment/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ), array('escape' => false));
                                     ?> | <?php
-                            echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape' => false));
-                            ?></td>
+//                            echo $this->Html->Link('Rollover', '/Investments/rollover/' . "/" . (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ) . "/" . (isset($each_item['Investment']['investor_id']) ? $each_item['Investment']['investor_id'] : '' ), array('escape' => false));
+                            ?></td>-->
                             </tr>
 
     <?php }

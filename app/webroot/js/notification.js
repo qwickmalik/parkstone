@@ -435,7 +435,7 @@ var setup = {
         $("#progress_msg").html("Commiting Transaction").show();
         $("#welcome_message").hide(5000);
         var query = "action=setup&" + $("#SettingSetupForm").serialize();
-      
+//    
         $("#error_msg").hide();
         $.ajax({
             url: this.verification_url,
@@ -443,6 +443,7 @@ var setup = {
             dataType: 'html',
             type: 'POST',
             success:function(data) {
+                 
                 if(  data == "unsuccessful") {                   
                     $("#progress_msg").hide();
                     $("#welcome_message").show();

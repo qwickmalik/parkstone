@@ -15,8 +15,8 @@
                     <tr>
                  
                        <td style="border-bottom: solid 2px dodgerblue" width="200" align="left"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('available_cash', 'Ledger Balance(GH$)'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Investment Balance(GH$)'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" align="left"><b><?php echo $this->Paginator->sort('available_cash', 'Ledger Balance(GHc)'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('invested_amount', 'Total Cash In Investments(GHc)'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('modified', 'Date Approved'); ?></b></td>
 
                    
@@ -27,8 +27,8 @@
                                 <td align="left"><?php echo $this->Html->link($each_item['Investor']['fullname'],"/Investments/payInvestor/".
                                         (isset($each_item['ClientLedger']['investor_id']) ? $each_item['ClientLedger']['investor_id'] : '' )."/".
                                         (isset($each_item['Investment']['id']) ? $each_item['Investment']['id'] : '' ),array()); ?></td>
-                                <td align="left"><?php echo number_format($each_item['ClientLedger']['available_cash']);  ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['earned_balance']); ?></td>
+                                <td align="left"><?php echo number_format($each_item['ClientLedger']['available_cash'],2);  ?></td>
+                                <td align="left"><?php echo number_format($each_item['ClientLedger']['invested_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['ClientLedger']['modified']; ?></td>
                               
                             </tr>

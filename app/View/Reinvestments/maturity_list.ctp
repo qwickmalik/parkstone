@@ -36,10 +36,10 @@
                             
                                 <td align="left"><?php echo $each_item['Reinvestment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['due_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['investment_amount']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['investment_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['interest_rate'].'%'; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['interest_earned']; ?></td>
-                                <td align="left"><?php echo $each_item['Reinvestment']['amount_due']; ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['interest_earned'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Reinvestment']['amount_due'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Reinvestment']['duration'].' '.$each_item['Reinvestment']['investment_period']; ?></td>
                                 
                                 <td align="center"><?php echo $each_item['Reinvestment']['payment_status']; ?></td>

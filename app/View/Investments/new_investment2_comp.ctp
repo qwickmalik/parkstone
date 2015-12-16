@@ -108,7 +108,7 @@ if ($this->Session->check('ledger_data')) {
                         <div class="col-lg-6 col-md-6 col-sm-12"> 
                             <?php
                             echo $this->Form->hidden('user_id', array('value' => ($this->Session->check('userDetails.id') == true ? $this->Session->read('userDetails.id') : '' )));
-                            echo $this->Form->hidden('investor_type_id', array('value' => 2));
+                            echo $this->Form->hidden('investor_type_id', array('value' => 3));
                             echo $this->Form->hidden('investor_page', array('value' => 'newInvestment2_comp'));
                             echo $this->Form->hidden('investor_id', array('value' => (isset($investors['Investor']['id']) ?
                                         $investors['Investor']['id'] : '')));
