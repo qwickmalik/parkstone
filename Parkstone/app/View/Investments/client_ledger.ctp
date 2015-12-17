@@ -116,12 +116,12 @@ echo $this->Form->create('Investment', array('controller' => 'Investments', 'act
                             ?></td>
                         <td align="right"><?php
                             if (isset($each_item['LedgerTransaction']['debit'])) {
-                                echo $each_item['LedgerTransaction']['debit'];
+                                echo number_format($each_item['LedgerTransaction']['debit'],2);
                             }
                             ?></td>
                         <td align="right"><?php
                             if (isset($each_item['LedgerTransaction']['credit'])) {
-                                echo $each_item['LedgerTransaction']['credit'];
+                                echo number_format($each_item['LedgerTransaction']['credit'],2);
                             }
                             ?></td>
                         <td align="center"><?php

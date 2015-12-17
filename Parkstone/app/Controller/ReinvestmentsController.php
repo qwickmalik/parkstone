@@ -12,7 +12,7 @@ class ReinvestmentsController extends AppController {
         'InvestmentDestination', 'InvDestProduct', 'EquitiesList', 'ReinvestmentsEquity', 'InvestorEquity',
         'ReinvestmentRollover', 'ReinvestmentStatement', /* 'ReinvestmentEquityStatement', */ 'Instruction',
         'LedgerTransaction', 'ClientLedger', 'ReinvestorEquity', 'InvestorEquity', 'CashReceiptMode',
-        'PaymentMode', 'InvestmentReturn', 'ReinvestmentTopup', 'EquityOrder', 'Investment','ReinvestInterestAccrual');
+        'PaymentMode', 'InvestmentReturn', 'ReinvestmentTopup', 'EquityOrder', 'Investment', 'ReinvestInterestAccrual');
     var $paginate = array(
         'Reinvestor' => array('limit' => 50, 'order' => array('Reinvestor.company_name' => 'asc')),
         'ReinvestorDeposit' => array('limit' => 50, 'order' => array('ReinvestorDeposit.id' => 'asc')),
@@ -1275,15 +1275,15 @@ class ReinvestmentsController extends AppController {
 
     function newInvestment1Fixed($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
-        
+
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $rein_data = $this->Reinvestment->find('all', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id,
-            'Reinvestment.status' => ['Invested','Rolled_over','Termination_Requested']],
-                'fields' => ['Sum(Reinvestment.investment_amount) As invest_amt']
-                ]);
-      
-        $this->set('reinvest_totals',$rein_data);
+                'Reinvestment.status' => ['Invested', 'Rolled_over', 'Termination_Requested']],
+            'fields' => ['Sum(Reinvestment.investment_amount) As invest_amt']
+        ]);
+
+        $this->set('reinvest_totals', $rein_data);
         $check = $this->Session->check('variabless_refixed');
         if ($check) {
             $check = $this->Session->check('variabless_refixed.duedate');
@@ -1380,11 +1380,11 @@ class ReinvestmentsController extends AppController {
 
             $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
             $first_date = $inv_date;
-          $inv_deposit = array('user_id' => $this->request->data['Reinvestment']['user_id'],
-                    'amount' => $investment_amount, 'deposit_date' => $first_date);
+            $inv_deposit = array('user_id' => $this->request->data['Reinvestment']['user_id'],
+                'amount' => $investment_amount, 'deposit_date' => $first_date);
 
 
-                $this->Session->write('reinv_deposit', $inv_deposit);
+            $this->Session->write('reinv_deposit', $inv_deposit);
             $date = new DateTime($first_date);
             $period = $this->request->data['Reinvestment']['investment_period'];
             $duration = $this->request->data['Reinvestment']['duration'];
@@ -1398,7 +1398,7 @@ class ReinvestmentsController extends AppController {
                 case 'Day(s)':
 
                     $date->add(new DateInterval('P' . $duration . 'D'));
-                    $date->sub(new DateInterval('P1D'));
+                   
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
 //                    $statemt_array = array();
@@ -1407,6 +1407,18 @@ class ReinvestmentsController extends AppController {
                     $interest_amount1 = ($rate / 100) * $investment_amount;
                     $interest_amount = $interest_amount1 * ($duration / 365);
                     $amount_due = $interest_amount + $investment_amount;
+                    $adate = date('Y-m-d');
+                    $due_date = $date->format('Y-m-d');
+                    if ($due_date <= $adate) {
+                         $date->sub(new DateInterval('P1D'));
+                        $adate = $due_date;
+                    }
+                    $to_date = new DateTime($adate);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
+//                    $aduration +=1;
+
                     $ainterest_amount = $interest_amount1 * ($aduration / 365);
                     $aamount_due = $ainterest_amount + $investment_amount;
 //                    for ($n = 1; $n <= $duration; $n++) {
@@ -1459,13 +1471,27 @@ class ReinvestmentsController extends AppController {
 //                    $statemt_array = array();
                     $rate = $custom_rate;
 
+
                     $YEAR2DAYS = 365 * $duration;
-                    
                     $interest_amount1 = ($rate / 100) * $investment_amount;
                     $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                     $amount_due = $interest_amount + $investment_amount;
-                     $aYEAR2DAYS = 365 * $aduration;
-                    $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                    $adate = date('Y-m-d');
+                    $due_date = $date->format('Y-m-d');
+                    if ($due_date <= $adate) {
+                        $adate = $due_date;
+                    }
+                    $to_date = new DateTime($adate);
+                    $ainv_date = new DateTime($inv_date);
+                    $aduration = date_diff($ainv_date, $to_date);
+                    $aduration = $aduration->format("%a");
+                     if ($due_date <= $adate) {
+                          $aduration +=1;
+                    }
+                 
+//                    $aYEAR2DAYS = 365 * $aduration;
+
+                    $ainterest_amount = $interest_amount1 * ($aduration / 365);
                     $aamount_due = $ainterest_amount + $investment_amount;
 //                    for ($n = 1; $n <= $duration; $n++) {
 //                        $date_statemt->add(new DateInterval('P1Y'));
@@ -1499,26 +1525,26 @@ class ReinvestmentsController extends AppController {
                 'expected_interest' => $interest_amount,
                 'investment_date' => $inv_date,
                 'investment_type' => 'fixed',
-                        'total_amount_earned' => $aamount_due,
-                        'earned_balance' => $aamount_due,
-                        'accrued_days' => $aduration,
-                        'accrued_interest' => $ainterest_amount,
+                'total_amount_earned' => $aamount_due,
+                'earned_balance' => $aamount_due,
+                'accrued_days' => $aduration,
+                'accrued_interest' => $ainterest_amount,
                 'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
                 'balance' => $amount_due,
                 'created_by' => $this->request->data['Reinvestment']['user_id'],
                 'modified_by' => $this->request->data['Reinvestment']['user_id']
             );
-             $interest_accruals = array(
-                        'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
-                        'interest_amounts' => $ainterest_amount,
-                        'interest_date' => $inv_date
-                    );
-                    
-                    $check = $this->Session->check('reinterest_accrual');
-                    if ($check) {
-                        $this->Session->delete('reinterest_accrual');
-                    }
-                    $check = $this->Session->write('reinterest_accrual',$interest_accruals);
+            $interest_accruals = array(
+                'reinvestor_id' => $this->request->data['Reinvestment']['reinvestor_id'],
+                'interest_amounts' => $ainterest_amount,
+                'interest_date' => $inv_date
+            );
+
+            $check = $this->Session->check('reinterest_accrual');
+            if ($check) {
+                $this->Session->delete('reinterest_accrual');
+            }
+            $check = $this->Session->write('reinterest_accrual', $interest_accruals);
             $check = $this->Session->check('statemt_array_refixed');
             if ($check) {
                 $this->Session->delete('statemt_array_refixed');
@@ -1562,12 +1588,12 @@ class ReinvestmentsController extends AppController {
             $this->set('reinvestments', $this->Reinvestment->find('first', ['conditions' =>
                         ['Reinvestment.id' => $reinvestment_id]]));
             $check = $this->Session->check('reinterest_accrual');
-                    if ($check) {
-                         $interest_accruals = $this->Session->read('reinterest_accrual');
-                         $interest_accruals['reinvestment_id'] = $reinvestment_id;
-                        $this->ReinvestInterestAccrual->save($interest_accruals);
-                        $this->Session->delete('reinterest_accrual');
-                    }
+            if ($check) {
+                $interest_accruals = $this->Session->read('reinterest_accrual');
+                $interest_accruals['reinvestment_id'] = $reinvestment_id;
+                $this->ReinvestInterestAccrual->save($interest_accruals);
+                $this->Session->delete('reinterest_accrual');
+            }
             $check = $this->Session->check('reinvesttemp');
             if ($check) {
                 $this->Session->delete('reinvesttemp');
@@ -1853,7 +1879,7 @@ class ReinvestmentsController extends AppController {
                 $this->Session->delete('variabless_reequity');
             }
 
-            $variables = array('totalamt' => $totalamt,/* 'share_price' => $this->request->data['Reinvestment']['share_price'], */'total_fees' => $this->request->data['Reinvestment']['total_fees'], 'equity' => $equity_name);
+            $variables = array('totalamt' => $totalamt, /* 'share_price' => $this->request->data['Reinvestment']['share_price'], */ 'total_fees' => $this->request->data['Reinvestment']['total_fees'], 'equity' => $equity_name);
 
             $this->Session->write('variabless_reequity', $variables);
 
@@ -1963,12 +1989,12 @@ class ReinvestmentsController extends AppController {
                 if ($balance > 0) {
                     $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'part_investment',
                         'modified_by' => ($this->Session->check('userDetails.id') == true ?
-                                $this->Session->read('userDetails.id') : '' ),'available_amount' => $balance);
+                                $this->Session->read('userDetails.id') : '' ), 'available_amount' => $balance);
                 } else {
 
                     $investmencash_array = array('id' => $ic_result['InvestmentCash']['id'], 'status' => 'invested',
                         'modified_by' => ($this->Session->check('userDetails.id') == true ?
-                                $this->Session->read('userDetails.id') : '' ),'available_amount' => $balance);
+                                $this->Session->read('userDetails.id') : '' ), 'available_amount' => $balance);
                 }
                 $this->InvestmentCash->save($investmencash_array);
             }
@@ -2070,9 +2096,9 @@ class ReinvestmentsController extends AppController {
 
         $this->set('equitieslists', $this->EquitiesList->find('list'));
         if (!empty($id) && !is_null($id)) {
-            $data['eq'] = $this->EquityOrder->find('all', array('conditions'=>
-                array('EquityOrder.investment_id' => $id,'EquityOrder.status' => 'ordered')));
-          
+            $data['eq'] = $this->EquityOrder->find('all', array('conditions' =>
+                array('EquityOrder.investment_id' => $id, 'EquityOrder.status' => 'ordered')));
+
 
             if ($data['eq']) {
                 $investment_no = $data['eq'][0]['Investment']['investment_no'];
@@ -2362,7 +2388,7 @@ class ReinvestmentsController extends AppController {
             }
         }
     }
-    
+
     function searchInvest4mInvest2($investorID = null, $condition = null) {
         $this->autoRender = false;
         if ($this->request->is('post')) {
@@ -2442,7 +2468,8 @@ class ReinvestmentsController extends AppController {
             }
         }
     }
-      function manageInvestments() {
+
+    function manageInvestments() {
         $this->__validateUserType();
 
         $data = $this->paginate('Investor');
@@ -2479,20 +2506,18 @@ class ReinvestmentsController extends AppController {
             $this->Session->delete('investment_paymentdetails');
         }
         if (!is_null($investor_id) && !is_null($investor_name)) {
-            
+
             $data = $this->Investment->find('all', array('conditions' => array('Investment.investor_id' => $investor_id, 'Investment.investment_product_id' => array(2, 3)), 'order' => array('Investment.id')));
             $this->set('investor_id', $investor_id);
             $this->set('investor_name', $investor_name);
             $data2 = array();
             if ($data) {
-                foreach($data as $val){
+                foreach ($data as $val) {
                     $re_data = $this->ReinvestmentsEquity->find('count', array('conditions' =>
-                array('ReinvestmentsEquity.investment_no' => $val['Investment']['investment_no'])));
-                    if($re_data > 0){
-                     $data2[] = $val;   
+                        array('ReinvestmentsEquity.investment_no' => $val['Investment']['investment_no'])));
+                    if ($re_data > 0) {
+                        $data2[] = $val;
                     }
-                
-                
                 }
                 $this->set('data', $data2);
             } else {
@@ -2509,8 +2534,8 @@ class ReinvestmentsController extends AppController {
         }
         $this->paginate('Investment');
     }
-    
-     function disposeEquityInvestment($investment_id = null, $investment_no = null) {
+
+    function disposeEquityInvestment($investment_id = null, $investment_no = null) {
         $this->__validateUserType();
 //        $this->set('paymentmodes', $this->PaymentMode->find('list'));
 
@@ -2621,6 +2646,7 @@ class ReinvestmentsController extends AppController {
             $this->set('issued', $issued);
         }
     }
+
     public function makeEquityOrder() {
         $this->autoRender = $this->autoLayout = false;
         if ($this->request->is('post')) {
@@ -2708,7 +2734,7 @@ class ReinvestmentsController extends AppController {
         }
     }
 
-function ReinstateEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {
+    function ReinstateEquityInvestment($investment_id = null, $investor = null, $investor_name = null) {
         $this->__validateUserType();
 
         if (!is_null($investment_id)) {
@@ -2735,7 +2761,7 @@ function ReinstateEquityInvestment($investment_id = null, $investor = null, $inv
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageEquityInvestments', $investor, $investor_name));
         }
     }
-    
+
     function statementInvDetailEq($investment_id = null, $investor_id = null, $investor_name = null) {
         $this->__validateUserType();
 
@@ -2780,7 +2806,7 @@ function ReinstateEquityInvestment($investment_id = null, $investor = null, $inv
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvestments'));
         }
     }
-    
+
     public function deleteEquityInvestments($investment_id = null, $investor_id = null, $investor_name = null) {
         $deposit_data = $this->InvestorDeposit->find('first', ['conditions' =>
             ['InvestorDeposit.investment_id' => $investment_id], 'order' => ['InvestorDeposit.id' => 'asc']]);
@@ -2936,7 +2962,7 @@ function ReinstateEquityInvestment($investment_id = null, $investor = null, $inv
         if (!is_null($reinvestor_id) && !empty($reinvestor_id)) {
 //        $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
             $this->set('reinvestors', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
-             $this->set('reinvestor_id', $reinvestor_id);
+            $this->set('reinvestor_id', $reinvestor_id);
             $this->set('paymentmodes', $this->PaymentMode->find('list'));
 //        $this->set('reinvestments', $this->Reinvestment->find('list', ['conditions' => ['Reinvestment.reinvestor_id' => $reinvestor_id]]));
 //'Reinvestment.payment_status' => 'unpaid'
@@ -2952,7 +2978,6 @@ function ReinstateEquityInvestment($investment_id = null, $investor = null, $inv
         }
     }
 
-    
     function editFixedInvestments($investor_id = null, $investment_id = null) {
         $this->__validateUserType();
 
@@ -2962,10 +2987,10 @@ function ReinstateEquityInvestment($investment_id = null, $investor = null, $inv
                 array(
                     'InvestmentCash.investment_id' => $investment_id, 'InvestmentCash.investment_type' => 'fixed'
             )));
-          
-if ($this->Session->check('editinvesttemp')) {
-          $this->Session->delete('editinvesttemp');
-         }
+
+            if ($this->Session->check('editinvesttemp')) {
+                $this->Session->delete('editinvesttemp');
+            }
             $issued = $this->Session->check('userDetails');
             if ($issued) {
                 $issued = $this->Session->read('userDetails.firstname');
@@ -3001,8 +3026,8 @@ if ($this->Session->check('editinvesttemp')) {
             $this->redirect(array('controller' => 'Investments', 'action' => 'manageInvestments'));
         }
     }
-    
-    function editFixedInvestment($investor_id = null, $investment_id = null, $investmentcash_id = null,$count= null) {
+
+    function editFixedInvestment($investor_id = null, $investment_id = null, $investmentcash_id = null, $count = null) {
         $this->__validateUserType();
         $this->set('portfolios', $this->Portfolio->find('list'));
         $this->set('currencies', $this->Currency->find('list'));
@@ -3026,7 +3051,7 @@ if ($this->Session->check('editinvesttemp')) {
         if (!is_null($investment_id)) {
             $data = $this->InvestmentCash->find('first', array('conditions' => array('InvestmentCash.id' => $investmentcash_id)));
             if ($data) {
-                $this->set('count',$count);
+                $this->set('count', $count);
                 $this->set('data', $data);
                 $this->set('investment_id', $investment_id);
                 $check = $this->Session->check('variabless_fixed');
@@ -3052,6 +3077,7 @@ if ($this->Session->check('editinvesttemp')) {
             }
         }
     }
+
     function manageInvEquity($reinvestor_id = NULL) {
         /* $this->__validateUserType(); */
         $this->set('reinvestors', $this->Reinvestor->find('first', ['conditions' => ['Reinvestor.id' => $reinvestor_id]]));
@@ -3135,10 +3161,10 @@ if ($this->Session->check('editinvesttemp')) {
     }
 
     function topupInvestment() {
-      
+
         $this->autoRender = $this->autoLayout = false;
         if ($this->request->is('post')) {
-             
+
             if (!empty($this->request->data)) {
 //               pr($this->request->data);exit;
                 $source = $this->request->data['Topup']['paymentmode_id'];
@@ -3175,24 +3201,24 @@ if ($this->Session->check('editinvesttemp')) {
                         'conditions' => ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]);
 
                     if ($reinvestment_data) {
-                        
-                       
-                                $amount = $this->request->data['Topup']['topup_amount'];
+
+
+                        $amount = $this->request->data['Topup']['topup_amount'];
 //                                print_r($this->request->data);
-                                $cheque_no =null;
-                               
-                                if(!empty($this->request->data['Topup']['cheque_no'])){
-                               
-                                $cheque_no = $this->request->data['Topup']['cheque_no'];
-                                }
-                       
-                        
-                        
+                        $cheque_no = null;
+
+                        if (!empty($this->request->data['Topup']['cheque_no'])) {
+
+                            $cheque_no = $this->request->data['Topup']['cheque_no'];
+                        }
+
+
+
                         $id = $reinvestment_data['ReinvestorCashaccount']['id'];
                         $old_balance = $reinvestment_data['ReinvestorCashaccount']['fixed_inv_balance'];
                         $grand_total = $reinvestment_data['ReinvestorCashaccount']['total_balance'] - $amount;
                     } else {
-                        
+
                         $message = 'Unable to access Company account. Please try again.';
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $investor_id));
@@ -3359,8 +3385,8 @@ if ($this->Session->check('editinvesttemp')) {
                     $message = 'Rollover Amount cannot be more than amount due';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
-                } 
-                
+                }
+
 //                elseif ($investment_amount < $amount_available) {
 //                    $message = 'Please record cash returned before rollover';
 //                    $this->Session->write('bmsg', $message);
@@ -3372,16 +3398,16 @@ if ($this->Session->check('editinvesttemp')) {
                 $period = $reinvest_data['Reinvestment']['investment_period'];
                 $duration = $reinvest_data['Reinvestment']['duration'];
                 $year = $duration;
-            $adate = date('Y-m-d');
-            $to_date = new DateTime($adate);
-            $ainv_date = new DateTime($inv_date);
-            $aduration = date_diff($ainv_date, $to_date);
-            $aduration = $aduration->format("%a");
+                $adate = date('Y-m-d');
+                $to_date = new DateTime($adate);
+                $ainv_date = new DateTime($inv_date);
+                $aduration = date_diff($ainv_date, $to_date);
+                $aduration = $aduration->format("%a");
                 switch ($period) {
                     case 'Day(s)':
 
                         $date->add(new DateInterval('P' . $duration . 'D'));
-                        $date->sub(new DateInterval('P1D'));
+                        
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -3390,8 +3416,20 @@ if ($this->Session->check('editinvesttemp')) {
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($duration / 365);
                         $amount_due = $interest_amount + $investment_amount;
-                    $ainterest_amount = $interest_amount1 * ($aduration / 365);
-                    $aamount_due = $ainterest_amount + $investment_amount;
+
+                        $adate = date('Y-m-d');
+                        $due_date = $date->format('Y-m-d');
+                        if ($due_date <= $adate) {
+                            $date->sub(new DateInterval('P1D'));
+                            $adate = $due_date;
+                        }
+                        $to_date = new DateTime($adate);
+                        $ainv_date = new DateTime($inv_date);
+                        $aduration = date_diff($ainv_date, $to_date);
+                        $aduration = $aduration->format("%a");
+//                        $aduration +=1;
+                        $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1D'));
 
@@ -3424,9 +3462,25 @@ if ($this->Session->check('editinvesttemp')) {
                         $interest_amount1 = ($rate / 100) * $investment_amount;
                         $interest_amount = $interest_amount1 * ($YEAR2DAYS / 365);
                         $amount_due = $interest_amount + $investment_amount;
-                     $aYEAR2DAYS = 365 * $aduration;
-                    $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
-                    $aamount_due = $ainterest_amount + $investment_amount;
+
+
+                        $adate = date('Y-m-d');
+                        $due_date = $date->format('Y-m-d');
+                        if ($due_date <= $adate) {
+                            $adate = $due_date;
+                        }
+                        $to_date = new DateTime($adate);
+                        $ainv_date = new DateTime($inv_date);
+                        $aduration = date_diff($ainv_date, $to_date);
+                        $aduration = $aduration->format("%a");
+                        if ($due_date <= $adate) {
+                              $aduration +=1;
+                        }
+                      
+
+//                        $aYEAR2DAYS = 365 * $aduration;
+                        $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
+                        $aamount_due = $ainterest_amount + $investment_amount;
                         for ($n = 1; $n <= $duration; $n++) {
                             $date_statemt->add(new DateInterval('P1Y'));
                             $interest_amount2 = $interest_amount1 * (1 / 365);
@@ -3468,23 +3522,23 @@ if ($this->Session->check('editinvesttemp')) {
 
                 $interest_accruals = array(
                     'reinvestment_id' => $reinvest_data['Reinvestment']['id'],
-                        'reinvestor_id' => $reinvest_data['Reinvestment']['reinvestor_id'],
-                        'interest_amounts' => $ainterest_amount,
-                        'interest_date' => $inv_date
-                    );
-                    
-                   $this->ReinvestInterestAccrual->save($interest_accruals);
+                    'reinvestor_id' => $reinvest_data['Reinvestment']['reinvestor_id'],
+                    'interest_amounts' => $ainterest_amount,
+                    'interest_date' => $inv_date
+                );
+
+                $this->ReinvestInterestAccrual->save($interest_accruals);
                 $rollover_details = array('user_id' => ($this->Session->check('userDetails.id') == true ?
                             $this->Session->read('userDetails.id') : '' ),
                     'reinvestment_id' => $reinvest_data['Reinvestment']['id'],
-                    'reinvestor_id' => $reinvest_data['Reinvestment']['reinvestor_id'],'old_accrued_interest' =>$reinvest_data["Reinvestment"]["accrued_interest"], 
+                    'reinvestor_id' => $reinvest_data['Reinvestment']['reinvestor_id'], 'old_accrued_interest' => $reinvest_data["Reinvestment"]["accrued_interest"],
                     'interest_rate' => $custom_rate, 'old_interest_rate' => $reinvest_data["Reinvestment"]["interest_rate"],
                     'amount' => $investment_amount, 'rollover_date' => $date->format('Y-m-d'));
 
 
                 $result = $this->Reinvestment->save($reinvestment_array);
                 if ($result) {
-                     $this->ReinvestInterestAccrual->save($interest_accruals);
+                    $this->ReinvestInterestAccrual->save($interest_accruals);
                     $this->ReinvestmentRollover->save($rollover_details);
                     $this->ReinvestmentStatement->saveAll($statemt_array);
                     $message = 'Roll-over successful';
@@ -3528,10 +3582,10 @@ if ($this->Session->check('editinvesttemp')) {
                 $this->Session->delete('reinvestmt_equities');
             }
             $userid = null;
-                $check = $this->Session->check('userDetails');
-                if ($check) {
-                    $userid = $this->Session->read('userDetails.id');
-                }
+            $check = $this->Session->check('userDetails');
+            if ($check) {
+                $userid = $this->Session->read('userDetails.id');
+            }
             $total_shares_sold = 0;
             $total_sale = 0;
             $reinvestment_id = $this->request->data['EquityOrder']['reinvestment_id'];
@@ -3556,7 +3610,7 @@ if ($this->Session->check('editinvesttemp')) {
                     'numb_shares_sold' => $shares_ordered,
                     'sale_price' => $sale_price,
                     'total_price' => $total_price,
-                'status' => 'processed'
+                    'status' => 'processed'
             ));
 
             $equities+=$equity_data;
@@ -3597,133 +3651,129 @@ if ($this->Session->check('editinvesttemp')) {
                     $this->EquityOrder->save($var);
                 }
                 $this->Session->delete('reinvestmt_equities');
-            $returns = 0;
-            if ($inv_data) {
-                $numb_shares_sold = $inv_data['Investment']['numb_shares_sold'];
-                $numb_shares_left = $inv_data['Investment']['numb_shares_left'];
-                $accrued_basefee = $inv_data['Investment']['accrued_basefee'];
-                $total_earned = $inv_data['Investment']['total_amount_earned'];
-                $old_status = $inv_data['Investment']['status'];
-                
-                
-                if($total_sale >= $accrued_basefee){
-                    $returns = $accrued_basefee;
-                    $total_sale = $total_sale - $accrued_basefee;
-                    $new_accrued = 0;
-                    $new_totearned = $total_earned + $total_sale;
-                }elseif($total_sale < $accrued_basefee){
-                    $new_accrued = $accrued_basefee - $total_sale;
-                     $returns = $total_sale;
-                    $total_sale = 0;
-                    $new_totearned = $total_earned + $total_sale;
-                }
-                $new_share_sold = $numb_shares_sold + $total_shares_sold;
-                $new_shares_left = $numb_shares_left - $total_shares_sold;
-                if($new_shares_left <= 0){
-                    $status = 'Paid';
-                }else{
-                    $status = 'Invested';
-                }
-                //set and update investor investment record
-                $inv_array = array('id' => $investment_id,'total_amount_earned' => $new_totearned,
-                    'accrued_basefee' => $new_accrued,'numb_shares_sold' => $new_share_sold,'numb_shares_left' => $numb_shares_left,
-                    'old_status' => $old_status,'status' => $status,'modified_by' => $userid);
-                $result = $this->Investment->save($inv_array);
-                
-                if($result){
-                    //find and update investor equity records
-                    $inv_eq = $this->InvestorEquity->find('all',['recursive' => -1,
-                        'conditions' => ['InvestorEquity.investment_id' => $investment_id]]);
-                    if($inv_eq){
-                     $x = 2;   
-               foreach($inv_eq as $val){
-                   if($x > 5){
-                       break;
-                   }
-                   if($val['InvestorEquity']['equities_list_id'] == 
-                           $this->request->data['EquityOrder']['equities_list_id']){
-                       $shares_sold = $val['InvestorEquity']['numb_shares_sold'] + $this->request->data['EquityOrder']['numb_shares_sold'];
-                       $numb_shares_left = $val['InvestorEquity']['numb_shares_left'] - $this->request->data['EquityOrder']['numb_shares_sold'];
-                   }
-                   if($val['InvestorEquity']['equities_list_id'] == 
-                           $this->request->data['EquityOrder']['equities_list_id' . $x]){
-                       $shares_sold = $val['InvestorEquity']['numb_shares_sold'] +
-                               $this->request->data['EquityOrder']['numb_shares_sold'. $x];
-                       
-                       $numb_shares_left = $val['InvestorEquity']['numb_shares_left'] - 
-                               $this->request->data['EquityOrder']['numb_shares_sold'. $x];
-                   
-                           }
-                           $x++;
-                           $inveq_array = array('id' => $val['InvestorEquity']['id'],'numb_shares_sold' => $shares_sold,
-                               'numb_shares_left' => $numb_shares_left,'modified_by' => $userid);
-                           $this->InvestorEquity->save($inveq_array);
-               }
-                        
+                $returns = 0;
+                if ($inv_data) {
+                    $numb_shares_sold = $inv_data['Investment']['numb_shares_sold'];
+                    $numb_shares_left = $inv_data['Investment']['numb_shares_left'];
+                    $accrued_basefee = $inv_data['Investment']['accrued_basefee'];
+                    $total_earned = $inv_data['Investment']['total_amount_earned'];
+                    $old_status = $inv_data['Investment']['status'];
+
+
+                    if ($total_sale >= $accrued_basefee) {
+                        $returns = $accrued_basefee;
+                        $total_sale = $total_sale - $accrued_basefee;
+                        $new_accrued = 0;
+                        $new_totearned = $total_earned + $total_sale;
+                    } elseif ($total_sale < $accrued_basefee) {
+                        $new_accrued = $accrued_basefee - $total_sale;
+                        $returns = $total_sale;
+                        $total_sale = 0;
+                        $new_totearned = $total_earned + $total_sale;
                     }
-                     if($reinv_data){
-            //collect data for reinvestor returns
-            $reinvestor_cash = $this->ReinvestorCashaccount->find('first',['recursive' => -1,
-                'conditions' => ['ReinvestorCashaccount.reinvestor_id' => 
-                    $reinv_data['ReinvestmentsEquity']['reinvestor_id']]]);
-            
-            if($reinvestor_cash){
-                //$equity_balance = $reinvestor_cash['ReinvestorCashaccount']['equity_inv_balance'] + $total_sale;
-                $equity_returns = $reinvestor_cash['ReinvestorCashaccount']['equity_inv_returns'] + $returns;
-                $total_balance = $reinvestor_cash['ReinvestorCashaccount']['total_balance'] + $returns;
-                
-                $reinvestor_array = array('id' => $reinvestor_cash['ReinvestorCashaccount']['id'],
-                    'equity_inv_returns' => $equity_returns,'total_balance' => $total_balance);
-                $this->ReinvestorCashaccount->save($reinvestor_array);
-            }
-            
-            //subtract shares from reinvestment equity and update status
-            //make sure when investments are mature - accruedbasefeecash is deducted and added to
-            // reinvestor fixed cash returns and total balance
-            //above will probably happen in shell and also during terminations
-            $reshares_left = $reinv_data['ReinvestmentsEquity']['numb_shares_left'] - $total_shares_sold;
-            $reshares_sold = $reinv_data['ReinvestmentsEquity']['numb_shares_sold'] + $total_shares_sold;
-            $reold_status = $reinv_data['ReinvestmentsEquity']['status'];
-            $reother_fees = $fees + $reinv_data['ReinvestmentsEquity']['other_fees'];
-            if($reshares_left <= 0){
-                    $restatus = 'Paid';
-                    $repayment_status = 'paid';
-                }else{
-                    $restatus = 'Invested';
-                    $repayment_status = 'unpaid';
+                    $new_share_sold = $numb_shares_sold + $total_shares_sold;
+                    $new_shares_left = $numb_shares_left - $total_shares_sold;
+                    if ($new_shares_left <= 0) {
+                        $status = 'Paid';
+                    } else {
+                        $status = 'Invested';
+                    }
+                    //set and update investor investment record
+                    $inv_array = array('id' => $investment_id, 'total_amount_earned' => $new_totearned,
+                        'accrued_basefee' => $new_accrued, 'numb_shares_sold' => $new_share_sold, 'numb_shares_left' => $numb_shares_left,
+                        'old_status' => $old_status, 'status' => $status, 'modified_by' => $userid);
+                    $result = $this->Investment->save($inv_array);
+
+                    if ($result) {
+                        //find and update investor equity records
+                        $inv_eq = $this->InvestorEquity->find('all', ['recursive' => -1,
+                            'conditions' => ['InvestorEquity.investment_id' => $investment_id]]);
+                        if ($inv_eq) {
+                            $x = 2;
+                            foreach ($inv_eq as $val) {
+                                if ($x > 5) {
+                                    break;
+                                }
+                                if ($val['InvestorEquity']['equities_list_id'] ==
+                                        $this->request->data['EquityOrder']['equities_list_id']) {
+                                    $shares_sold = $val['InvestorEquity']['numb_shares_sold'] + $this->request->data['EquityOrder']['numb_shares_sold'];
+                                    $numb_shares_left = $val['InvestorEquity']['numb_shares_left'] - $this->request->data['EquityOrder']['numb_shares_sold'];
+                                }
+                                if ($val['InvestorEquity']['equities_list_id'] ==
+                                        $this->request->data['EquityOrder']['equities_list_id' . $x]) {
+                                    $shares_sold = $val['InvestorEquity']['numb_shares_sold'] +
+                                            $this->request->data['EquityOrder']['numb_shares_sold' . $x];
+
+                                    $numb_shares_left = $val['InvestorEquity']['numb_shares_left'] -
+                                            $this->request->data['EquityOrder']['numb_shares_sold' . $x];
+                                }
+                                $x++;
+                                $inveq_array = array('id' => $val['InvestorEquity']['id'], 'numb_shares_sold' => $shares_sold,
+                                    'numb_shares_left' => $numb_shares_left, 'modified_by' => $userid);
+                                $this->InvestorEquity->save($inveq_array);
+                            }
+                        }
+                        if ($reinv_data) {
+                            //collect data for reinvestor returns
+                            $reinvestor_cash = $this->ReinvestorCashaccount->find('first', ['recursive' => -1,
+                                'conditions' => ['ReinvestorCashaccount.reinvestor_id' =>
+                                    $reinv_data['ReinvestmentsEquity']['reinvestor_id']]]);
+
+                            if ($reinvestor_cash) {
+                                //$equity_balance = $reinvestor_cash['ReinvestorCashaccount']['equity_inv_balance'] + $total_sale;
+                                $equity_returns = $reinvestor_cash['ReinvestorCashaccount']['equity_inv_returns'] + $returns;
+                                $total_balance = $reinvestor_cash['ReinvestorCashaccount']['total_balance'] + $returns;
+
+                                $reinvestor_array = array('id' => $reinvestor_cash['ReinvestorCashaccount']['id'],
+                                    'equity_inv_returns' => $equity_returns, 'total_balance' => $total_balance);
+                                $this->ReinvestorCashaccount->save($reinvestor_array);
+                            }
+
+                            //subtract shares from reinvestment equity and update status
+                            //make sure when investments are mature - accruedbasefeecash is deducted and added to
+                            // reinvestor fixed cash returns and total balance
+                            //above will probably happen in shell and also during terminations
+                            $reshares_left = $reinv_data['ReinvestmentsEquity']['numb_shares_left'] - $total_shares_sold;
+                            $reshares_sold = $reinv_data['ReinvestmentsEquity']['numb_shares_sold'] + $total_shares_sold;
+                            $reold_status = $reinv_data['ReinvestmentsEquity']['status'];
+                            $reother_fees = $fees + $reinv_data['ReinvestmentsEquity']['other_fees'];
+                            if ($reshares_left <= 0) {
+                                $restatus = 'Paid';
+                                $repayment_status = 'paid';
+                            } else {
+                                $restatus = 'Invested';
+                                $repayment_status = 'unpaid';
+                            }
+
+                            $relastpaidout_date = date('Y-m-d');
+
+                            $reinv_array = array('id' => $reinvestment_id, 'numb_shares_left' => $reshares_left,
+                                'numb_shares_sold' => $reshares_sold, 'status' => $restatus, 'old_status' => $reold_status,
+                                'payment_status' => $repayment_status, 'lastpaidout_date' => $relastpaidout_date, 'other_fees' => $reother_fees,
+                                'modified_by' => $userid);
+
+                            $re_result = $this->ReinvestmentsEquity->save($reinv_array);
+                            if ($re_result) {
+                                $message = 'Equity Sale Processed Successfully.';
+                                $this->Session->write('smsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+                            } else {
+                                $message = 'Could not process equity sale. Try again';
+                                $this->Session->write('bmsg', $message);
+                                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+                            }
+                        } else {
+                            $message = 'Could not process equity sale. Try again';
+                            $this->Session->write('bmsg', $message);
+                            $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+                        }
+                    } else {
+                        $message = 'Could not process equity sale. Try again';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
+                    }
                 }
-                
-            $relastpaidout_date = date('Y-m-d');
-            
-            $reinv_array = array('id' => $reinvestment_id,'numb_shares_left' => $reshares_left,
-                'numb_shares_sold' => $reshares_sold,'status' => $restatus,'old_status' => $reold_status,
-                'payment_status' => $repayment_status,'lastpaidout_date' => $relastpaidout_date,'other_fees' => $reother_fees,
-                'modified_by' => $userid);
-            
-            $re_result = $this->ReinvestmentsEquity->save($reinv_array);
-              if($re_result){
-               $message = 'Equity Sale Processed Successfully.';
-                $this->Session->write('smsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
-              }    else {
-                $message = 'Could not process equity sale. Try again';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
-            }     
-            }   else {
-                $message = 'Could not process equity sale. Try again';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
             }
-                }   else {
-                $message = 'Could not process equity sale. Try again';
-                $this->Session->write('bmsg', $message);
-                $this->redirect(array('controller' => 'Reinvestments', 'action' => 'disposalList'));
-            }
-                
-            }
-           
-        }
         }
     }
 
@@ -3903,8 +3953,8 @@ if ($this->Session->check('editinvesttemp')) {
                         $fixed_inv_balance = $cashacct_data['ReinvestorCashaccount']['fixed_inv_balance'] + $payment;
                         $total_balance = $cashacct_data['ReinvestorCashaccount']['total_balance'] + $payment;
                         $cashacct_id = $cashacct_data['ReinvestorCashaccount']['id'];
-                        $cashacct_array = array('id' => $cashacct_id, 'fixed_inv_returns' => $new_cashathand ,
-                            'fixed_inv_balance' => $fixed_inv_balance,'total_balance' => $total_balance);
+                        $cashacct_array = array('id' => $cashacct_id, 'fixed_inv_returns' => $new_cashathand,
+                            'fixed_inv_balance' => $fixed_inv_balance, 'total_balance' => $total_balance);
                     }
 
                     $return_array = array('user_id' => $userid, 'reinvestment_id' => $investment_id, 'returns' => $payment,
@@ -3958,14 +4008,14 @@ if ($this->Session->check('editinvesttemp')) {
 //        $this->__validateUserType3();
         $this->paginate = array(
             'conditions' => array(
-                'Reinvestment.status' => array('Matured', 'Payment_Requested'), 
-                 'Reinvestment.investment_type' => array('fixed')),
+                'Reinvestment.status' => array('Matured', 'Payment_Requested'),
+                'Reinvestment.investment_type' => array('fixed')),
             'limit' => 30,
             'order' => array('Reinvestment.id' => 'asc'));
         $data = $this->paginate('Reinvestment');
         $this->set('data', $data);
     }
-    
+
     function monthlyMaturityList() {
         $this->__validateUserType();
         $data = array();
@@ -3994,16 +4044,14 @@ if ($this->Session->check('editinvesttemp')) {
 
 
 
-        $this->paginate = array(
+            $this->paginate = array(
                 'conditions' => array(
                     'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
                     'Reinvestment.investment_amount >' => 0,
-                    'Reinvestment.status' => array('Invested', 'Rolled_over','Matured')),
+                    'Reinvestment.status' => array('Invested', 'Rolled_over', 'Matured')),
                 'limit' => 30,
                 'order' => array('Reinvestment.id' => 'asc'));
             $data = $this->paginate('Reinvestment');
-            
-            
         }
 //         else{
 //           
@@ -4023,66 +4071,66 @@ if ($this->Session->check('editinvesttemp')) {
         $this->set(compact('data', 'frend_date', 'frstart_date'));
     }
 
+    /*
+      function monthlyMaturityList() {
+      //        $this->__validateUserType3();
+      //        $first_date = date('Y-m-d');
+      //        $date = new DateTime($first_date);
+      //        $date->add(new DateInterval('P1M'));
+      //        $date_end = $date->format('Y-m-d');
 
-/*
-    function monthlyMaturityList() {
-//        $this->__validateUserType3();
-//        $first_date = date('Y-m-d');
-//        $date = new DateTime($first_date);
-//        $date->add(new DateInterval('P1M'));
-//        $date_end = $date->format('Y-m-d');
-        
-        $this->__validateUserType();
-        $data = array();
-        $frend_date = '';
-        $frstart_date = '';
-        if ($this->request->is('post')) {
+      $this->__validateUserType();
+      $data = array();
+      $frend_date = '';
+      $frstart_date = '';
+      if ($this->request->is('post')) {
 
-            $sday = '01';
-            $smonth = $this->request->data['Reinvestment']['to_date']['month'];
-            $syear = $this->request->data['Reinvestment']['to_date']['year'];
-            $starts_date = $syear . "-" . $smonth . "-" . $sday;
-            $snewdate = strtotime($starts_date);
-            $start_date = date('Y-m-d', $snewdate);
-            $frstart_date = date('d F, Y', $snewdate);
-
+      $sday = '01';
+      $smonth = $this->request->data['Reinvestment']['to_date']['month'];
+      $syear = $this->request->data['Reinvestment']['to_date']['year'];
+      $starts_date = $syear . "-" . $smonth . "-" . $sday;
+      $snewdate = strtotime($starts_date);
+      $start_date = date('Y-m-d', $snewdate);
+      $frstart_date = date('d F, Y', $snewdate);
 
 
-//            $end_date = date('Y-m-d', $enewdate);
-            $date = new DateTime($start_date);
-            $date->add(new DateInterval('P1M'));
-            $date->sub(new DateInterval('P1D'));
-            $end_date = $date->format('Y-m-d');
-            $enewdate = strtotime($end_date);
-//            pr($end_date);exit;
-            $frend_date = date('d F, Y', $enewdate);
-            
-            
-        $this->paginate = array(
-            'conditions' => array(
-                'Reinvestment.status' => array('Invested', 'Rolled_over'),
-                'Reinvestment.investment_type' => array('fixed'),
-                'AND' => array(array('Reinvestment.due_date >=' => $start_date), array('Reinvestment.due_date <=' => $end_date))),
-            'limit' => 30,
-            'order' => array('Reinvestment.id' => 'asc')
-            );
-        $data = $this->paginate('Reinvestment');
-        
-//        $this->paginate = array(
-//                'conditions' => array(
-//                    'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
-//                    'Reinvestment.investment_type' => array('fixed'),
-//                    'Reinvestment.status' => array('Invested', 'Rolled_over')),
-//                'limit' => 30,
-//                'order' => array('Reinvestment.id' => 'asc'));
-//            $data = $this->paginate('Reinvestment');
-        
-        
-        }
-//        $this->set('data', $data);
-        $this->set(compact('data', 'frend_date', 'frstart_date'));
-    }
-*/
+
+      //            $end_date = date('Y-m-d', $enewdate);
+      $date = new DateTime($start_date);
+      $date->add(new DateInterval('P1M'));
+      $date->sub(new DateInterval('P1D'));
+      $end_date = $date->format('Y-m-d');
+      $enewdate = strtotime($end_date);
+      //            pr($end_date);exit;
+      $frend_date = date('d F, Y', $enewdate);
+
+
+      $this->paginate = array(
+      'conditions' => array(
+      'Reinvestment.status' => array('Invested', 'Rolled_over'),
+      'Reinvestment.investment_type' => array('fixed'),
+      'AND' => array(array('Reinvestment.due_date >=' => $start_date), array('Reinvestment.due_date <=' => $end_date))),
+      'limit' => 30,
+      'order' => array('Reinvestment.id' => 'asc')
+      );
+      $data = $this->paginate('Reinvestment');
+
+      //        $this->paginate = array(
+      //                'conditions' => array(
+      //                    'Reinvestment.due_date BETWEEN ? AND ?' => array($start_date, $end_date),
+      //                    'Reinvestment.investment_type' => array('fixed'),
+      //                    'Reinvestment.status' => array('Invested', 'Rolled_over')),
+      //                'limit' => 30,
+      //                'order' => array('Reinvestment.id' => 'asc'));
+      //            $data = $this->paginate('Reinvestment');
+
+
+      }
+      //        $this->set('data', $data);
+      $this->set(compact('data', 'frend_date', 'frstart_date'));
+      }
+     */
+
     function manageClientInvestments(/* $investor_id = null, $investor_name = null */) {
         /* $this->__validateUserType(); */
         if (!is_null($investor_id) && !is_null($investor_name) && $investor_id != '' && $investor_name != '') {
@@ -4419,11 +4467,11 @@ if ($this->Session->check('editinvesttemp')) {
                 }
 
                 $data = $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $investment_id]]);
-                
-                
+
+
                 if ($data) {
-                   $ledger_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
-                        ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]); 
+                    $ledger_data = $this->ReinvestorCashaccount->find('first', ['conditions' =>
+                        ['ReinvestorCashaccount.reinvestor_id' => $investor_id]]);
 
                     $to_date = new DateTime($date);
                     $period = $data['Reinvestment']['investment_period'];
@@ -4434,10 +4482,10 @@ if ($this->Session->check('editinvesttemp')) {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
                     $year = $duration;
-                    if($data['Reinvestment']['due_date'] <= date('Y-m-d')){
-                         $custom_rate = $data['Reinvestment']['interest_rate'];
-                    }else{
-                    $custom_rate = $data['Reinvestment']['interest_rate'] - $penalty;
+                    if ($data['Reinvestment']['due_date'] <= date('Y-m-d')) {
+                        $custom_rate = $data['Reinvestment']['interest_rate'];
+                    } else {
+                        $custom_rate = $data['Reinvestment']['interest_rate'] - $penalty;
                     }
                     $investment_amount = $data['Reinvestment']['investment_amount'];
 
@@ -4515,10 +4563,8 @@ if ($this->Session->check('editinvesttemp')) {
                         $cledger_id = $ledger_data['ReinvestorCashaccount']['id'];
                         $fixed_inv_balance = $ledger_data['ReinvestorCashaccount']['fixed_inv_balance'] + $received_amt;
                         $grand_total = $ledger_data['ReinvestorCashaccount']['total_balance'] + $received_amt;
-                        $client_ledger = array('id' => $cledger_id, 'fixed_inv_returns' => $new_cashathand, 
-                            'total_balance' => $grand_total,'fixed_inv_balance' => $fixed_inv_balance);
-                    
-                     
+                        $client_ledger = array('id' => $cledger_id, 'fixed_inv_returns' => $new_cashathand,
+                            'total_balance' => $grand_total, 'fixed_inv_balance' => $fixed_inv_balance);
                     }
                     $return_array = array('user_id' => $userid, 'reinvestment_id' => $investment_id,
                         'principal' => $investment_amount, 'rate' => $custom_rate, 'returns' => $received_amt, 'interest' => $interest_amount,
@@ -4574,12 +4620,13 @@ if ($this->Session->check('editinvesttemp')) {
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
+
     public function topup($reinvestment_id = null, $reinvestor_id = null) {
         /* $this->__validateUserType(); */
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $this->set('invdestproducts', $this->InvDestProduct->find('list'));
-          $this->set('paymentmodes', $this->PaymentMode->find('list'));
+        $this->set('paymentmodes', $this->PaymentMode->find('list'));
 
         if (!is_null($reinvestment_id) && !is_null($reinvestor_id)) {
             $this->set('data', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));
@@ -4589,32 +4636,31 @@ if ($this->Session->check('editinvesttemp')) {
             $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
         }
     }
-    
-    function delFixedInvestmentDeposits($reinvestor_id = null, $reinvestment_id = null){
+
+    function delFixedInvestmentDeposits($reinvestor_id = null, $reinvestment_id = null) {
         $this->__validateUserType();
         $this->set('reinvestor_id', $reinvestor_id);
         $this->set('reinvestment_id', $reinvestment_id);
         $investor = $this->Reinvestor->find('first', array('conditions' => array('Reinvestor.id' => $reinvestor_id)));
         $this->set('investor_name', $investor['Reinvestor']['company_name']);
-        
+
         $data2 = $this->paginate('ReinvestorDeposit', array('ReinvestorDeposit.reinvestment_id' => $reinvestment_id));
-        $this->set('data', $data2);        
-        
+        $this->set('data', $data2);
     }
-    
-    function delFixedInvestmentPayments($investor_id = null, $investment_id = null){
+
+    function delFixedInvestmentPayments($investor_id = null, $investment_id = null) {
         $this->__validateUserType();
         $this->set('investor_id', $investor_id);
         $this->set('investment_id', $investment_id);
         $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investor_id)));
         $this->set('investor_name', $investor['Investor']['fullname']);
-        
+
         $data2 = $this->paginate('InvestmentPayment', array('InvestmentPayment.investment_id' => $investment_id));
-        $this->set('data', $data2);        
-        
+        $this->set('data', $data2);
     }
- public function get_accruedinterest($investment_id = null) {
-        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+    public function get_accruedinterest($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
 
         if ($data) {
             $status = $data['Investment']['status'];
@@ -4643,7 +4689,7 @@ if ($this->Session->check('editinvesttemp')) {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-
+                            $duration +=1;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -4659,7 +4705,7 @@ if ($this->Session->check('editinvesttemp')) {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-
+                            $duration +=1;
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -4669,12 +4715,12 @@ if ($this->Session->check('editinvesttemp')) {
                     $accrued_interest = $interest_amount;
                     return $accrued_interest;
                     break;
-                        case 'Termination_Approved':
-                        case 'Cancelled':
-                       $accrued_interest = $data['Investment']['interest_accrued'];
+                case 'Termination_Approved':
+                case 'Cancelled':
+                    $accrued_interest = $data['Investment']['interest_accrued'];
                     return $accrued_interest;
                 default:
-                     $period = $data['Investment']['investment_period'];
+                    $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
                     $date = $data['Investment']['due_date'];
@@ -4693,7 +4739,7 @@ if ($this->Session->check('editinvesttemp')) {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-
+                            $duration +=1;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -4709,7 +4755,7 @@ if ($this->Session->check('editinvesttemp')) {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-
+                            $duration +=1;
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -4720,13 +4766,13 @@ if ($this->Session->check('editinvesttemp')) {
                     return $accrued_interest;
                     break;
             }
-        }else{
+        } else {
             return 'Invesment details missing';
         }
     }
-    
-    function get_accrueddays($investment_id = null){
-        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id),'recursive' => -1));
+
+    function get_accrueddays($investment_id = null) {
+        $data = $this->Investment->find('first', array('conditions' => array('Investment.id' => $investment_id), 'recursive' => -1));
 
         if ($data) {
             $status = $data['Investment']['status'];
@@ -4742,31 +4788,32 @@ if ($this->Session->check('editinvesttemp')) {
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    
-                    $accrued_days = $duration+1;
+
+                    $accrued_days = $duration + 1;
                     return $accrued_days;
                     break;
-                 case 'Termination_Approved':
-                 case 'Cancelled':
-                       $accrued_days = $data['Investment']['accrued_days'];
+                case 'Termination_Approved':
+                case 'Cancelled':
+                    $accrued_days = $data['Investment']['accrued_days'];
                     return $accrued_days;
                 default:
-                     $period = $data['Investment']['investment_period'];
+                    $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
                     $date = $data['Investment']['due_date'];
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    
-                    $accrued_days = $duration+1;
+
+                    $accrued_days = $duration + 1;
                     return $accrued_days;
                     break;
             }
-        }else{
+        } else {
             return 'Invesment details missing';
         }
     }
+
 }
 
 ?>
