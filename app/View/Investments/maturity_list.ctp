@@ -33,7 +33,7 @@
                         foreach ($data as $each_item) { ?>
                     <tr style="border-bottom: solid 1px silver;font-size: 13px;">
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
-                                <td align="left"><?php echo $this->Html->link((!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : $each_item['Investor']['comp_name'] ),"/Investments/approvePayments2/".(isset($each_item['Investor']['id']) ? $each_item['Investor']['id']."/".$each_item['Investor']['fullname'] : '' ),array());  ?></td>
+                                <td align="left"><?php echo (!empty($each_item['Investor']['fullname']) ? $each_item['Investor']['fullname'] : $each_item['Investor']['comp_name'] );  ?></td>
                             
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>

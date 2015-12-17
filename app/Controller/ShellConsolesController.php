@@ -78,7 +78,7 @@ function __dailyMatured(){
             $ledger_data = $this->ClientLedger->find('first',array('conditions' => array('ClientLedger.investor_id' => 
                 $each['Investment']['investor_id'])));
             if($ledger_data){
-                
+               
          $accrued_basefee = $each['Investment']['accrued_basefee'];
             $cash_athand = $ledger_data['ClientLedger']['available_cash'];
             $earned_balance = $each['Investment']['earned_balance'];
@@ -123,7 +123,7 @@ function __dailyMatured(){
                
                //enter new ledger transaction
                 $ledger_transactions = array( 'client_ledger_id' =>$cledger_id,'credit' => $earned_balance, 'user_id' => 0,
-                    'date' => date('Y-m-d'),'voucher_no' =>$each['Investment']['investment_no'],
+                    'date' => date('Y-m-d'),'voucher_no' =>$each['Investment']['investment_no'],'management_fee' => $accrued_basefee,
                     'description' => 'Matured Investment Proceeds for investment no:'.$each['Investment']['investment_no']);
                     $this->LedgerTransaction->create();
                      $this->LedgerTransaction->save($ledger_transactions);
@@ -521,12 +521,12 @@ function __dailyReinvestmentInterests(){
     }
     
     function __processFees(){
-       $data = $this->Investment->find('all',array('conditions' => array(
+       $data = $this->Investment->find('all',array('conditions' => array('Investment.status' => array('Rolled_over','Invested','Termination_Requested'),
             'Investment.basefee_duedate <=' => date('Y-m-d'),'OR' => array('Investment.basefee_lastprocess_date <' => date('Y-m-d'),'Investment.basefee_lastprocess_date'  => null) 
         ),'recursive' => -1));
        $today = date('Y-m-d');
        if($data){
-           pr($data);
+          
            foreach($data as $val){
                $id = $val['Investment']['id']; 
                $old_accrued = $val['Investment']['accrued_basefee'];
