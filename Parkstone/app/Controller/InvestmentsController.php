@@ -2523,7 +2523,7 @@ class InvestmentsController extends AppController {
                         case 'Day(s)':
 
                             $date->add(new DateInterval('P' . $duration . 'D'));
-                            
+
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -2535,7 +2535,7 @@ class InvestmentsController extends AppController {
 
                             $due_date = $date->format('Y-m-d');
                             if ($due_date <= $adate) {
-                            $date->sub(new DateInterval('P1D'));
+                                $date->sub(new DateInterval('P1D'));
                                 $adate = $due_date;
                             }
                             $to_date = new DateTime($adate);
@@ -2587,14 +2587,14 @@ class InvestmentsController extends AppController {
                             $aduration = date_diff($ainv_date, $to_date);
                             $aduration = $aduration->format("%a");
                             if ($due_date <= $adate) {
-                               
-                                 $aduration +=1;
+
+                                $aduration +=1;
                             }
-                           
+
 //                            $aYEAR2DAYS = 365 * $aduration;
                             $ainterest_amount = $interest_amount1 * ($aduration / 365);
                             $aamount_due = $ainterest_amount + $investment_amount;
-                            
+
 //                            for ($n = 1; $n <= $duration; $n++) {
 //                                $date_statemt->add(new DateInterval('P1Y'));
 //                                $interest_amount2 = $interest_amount1 * (365 / 365);
@@ -3704,7 +3704,7 @@ class InvestmentsController extends AppController {
                         case 'Day(s)':
 
                             $date->add(new DateInterval('P' . $duration . 'D'));
-                            
+
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
 //                            $statemt_array = array();
@@ -3789,18 +3789,18 @@ class InvestmentsController extends AppController {
                             $adate = date('Y-m-d');
                             $due_date = $date->format('Y-m-d');
                             if ($due_date <= $adate) {
-                                
+
                                 $adate = $due_date;
                             }
                             $to_date = new DateTime($adate);
                             $ainv_date = new DateTime($inv_date);
                             $aduration = date_diff($ainv_date, $to_date);
                             $aduration = $aduration->format("%a");
-                             if ($due_date <= $adate) {
-                                
-                              $aduration +=1;
+                            if ($due_date <= $adate) {
+
+                                $aduration +=1;
                             }
-                            
+
 //                            $aYEAR2DAYS = 365 * $aduration;
                             $ainterest_amount = $interest_amount1 * ($aduration / 365);
                             $aamount_due = $ainterest_amount + $investment_amount;
@@ -5488,6 +5488,9 @@ class InvestmentsController extends AppController {
         if ($this->Session->check('ledger_transactions')) {
             $this->Session->delete('ledger_transactions');
         }
+         if ($this->Session->check('rollovertemp')) {
+            $this->Session->delete('rollovertemp');
+        }
         if ($this->Session->check('investtemp')) {
             $this->Session->delete('investtemp');
         }
@@ -6071,7 +6074,7 @@ class InvestmentsController extends AppController {
 //                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
                 $this->paginate = array(
                     'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
-                    'order' => array('LedgerTransaction.id' => 'asc'));
+                    'order' => array('LedgerTransaction.id' => 'desc'),'limit' => 100);
                 $transactions = $this->paginate('LedgerTransaction');
                 if ($transactions) {
                     $this->set('transactions', $transactions);
@@ -6550,7 +6553,10 @@ class InvestmentsController extends AppController {
                         if ($check) {
                             $this->Session->delete('ireceipt_items');
                         }
-
+ $check = $this->Session->check('payinvesttemp');
+                        if ($check) {
+                            $this->Session->delete('payinvesttemp');
+                        }
                         $message = 'Investment Payout Successful';
                         $this->Session->write('smsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => 'paymentReceipt', $cledger_id, $payment, $voucher_no, $cheque_numbers));
@@ -6905,17 +6911,17 @@ class InvestmentsController extends AppController {
 
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
-                          
+
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                    $adate = date('Y-m-d');
-                    $due_date = $date->format('Y-m-d');
-                    if ($due_date <= $adate) {
-                         $date->sub(new DateInterval('P1D'));
-                        $adate = $due_date;
-                    }
+                            $adate = date('Y-m-d');
+                            $due_date = $date->format('Y-m-d');
+                            if ($due_date <= $adate) {
+                                $date->sub(new DateInterval('P1D'));
+                                $adate = $due_date;
+                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -6938,17 +6944,17 @@ class InvestmentsController extends AppController {
                             //$finv_date = $inv_date;
                             $date = new DateTime($first_date);
                             $date->add(new DateInterval('P' . $duration . 'D'));
-                           
+
                             $date_statemt = new DateTime($first_date);
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
- $adate = date('Y-m-d');
-                    $due_date = $date->format('Y-m-d');
-                    if ($due_date <= $adate) {
-                         $date->sub(new DateInterval('P1D'));
-                        $adate = $due_date;
-                    }
+                            $adate = date('Y-m-d');
+                            $due_date = $date->format('Y-m-d');
+                            if ($due_date <= $adate) {
+                                $date->sub(new DateInterval('P1D'));
+                                $adate = $due_date;
+                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -7750,7 +7756,7 @@ class InvestmentsController extends AppController {
                         $finv_date = $inv_date;
                         $date = new DateTime($finv_date);
                         $date->add(new DateInterval('P' . $duration . 'D'));
-                        
+
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -7817,7 +7823,7 @@ class InvestmentsController extends AppController {
                         if ($due_date <= $adate) {
                             $aduration +=1;
                         }
-                       
+
 //                        $aYEAR2DAYS = 365 * $aduration;
                         $ainterest_amount = $interest_amount1 * ($aduration / 365);
                         $aamount_due = $ainterest_amount + $investment_amount;
@@ -8092,7 +8098,7 @@ class InvestmentsController extends AppController {
 //                   'LedgerTransaction.client_ledger_id' =>$data['ClientLedger']['id']]]);
                 $this->paginate = array(
                     'conditions' => array('LedgerTransaction.client_ledger_id' => $data['ClientLedger']['id']),
-                    'order' => array('LedgerTransaction.id' => 'asc'),
+                    'order' => array('LedgerTransaction.id' => 'desc'),
                     'limit' => 15
                 );
                 $transactions = $this->paginate('LedgerTransaction');
@@ -9061,7 +9067,10 @@ class InvestmentsController extends AppController {
                             $investment_amount = $investment_amount - $principal;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-                            $tduration = $tduration + 1;
+                            if ($due_date <= $date) {
+                                $tduration = $tduration + 1;
+                            }
+
                             $interest_amount1 = ($rate / 100) * $principal;
                             $interest_amountt += $interest_amount1 * ($tduration / 365);
 
@@ -9085,8 +9094,10 @@ class InvestmentsController extends AppController {
                             $investment_amount = $investment_amount - $principal;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $tduration = $tduration + 1;
+                            if ($due_date <= $date) {
 
+                                $tduration = $tduration + 1;
+                            }
                             $interest_amount1 = ($rate / 100) * $principal;
                             $interest_amountt += $interest_amount1 * ($tduration / 365);
 
@@ -9122,8 +9133,11 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-
-                            $duration = $duration + 1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
+                            
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
 
@@ -9138,7 +9152,10 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration = $duration + 1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -9170,7 +9187,10 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration = $duration + 1;
+                             $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
 
@@ -9185,7 +9205,10 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration = $duration + 1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount += $interest_amount1 * ($duration / 365);
@@ -9383,8 +9406,10 @@ class InvestmentsController extends AppController {
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-
-                    $accrued_days = $duration + 1;
+                    if ($due_date <= $date) {
+                        $duration += 1;
+                    }
+                    $accrued_days = $duration;
                     return $accrued_days;
                     break;
                 case 'Termination_Approved':
@@ -9397,12 +9422,15 @@ class InvestmentsController extends AppController {
                     $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
-                    $date = $data['Investment']['due_date'];
-                    $to_date = new DateTime($date);
+                    $due_date = $data['Investment']['due_date'];
+                    $date = date('Y-m-d');
+                    $to_date = new DateTime($due_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-
-                    $accrued_days = $duration + 1;
+                    if ($due_date <= $date) {
+                        $duration += 1;
+                    }
+                    $accrued_days = $duration;
                     return $accrued_days;
                     break;
             }

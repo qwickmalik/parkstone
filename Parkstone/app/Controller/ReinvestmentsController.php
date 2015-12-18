@@ -1398,7 +1398,7 @@ class ReinvestmentsController extends AppController {
                 case 'Day(s)':
 
                     $date->add(new DateInterval('P' . $duration . 'D'));
-                   
+
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
 //                    $statemt_array = array();
@@ -1410,7 +1410,7 @@ class ReinvestmentsController extends AppController {
                     $adate = date('Y-m-d');
                     $due_date = $date->format('Y-m-d');
                     if ($due_date <= $adate) {
-                         $date->sub(new DateInterval('P1D'));
+                        $date->sub(new DateInterval('P1D'));
                         $adate = $due_date;
                     }
                     $to_date = new DateTime($adate);
@@ -1485,10 +1485,10 @@ class ReinvestmentsController extends AppController {
                     $ainv_date = new DateTime($inv_date);
                     $aduration = date_diff($ainv_date, $to_date);
                     $aduration = $aduration->format("%a");
-                     if ($due_date <= $adate) {
-                          $aduration +=1;
+                    if ($due_date <= $adate) {
+                        $aduration +=1;
                     }
-                 
+
 //                    $aYEAR2DAYS = 365 * $aduration;
 
                     $ainterest_amount = $interest_amount1 * ($aduration / 365);
@@ -3407,7 +3407,7 @@ class ReinvestmentsController extends AppController {
                     case 'Day(s)':
 
                         $date->add(new DateInterval('P' . $duration . 'D'));
-                        
+
                         $date_statemt = new DateTime($first_date);
                         $principal = $investment_amount;
                         $statemt_array = array();
@@ -3474,9 +3474,9 @@ class ReinvestmentsController extends AppController {
                         $aduration = date_diff($ainv_date, $to_date);
                         $aduration = $aduration->format("%a");
                         if ($due_date <= $adate) {
-                              $aduration +=1;
+                            $aduration +=1;
                         }
-                      
+
 
 //                        $aYEAR2DAYS = 365 * $aduration;
                         $ainterest_amount = $interest_amount1 * ($aYEAR2DAYS / 365);
@@ -4672,6 +4672,8 @@ class ReinvestmentsController extends AppController {
                     $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
+
+                    $due_date = $data['Investment']['due_date'];
                     $date = date('Y-m-d');
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
@@ -4689,7 +4691,10 @@ class ReinvestmentsController extends AppController {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration +=1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -4705,7 +4710,10 @@ class ReinvestmentsController extends AppController {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration +=1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -4739,7 +4747,10 @@ class ReinvestmentsController extends AppController {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration +=1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -4755,7 +4766,10 @@ class ReinvestmentsController extends AppController {
                             $principal = $investment_amount;
 //                            $statemt_array = array();
                             $rate = $custom_rate;
-                            $duration +=1;
+                            $date_curr = date('Y-m-d');
+                            if ($due_date <= $date_curr) {
+                                $duration = $duration + 1;
+                            }
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -4776,6 +4790,8 @@ class ReinvestmentsController extends AppController {
 
         if ($data) {
             $status = $data['Investment']['status'];
+
+            $due_date = $data['Investment']['due_date'];
             switch ($status) {
                 case 'Rolled_over':
                 case 'Invested':
@@ -4789,7 +4805,10 @@ class ReinvestmentsController extends AppController {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
 
-                    $accrued_days = $duration + 1;
+                    $date_curr = date('Y-m-d');
+                    if ($due_date <= $date_curr) {
+                        $duration = $duration + 1;
+                    }
                     return $accrued_days;
                     break;
                 case 'Termination_Approved':
@@ -4805,7 +4824,10 @@ class ReinvestmentsController extends AppController {
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
 
-                    $accrued_days = $duration + 1;
+                     $date_curr = date('Y-m-d');
+                    if ($due_date <= $date_curr) {
+                        $duration = $duration + 1;
+                    }
                     return $accrued_days;
                     break;
             }
