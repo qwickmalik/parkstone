@@ -3395,8 +3395,8 @@ class ReinvestmentsController extends AppController {
                 $first_date = $inv_date;
                 $custom_rate = $this->request->data['Reinvestment']['interest_rate'];
                 $date = new DateTime($first_date);
-                $period = $reinvest_data['Reinvestment']['investment_period'];
-                $duration = $reinvest_data['Reinvestment']['duration'];
+                $period = $this->request->data['Reinvestment']['investment_period'];
+                $duration = $this->request->data['Reinvestment']['duration'];
                 $year = $duration;
                 $adate = date('Y-m-d');
                 $to_date = new DateTime($adate);
@@ -3513,6 +3513,8 @@ class ReinvestmentsController extends AppController {
                     'earned_balance' => $aamount_due,
                     'accrued_interest' => $ainterest_amount,
                     'interest_rate' => $custom_rate, 'investment_amount' => $investment_amount,
+                    'duration' => $this->request->data['Reinvestment']['duration'],
+                  'investment_period' => $this->request->data['Reinvestment']['investment_period'],
                     'amount_due' => $amount_due, 'due_date' => $date->format('Y-m-d'),
                     'balance' => $amount_due, 'earned_balance' => $investment_amount,
                     'modified_by' => ($this->Session->check('userDetails.id') == true ?
@@ -3541,6 +3543,10 @@ class ReinvestmentsController extends AppController {
                     $this->ReinvestInterestAccrual->save($interest_accruals);
                     $this->ReinvestmentRollover->save($rollover_details);
                     $this->ReinvestmentStatement->saveAll($statemt_array);
+                    
+                    if($this->Session->check('rollreinvesttemp')){
+                        $this->Session->delete('rollreinvesttemp');
+                    }
                     $message = 'Roll-over successful';
                     $this->Session->write('smsg', $message);
                     $this->redirect(array('controller' => 'Reinvestments', 'action' => 'manageInvFixed', $reinvestor_id));
@@ -4610,7 +4616,9 @@ class ReinvestmentsController extends AppController {
         $this->set('reinvestorcashaccounts', $this->ReinvestorCashaccount->find('first', ['conditions' => ['ReinvestorCashaccount.reinvestor_id' => $reinvestor_id]]));
         $this->set('investmentdestinations', $this->InvestmentDestination->find('list'));
         $this->set('invdestproducts', $this->InvDestProduct->find('list'));
-
+        if($this->Session->check('rollreinvesttemp')){
+                        $this->Session->delete('rollreinvesttemp');
+                    }
 
         if (!is_null($reinvestment_id) && !is_null($reinvestor_id)) {
             $this->set('data', $this->Reinvestment->find('first', ['conditions' => ['Reinvestment.id' => $reinvestment_id]]));

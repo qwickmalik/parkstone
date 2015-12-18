@@ -58,12 +58,12 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-<?php echo "<p><b>Expected Amount:</b></p>"; ?>
+<?php echo "<p><b>Maturity Amount:</b></p>"; ?>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <?php
-                        if (isset($data['Reinvestment']['earned_balance'])) {
-                            $num = number_format($data['Reinvestment']['earned_balance'], 2);
+                        if (isset($data['Reinvestment']['amount_due'])) {
+                            $num = number_format($data['Reinvestment']['amount_due'], 2);
                         } else {
                             $num = '0.00';
                         }
@@ -77,6 +77,21 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 <?php echo (isset($data['Reinvestment']['interest_rate']) ?
         $data['Reinvestment']['interest_rate'] : '' );
+?>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <?php echo "<p><b>Total Earned:</b></p>"; ?>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+<?php if (isset($data['Reinvestment']['earned_balance'])) {
+                            $num = number_format($data['Reinvestment']['earned_balance'], 2);
+                        } else {
+                            $num = '0.00';
+                        }
+                        echo $num;
 ?>
 
                     </div>

@@ -5490,7 +5490,11 @@ class InvestmentsController extends AppController {
         }
          if ($this->Session->check('rollovertemp')) {
             $this->Session->delete('rollovertemp');
+        } 
+        if ($this->Session->check('editinvesttemp')) {
+            $this->Session->delete('editinvesttemp');
         }
+        
         if ($this->Session->check('investtemp')) {
             $this->Session->delete('investtemp');
         }
@@ -7851,6 +7855,8 @@ class InvestmentsController extends AppController {
                 $investment_array = array('balance' => $amount_due,
                     'expected_interest' => $interest_amount, 'amount_due' => $amount_due,
                     'interest_accrued' => $ainterest_amount, 'accrued_days' => $aduration,
+                    'duration' => $this->request->data['Investment']['duration'],
+                  'investment_period' => $this->request->data['Investment']['investment_period'],
                     'custom_rate' => $custom_rate,
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $aamount_due,
                     'earned_balance' => $aamount_due, 'rollover_date' => $inv_date,
