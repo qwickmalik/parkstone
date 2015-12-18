@@ -136,7 +136,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     
-<?php echo $this->Form->input('paymentmode_id', array( 'label' => 'Cash Receipt Mode', 'empty' => "--Please Select--")); ?>
+<?php echo $this->Form->input('paymentmode_id', array('required', 'label' => 'Cash Receipt Mode', 'empty' => "--Please Select--")); ?>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">
                                   
@@ -153,7 +153,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                 echo $this->Form->hidden('topupavailable_cash',array('value' => (isset($reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance']) 
                                         ? $reinvestorcashaccounts['ReinvestorCashaccount']['fixed_inv_balance'] : 0)));
                                 echo $this->Form->input('topup_amount',
-                                        array('label' => 'Top-up Amount', 'class' => 'required', 'placeholder' => '0.00')); ?> 
+                                        array('required', 'label' => 'Top-up Amount', 'placeholder' => '0.00')); ?> 
                                      
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12">

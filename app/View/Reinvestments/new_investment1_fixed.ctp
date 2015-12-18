@@ -61,7 +61,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                         foreach($reinvest_totals as $val){
                                   $total_fixed +=  $val[0]['invest_amt'];
                                         }
-                                    echo $total_fixed;  
+                                    echo $shopCurrency." ".number_format($total_fixed, 2);  
                                     }
                                     
                                     

@@ -20,7 +20,7 @@
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_earned', 'Interest'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_accrued', 'Interest'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="130" align="left"><b><?php echo $this->Paginator->sort('amount_due', 'Maturity Amt.'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('duration', 'Elapsed Tenure'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue;" width="60" align="left"><b><?php echo $this->Paginator->sort('total_tenure', 'Tenure Left'); ?></b></td>
@@ -39,7 +39,7 @@
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php echo number_format($each_item['Investment']['investment_amount'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['interest_earned'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['interest_accrued'],2); ?></td>
                                 <td align="left"><?php echo number_format($each_item['Investment']['amount_due'],2); ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>

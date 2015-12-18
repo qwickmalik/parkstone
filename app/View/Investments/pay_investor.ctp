@@ -77,7 +77,7 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                             <td><b align="right">Total Cash In Investment:</b></td>
                             <td><span id="xxxxxx"><?php
                                    if (isset($data['ClientLedger']['invested_amount'])) {
-                                        echo $shopCurrency." ".number_format($data['Investment']['invested_amount'],2);
+                                        echo $shopCurrency." ".number_format($data['ClientLedger']['invested_amount'],2);
                                     }
         ?></span></td>
                         </tr>
