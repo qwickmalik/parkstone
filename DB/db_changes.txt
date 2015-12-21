@@ -1832,9 +1832,7 @@ ALTER TABLE `investments` ADD `rollover_date` DATE NULL DEFAULT NULL AFTER `due_
 ----------------------
 ALTER TABLE `reinvestments` ADD `rollover_date` DATE NULL DEFAULT NULL AFTER `due_date`;
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-NEW
--------------------------------------------------------------------------------------
+
 18 NOVEMBER, 2015
 ----------------------
 ALTER TABLE `investors` CHANGE `occupation` `occupation` VARCHAR(70) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
@@ -1846,3 +1844,11 @@ ALTER TABLE `settings` CHANGE `penalty` `penalty` DECIMAL(6,2) NULL DEFAULT '0.0
 16 December, 2015
 --------------------
 ALTER TABLE `investments` ADD `basefee_lastprocess_date` DATE NULL DEFAULT NULL AFTER `basefee_duedate`;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+NEW
+-------------------------------------------------------------------------------------
+
+21 DECEMBER, 2015
+------------------
+ALTER TABLE `investments` ADD `rollover_amount` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `investment_amount`;
