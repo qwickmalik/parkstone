@@ -96,7 +96,7 @@ echo $this->Html->script('print.js');
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_date']; ?></td>
                         <td align="left" valign="top"><?php echo $data['Investment']['investment_no']; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['duration'].' '.$data['Investment']['investment_period']; ?></td>
-                        <td align="right" valign="top"><?php echo number_format($data['Investment']['investment_amount'],2); ?></td>
+                        <td align="right" valign="top"><?php echo ($data['Investment']['status'] == 'Rolled_over' ? number_format($data['Investment']['rollover_amount'],2) : number_format($data['Investment']['investment_amount'],2) ) ; ?></td>
                         <td align="right" valign="top"><?php echo $data['Investment']['custom_rate'].'%'; ?></td>
                         <td align="right" valign="top"><?php echo number_format($data['Investment']['expected_interest'],2); ?></td>
                         <td align="right" valign="top"><?php echo number_format($data['Investment']['amount_due'],2); ?></td>
