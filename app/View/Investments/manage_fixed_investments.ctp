@@ -77,7 +77,9 @@
                         ?></td>
                 <td align="right"><?php
                         if(isset($each_item['Investment']['investment_amount'])){
-                            echo number_format($each_item['Investment']['investment_amount'],2);
+                            echo
+                             ($each_item['Investment']['status'] == 'Rolled_over' ? number_format($each_item['Investment']['rollover_amount'],2) : number_format($each_item['Investment']['investment_amount'],2) ) ;
+                           
                         }
                         
                         ?></td>

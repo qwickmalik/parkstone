@@ -271,9 +271,16 @@ if ($this->Session->check('shopCurrency')) {
                             $tfirst_date = $val['investment_date'];
                             $inv_date = new DateTime($tfirst_date);
                             $date = date('Y-m-d');
+                             $due_date = $each_item['Investment']['due_date'];
+                            if ($due_date <= $date) {
+                                $date = $due_date;
+                            }
                             $to_date = new DateTime($date);
                             $tduration = date_diff($inv_date, $to_date);
                             $tduration = $tduration->format("%a");
+                            if ($due_date <= $date) {
+                                $tduration = $tduration + 1;
+                            }
                             $principal = $val['topup_amount'];
                             $rate = $each_item['Investment']['custom_rate'];
                             $interest_amount1 = ($rate / 100) * $principal;
@@ -345,9 +352,16 @@ if ($this->Session->check('shopCurrency')) {
                             $tfirst_date = $val['investment_date'];
                             $inv_date = new DateTime($tfirst_date);
                             $date = date('Y-m-d');
+                             $due_date = $each_item['Investment']['due_date'];
+                            if ($due_date <= $date) {
+                                $date = $due_date;
+                            }
                             $to_date = new DateTime($date);
                             $tduration = date_diff($inv_date, $to_date);
                             $tduration = $tduration->format("%a");
+                             if ($due_date <= $date) {
+                                $tduration = $tduration + 1;
+                            }
                             $principal = $val['topup_amount'];
                             $rate = $each_item['Investment']['custom_rate'];
                             $interest_amount1 = ($rate / 100) * $principal;

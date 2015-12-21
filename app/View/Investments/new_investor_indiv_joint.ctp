@@ -8,7 +8,7 @@
         <?php
         echo $this->Html->css('prettify.css');
         echo $this->Html->script('bootstrap.min.js');
-        echo $this->Html->script('masks.js');
+//        echo $this->Html->script('masks.js');
 //echo $this->Html->script('fuelux/wizards.js');
 //        echo $this->Html->script('prettify.js');
         echo $this->Html->css('fuelux/style.css');

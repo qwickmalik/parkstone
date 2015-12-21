@@ -2630,7 +2630,7 @@ class InvestmentsController extends AppController {
                         'expected_interest' => $interest_amount,
                         'total_amount_earned' => $aamount_due,
                         'earned_balance' => $aamount_due,
-                        'interest_earned' => $aamount_due,
+                        'interest_earned' => $ainterest_amount,
                         'accrued_days' => $aduration,
                         'interest_accrued' => $ainterest_amount,
                         'amount_due' => $amount_due,
@@ -6897,12 +6897,27 @@ class InvestmentsController extends AppController {
                         $this->Session->write('bmsg', $message);
                         $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
                     }
-
+                    $status = $investment_data['Investment']['status'];
                     $custom_rate = $investment_data['Investment']['custom_rate'];
                     $period = $investment_data['Investment']['investment_period'];
                     $end_date = $investment_data['Investment']['due_date'];
+                    if($status == 'Rolled_over'){
+                        $initial_date = $investment_data['Investment']['rollover_date'];
+                    }else{
+                    $initial_date = $investment_data['Investment']['investment_date'];
+                    }
                     $first_date = $inv_date;
                     $inv_date = new DateTime($first_date);
+                    if($first_date < $initial_date){
+                         $message = 'Topup date cannot be less than Investment date. Please check and try again';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+                    }
+                    if($first_date > $end_date){
+                         $message = 'Topup date cannot be more than Investment due date. Please check and try again';
+                        $this->Session->write('bmsg', $message);
+                        $this->redirect(array('controller' => 'Investments', 'action' => 'manageFixedInvestments', $investor_id, $investor_name));
+                    }
                     $to_date = new DateTime($end_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
@@ -6920,11 +6935,9 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $adate = date('Y-m-d');
-                            $due_date = $date->format('Y-m-d');
-                            if ($due_date <= $adate) {
-                                $date->sub(new DateInterval('P1D'));
-                                $adate = $due_date;
+                            $curr_date = date('Y-m-d');
+                            if($curr_date > $end_date ){
+                            $duration +=1;
                             }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
@@ -6953,12 +6966,11 @@ class InvestmentsController extends AppController {
                             $principal = $investment_amount;
                             $statemt_array = array();
                             $rate = $custom_rate;
-                            $adate = date('Y-m-d');
-                            $due_date = $date->format('Y-m-d');
-                            if ($due_date <= $adate) {
-                                $date->sub(new DateInterval('P1D'));
-                                $adate = $due_date;
+                           $curr_date = date('Y-m-d');
+                            if($curr_date > $end_date ){
+                            $duration +=1;
                             }
+                            
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
                             $amount_due = $interest_amount + $investment_amount;
@@ -7011,7 +7023,14 @@ class InvestmentsController extends AppController {
                     }
                     $management_fee += $base_fee;
                     $accrued_basefee += $base_fee;
-                    $new_investmentamt = $investment_data['Investment']['investment_amount'] + $amount;
+                    if($status == 'Rolled_over'){
+                        $investmentamt  = $investment_data['Investment']['rollover_amount'];
+                        $column = 'rollover_amount';
+                    }else{
+                    $investmentamt = $investment_data['Investment']['investment_amount'];
+                    $column = 'investment_amount';
+                    }
+                    $new_investmentamt = $investmentamt + $amount;
                     $newinterest_amt = $investment_data['Investment']['expected_interest'] + $interest_amount;
                     $newtotal_amount_earned = $investment_data['Investment']['total_amount_earned'] + $amount;
                     $new_earnedbalance = $investment_data['Investment']['earned_balance'] + $amount;
@@ -7020,14 +7039,14 @@ class InvestmentsController extends AppController {
                         'base_fees' => $management_fee,
                         'accrued_basefee' => $accrued_basefee,
                         'id' => $investment_data['Investment']['id'],
-                        'investment_amount' => $new_investmentamt,
+                      $column => $new_investmentamt,
                         'expected_interest' => $newinterest_amt,
                         'total_amount_earned' => $newtotal_amount_earned,
                         'earned_balance' => $new_earnedbalance,
                         'amount_due' => $newamount_due,
                     );
 
-                    $topup_data = array('old_investmentamt' => $investment_data['Investment']['investment_amount'],
+                    $topup_data = array('old_investmentamt' => $investmentamt,
                         'oldinterest_earned' => $investment_data['Investment']['interest_earned'],
                         'oldtotal_amount_earned' => $investment_data['Investment']['total_amount_earned'],
                         'oldearned_balance' => $investment_data['Investment']['earned_balance'],
@@ -7857,7 +7876,7 @@ class InvestmentsController extends AppController {
                     'interest_accrued' => $ainterest_amount, 'accrued_days' => $aduration,
                     'duration' => $this->request->data['Investment']['duration'],
                   'investment_period' => $this->request->data['Investment']['investment_period'],
-                    'custom_rate' => $custom_rate,
+                    'custom_rate' => $custom_rate,'rollover_amount' => $investment_amount,
                     'total_tenure' => $total_tenure, 'total_amount_earned' => $aamount_due,
                     'earned_balance' => $aamount_due, 'rollover_date' => $inv_date,
                     'due_date' => $date->format('Y-m-d'), 'status' => 'Rolled_over');
