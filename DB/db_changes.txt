@@ -1845,10 +1845,19 @@ ALTER TABLE `settings` CHANGE `penalty` `penalty` DECIMAL(6,2) NULL DEFAULT '0.0
 --------------------
 ALTER TABLE `investments` ADD `basefee_lastprocess_date` DATE NULL DEFAULT NULL AFTER `basefee_duedate`;
 
+21 DECEMBER, 2015
+------------------
+ALTER TABLE `investments` ADD `rollover_amount` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `investment_amount`;
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 NEW
 -------------------------------------------------------------------------------------
 
-21 DECEMBER, 2015
-------------------
-ALTER TABLE `investments` ADD `rollover_amount` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `investment_amount`;
+31, December, 2015 Kwaku
+----------------------
+ALTER TABLE `investment_payments` ADD `interest` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `amount`;
+
+04, JANUARY, 2016 Kwaku
+---------------------
+ALTER TABLE `investment_payments` ADD `rate` DECIMAL(6,2) NULL DEFAULT '0.00' AFTER `interest`;
