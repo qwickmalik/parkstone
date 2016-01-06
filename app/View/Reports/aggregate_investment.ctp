@@ -42,7 +42,7 @@ $total_expectedi = 0;
                     <?php echo $this->Form->month('begin_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('begin_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('begin_date', date('Y') - 10, date('Y') + 10, array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
@@ -71,7 +71,7 @@ $total_expectedi = 0;
                     <?php echo $this->Form->month('finish_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('finish_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('finish_date', date('Y') - 10, date('Y') + 10, array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
@@ -227,26 +227,37 @@ $total_expectedi = 0;
                                 <td align="right" valign="top"><?php
                                     if (isset($each_item['Investment']['interest_accrued'])) {
 //                                        echo number_format($each_item['Investment']['interest_accrued'], 2);
-                                        $id = $each_item['Investment']['id'];
-                                        $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/' . $id);
+//                                        $id = $each_item['Investment']['id'];
+//                                        $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/' . $id);
+//
+//                                        $total_interest += $interest_accrued;
 
-                                        $total_interest += $interest_accrued;
-
-                                        echo number_format($interest_accrued, 2);
+                                        echo number_format($each_item['Investment']['interest_accrued'], 2);
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
 //                                    if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
 //                                        $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
 //                                    }
-                                    if (isset($each_item['Investment']['id']) && isset($each_item['Investment']['investment_amount'])) {
-                                        $id = $each_item['Investment']['id'];
-                                        $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/' . $id);
+                                if(($each_item['Investment']['status'] == 'Rolled_over') ||($each_item['Investment']['status'] == 'Termination_Requested' && $each_item['Investment']['old_status'] == 'Rolled_over')){
+                                    if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['rollover_amount'])) {
+//                                        $id = $each_item['Investment']['id'];
+//                                        $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/' . $id);
 
-                                        $totals_ia = $interest_accrued_calc + $each_item['Investment']['investment_amount'];
+                                        $totals_ia = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['rollover_amount'];
                                         $total_pi += $totals_ia;
                                         echo number_format($totals_ia, 2);
                                     }
+                                }else{
+                                    if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
+//                                        $id = $each_item['Investment']['id'];
+//                                        $interest_accrued_calc = $this->requestAction('/Investments/get_accruedinterest/' . $id);
+
+                                        $totals_ia = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
+                                        $total_pi += $totals_ia;
+                                        echo number_format($totals_ia, 2);
+                                    }
+                                }
                                     ?></td>
         <!--                                <td align="right" valign="top"><?php
 //

@@ -140,24 +140,24 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Payment</b></td>
                     </tr>
                     <?php if (!empty($accounts)) {
+                       $invpayments = array();
+                       $totals_amount = array();
+//       foreach ($inv as $val): 
                        
-       foreach ($inv as $val):                  
-//     print_r($accounts);exit;
-    foreach ($accounts as $each_item):  
-              if($val == $each_item['InvestmentPayment']['investor_id']){
+                       foreach ($data as $veach): 
+               $val = $veach['InvestmentPayment']['investor_id'];
             ?>
                     <tr>
                         <!--<td align="left" valign="top" colspan="2"><b style="font-size:70%">Name</b></td>-->
-                        <td align="center" colspan="9" valign="top" style="color:#ffffff;font-size:120%;background-color: Gray"><b ><?php if (isset($each_item['Investor']['fullname'])) {
-            echo  $each_item['Investor']['fullname'];
+                        <td align="center" colspan="9" valign="top" style="color:#ffffff;font-size:120%;background-color: Gray"><b ><?php if (isset($veach['Investor']['fullname'])) {
+            echo  $veach['Investor']['fullname'];
             } ?></b></td>
                     </tr>
                               <?php
-                              break;
-              }
-    endforeach;
+               
     foreach ($accounts as $each_item):  
         if($val == $each_item['InvestmentPayment']['investor_id']){
+             if($each_item['InvestmentPayment']['event_type'] == 'Rolledover'){
  ?>
                     <tr>
                          <!--<td align="right" valign="top">&nbsp;</td>-->
@@ -167,11 +167,11 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_date'])) {
             echo  date('d-m-Y',strtotime($each_item['Investment']['investment_date']));
         } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['investment_amount'])) {
-            echo  number_format($each_item['Investment']['investment_amount'],2);
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['amount'])) {
+            echo  number_format($each_item['InvestmentPayment']['amount'],2);
         } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['custom_rate'])) {
-            echo  $each_item['Investment']['custom_rate'].'%';
+                        <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['rate'])) {
+            echo  $each_item['InvestmentPayment']['rate'].'%';
         } ?></td>
                         <td align="right" valign="top"><?php if (isset($each_item['InvestmentPayment']['event_date'])) {
             echo  date('d-m-Y',strtotime($each_item['InvestmentPayment']['event_date']));
@@ -179,16 +179,43 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued'])) {
             echo  number_format($each_item['Investment']['interest_accrued'],2);
         } ?></td>
-                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['Investment']['investment_amount'])) {
-              $totals = $each_item['Investment']['interest_accrued'] + $each_item['Investment']['investment_amount'];
-        
+                        <td align="right" valign="top"><?php if (isset($each_item['Investment']['interest_accrued']) && isset($each_item['InvestmentPayment']['amount'])) {
+                          $totals = 0;
+                            $totals = $each_item['Investment']['interest_accrued'] + $each_item['InvestmentPayment']['amount'];
+                        
+            
+              
+        if(!isset($totals_amount[$val])){
+                         $totals_amount[$val] = 0;
+                     }
+                  
+                     $tot_amt = $totals_amount[$val];
+                     
+                     $tot_amt += $totals;
+                     $totals_amount[$val] = $tot_amt;
             echo number_format($totals,2);
             
                         } ?></td>
-                        <td align="right" valign="top">&nbsp;</td>
+                        <td align="right" valign="top">&nbsp;
+                        <?php 
+                
+               
+                ?>
+                        
+                        </td>
                     </tr>
                     
      <?php
+        }elseif($each_item['InvestmentPayment']['event_type'] == 'Payment'){
+              if (!empty($each_item['InvestmentPayment']['amount'])){
+                     if(!isset($invpayments[$val])){
+                         $invpayments[$val] = 0;
+                              
+                     }
+//                     echo number_format($each_item[0]['payment'],2);
+                     $invpayments[$val] += $each_item['InvestmentPayment']['amount'];
+                }
+        }
         }
     endforeach;
     
@@ -201,31 +228,23 @@ echo $this->Html->script('print.js'); ?>
                         <td align="right" valign="top"></td>
                         <td align="right" valign="top"></td>
                         <td align="right" valign="top"></td>
-                        <td align="right" valign="top"><?php if (!empty($total)){
-            foreach($total as $each_item):
-                 if($val == $each_item['InvestmentPayment']['investor_id']){
-                 if (isset($each_item[0]['totalamount'])){
-                    echo 'GH$ '.number_format($each_item[0]['totalamount'], 2);
-                }else{
-                    echo 'GH$ 0.00'; 
-                }
-                 }
+                        <td align="right" valign="top"><?php 
+                if (!empty($totals_amount[$val] )){
+            
+                 
+                         echo 'GHc '.number_format($totals_amount[$val], 2);
+                
                         
-            endforeach;
+            
                         }else{
-                    echo 'GH$ 0.00'; 
+                    echo 'GHc 0.00'; 
                 }
                 ?></td>
-                        <td align="right" valign="top"><?php if(!empty($total_payment)){
-            foreach($total_payment as $each_item):
-                 if($val == $each_item['InvestmentPayment']['investor_id']){
-                 if (!empty($each_item[0]['payment'])){
-                    echo 'GH$ '.number_format($each_item[0]['payment'], 2);
-                }else{
-                    echo 'GH$ 0.00'; 
-                }
-                 }
-            endforeach;
+                        <td align="right" valign="top"><?php if(!empty($invpayments[$val])){
+             echo 'GHc '.number_format($invpayments[$val], 2);
+            
+                        }else{
+                              echo 'GHc 0.00'; 
                         }
                 ?></td>
                     </tr>

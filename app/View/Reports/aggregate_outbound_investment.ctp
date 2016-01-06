@@ -42,7 +42,7 @@ $total_expectedi = 0;
                     <?php echo $this->Form->month('begin_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('begin_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('begin_date',date('Y') - 10, date('Y') + 10, array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
@@ -71,7 +71,7 @@ $total_expectedi = 0;
                     <?php echo $this->Form->month('finish_date', array("selected" => $month)); ?>&nbsp;
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
-                    <?php echo $this->Form->year('finish_date', 2003, date('Y'), array("selected" => $Year)); ?>
+                    <?php echo $this->Form->year('finish_date', date('Y') - 10, date('Y') + 10, array("selected" => $Year)); ?>
                 </div>
                 <script>
                     var day = $("#day").val();
@@ -219,10 +219,10 @@ $total_expectedi = 0;
                                     }
                                     ?></td>
                                 <td align="right" valign="top"><?php
-                                    if (isset($each_item['Reinvestment']['interest_accrued'])) {
+                                    if (isset($each_item['Reinvestment']['interest_earned'])) {
 //                                        echo number_format($each_item['Investment']['interest_accrued'], 2);
                                         $id = $each_item['Reinvestment']['id'];
-                               $interest_accrued = $this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
+                               $interest_accrued = $each_item['Reinvestment']['interest_earned']; //$this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
                                
                       $total_interest += $interest_accrued;
 
@@ -235,7 +235,7 @@ $total_expectedi = 0;
 //                                    }
                                 if (isset($each_item['Reinvestment']['id']) && isset($each_item['Reinvestment']['investment_amount'])) {
                                  $id = $each_item['Reinvestment']['id'];
-                               $interest_accrued_calc = $this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
+                               $interest_accrued_calc = $each_item['Reinvestment']['interest_earned']; ////$this->requestAction('/Reinvestments/get_accruedinterest/'.$id);
                                 
                                 $totals_ia = $interest_accrued_calc + $each_item['Reinvestment']['investment_amount'];
                                 $total_pi += $totals_ia;

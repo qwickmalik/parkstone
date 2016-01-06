@@ -84,6 +84,12 @@ class ReportsController extends AppController {
 
     function index() {
         $this->__validateUserType3();
+          if($this->Session->check('temprolldisnv')){
+                $this->Session->delete('temprolldisnv');
+            }
+              if($this->Session->check('tempdisin')){
+                $this->Session->delete('tempdisin');
+            }
     }
 
     protected function loadEssentials() {
@@ -2626,7 +2632,9 @@ class ReportsController extends AppController {
     function rolloverDisinv() {
         $this->__validateUserType3();
         if ($this->request->is('post')) {
-
+             if($this->Session->check('temprolldisnv')){
+                $this->Session->delete('temprolldisnv');
+            }
             $sday = $this->request->data['RolloverDisinv']['from_date']['day'];
             $smonth = $this->request->data['RolloverDisinv']['from_date']['month'];
             $syear = $this->request->data['RolloverDisinv']['from_date']['year'];
@@ -2647,60 +2655,109 @@ class ReportsController extends AppController {
             $frend_date = date('d F, Y', $enewdate);
 
 
+$tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
+            $this->Session->write('temprolldisnv',$tempentries);
 
-
-            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
+//            );
+ $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Rolledover')
-            );
-
-            $accounts = $this->paginate('InvestmentPayment');
-            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Termination'),
-                'group' => 'InvestmentPayment.investor_id'
+                    'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
             ));
-            $inv = array();
 
+           
+            
+           
 
-            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled', 'InvestmentPayment.event_type' => array('Termination', 'Payment')
+//                    )
+//                ,
+//                 'fields' => array("SUM((InvestmentPayment.amount + InvestmentPayment.interest)) as totalamount",'Investor.fullname' ,"InvestmentPayment.amount as payment", 'InvestmentPayment.investor_id','InvestmentPayment.investment_id','InvestmentPayment.event_date',
+//                     'Investment.investment_no','Investment.investment_date','Investment.investment_amount','InvestmentPayment.event_type','InvestmentPayment.rate','InvestmentPayment.penalty','InvestmentPayment.interest','InvestmentPayment.amount'
+//                     )
+//            );
+             
+        
+                    
+               
+                    $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Payment'),
-                'group' => 'InvestmentPayment.investor_id', 'fields' =>
-                array("SUM((InvestmentPayment.amount)) as payment", 'InvestmentPayment.investor_id')));
-
-
-            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                    'InvestmentPayment.event_type' => 'Rolledover'),'contain' => array('Investment','Investor'),
+                'group' => 'InvestmentPayment.investor_id');
+                    
+                 $data = $this->paginate('InvestmentPayment');
+// $data = $this->InvestmentPayment->find('all', );
+//
+//            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('Investment.rollover_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Payment'),
+//                'group' => 'InvestmentPayment.investor_id', 'fields' =>
+//                array("SUM((InvestmentPayment.amount)) as payment", 'InvestmentPayment.investor_id','InvestmentPayment.investment_id','InvestmentPayment.event_date')));
+//
+//
+//            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Rolledover'),
+//                'group' => 'InvestmentPayment.investor_id', 'fields' =>
+//                array("SUM((InvestmentPayment.amount + Investment.interest_accrued)) as totalamount", 'InvestmentPayment.investor_id')));
+//            if ($data) {
+//
+//                $x = 1;
+//
+//                foreach ($data as $val) {
+////					if($val['InvestmentPayment']['investor_id'] == $x){
+//                    $inv[$x] = $val['InvestmentPayment']['investor_id'];
+////					}
+//                    $x++;
+//                }
+//
+//
+////				    print_r($inv);exit;  
+//            }
+            $this->set(compact('accounts',  'data'));
+            
+        }else{
+            if($this->Session->check('temprolldisnv')){
+                    $tempentries = $this->Session->read('temprolldisnv');
+                    $start_date = $tempentries['start_date'];
+                    $end_date = $tempentries['end_date'];
+                    
+             $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'), 
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Rolledover'),
-                'group' => 'InvestmentPayment.investor_id', 'fields' =>
-                array("SUM((Investment.investment_amount + Investment.interest_accrued)) as totalamount", 'InvestmentPayment.investor_id')));
-            if ($data) {
+                    'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
+            ));
 
-                $x = 1;
-
-                foreach ($data as $val) {
-//					if($val['InvestmentPayment']['investor_id'] == $x){
-                    $inv[$x] = $val['InvestmentPayment']['investor_id'];
-//					}
-                    $x++;
-                }
-
-
-//				    print_r($inv);exit;  
+            $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 1,
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+                    'InvestmentPayment.event_type' => 'Rolledover'),'contain' => array('Investment','Investor'),
+                'group' => 'InvestmentPayment.investor_id');
+            
+                 $data = $this->paginate('InvestmentPayment');
+                 
+            $this->set(compact('accounts',  'data'));
             }
-            $this->set(compact('accounts', 'total', 'total_payment', 'inv'));
+            
+            
         }
     }
 
     function disinv() {
         $this->__validateUserType3();
         if ($this->request->is('post')) {
-
+             if($this->Session->check('tempdisin')){
+                $this->Session->delete('tempdisin');
+            }
             $sday = $this->request->data['RolloverDisinv']['from_date']['day'];
             $smonth = $this->request->data['RolloverDisinv']['from_date']['month'];
             $syear = $this->request->data['RolloverDisinv']['from_date']['year'];
@@ -2720,54 +2777,139 @@ class ReportsController extends AppController {
             $end_date = $date->format('Y-m-d');
             $frend_date = date('d F, Y', $enewdate);
 
+  $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
+                  )));
 
 
-
-            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled', 'InvestmentPayment.event_type' => array('Termination', 'Payment')
+//                    )
+//                ,
+//                 'fields' => array("SUM((InvestmentPayment.amount + InvestmentPayment.interest)) as totalamount",'Investor.fullname' ,"InvestmentPayment.amount as payment", 'InvestmentPayment.investor_id','InvestmentPayment.investment_id','InvestmentPayment.event_date',
+//                     'Investment.investment_no','Investment.investment_date','Investment.investment_amount','InvestmentPayment.event_type','InvestmentPayment.rate','InvestmentPayment.penalty','InvestmentPayment.interest','InvestmentPayment.amount'
+//                     )
+//            );
+             
+            $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
+            $this->Session->write('tempdisin',$tempentries);
+                    
+               
+                    $this->paginate =array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Termination')
+                    'InvestmentPayment.event_type' => 'Termination'),
+                'group' => 'InvestmentPayment.investor_id','contain' => array('Investment','Investor')
             );
+                 $data = $this->paginate('InvestmentPayment');
+//            pr($accounts);exit;
+//            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Termination'),'fields' => array('InvestmentPayment.investor_id'),
+//                'group' => 'InvestmentPayment.investor_id'
+//            ));
+//            $inv = array();
 
-            $accounts = $this->paginate('InvestmentPayment');
-            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+
+//            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Payment'),
+//                 'fields' => array("InvestmentPayment.amount as payment", 'InvestmentPayment.investor_id','InvestmentPayment.investment_id','InvestmentPayment.event_date')));
+//
+//
+//            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Termination'),
+//                'group' => 'InvestmentPayment.investor_id', 'fields' =>
+//                array("SUM((InvestmentPayment.amount + InvestmentPayment.interest)) as totalamount", 'InvestmentPayment.investor_id')));
+//            if ($data) {
+//
+//                $x = 1;
+//
+//                foreach ($data as $val) {
+////					if($val['InvestmentPayment']['investor_id'] == $x){
+//                    $inv[$x] = $val['InvestmentPayment']['investor_id'];
+////					}
+//                    $x++;
+//                }
+//
+//
+////				    print_r($inv);exit;  
+//            }
+            $this->set(compact('accounts', 'data'));//,'InvestmentPayment.event_type'
+        }else{
+            if($this->Session->check('tempdisin')){
+                    $tempentries = $this->Session->read('tempdisin');
+                    $start_date = $tempentries['start_date'];
+                    $end_date = $tempentries['end_date'];
+//            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
+//                  )
+//               
+//            );
+             
+            $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
+            $this->Session->write('tempdisin',$tempentries);
+                    
+            $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'),
+                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
+                  )));
+                    
+                    
+//            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Termination'),
+//                'group' => 'InvestmentPayment.investor_id'
+//            ));
+                    
+                    
+                    $this->paginate =array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Termination'),
-                'group' => 'InvestmentPayment.investor_id'
-            ));
-            $inv = array();
+                'group' => 'InvestmentPayment.investor_id','contain' => array('Investment','Investor')
+            );
+                 $data = $this->paginate('InvestmentPayment');
+//            $inv = array();
 
-
-            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Payment'),
-                'group' => 'InvestmentPayment.investor_id', 'fields' =>
-                array("SUM((InvestmentPayment.amount)) as payment", 'InvestmentPayment.investor_id')));
-
-
-            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Termination'),
-                'group' => 'InvestmentPayment.investor_id', 'fields' =>
-                array("SUM((Investment.investment_amount + Investment.interest_earned)) as totalamount", 'InvestmentPayment.investor_id')));
-            if ($data) {
-
-                $x = 1;
-
-                foreach ($data as $val) {
-//					if($val['InvestmentPayment']['investor_id'] == $x){
-                    $inv[$x] = $val['InvestmentPayment']['investor_id'];
-//					}
-                    $x++;
-                }
-
-
-//				    print_r($inv);exit;  
+//
+//            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Payment'),
+//                'fields' => array("InvestmentPayment.amount as payment", 'InvestmentPayment.investor_id','InvestmentPayment.investment_id','InvestmentPayment.event_date')));
+//
+//
+//            $total = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+//                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+//                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+//                    'InvestmentPayment.event_type' => 'Termination'),
+//                'group' => 'InvestmentPayment.investor_id', 'fields' =>
+//                array("SUM((InvestmentPayment.amount + InvestmentPayment.interest)) as totalamount", 'InvestmentPayment.investor_id')));
+//            if ($data) {
+//
+//                $x = 1;
+//
+//                foreach ($data as $val) {
+////					if($val['InvestmentPayment']['investor_id'] == $x){
+//                    $inv[$x] = $val['InvestmentPayment']['investor_id'];
+////					}
+//                    $x++;
+//                }
+//
+//
+////				    print_r($inv);exit;  
+//            }
+            $this->set(compact('accounts', 'data'));//,'InvestmentPayment.event_type'
             }
-            $this->set(compact('accounts', 'total', 'total_payment', 'inv'));
         }
     }
 
@@ -2801,7 +2943,7 @@ class ReportsController extends AppController {
             $firstday = date('Y-m-01');
             $accounts = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'contains' => array('InvestmentPayment', 'Topup'),
-                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' =>
+                'conditions' => array('Investment.due_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
                     'Investment.investment_amount > 0',
                     'Investment.investment_product_id' => array(1, 3),
@@ -2809,7 +2951,7 @@ class ReportsController extends AppController {
 // pr($accounts);exit;
 //, 'group' => array('Expectedinstallment.zone_id')
             $total = $this->Investment->find('all', array('order' => array('Investor.fullname' => 'asc'),
-                'conditions' => array('Investment.investment_date BETWEEN ? AND ?' =>
+                'conditions' => array('Investment.due_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
                     'Investment.investment_amount > 0',
                     'Investment.investment_product_id' => array(1, 3),
@@ -2858,13 +3000,13 @@ function aggregateOutboundInvestment() {
             $firstday = date('Y-m-01');
             $accounts = $this->Reinvestment->find('all', array('order' => array('InvestmentDestination.company_name' => 'asc'),
                 'contains' => array('InvestmentReturn'),
-                'conditions' => array('Reinvestment.investment_date BETWEEN ? AND ?' =>
+                'conditions' => array('Reinvestment.due_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),'Reinvestment.reinvestor_id' => 1,
                     'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested','Terminated'))));
 //pr($accounts);exit;
 //, 'group' => array('Expectedinstallment.zone_id')
             $total = $this->Reinvestment->find('all', array('order' => array('InvestmentDestination.company_name' => 'asc'),
-                'conditions' => array('Reinvestment.investment_date BETWEEN ? AND ?' =>
+                'conditions' => array('Reinvestment.due_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
                     'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested','Terminated')), 'fields' =>
                 array("SUM((Reinvestment.investment_amount)) as principal",
