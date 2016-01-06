@@ -27,25 +27,25 @@ class ParkstoneShell extends AppShell {
      * @return array() 
      */
     public function cronJobs() {
-        $this->autoRender = false;
+        //$this->autoRender = false;
         $this->__invEOD();
     }
 
     public function defaultJobs() {
-        $this->autoRender = false;
+        //$this->autoRender = false;
         $this->__dailyInterests();
         $this->__dailyMatured();
     }
 
     public function backendJobs(){
-        $this->autoRender = false;
+        //$this->autoRender = false;
         $this->__dailyReinvestmentInterests();
         $this->__dailyReinvestmentMatured();
         
     }
    
     public function miscJobs(){
-        $this->autoRender = false;
+//        $this->autoRender = false;
         $this->__processFees();
     }
     public function sms() {

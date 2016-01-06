@@ -6007,8 +6007,8 @@ class InvestmentsController extends AppController {
                             }
                             $this->Investment->save($update_array);
                             //insert into investmentpayments for rollover
-                            $investment_paymentdetails = array('investment_id' => $investment_id,
-                                'investor_id' => $investor_id, 'amount' => $amount_due, 'ledger_transaction_id' => $ltid,
+                            $investment_paymentdetails = array('investment_id' => $investment_id,'rate' => $custom_rate,
+                                'investor_id' => $investor_id, 'amount' => $amount_due,'interest' =>  $interest_amount,'ledger_transaction_id' => $ltid,
                                 'user_id' => $userid, 'payment_date' => date('Y-m-d'), 'penalty' => $penalty, 'event_type' => 'Termination',
                                 'event_date' => date('Y-m-d'));
 
@@ -6557,7 +6557,7 @@ class InvestmentsController extends AppController {
                         if ($check) {
                             $this->Session->delete('ireceipt_items');
                         }
- $check = $this->Session->check('payinvesttemp');
+                       $check = $this->Session->check('payinvesttemp');
                         if ($check) {
                             $this->Session->delete('payinvesttemp');
                         }
@@ -7968,7 +7968,7 @@ class InvestmentsController extends AppController {
 
                 //insert into investmentpayments for rollover
                 $investment_paymentdetails = array('investment_id' => $data['Investment']['id'],
-                    'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount,
+                    'investor_id' => $data['Investment']['investor_id'], 'amount' => $investment_amount,'interest' => $interest_amount,'rate' => $custom_rate,
                     'user_id' => $data['Investment']['user_id'], 'payment_date' => $inv_date, 'event_type' => 'Rolledover',
                     'event_date' => $inv_date);
 
