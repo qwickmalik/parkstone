@@ -42,7 +42,7 @@
                                $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
             echo  number_format($interest_accrued,2);
         } ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['amount_due'],2); ?></td>
+                                <td align="left"><?php echo number_format($each_item['Investment']['earned_balance'],2); ?></td>
                                 <td align="left"><?php if($each_item['Instruction']['id'] != 7){
                                     echo $each_item['Instruction']['instruction_name'];
                                 }else{
