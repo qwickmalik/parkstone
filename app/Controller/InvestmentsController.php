@@ -9215,9 +9215,9 @@ class InvestmentsController extends AppController {
                             $statemt_array = array();
                             $rate = $custom_rate;
                              $date_curr = date('Y-m-d');
-                            if ($due_date <= $date_curr) {
-                                $duration = $duration + 1;
-                            }
+//                            if ($due_date <= $date_curr) {
+//                                $duration = $duration + 1;
+//                            }
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount = $interest_amount1 * ($duration / 365);
 
@@ -9233,9 +9233,9 @@ class InvestmentsController extends AppController {
                             $statemt_array = array();
                             $rate = $custom_rate;
                             $date_curr = date('Y-m-d');
-                            if ($due_date <= $date_curr) {
-                                $duration = $duration + 1;
-                            }
+//                            if ($due_date <= $date_curr) {
+//                                $duration = $duration + 1;
+//                            }
                             //$YEAR2DAYS = 365 * $duration;
                             $interest_amount1 = ($rate / 100) * $investment_amount;
                             $interest_amount += $interest_amount1 * ($duration / 365);
@@ -9432,9 +9432,9 @@ class InvestmentsController extends AppController {
                     $to_date = new DateTime($date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    if ($due_date <= $date) {
-                        $duration += 1;
-                    }
+//                    if ($due_date <= $date) {
+//                        $duration += 1;
+//                    }
                     $accrued_days = $duration;
                     return $accrued_days;
                     break;
@@ -9456,9 +9456,9 @@ class InvestmentsController extends AppController {
                     $to_date = new DateTime($due_date);
                     $duration = date_diff($inv_date, $to_date);
                     $duration = $duration->format("%a");
-                    if ($due_date <= $date) {
-                        $duration += 1;
-                    }
+//                    if ($due_date <= $date) {
+//                        $duration += 1;
+//                    }
                     $accrued_days = $duration;
                     return $accrued_days;
                     break;
