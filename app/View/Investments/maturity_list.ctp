@@ -45,7 +45,7 @@
                                  
                                     echo number_format($each_item['Investment']['investment_amount'],2); 
                                 }
-                                ?> ?></td>
+                                 ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
                                 <td align="left"><?php       if (isset($each_item['Investment']['id'])) {
                                 $id = $each_item['Investment']['id'];
@@ -66,7 +66,7 @@
                                 <td align="left"><?php  $id = $each_item['Investment']['id'];
                                $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
             echo $accrued_days.' '.$each_item['Investment']['investment_period']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>
+                                <td align="left"><?php echo $each_item['Investment']['total_tenure'].' Day(s)'; ?></td>
                                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){
                                     echo $each_item['Instruction']['instruction_name'];
                                 }else{
