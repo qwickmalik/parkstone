@@ -9137,7 +9137,6 @@ class InvestmentsController extends AppController {
                 case 'Rolled_over':
                 case 'Invested':
                 case 'Termination_Requested':
-                case 'Payment_Requested':
 
                     $inv_date = new DateTime($first_date);
                     $date = date('Y-m-d');
@@ -9193,6 +9192,7 @@ class InvestmentsController extends AppController {
                 case 'Cancelled':
                 case 'Matured':
                 case 'Payment_Approved':
+                case 'Payment_Requested':
                     $accrued_interest = $data['Investment']['interest_accrued'];
                     return $accrued_interest;
                 default:
@@ -9421,7 +9421,6 @@ class InvestmentsController extends AppController {
                 case 'Rolled_over':
                 case 'Invested':
                 case 'Termination_Requested':
-                case 'Payment_Requested':
                     $period = $data['Investment']['investment_period'];
                     $first_date = $data['Investment']['investment_date'];
                     $inv_date = new DateTime($first_date);
@@ -9445,6 +9444,7 @@ class InvestmentsController extends AppController {
                 case 'Paid':
                 case 'Part_payment':
                 case 'Payment_Approved':
+                case 'Payment_Requested':
                     $accrued_days = $data['Investment']['accrued_days'];
                     return $accrued_days;
                 default:
