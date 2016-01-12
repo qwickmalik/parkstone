@@ -32,7 +32,12 @@
                                        (isset($each_item['Instruction']['instruction_name']) ? $each_item['Instruction']['instruction_name'] : (isset($each_item['Investment']['instruction_details']) ? $each_item['Investment']['instruction_details'] : '' ) ),array());  ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_no']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
+                                <td align="left"><?php 
+                                
+                                 $id = $each_item['Investment']['id'];
+                               $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
+            echo $accrued_days.' '.$each_item['Investment']['investment_period'];
+                                ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php  
                                 
