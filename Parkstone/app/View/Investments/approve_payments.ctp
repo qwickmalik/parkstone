@@ -36,7 +36,7 @@
                                 
                                  $id = $each_item['Investment']['id'];
                                $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
-            echo $accrued_days.' '.$each_item['Investment']['investment_period'];
+            echo $accrued_days.' Day(s)';
                                 ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
                                 <td align="left"><?php  
