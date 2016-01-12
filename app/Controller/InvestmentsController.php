@@ -9191,6 +9191,7 @@ class InvestmentsController extends AppController {
                     break;
                 case 'Termination_Approved':
                 case 'Cancelled':
+                case 'Matured':
                     $accrued_interest = $data['Investment']['interest_accrued'];
                     return $accrued_interest;
                 default:
@@ -9438,6 +9439,7 @@ class InvestmentsController extends AppController {
                     return $accrued_days;
                     break;
                 case 'Termination_Approved':
+                case 'Matured':
                 case 'Cancelled':
                 case 'Paid':
                 case 'Part_payment':
