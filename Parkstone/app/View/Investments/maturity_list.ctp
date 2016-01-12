@@ -16,8 +16,8 @@
                         
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_no', 'No.'); ?></b></td>
                        <td style="border-bottom: solid 2px dodgerblue" width="200" align="center"><b><?php echo $this->Paginator->sort('fullname', 'Name'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue;" width="70" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv.Date'); ?></b></td>
-                        <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue;" width="80" align="left"><b><?php echo $this->Paginator->sort('investment_date', 'Inv.Date'); ?></b></td>
+                        <td style="border-bottom: solid 2px dodgerblue" width="80" align="left"><b><?php echo $this->Paginator->sort('due_date', 'Maturity'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" align="left"><b><?php echo $this->Paginator->sort('investment_amount', 'Principal'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('custom_rate', 'Benchmark'); ?></b></td>
                         <td style="border-bottom: solid 2px dodgerblue" width="60" align="left"><b><?php echo $this->Paginator->sort('interest_accrued', 'Interest'); ?></b></td>
