@@ -37,11 +37,35 @@
                             
                                 <td align="left"><?php echo $each_item['Investment']['investment_date']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['due_date']; ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['investment_amount'],2); ?></td>
+                                <td align="left"><?php
+                                
+                                 if($each_item['Investment']['rollover_amount'] > 0){
+                                    echo number_format($each_item['Investment']['rollover_amount'],2);
+                                }else{
+                                 
+                                    echo number_format($each_item['Investment']['investment_amount'],2); 
+                                }
+                                ?> ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['custom_rate'].'%'; ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['interest_accrued'],2); ?></td>
-                                <td align="left"><?php echo number_format($each_item['Investment']['amount_due'],2); ?></td>
-                                <td align="left"><?php echo $each_item['Investment']['duration'].' '.$each_item['Investment']['investment_period']; ?></td>
+                                <td align="left"><?php       if (isset($each_item['Investment']['id'])) {
+                                $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+            echo  number_format($interest_accrued,2);
+        } ?></td>
+                                <td align="left"><?php  if($each_item['Investment']['rollover_amount'] > 0){
+                                    $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                    $matured = $each_item['Investment']['rollover_amount'] + $interest_accrued;
+                                    echo number_format($matured,2);
+                                }else{
+                                   $id = $each_item['Investment']['id'];
+                               $interest_accrued = $this->requestAction('/Investments/get_accruedinterest/'.$id);
+                                    $matured = $each_item['Investment']['investment_amount'] + $interest_accrued;
+                                    echo number_format($matured,2); 
+                                } ?></td>
+                                <td align="left"><?php  $id = $each_item['Investment']['id'];
+                               $accrued_days = $this->requestAction('/Investments/get_accrueddays/'.$id);
+            echo $accrued_days.' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php echo $each_item['Investment']['total_tenure'].' '.$each_item['Investment']['investment_period']; ?></td>
                                 <td align="left"><?php if($each_item['Instruction']['id'] != 5){
                                     echo $each_item['Instruction']['instruction_name'];
