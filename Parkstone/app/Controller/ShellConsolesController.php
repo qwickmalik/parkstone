@@ -356,9 +356,9 @@ function __dailyInterests(){
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
          $aduration = $aduration->format("%a");
-         if($due_date <= $aend_date){
-            $aduration = $aduration + 1;
-        }
+//         if($due_date <= $aend_date){
+//            $aduration = $aduration + 1;
+//        }
 //         
         $date = date('Y-m-d');
         $yearly_interest = ($rate / 100) * $principal_amount;
