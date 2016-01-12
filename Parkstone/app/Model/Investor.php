@@ -85,6 +85,14 @@ class Investor extends AppModel{
     
     
         var $hasMany = array(
+            'AggregateInterest' => array(
+            'className' => 'AggregateInterest',
+            'foreignKey' => 'investor_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ),
             'InvestmentPayment' => array(
             'className' => 'InvestmentPayment',
             'foreignKey' => 'investor_id',

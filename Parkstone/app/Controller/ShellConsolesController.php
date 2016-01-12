@@ -10,7 +10,7 @@ class ShellConsolesController extends AppController {
     public $components = array('RequestHandler', 'Session', 'Message');
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
-         'Equity',  'Customer','InvestmentCash','InterestAccrual',
+         'Equity',  'Customer','InvestmentCash','InterestAccrual','AggregateInterest',
         'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment','ReinvestInterestAccrual',
         'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement','ManagementFee','ReinvestmentTopup');
 
@@ -33,7 +33,11 @@ class ShellConsolesController extends AppController {
         $this->Session->write('smsg', $message);
          $this->redirect(array('controller' => 'Settings', 'action' => 'batchProcesses'));
     }
-
+               
+    public function reportJobs(){
+       $this->autoRender = false;
+        $this->__aggregateInterests();
+    }
     public function defaultJobs() {
         $this->autoRender = false;
         $this->__dailyInterests();
@@ -577,6 +581,138 @@ function __dailyReinvestmentInterests(){
                }
            }
        }
+    }
+    
+    function __aggregateInterests(){
+        $this->autoLayout = $this->autoRender = false;
+             $data = $this->Investment->find('all',array('fields' => array('Investment.investor_id'),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured'),
+            'Investment.basefee_duedate <=' => date('Y-m-d'),'OR' => array('Investment.basefee_lastprocess_date <' => date('Y-m-d'),'Investment.basefee_lastprocess_date'  => null) 
+        ),'recursive' => -1,'group' => array('Investment.investor_id')));
+      
+      
+        
+        if($data){
+            
+           foreach($data as $val){
+               $year = date('Y');
+               $investor_id = $val['Investment']['investor_id'];
+               $jdate_string = $year . "-01-01";
+            $ejdate_string = $year . "-01-31";
+            $this->InterestAccrual->virtualFields['Jan'] = '(select SUM(interest_accruals.interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where DATE(interest_date) BETWEEN CAST(\'' . $jdate_string . '\' AS DATE) AND CAST(\'' . $ejdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN ("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $fdate_string = $year . "-02-01";
+            $efdate_string = $year . "-02-28";
+            $this->InterestAccrual->virtualFields['Feb'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $fdate_string . '\' AS DATE) AND CAST(\'' . $efdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $mardate_string = $year . "-03-01";
+            $emardate_string = $year . "-03-31";
+            $this->InterestAccrual->virtualFields['Mar'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $mardate_string . '\' AS DATE) AND CAST(\'' . $emardate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $apdate_string = $year . "-04-01";
+            $eaprdate_string = $year . "-04-30";
+            $this->InterestAccrual->virtualFields['Apr'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $apdate_string . '\' AS DATE) AND CAST(\'' . $eaprdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $mdate_string = $year . "-05-01";
+            $emdate_string = $year . "-05-30";
+            $this->InterestAccrual->virtualFields['May'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $mdate_string . '\' AS DATE) AND CAST(\'' . $emdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $jundate_string = $year . "-06-01";
+            $ejundate_string = $year . "-06-30";
+            $this->InterestAccrual->virtualFields['Jun'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $jundate_string . '\' AS DATE) AND CAST(\'' . $ejundate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $juldate_string = $year . "-07-01";
+            $ejuldate_string = $year . "-07-31";
+            $this->InterestAccrual->virtualFields['Jul'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $juldate_string . '\' AS DATE) AND CAST(\'' . $ejuldate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+
+            $augdate_string = $year . "-08-01";
+            $eaugdate_string = $year . "-08-31";
+            $this->InterestAccrual->virtualFields['Aug'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $augdate_string . '\' AS DATE) AND CAST(\'' . $eaugdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $sepdate_string = $year . "-09-01";
+            $esepdate_string = $year . "-09-30";
+            $this->InterestAccrual->virtualFields['Sep'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $sepdate_string . '\' AS DATE) AND CAST(\'' . $esepdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $octdate_string = $year . "-10-01";
+            $eoctdate_string = $year . "-10-31";
+            $this->InterestAccrual->virtualFields['Oct'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $octdate_string . '\' AS DATE) AND CAST(\'' . $eoctdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $novdate_string = $year . "-11-01";
+            $enovdate_string = $year . "-11-30";
+            $this->InterestAccrual->virtualFields['Nov'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id  '
+                    . 'where interest_date BETWEEN CAST(\'' . $novdate_string . '\' AS DATE) AND CAST(\'' . $enovdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $decdate_string = $year . "-12-01";
+            $edecdate_string = $year . "-12-31";
+            $this->InterestAccrual->virtualFields['Dec'] = '(select SUM(interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where DATE(interest_date) BETWEEN CAST(\'' . $decdate_string . '\' AS DATE) AND CAST(\'' . $edecdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            
+            $this->InterestAccrual->virtualFields['bbf'] = '(select SUM(interest_accruals.interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where YEAR(interest_date) < '. $year . ' AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            
+             $this->InterestAccrual->virtualFields['total'] = '(select SUM(interest_accruals.interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
+                    . 'where YEAR(interest_date) = '. $year . ' AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+             
+             $datacount = $this->InterestAccrual->find('all', array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                    'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(InterestAccrual.interest_date)' => $year , 'InterestAccrual.investor_id' => $investor_id
+                    ), 
+                    'fields' => array('SUM(interest_amounts) as total_interests',
+                        'InterestAccrual.total','InterestAccrual.bbf', 'InterestAccrual.Jan', 'InterestAccrual.Feb',
+                        'InterestAccrual.Mar', 'InterestAccrual.Apr', 'InterestAccrual.May', 'InterestAccrual.Jul', 'InterestAccrual.Jun', 'InterestAccrual.Aug',
+                        'InterestAccrual.Sep', 'InterestAccrual.Oct', 'InterestAccrual.Nov', 'InterestAccrual.Dec')
+
+                    ));
+          
+              
+             if($datacount){
+                 
+                 
+                 foreach($datacount as $var){
+                   
+                     
+                     $agg_data = array('investor_id' => $investor_id,'bbf' => $var['InterestAccrual']['bbf'],'jan' => $var['InterestAccrual']['Jan'],
+                         'feb' => $var['InterestAccrual']['Feb'],'march' => $var['InterestAccrual']['Mar'] ,
+                         'april'=> $var['InterestAccrual']['Apr'],'may'=> $var['InterestAccrual']['May']
+                             ,'june'=> $var['InterestAccrual']['Jun'],'july'=> $var['InterestAccrual']['Jul'],
+                         'aug' => $var['InterestAccrual']['Aug'],'sept'=> $var['InterestAccrual']['Sep'],
+                         'oct'=> $var['InterestAccrual']['Oct'],'nov'=> $var['InterestAccrual']['Nov']
+                             ,'decem' => $var['InterestAccrual']['Dec']
+                             ,'total'=> $var['InterestAccrual']['total'],'year'=> $year);
+                 }
+                 
+                 
+                 if(!empty($datacount)){
+                     $aggregate_data = $this->AggregateInterest->find('first',array('conditions' => array('AggregateInterest.investor_id' => $investor_id,
+                         'AggregateInterest.year' => $year)));
+                     
+                     if($aggregate_data){
+                         $agg_data['id'] = $aggregate_data['AggregateInterest']['id'];
+                         $this->AggregateInterest->save($agg_data);
+                     }else{
+                         $this->AggregateInterest->create();
+                         $this->AggregateInterest->save($agg_data);
+                     }
+                 }  
+             }
+             
+            //                    'group' => array('InterestAccrual.investor_id'),
+           }
+        }
     }
 }
 
