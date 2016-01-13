@@ -1,9 +1,0 @@
-2014-12-17 16:23:32 Debug: Notice (8): Use of undefined constant del - assumed 'del' in [C:\wamp\www\Parkstone\app\Controller\SettingsController.php, line 520]
-Trace:
-SettingsController::delTax() - APP\Controller\SettingsController.php, line 520
-ReflectionMethod::invokeArgs() - [internal], line ??
-Controller::invokeAction() - CORE\Cake\Controller\Controller.php, line 490
-Dispatcher::_invoke() - CORE\Cake\Routing\Dispatcher.php, line 185
-Dispatcher::dispatch() - CORE\Cake\Routing\Dispatcher.php, line 160
-[main] - APP\webroot\index.php, line 108
-
