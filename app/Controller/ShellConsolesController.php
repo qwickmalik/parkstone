@@ -10,12 +10,13 @@ class ShellConsolesController extends AppController {
     public $components = array('RequestHandler', 'Session', 'Message');
     var $name = 'ShellConsole';
     var $uses = array('User', 'Usertype', 'Userdepartment', 'Setting', 'Currency', 
-         'Equity',  'Customer','InvestmentCash','InterestAccrual','AggregateInterest',
+         'Equity',  'Customer','InvestmentCash','InterestAccrual','AggregateInterest','AggregateOutboundInterest',
         'ReinvestorCashaccount','DailyInterestStatement','Investment','Reinvestment','ReinvestInterestAccrual',
         'InvestmentTerm','ClientLedger','LedgerTransaction','DailyReinvestinterestStatement','ManagementFee','ReinvestmentTopup');
 
     function beforeFilter() {
-        
+//       ini_set('max_execution_time',300);       
+       set_time_limit(0);
     }
 
     function index() {
@@ -36,7 +37,12 @@ class ShellConsolesController extends AppController {
                
     public function reportJobs(){
        $this->autoRender = false;
-        $this->__aggregateInterests();
+        $this->__aggregateInboundInterests();
+        $this->__aggregateOutboundInterests();
+        
+       $message = 'Report Jobs Ran Successfully';
+        $this->Session->write('smsg', $message);
+         $this->redirect(array('controller' => 'Settings', 'action' => 'batchProcesses'));
     }
     public function defaultJobs() {
         $this->autoRender = false;
@@ -583,19 +589,22 @@ function __dailyReinvestmentInterests(){
        }
     }
     
-    function __aggregateInterests(){
+    function __aggregateInboundInterests(){
         $this->autoLayout = $this->autoRender = false;
              $data = $this->Investment->find('all',array('fields' => array('Investment.investor_id'),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                            'Termination_Approved', 'Payment_Approved', 'Matured'),
-            'Investment.basefee_duedate <=' => date('Y-m-d'),'OR' => array('Investment.basefee_lastprocess_date <' => date('Y-m-d'),'Investment.basefee_lastprocess_date'  => null) 
-        ),'recursive' => -1,'group' => array('Investment.investor_id')));
+                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array('Investment.investor_id')));
+             
+      $yr_data = $this->Investment->find('all',array('fields' => array((!empty('YEAR(Investment.rollover_date)') ? 'YEAR(Investment.rollover_date) as yr' : 'YEAR(Investment.investment_date) as yr')),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array((!empty('YEAR(Investment.rollover_date)') ? 'YEAR(Investment.rollover_date)' : 'YEAR(Investment.investment_date)'))));
       
-      
-        
+        if($yr_data){
+          
         if($data){
-            
+            foreach ($yr_data as $yr_val){
+                $year = $yr_val[0]['yr'];
+                if(!empty($year)){
            foreach($data as $val){
-               $year = date('Y');
+               
                $investor_id = $val['Investment']['investor_id'];
                $jdate_string = $year . "-01-01";
             $ejdate_string = $year . "-01-31";
@@ -682,7 +691,9 @@ function __dailyReinvestmentInterests(){
              if($datacount){
                  
                  
-                 foreach($datacount as $var){
+                 
+                 if(!empty($datacount)){
+                     foreach($datacount as $var){
                    
                      
                      $agg_data = array('investor_id' => $investor_id,'bbf' => $var['InterestAccrual']['bbf'],'jan' => $var['InterestAccrual']['Jan'],
@@ -695,8 +706,6 @@ function __dailyReinvestmentInterests(){
                              ,'total'=> $var['InterestAccrual']['total'],'year'=> $year);
                  }
                  
-                 
-                 if(!empty($datacount)){
                      $aggregate_data = $this->AggregateInterest->find('first',array('conditions' => array('AggregateInterest.investor_id' => $investor_id,
                          'AggregateInterest.year' => $year)));
                      
@@ -712,7 +721,177 @@ function __dailyReinvestmentInterests(){
              
             //                    'group' => array('InterestAccrual.investor_id'),
            }
+            }
         }
+        }
+    }
+    }
+    
+    function __aggregateOutboundInterests(){
+        $this->autoLayout = $this->autoRender = false;
+             $data = $this->Reinvestment->find('all',array('fields' => array('Reinvestment.inv_dest_product_id'),'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                        'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array('Reinvestment.inv_dest_product_id')));
+             
+      $yr_data = $this->Reinvestment->find('all',array('fields' => array('YEAR(Reinvestment.rollover_date) as yr', 'YEAR(Reinvestment.investment_date) as inyr'),'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array((!empty('YEAR(Reinvestment.rollover_date)') ? 'YEAR(Reinvestment.rollover_date)' : 'YEAR(Reinvestment.investment_date)'))));
+     
+        if($yr_data){
+          
+        if($data){
+            
+            foreach ($yr_data as $yr_val){
+                if(!empty($yr_val[0]['yr'])){
+                $year = $yr_val[0]['yr'];
+                }else{
+                   $year = $yr_val[0]['inyr'];
+   
+                }
+                if(!empty($year)){
+           foreach ($data as $var){
+               $product_id = $var['Reinvestment']['inv_dest_product_id'];
+               $jdate_string = $year . "-01-01";
+            $ejdate_string = $year . "-01-31";
+                $jdate_string = $year . "-01-01";
+            $ejdate_string = $year . "-01-31";
+                $this->ReinvestInterestAccrual->virtualFields['Jan'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $jdate_string . '\' AS DATE) AND CAST(\'' . $ejdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $fdate_string = $year . "-02-01";
+            $efdate_string = $year . "-02-31";
+            $this->ReinvestInterestAccrual->virtualFields['Feb'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $fdate_string . '\' AS DATE) AND CAST(\'' . $efdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $mardate_string = $year . "-03-01";
+            $emardate_string = $year . "-03-31";
+            $this->ReinvestInterestAccrual->virtualFields['Mar'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $mardate_string . '\' AS DATE) AND CAST(\'' . $emardate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $apdate_string = $year . "-04-01";
+            $eaprdate_string = $year . "-04-30";
+            $this->ReinvestInterestAccrual->virtualFields['Apr'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $apdate_string . '\' AS DATE) AND CAST(\'' . $eaprdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $mdate_string = $year . "-05-01";
+            $emdate_string = $year . "-05-30";
+            $this->ReinvestInterestAccrual->virtualFields['May'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $mdate_string . '\' AS DATE) AND CAST(\'' . $emdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $jundate_string = $year . "-06-01";
+            $ejundate_string = $year . "-06-30";
+            $this->ReinvestInterestAccrual->virtualFields['Jun'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $jundate_string . '\' AS DATE) AND CAST(\'' . $ejundate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $juldate_string = $year . "-07-01";
+            $ejuldate_string = $year . "-07-31";
+            $this->ReinvestInterestAccrual->virtualFields['Jul'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $juldate_string . '\' AS DATE) AND CAST(\'' . $ejuldate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+
+            $augdate_string = $year . "-08-01";
+            $eaugdate_string = $year . "-08-31";
+            $this->ReinvestInterestAccrual->virtualFields['Aug'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $augdate_string . '\' AS DATE) AND CAST(\'' . $eaugdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $sepdate_string = $year . "-09-01";
+            $esepdate_string = $year . "-09-30";
+            $this->ReinvestInterestAccrual->virtualFields['Sep'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $sepdate_string . '\' AS DATE) AND CAST(\'' . $esepdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $octdate_string = $year . "-10-01";
+            $eoctdate_string = $year . "-10-31";
+            $this->ReinvestInterestAccrual->virtualFields['Oct'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $octdate_string . '\' AS DATE) AND CAST(\'' . $eoctdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $novdate_string = $year . "-11-01";
+            $enovdate_string = $year . "-11-30";
+            $this->ReinvestInterestAccrual->virtualFields['Nov'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $novdate_string . '\' AS DATE) AND CAST(\'' . $enovdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            $decdate_string = $year . "-12-01";
+            $edecdate_string = $year . "-12-31";
+            $this->ReinvestInterestAccrual->virtualFields['Dec'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON'
+                    . ' reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . 'where interest_date BETWEEN CAST(\'' . $decdate_string . '\' AS DATE) AND CAST(\'' . $edecdate_string . '\' AS DATE) AND'
+                    . ' reinvestments.inv_dest_product_id ='.$product_id .' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+
+            $this->ReinvestInterestAccrual->virtualFields['bbf'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER JOIN reinvestments ON reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . ' where YEAR(interest_date) < '. $year . ' AND reinvestments.inv_dest_product_id  ='. $product_id.' AND reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+            
+             $this->ReinvestInterestAccrual->virtualFields['total'] = '(select SUM(interest_amounts) from reinvest_interest_accruals INNER '
+                     . 'JOIN reinvestments ON reinvestments.id = reinvest_interest_accruals.reinvestment_id '
+                    . ' where YEAR(interest_date) = '. $year . ' AND  reinvestments.inv_dest_product_id ='. $product_id.' AND '
+                     . 'reinvestments.status IN("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
+                    . '"Termination_Approved","Payment_Approved","Matured"))';
+             
+            
+            
+            $datacount = $this->ReinvestInterestAccrual->find('all', array('order' => array('Reinvestor.company_name' => 'asc'),
+                'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                        'Termination_Approved', 'Payment_Approved', 'Matured'), 'YEAR(ReinvestInterestAccrual.interest_date)' => $year,
+                    'Reinvestment.inv_dest_product_id' => $product_id,'Reinvestment.reinvestor_id' => 1,
+                ),
+                'fields' => array('Reinvestment.inv_dest_product_id','ReinvestInterestAccrual.bbf', 'ReinvestInterestAccrual.total',
+                    'SUM(interest_amounts) as interests', 'ReinvestInterestAccrual.Jan', 'ReinvestInterestAccrual.Feb',
+                    'ReinvestInterestAccrual.Mar','ReinvestInterestAccrual.Apr', 'ReinvestInterestAccrual.May', 'ReinvestInterestAccrual.Jul', 
+                    'ReinvestInterestAccrual.Jun', 'ReinvestInterestAccrual.Aug',
+                    'ReinvestInterestAccrual.Sep', 'ReinvestInterestAccrual.Oct', 'ReinvestInterestAccrual.Nov', 'ReinvestInterestAccrual.Dec')));
+          
+
+              
+                 if(!empty($datacount)){
+                     foreach($datacount as $var){
+                   
+                     $agg_data = array('inv_dest_product_id' => $product_id,'bbf' => $var['ReinvestInterestAccrual']['bbf'],'jan' => $var['ReinvestInterestAccrual']['Jan'],
+                         'feb' => $var['ReinvestInterestAccrual']['Feb'],'march' => $var['ReinvestInterestAccrual']['Mar'] ,
+                         'april'=> $var['ReinvestInterestAccrual']['Apr'],'may'=> $var['ReinvestInterestAccrual']['May']
+                             ,'june'=> $var['ReinvestInterestAccrual']['Jun'],'july'=> $var['ReinvestInterestAccrual']['Jul'],
+                         'aug' => $var['ReinvestInterestAccrual']['Aug'],'sept'=> $var['ReinvestInterestAccrual']['Sep'],
+                         'oct'=> $var['ReinvestInterestAccrual']['Oct'],'nov'=> $var['ReinvestInterestAccrual']['Nov']
+                             ,'decem' => $var['ReinvestInterestAccrual']['Dec']
+                             ,'total'=> $var['ReinvestInterestAccrual']['total'],'year'=> $year);
+                 
+                     $aggregate_data = $this->AggregateOutboundInterest->find('first',array('conditions' => array('AggregateOutboundInterest.inv_dest_product_id' => $product_id,
+                         'AggregateOutboundInterest.year' => $year)));
+                     
+                     if($aggregate_data){
+                         $agg_data['id'] = $aggregate_data['AggregateOutboundInterest']['id'];
+                         $this->AggregateOutboundInterest->save($agg_data);
+                     }else{
+                         $this->AggregateOutboundInterest->create();
+                         $this->AggregateOutboundInterest->save($agg_data);
+                     }
+                 }  
+                 }
+           
+           }
+                     }
+        }
+        }
+    }
     }
 }
 

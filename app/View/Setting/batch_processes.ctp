@@ -46,7 +46,14 @@
 		</div>', '/ShellConsoles/miscJobs', array('escape' => false)); ?>
 
 
-  
+  <!-- Panels start here -->
+        <?php echo $this->Html->link('
+		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
+			<div id="innertext">
+				<h3>Process Accrued Interests</h3>
+				<p>Click to process accrued interests for reporting purposes</p>
+			</div>
+		</div>', '/ShellConsoles/reportJobs', array('escape' => false)); ?>
         
     </div>
     <!-- Content ends here -->
