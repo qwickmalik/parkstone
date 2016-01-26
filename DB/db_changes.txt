@@ -1858,9 +1858,6 @@ ALTER TABLE `investment_payments` ADD `interest` DECIMAL(11,2) NULL DEFAULT '0.0
 ---------------------
 ALTER TABLE `investment_payments` ADD `rate` DECIMAL(6,2) NULL DEFAULT '0.00' AFTER `interest`;
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-NEW
--------------------------------------------------------------------------------------
 12, JANUARY, 2016 Kwaku
 ---------------------
 CREATE TABLE IF NOT EXISTS `aggregate_interests` (
@@ -1914,3 +1911,8 @@ CREATE TABLE IF NOT EXISTS `aggregate_outbound_interests` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+NEW
+-------------------------------------------------------------------------------------
