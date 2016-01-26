@@ -1,0 +1,26 @@
+UPDATE `reinvestor_cashaccounts` SET `fixed_inv_amount`=0.00,`equity_inv_amount`=0.00,`equity_inv_balance`=0.00,`fixed_inv_balance`= 0.00,`total_balance`=0.00,`equity_amount_paidout`=0.00,`fixed_amount_paidout`=0.00,`fixed_inv_returns`= 0.00,`equity_inv_returns`=0.00 WHERE 1
+
+
+TRUNCATE `client_ledgers`;
+TRUNCATE `daily_interest_statements`;
+TRUNCATE `daily_reinvestinterest_statements`;
+TRUNCATE `equity_orders`;
+TRUNCATE `interest_accruals`;
+TRUNCATE `investments`;
+TRUNCATE `investment_cashes`;
+TRUNCATE `investment_payments`;
+TRUNCATE `investment_returns`;
+TRUNCATE `investment_statements`;
+TRUNCATE `investors`;
+TRUNCATE `investor_deposits`;
+TRUNCATE `investor_equities`;
+TRUNCATE `ledger_transactions`;
+TRUNCATE `management_fees`;
+TRUNCATE `reinvestments`;
+TRUNCATE `reinvestments_equities`;
+TRUNCATE `reinvestment_rollovers`;
+TRUNCATE `reinvestment_statements`;
+TRUNCATE `reinvestment_topups`;
+TRUNCATE `reinvestor_equities`;
+TRUNCATE `rollovers`;
+TRUNCATE `topups`;
