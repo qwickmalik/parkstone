@@ -594,8 +594,8 @@ function __dailyReinvestmentInterests(){
              $data = $this->Investment->find('all',array('fields' => array('Investment.investor_id'),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
                             'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array('Investment.investor_id')));
              
-      $yr_data = $this->Investment->find('all',array('fields' => array((!empty('YEAR(Investment.rollover_date)') ? 'YEAR(Investment.rollover_date) as yr' : 'YEAR(Investment.investment_date) as yr')),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array((!empty('YEAR(Investment.rollover_date)') ? 'YEAR(Investment.rollover_date)' : 'YEAR(Investment.investment_date)'))));
+      $yr_data = $this->Investment->find('all',array('fields' => array('YEAR(Investment.rollover_date) as yr' , 'YEAR(Investment.investment_date) as yr'),'conditions' => array('Investment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
+                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array( 'YEAR(Investment.rollover_date)' , 'YEAR(Investment.investment_date)')));
       
         if($yr_data){
           
@@ -733,7 +733,7 @@ function __dailyReinvestmentInterests(){
                         'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array('Reinvestment.inv_dest_product_id')));
              
       $yr_data = $this->Reinvestment->find('all',array('fields' => array('YEAR(Reinvestment.rollover_date) as yr', 'YEAR(Reinvestment.investment_date) as inyr'),'conditions' => array('Reinvestment.status' => array('Rolled_over', 'Invested', 'Termination_Requested', 'Payment_Requested',
-                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array((!empty('YEAR(Reinvestment.rollover_date)') ? 'YEAR(Reinvestment.rollover_date)' : 'YEAR(Reinvestment.investment_date)'))));
+                            'Termination_Approved', 'Payment_Approved', 'Matured')),'recursive' => -1,'group' => array('YEAR(Reinvestment.rollover_date)' , 'YEAR(Reinvestment.investment_date)')));
      
         if($yr_data){
           
