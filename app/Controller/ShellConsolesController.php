@@ -601,7 +601,12 @@ function __dailyReinvestmentInterests(){
           
         if($data){
             foreach ($yr_data as $yr_val){
+                  if(!empty($yr_val[0]['yr'])){
                 $year = $yr_val[0]['yr'];
+                }else{
+                   $year = $yr_val[0]['inyr'];
+   
+                }
                 if(!empty($year)){
            foreach($data as $val){
                
