@@ -12,7 +12,7 @@ class ReportsController extends AppController {
     );
     var $uses = array('Setting', 'User', 'Currency', 'Zone', 'Pettycash', 'PettycashDeposit', 'PettycashWithdrawal', 'ReinvestInterestAccrual',
         'Investor', 'InterestAccrual', 'ReinvestInterestAccrual', 'TempcashAccount', 'InvestorDeposit', 'Investment', 'InvestmentPayment', 'Reinvestment',
-        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead','AggregateInterest','AggregateOutboundInterest',
+        'Transaction', 'TransactionCategory', 'Bank', 'CashAccount', 'InvestmentDestination', 'AccountingHead', 'AggregateInterest', 'AggregateOutboundInterest',
         'BankBalance', 'BankTransfer', 'StatedBankBalance', 'ManagementFee'
     );
 
@@ -84,12 +84,12 @@ class ReportsController extends AppController {
 
     function index() {
         $this->__validateUserType3();
-          if($this->Session->check('temprolldisnv')){
-                $this->Session->delete('temprolldisnv');
-            }
-              if($this->Session->check('tempdisin')){
-                $this->Session->delete('tempdisin');
-            }
+        if ($this->Session->check('temprolldisnv')) {
+            $this->Session->delete('temprolldisnv');
+        }
+        if ($this->Session->check('tempdisin')) {
+            $this->Session->delete('tempdisin');
+        }
     }
 
     protected function loadEssentials() {
@@ -2632,7 +2632,7 @@ class ReportsController extends AppController {
     function rolloverDisinv() {
         $this->__validateUserType3();
         if ($this->request->is('post')) {
-             if($this->Session->check('temprolldisnv')){
+            if ($this->Session->check('temprolldisnv')) {
                 $this->Session->delete('temprolldisnv');
             }
             $sday = $this->request->data['RolloverDisinv']['from_date']['day'];
@@ -2655,23 +2655,23 @@ class ReportsController extends AppController {
             $frend_date = date('d F, Y', $enewdate);
 
 
-$tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
-            $this->Session->write('temprolldisnv',$tempentries);
+            $tempentries = array('start_date' => $start_date, 'end_date' => $end_date);
+            $this->Session->write('temprolldisnv', $tempentries);
 
 //            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
 //                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
 //                    'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
 //            );
- $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
+            $accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
             ));
 
-           
-            
-           
+
+
+
 
 //            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
@@ -2682,17 +2682,17 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //                     'Investment.investment_no','Investment.investment_date','Investment.investment_amount','InvestmentPayment.event_type','InvestmentPayment.rate','InvestmentPayment.penalty','InvestmentPayment.interest','InvestmentPayment.amount'
 //                     )
 //            );
-             
-        
-                    
-               
-                    $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 1,
+
+
+
+
+            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Rolledover'),'contain' => array('Investment','Investor'),
+                    'InvestmentPayment.event_type' => 'Rolledover'), 'contain' => array('Investment', 'Investor'),
                 'group' => 'InvestmentPayment.investor_id');
-                    
-                 $data = $this->paginate('InvestmentPayment');
+
+            $data = $this->paginate('InvestmentPayment');
 // $data = $this->InvestmentPayment->find('all', );
 //
 //            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
@@ -2723,39 +2723,36 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //
 ////				    print_r($inv);exit;  
 //            }
-            $this->set(compact('accounts',  'data'));
-            
-        }else{
-            if($this->Session->check('temprolldisnv')){
-                    $tempentries = $this->Session->read('temprolldisnv');
-                    $start_date = $tempentries['start_date'];
-                    $end_date = $tempentries['end_date'];
-                    
-             $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'), 
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
-            ));
+            $this->set(compact('accounts', 'data'));
+        } else {
+            if ($this->Session->check('temprolldisnv')) {
+                $tempentries = $this->Session->read('temprolldisnv');
+                $start_date = $tempentries['start_date'];
+                $end_date = $tempentries['end_date'];
 
-            $this->paginate = array('order' => array('Investor.fullname' => 'asc'),'limit' => 1,
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Rolledover'),'contain' => array('Investment','Investor'),
-                'group' => 'InvestmentPayment.investor_id');
-            
-                 $data = $this->paginate('InvestmentPayment');
-                 
-            $this->set(compact('accounts',  'data'));
+                $accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                    'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                        array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+                        'InvestmentPayment.event_type' => array('Rolledover', 'Payment'))
+                ));
+
+                $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
+                    'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                        array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+                        'InvestmentPayment.event_type' => 'Rolledover'), 'contain' => array('Investment', 'Investor'),
+                    'group' => 'InvestmentPayment.investor_id');
+
+                $data = $this->paginate('InvestmentPayment');
+
+                $this->set(compact('accounts', 'data'));
             }
-            
-            
         }
     }
 
     function disinv() {
         $this->__validateUserType3();
         if ($this->request->is('post')) {
-             if($this->Session->check('tempdisin')){
+            if ($this->Session->check('tempdisin')) {
                 $this->Session->delete('tempdisin');
             }
             $sday = $this->request->data['RolloverDisinv']['from_date']['day'];
@@ -2777,10 +2774,10 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
             $end_date = $date->format('Y-m-d');
             $frend_date = date('d F, Y', $enewdate);
 
-  $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'),
+            $accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
-                  )));
+                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled', 'InvestmentPayment.event_type' => array('Termination', 'Payment')
+            )));
 
 
 //            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
@@ -2792,18 +2789,18 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //                     'Investment.investment_no','Investment.investment_date','Investment.investment_amount','InvestmentPayment.event_type','InvestmentPayment.rate','InvestmentPayment.penalty','InvestmentPayment.interest','InvestmentPayment.amount'
 //                     )
 //            );
-             
-            $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
-            $this->Session->write('tempdisin',$tempentries);
-                    
-               
-                    $this->paginate =array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
+
+            $tempentries = array('start_date' => $start_date, 'end_date' => $end_date);
+            $this->Session->write('tempdisin', $tempentries);
+
+
+            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
                 'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
                     'InvestmentPayment.event_type' => 'Termination'),
-                'group' => 'InvestmentPayment.investor_id','contain' => array('Investment','Investor')
+                'group' => 'InvestmentPayment.investor_id', 'contain' => array('Investment', 'Investor')
             );
-                 $data = $this->paginate('InvestmentPayment');
+            $data = $this->paginate('InvestmentPayment');
 //            pr($accounts);exit;
 //            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
@@ -2812,8 +2809,6 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //                'group' => 'InvestmentPayment.investor_id'
 //            ));
 //            $inv = array();
-
-
 //            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
 //                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
@@ -2841,45 +2836,44 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //
 ////				    print_r($inv);exit;  
 //            }
-            $this->set(compact('accounts', 'data'));//,'InvestmentPayment.event_type'
-        }else{
-            if($this->Session->check('tempdisin')){
-                    $tempentries = $this->Session->read('tempdisin');
-                    $start_date = $tempentries['start_date'];
-                    $end_date = $tempentries['end_date'];
+            $this->set(compact('accounts', 'data')); //,'InvestmentPayment.event_type'
+        } else {
+            if ($this->Session->check('tempdisin')) {
+                $tempentries = $this->Session->read('tempdisin');
+                $start_date = $tempentries['start_date'];
+                $end_date = $tempentries['end_date'];
 //            $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 10,
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
 //                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
 //                  )
 //               
 //            );
-             
-            $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
-            $this->Session->write('tempdisin',$tempentries);
-                    
-            $accounts = $this->InvestmentPayment->find('all',  array('order' => array('Investor.fullname' => 'asc'),
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled','InvestmentPayment.event_type' => array('Termination', 'Payment')
-                  )));
-                    
-                    
+
+                $tempentries = array('start_date' => $start_date, 'end_date' => $end_date);
+                $this->Session->write('tempdisin', $tempentries);
+
+                $accounts = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
+                    'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                        array($start_date, $end_date), 'Investment.status !=' => 'Cancelled', 'InvestmentPayment.event_type' => array('Termination', 'Payment')
+                )));
+
+
 //            $data = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
 //                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
 //                    'InvestmentPayment.event_type' => 'Termination'),
 //                'group' => 'InvestmentPayment.investor_id'
 //            ));
-                    
-                    
-                    $this->paginate =array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
-                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
-                    'InvestmentPayment.event_type' => 'Termination'),
-                'group' => 'InvestmentPayment.investor_id','contain' => array('Investment','Investor')
-            );
-                 $data = $this->paginate('InvestmentPayment');
-//            $inv = array();
 
+
+                $this->paginate = array('order' => array('Investor.fullname' => 'asc'), 'limit' => 1,
+                    'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
+                        array($start_date, $end_date), 'Investment.status !=' => 'Cancelled',
+                        'InvestmentPayment.event_type' => 'Termination'),
+                    'group' => 'InvestmentPayment.investor_id', 'contain' => array('Investment', 'Investor')
+                );
+                $data = $this->paginate('InvestmentPayment');
+//            $inv = array();
 //
 //            $total_payment = $this->InvestmentPayment->find('all', array('order' => array('Investor.fullname' => 'asc'),
 //                'conditions' => array('InvestmentPayment.event_date BETWEEN ? AND ?' =>
@@ -2908,7 +2902,7 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
 //
 ////				    print_r($inv);exit;  
 //            }
-            $this->set(compact('accounts', 'data'));//,'InvestmentPayment.event_type'
+                $this->set(compact('accounts', 'data')); //,'InvestmentPayment.event_type'
             }
         }
     }
@@ -2970,7 +2964,8 @@ $tempentries = array('start_date' =>$start_date,'end_date' =>$end_date);
             }
         }
     }
-function aggregateOutboundInvestment() {
+
+    function aggregateOutboundInvestment() {
         $this->__validateUserType3();
         if ($this->request->is('post')) {
             $sday = $this->request->data['Investment']['begin_date']['day'];
@@ -3001,14 +2996,14 @@ function aggregateOutboundInvestment() {
             $accounts = $this->Reinvestment->find('all', array('order' => array('InvestmentDestination.company_name' => 'asc'),
                 'contains' => array('InvestmentReturn'),
                 'conditions' => array('Reinvestment.due_date BETWEEN ? AND ?' =>
-                    array($start_date, $end_date),'Reinvestment.reinvestor_id' => 1,
-                    'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested','Terminated'))));
+                    array($start_date, $end_date), 'Reinvestment.reinvestor_id' => 1,
+                    'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested', 'Terminated'))));
 //pr($accounts);exit;
 //, 'group' => array('Expectedinstallment.zone_id')
             $total = $this->Reinvestment->find('all', array('order' => array('InvestmentDestination.company_name' => 'asc'),
                 'conditions' => array('Reinvestment.due_date BETWEEN ? AND ?' =>
                     array($start_date, $end_date),
-                    'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested','Terminated')), 'fields' =>
+                    'Reinvestment.status' => array('Invested', 'Rolled_over', 'Termination_Requested', 'Terminated')), 'fields' =>
                 array("SUM((Reinvestment.investment_amount)) as principal",
                     "SUM((Reinvestment.interest_earned)) as interest",
                     "SUM((Reinvestment.investment_amount + Reinvestment.interest_earned)) as total")));
@@ -3023,24 +3018,233 @@ function aggregateOutboundInvestment() {
             }
         }
     }
+
     function fundsUnderMgt() {
         $this->__validateUserType3();
         $this->set('report_name', 'Funds Under Management');
-
+        $jindata = 0;
+        $findata = 0;
+        $mindata = 0;
+        $apindata = 0;
+        $mayindata = 0;
+        $junindata = 0;
+        $julindata = 0;
+        $augindata = 0;
+        $sepindata = 0;
+        $octindata = 0;
+        $novindata = 0;
+        $decindata = 0;
+        $bbf_inv = 0;
+        $cjindata = 0;
+        $cfindata = 0;
+        $cmindata = 0;
+        $capindata = 0;
+        $cmayindata = 0;
+        $cjunindata = 0;
+        $cjulindata = 0;
+        $caugindata = 0;
+        $csepindata = 0;
+        $coctindata = 0;
+        $cnovindata = 0;
+        $cdecindata = 0;
+        $cbbf_inv = 0;
+        $bbf_rinterest = 0;
+        $jroldata = 0;
+        $froldata = 0;
+        $mroldata = 0;
+        $aproldata = 0;
+        $mayroldata = 0;
+        $junroldata = 0;
+        $julroldata = 0;
+        $augroldata = 0;
+        $seproldata = 0;
+        $octroldata = 0;
+        $novroldata = 0;
+        $decroldata = 0;
+        $cjroldata = 0;
+        $cfroldata = 0;
+        $cmroldata = 0;
+        $caproldata = 0;
+        $cmayroldata = 0;
+        $cjunroldata = 0;
+        $cjulroldata = 0;
+        $caugroldata = 0;
+        $cseproldata = 0;
+        $coctroldata = 0;
+        $cnovroldata = 0;
+        $cdecroldata = 0;
         if ($this->request->is('post')) {
-            if ($this->request->data['FundsUnderMgt']['year'] == "" || $this->request->data['FundsUnderMgt']['year'] == null) {
+            if ($this->request->data['FundsUnderMgt']['report_date']['year'] == "" || $this->request->data['FundsUnderMgt']['report_date']['year'] == null) {
                 $message = 'Please indicate year';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Reports', 'action' => 'fundsUnderMgt'));
             }
 
 
-            $year = $this->request->data['FundsUnderMgt']['year'];
+            $year = $this->request->data['FundsUnderMgt']['report_date']['year'];
+            $bbf = $this->request->data['FundsUnderMgt']['bbf'];
+
+            $inv_data = $this->Investment->find('all', array(
+                'conditions' => array('Year(Investment.investment_date)' => $year),
+                'fields' => array('SUM(Investment.investment_amount) as principal', 'Month(Investment.investment_date) as month'),
+                'group' => array('Month(Investment.investment_date)'),
+                'recursive' => -1
+            ));
 
 
+            $rollover = $this->Rollover->find('all', array(
+                'conditions' => array('Year(Rollover.rollover_date)' => $year),
+                'fields' => array('SUM(Rollover.old_interest_accrued) as rollover_interest'),
+                'group' => array('Month(Rollover.rollover_date)'),
+                'recursive' => -1
+            ));
 
-            $this->set('year', $year);
+
+            if ($rollover) {
+                foreach ($rollover as $var) {
+                    switch ($var[0]['month']) {
+                        case 1:
+                            $jroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 2:
+                            $froldata = $var[0]['rollover_interest'];
+                            break;
+                        case 3:
+                            $mroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 4:
+                            $aproldata = $var[0]['rollover_interest'];
+                            break;
+
+                        case 5:
+                            $mayroldata = $var[0]['rollover_interest'];
+                            break;
+
+                        case 6:
+                            $junroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 7:
+                            $julroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 8:
+                            $augroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 9:
+                            $seproldata = $var[0]['rollover_interest'];
+                            break;
+                        case 10:
+                            $octroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 11:
+                            $novroldata = $var[0]['rollover_interest'];
+                            break;
+                        case 12:
+                            $decroldata = $var[0]['rollover_interest'];
+                            break;
+                    }
+                }
+            }
+
+            if ($inv_data) {
+                foreach ($inv_data as $var) {
+                    switch ($var[0]['month']) {
+                        case 1:
+                            $jindata = $var[0]['principal'];
+                            break;
+                        case 2:
+                            $findata = $var[0]['principal'];
+                            break;
+                        case 3:
+                            $mindata = $var[0]['principal'];
+                            break;
+                        case 4:
+                            $apindata = $var[0]['principal'];
+                            break;
+
+                        case 5:
+                            $mayindata = $var[0]['principal'];
+                            break;
+
+                        case 6:
+                            $junindata = $var[0]['principal'];
+                            break;
+                        case 7:
+                            $julindata = $var[0]['principal'];
+                            break;
+                        case 8:
+                            $augindata = $var[0]['principal'];
+                            break;
+                        case 9:
+                            $sepindata = $var[0]['principal'];
+                            break;
+                        case 10:
+                            $octindata = $var[0]['principal'];
+                            break;
+                        case 11:
+                            $novindata = $var[0]['principal'];
+                            break;
+                        case 12:
+                            $decindata = $var[0]['principal'];
+                            break;
+                    }
+                }
+            }
+
+            if ($bbf == 1) {
+                $bbf_year = $year - 1;
+                $bbf_data = $this->Investment->find('all', array(
+                    'conditions' => array('Year(Investment.investment_date)' => $bbf_year),
+                    'fields' => array('SUM(Investment.investment_amount) as bbf_principal'),
+                    'recursive' => -1
+                ));
+
+                $bbf_rollover = $this->Rollover->find('all', array(
+                    'conditions' => array('Year(Rollover.rollover_date)' => $bbf_year),
+                    'fields' => array('SUM(Rollover.old_interest_accrued) as bbfrollover_interest'),
+                    'recursive' => -1
+                ));
+                if ($bbf_data) {
+                    foreach ($bbf_data as $var) {
+                        $bbf_inv = $var[0]['bbf_principal'];
+                    }
+                }
+
+                if ($bbf_rollover) {
+                    foreach ($bbf_rollover as $var) {
+                        $bbf_rinterest = $var[0]['bbfrollover_interest'];
+                    }
+                }
+            }
+            $cjindata = $jindata + $bbf_inv;
+            $cfindata = $findata + $cjindata;
+            $cmindata = $mindata + $cfindata;
+            $capindata = $cmindata + $apindata;
+            $cmayindata = $capindata + $mayindata;
+            $cjunindata = $cmayindata + $junindata;
+            $cjulindata = $julindata + $cjunindata;
+            $caugindata = $augindata + $cjulindata;
+            $csepindata = $sepindata + $caugindata;
+            $coctindata = $csepindata + $octindata;
+            $cnovindata = $novindata + $coctindata;
+            $cdecindata = $cnovindata + $decindata;
+            $cbbf_inv = $bbf_inv;
+            $cjroldata = $jroldata + $bbf_rinterest;
+            $cfroldata = $cjroldata + $froldata;
+            $cmroldata = $cfroldata + $mroldata ;
+            $caproldata = $cmroldata + $aproldata;
+            $cmayroldata = $caproldata + $mayroldata;
+            $cjunroldata = $cmayroldata + $junroldata;
+            $cjulroldata = $cjunroldata + $julroldata;
+            $caugroldata = $cjulroldata + $augroldata;
+            $cseproldata = $caugroldata + $seproldata;
+            $coctroldata = $cseproldata + $octroldata;
+            $cnovroldata = $coctroldata + $novroldata;
+            $cdecroldata = $cnovroldata + $decroldata;
         }
+        $this->set(compact('year', 'cbbf_inv', 'cdecindata', 'cnovindata', 'coctindata', 
+                'csepindata', 'caugindata', 'cjulindata', 'cjunindata', 'cmayindata', 'capindata', 
+                'cmindata', 'cfindata', 'cjindata', 'bbf_inv', 'decindata', 'novindata', 'octindata', 
+                'sepindata', 'augindata', 'julindata', 'junindata', 'mayindata', 'apindata', 'mindata', 'findata', 'jindata'));
     }
 
     function interestAccrued() {
@@ -3057,35 +3261,33 @@ function aggregateOutboundInvestment() {
 
             $bbf = $this->request->data['InterestAccrued']['bbf'];
             $year = $this->request->data['InterestAccrued']['report_date']['year'];
-            
-                
-                if ($bbf == 1) {
-                     $this->paginate =  array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
-                         'conditions' => array('AggregateInterest.year' => $year),
-                    'fields' => array('AggregateInterest.investor_id', 'Investor.surname', 'Investor.comp_name', 'Investor.in_trust_for','AggregateInterest.bbf',
-                         'AggregateInterest.jan', 'AggregateInterest.feb',
+
+
+            if ($bbf == 1) {
+                $this->paginate = array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                    'conditions' => array('AggregateInterest.year' => $year),
+                    'fields' => array('AggregateInterest.investor_id', 'Investor.surname', 'Investor.comp_name', 'Investor.in_trust_for', 'AggregateInterest.bbf',
+                        'AggregateInterest.jan', 'AggregateInterest.feb',
                         'AggregateInterest.march', 'AggregateInterest.april', 'AggregateInterest.may', 'AggregateInterest.july', 'AggregateInterest.june', 'AggregateInterest.aug',
                         'AggregateInterest.sept', 'AggregateInterest.oct', 'AggregateInterest.nov', 'AggregateInterest.decem', 'AggregateInterest.total'),
                     'limit' => 20);
-                     
-                     $accounts = $this->paginate('AggregateInterest');
-                        
-                } else {
-                   $this->paginate =  array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
-                         'conditions' => array('AggregateInterest.year' => $year),
+
+                $accounts = $this->paginate('AggregateInterest');
+            } else {
+                $this->paginate = array('order' => array('Investor.in_trust_for' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                    'conditions' => array('AggregateInterest.year' => $year),
                     'fields' => array('AggregateInterest.investor_id', 'Investor.surname', 'Investor.comp_name', 'Investor.in_trust_for',
-                         'AggregateInterest.jan', 'AggregateInterest.feb',
+                        'AggregateInterest.jan', 'AggregateInterest.feb',
                         'AggregateInterest.march', 'AggregateInterest.april', 'AggregateInterest.may', 'AggregateInterest.july', 'AggregateInterest.june', 'AggregateInterest.aug',
                         'AggregateInterest.sept', 'AggregateInterest.oct', 'AggregateInterest.nov', 'AggregateInterest.decem', 'AggregateInterest.total'),
                     'limit' => 20);
-                     
-                     $accounts = $this->paginate('AggregateInterest');
-                        
-                }
-                if ($accounts) {
-                    $this->set('accounts', $accounts);
-                }
-            
+
+                $accounts = $this->paginate('AggregateInterest');
+            }
+            if ($accounts) {
+                $this->set('accounts', $accounts);
+            }
+
             $this->set('year', $year);
         }
     }
@@ -3105,64 +3307,60 @@ function aggregateOutboundInvestment() {
 
             $bbf = $this->request->data['AggregateOutboundInterest']['bbf'];
             $destination_id = $this->request->data['AggregateOutboundInterest']['investmentdestination_id'];
-            $destination = $this->InvestmentDestination->find('first',array('conditions' => array('InvestmentDestination.id' => $destination_id)));
+            $destination = $this->InvestmentDestination->find('first', array('conditions' => array('InvestmentDestination.id' => $destination_id)));
             $year = $this->request->data['AggregateOutboundInterest']['report_date']['year'];
-            
-           if(!empty($destination_id)){
-              if ($bbf == 1) {
-                     $this->paginate =  array('order' => array('InvDestProduct.inv_dest_product' => 'asc'),
-                         'conditions' => array('AggregateOutboundInterest.year' => $year,'InvDestProduct.investment_destination_id' => $destination_id),
-                    'fields' => array('InvDestProduct.inv_dest_product', 'AggregateOutboundInterest.bbf',
-                         'AggregateOutboundInterest.jan', 'AggregateOutboundInterest.feb',
-                        'AggregateOutboundInterest.march', 'AggregateOutboundInterest.april', 'AggregateOutboundInterest.may', 'AggregateOutboundInterest.july', 'AggregateOutboundInterest.june', 'AggregateOutboundInterest.aug',
-                        'AggregateOutboundInterest.sept', 'AggregateOutboundInterest.oct', 'AggregateOutboundInterest.nov', 'AggregateOutboundInterest.decem', 'AggregateOutboundInterest.total'),
-                    'limit' => 20,'group' => array('AggregateOutboundInterest.inv_dest_product_id'));
-                     
-                     $accounts = $this->paginate('AggregateOutboundInterest');
-                        
+
+            if (!empty($destination_id)) {
+                if ($bbf == 1) {
+                    $this->paginate = array('order' => array('InvDestProduct.inv_dest_product' => 'asc'),
+                        'conditions' => array('AggregateOutboundInterest.year' => $year, 'InvDestProduct.investment_destination_id' => $destination_id),
+                        'fields' => array('InvDestProduct.inv_dest_product', 'AggregateOutboundInterest.bbf',
+                            'AggregateOutboundInterest.jan', 'AggregateOutboundInterest.feb',
+                            'AggregateOutboundInterest.march', 'AggregateOutboundInterest.april', 'AggregateOutboundInterest.may', 'AggregateOutboundInterest.july', 'AggregateOutboundInterest.june', 'AggregateOutboundInterest.aug',
+                            'AggregateOutboundInterest.sept', 'AggregateOutboundInterest.oct', 'AggregateOutboundInterest.nov', 'AggregateOutboundInterest.decem', 'AggregateOutboundInterest.total'),
+                        'limit' => 20, 'group' => array('AggregateOutboundInterest.inv_dest_product_id'));
+
+                    $accounts = $this->paginate('AggregateOutboundInterest');
                 } else {
-                   $this->paginate =  array('order' => array('Investor.nv_dest_product' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
-                         'conditions' => array('AggregateOutboundInterest.year' => $year,'InvDestProduct.investment_destination_id' => $destination_id),
-                    'fields' => array('InvDestProduct.inv_dest_product', 
-                         'AggregateOutboundInterest.jan', 'AggregateOutboundInterest.feb',
-                        'AggregateOutboundInterest.march', 'AggregateOutboundInterest.april', 'AggregateOutboundInterest.may', 'AggregateOutboundInterest.july', 'AggregateOutboundInterest.june', 'AggregateOutboundInterest.aug',
-                        'AggregateOutboundInterest.sept', 'AggregateOutboundInterest.oct', 'AggregateOutboundInterest.nov', 'AggregateOutboundInterest.decem', 'AggregateOutboundInterest.total'),
-                    'limit' => 20,'group' => array('AggregateOutboundInterest.inv_dest_product_id'));
-                     
-                     $accounts = $this->paginate('AggregateOutboundInterest');
-                        
+                    $this->paginate = array('order' => array('Investor.nv_dest_product' => 'asc', 'Investor.surname' => 'asc', 'Investor.comp_name' => 'asc'),
+                        'conditions' => array('AggregateOutboundInterest.year' => $year, 'InvDestProduct.investment_destination_id' => $destination_id),
+                        'fields' => array('InvDestProduct.inv_dest_product',
+                            'AggregateOutboundInterest.jan', 'AggregateOutboundInterest.feb',
+                            'AggregateOutboundInterest.march', 'AggregateOutboundInterest.april', 'AggregateOutboundInterest.may', 'AggregateOutboundInterest.july', 'AggregateOutboundInterest.june', 'AggregateOutboundInterest.aug',
+                            'AggregateOutboundInterest.sept', 'AggregateOutboundInterest.oct', 'AggregateOutboundInterest.nov', 'AggregateOutboundInterest.decem', 'AggregateOutboundInterest.total'),
+                        'limit' => 20, 'group' => array('AggregateOutboundInterest.inv_dest_product_id'));
+
+                    $accounts = $this->paginate('AggregateOutboundInterest');
                 }
                 if ($accounts) {
                     $this->set('accounts', $accounts);
-                } 
-           }else{
-               if ($bbf == 1) {
-                     $this->paginate =  array('order' => array('InvDestProduct.inv_dest_product' => 'asc'),
-                         'conditions' => array('AggregateOutboundInterest.year' => $year),
-                    'fields' => array('InvDestProduct.investment_destination_id', 'sum(AggregateOutboundInterest.bbf) as bbf',
-                         'sum(AggregateOutboundInterest.jan) as jan', 'sum(AggregateOutboundInterest.feb) as feb',
-                        'sum(AggregateOutboundInterest.march) as march', 'sum(AggregateOutboundInterest.april) as april', 'sum(AggregateOutboundInterest.may) as may', 'sum(AggregateOutboundInterest.july) as july', 'sum(AggregateOutboundInterest.june) as june', 'sum(AggregateOutboundInterest.aug) as aug',
-                        'sum(AggregateOutboundInterest.sept) as sept', 'sum(AggregateOutboundInterest.oct) as oct', 'sum(AggregateOutboundInterest.nov) as nov', 'sum(AggregateOutboundInterest.decem) as decem', 'sum(AggregateOutboundInterest.total) as total'),
-                    'limit' => 20,'group' => array('InvDestProduct.investment_destination_id'));
-                     
-                     $accounts = $this->paginate('AggregateOutboundInterest');
-                        
+                }
+            } else {
+                if ($bbf == 1) {
+                    $this->paginate = array('order' => array('InvDestProduct.inv_dest_product' => 'asc'),
+                        'conditions' => array('AggregateOutboundInterest.year' => $year),
+                        'fields' => array('InvDestProduct.investment_destination_id', 'sum(AggregateOutboundInterest.bbf) as bbf',
+                            'sum(AggregateOutboundInterest.jan) as jan', 'sum(AggregateOutboundInterest.feb) as feb',
+                            'sum(AggregateOutboundInterest.march) as march', 'sum(AggregateOutboundInterest.april) as april', 'sum(AggregateOutboundInterest.may) as may', 'sum(AggregateOutboundInterest.july) as july', 'sum(AggregateOutboundInterest.june) as june', 'sum(AggregateOutboundInterest.aug) as aug',
+                            'sum(AggregateOutboundInterest.sept) as sept', 'sum(AggregateOutboundInterest.oct) as oct', 'sum(AggregateOutboundInterest.nov) as nov', 'sum(AggregateOutboundInterest.decem) as decem', 'sum(AggregateOutboundInterest.total) as total'),
+                        'limit' => 20, 'group' => array('InvDestProduct.investment_destination_id'));
+
+                    $accounts = $this->paginate('AggregateOutboundInterest');
                 } else {
-                   $this->paginate =  array('order' => array('InvDestProduct.investment_destination_id' => 'asc'),
-                         'conditions' => array('AggregateOutboundInterest.year' => $year),
-                    'fields' => array('InvDestProduct.investment_destination_id', 
-                         'sum(AggregateOutboundInterest.jan) as jan', 'sum(AggregateOutboundInterest.feb) as feb',
-                        'sum(AggregateOutboundInterest.march) as march', 'sum(AggregateOutboundInterest.april) as april', 'sum(AggregateOutboundInterest.may) as may', 'sum(AggregateOutboundInterest.july) as july', 'sum(AggregateOutboundInterest.june) as june', 'sum(AggregateOutboundInterest.aug) as aug',
-                        'sum(AggregateOutboundInterest.sept) as sept', 'sum(AggregateOutboundInterest.oct) as oct', 'sum(AggregateOutboundInterest.nov) as nov', 'sum(AggregateOutboundInterest.decem) as decem', 'sum(AggregateOutboundInterest.total) as total'),
-                    'limit' => 20,'group' => array('InvDestProduct.investment_destination_id'));
-                     
-                     $accounts = $this->paginate('AggregateOutboundInterest');
-                        
+                    $this->paginate = array('order' => array('InvDestProduct.investment_destination_id' => 'asc'),
+                        'conditions' => array('AggregateOutboundInterest.year' => $year),
+                        'fields' => array('InvDestProduct.investment_destination_id',
+                            'sum(AggregateOutboundInterest.jan) as jan', 'sum(AggregateOutboundInterest.feb) as feb',
+                            'sum(AggregateOutboundInterest.march) as march', 'sum(AggregateOutboundInterest.april) as april', 'sum(AggregateOutboundInterest.may) as may', 'sum(AggregateOutboundInterest.july) as july', 'sum(AggregateOutboundInterest.june) as june', 'sum(AggregateOutboundInterest.aug) as aug',
+                            'sum(AggregateOutboundInterest.sept) as sept', 'sum(AggregateOutboundInterest.oct) as oct', 'sum(AggregateOutboundInterest.nov) as nov', 'sum(AggregateOutboundInterest.decem) as decem', 'sum(AggregateOutboundInterest.total) as total'),
+                        'limit' => 20, 'group' => array('InvDestProduct.investment_destination_id'));
+
+                    $accounts = $this->paginate('AggregateOutboundInterest');
                 }
                 if ($accounts) {
                     $this->set('accounts', $accounts);
-                } 
-           }
+                }
+            }
             $this->set(compact('year', 'destination'));
         }
     }
@@ -3485,21 +3683,21 @@ function aggregateOutboundInvestment() {
                 $date = DateTime::createFromFormat('Y-m-d', $end_date);
                 $statement_date = $date->format('F d, Y');
 
-                
+
                 $start_date1 = ".$end_date.";
                 $start_date2 = strtotime('-1 year', strtotime($start_date1));
-                $start_date3 = date('Y-m-d' , $start_date2);
+                $start_date3 = date('Y-m-d', $start_date2);
                 $start_date4 = ".$start_date3.";
                 $start_date5 = strtotime('+1 day', strtotime($start_date4));
-                $start_date = date('Y-m-d' , $start_date5);
-                
+                $start_date = date('Y-m-d', $start_date5);
+
                 $prev_end_date1 = strtotime('-1 year', strtotime($start_date1));
-                $prev_end_date = date('Y-m-d' , $prev_end_date1);
-                
+                $prev_end_date = date('Y-m-d', $prev_end_date1);
+
                 $prev_start_date1 = "$start_date";
                 $prev_start_date2 = strtotime('-1 year', strtotime($prev_start_date1));
-                $prev_start_date = date('Y-m-d' , $prev_start_date2);
-                
+                $prev_start_date = date('Y-m-d', $prev_start_date2);
+
 //                    $this->set('prev_start_date', $prev_start_date);
 //                    $this->set('prev_end_date', $prev_end_date);
 //                    $this->set('start_date', $start_date);
@@ -3507,28 +3705,28 @@ function aggregateOutboundInvestment() {
 
                 $edate = DateTime::createFromFormat('Y-m-d', $end_date);
                 $e_date = $edate->format('d-M-y');
-                    
+
                 $pedate = DateTime::createFromFormat('Y-m-d', $prev_end_date);
                 $pe_date = $pedate->format('d-M-y');
 
 
                 $prev_start_year = strval($year - 2);
                 $pr_date = strval($prev_start_year . $acc_date);
-                $pre_date = strtotime ('+1 day', strtotime ($pr_date));
-                $prev_date = date ( 'Y-m-d' , $pre_date );
+                $pre_date = strtotime('+1 day', strtotime($pr_date));
+                $prev_date = date('Y-m-d', $pre_date);
                 $this->set('prev_date', $prev_date);
 
-                
-                
-                
-                
+
+
+
+
                 /* search for data for requested and previous years and dump into temporary table */
                 App::import('Model', 'ConnectionManager');
                 $con = new ConnectionManager;
                 $cn = $con->getDataSource('default');
 
-                $sql = "DROP TABLE IF EXISTS `balance_sheets_".$user."`;
-                            CREATE TABLE IF NOT EXISTS balance_sheets_".$user."(
+                $sql = "DROP TABLE IF EXISTS `balance_sheets_" . $user . "`;
+                            CREATE TABLE IF NOT EXISTS balance_sheets_" . $user . "(
                                 id INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
                                 head_id INT( 11 ) UNSIGNED NOT NULL,
                                 category_name VARCHAR( 100 ) NOT NULL ,
@@ -3543,85 +3741,81 @@ function aggregateOutboundInvestment() {
                     $trans_cats = $this->TransactionCategory->find('all', array(
                         'fields' => array('id', 'head_id', 'category_name'),
                         'conditions' => array('deleted' => 0)
-                        ));
-                    
+                    ));
+
                     $mystring = null;
-                    foreach($trans_cats as $arr):
-                        
-                        $mystring.= "(".$arr['TransactionCategory']['id'].",".$arr['TransactionCategory']['head_id'].",'".$arr['TransactionCategory']['category_name']."',0.00,0.00,'". date('Y-m-d H:m:s')."'),";
+                    foreach ($trans_cats as $arr):
+
+                        $mystring.= "(" . $arr['TransactionCategory']['id'] . "," . $arr['TransactionCategory']['head_id'] . ",'" . $arr['TransactionCategory']['category_name'] . "',0.00,0.00,'" . date('Y-m-d H:m:s') . "'),";
                     endforeach;
-                    
-                    $mystring1 = substr_replace($mystring,";",-1,1);
-                    
-                    $query = "INSERT INTO `balance_sheets_".$user."` (`id`, `head_id`, `category_name`, `requested_year`, `previous_year`, `modified`) VALUES $mystring1";
-                    
+
+                    $mystring1 = substr_replace($mystring, ";", -1, 1);
+
+                    $query = "INSERT INTO `balance_sheets_" . $user . "` (`id`, `head_id`, `category_name`, `requested_year`, `previous_year`, `modified`) VALUES $mystring1";
+
                     $cn->query($query);
-                    
+
                     /* Requested Year */
                     //send asset transactions to temp table
                     $asset_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
-                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date),'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
+                        'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                        'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
                         'group' => array('Transaction.category_id'),
                     ));
-                    
 
-                    foreach($asset_data as $asset):
-                        $assetquery = "UPDATE `balance_sheets_".$user."` SET `requested_year` = ".($asset[0]['sum_debit'] - $asset[0]['sum_credit'])." WHERE `id` = ".$asset['Transaction']['category_id'];
-                        
+
+                    foreach ($asset_data as $asset):
+                        $assetquery = "UPDATE `balance_sheets_" . $user . "` SET `requested_year` = " . ($asset[0]['sum_debit'] - $asset[0]['sum_credit']) . " WHERE `id` = " . $asset['Transaction']['category_id'];
+
                         $cn->query($assetquery);
                     endforeach;
-                    
-                    
+
+
                     //send OE and Liability transactions to temp table
                     $oe_liab_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
-                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date),'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
+                        'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                        'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($start_date, $end_date), 'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
                         'group' => array('Transaction.category_id'),
                     ));
-                    
 
-                    foreach($oe_liab_data as $oe_liab):
-                        $oe_liab_query = "UPDATE `balance_sheets_".$user."` SET `requested_year` = ".($oe_liab[0]['sum_credit'] - $oe_liab[0]['sum_debit'])." WHERE `id` = ".$oe_liab['Transaction']['category_id'];
-                        
+
+                    foreach ($oe_liab_data as $oe_liab):
+                        $oe_liab_query = "UPDATE `balance_sheets_" . $user . "` SET `requested_year` = " . ($oe_liab[0]['sum_credit'] - $oe_liab[0]['sum_debit']) . " WHERE `id` = " . $oe_liab['Transaction']['category_id'];
+
                         $cn->query($oe_liab_query);
                     endforeach;
-                    
-                        
+
+
                     /* Previous Year */
                     //send asset transactions to temp table
                     $prev_asset_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
-                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date),'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
+                        'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                        'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date), 'Transaction.head_id' => 4, 'Transaction.deleted' => 0),
                         'group' => array('Transaction.category_id'),
                     ));
-                    
 
-                    foreach($prev_asset_data as $prev_asset):
-                        $prev_assetquery = "UPDATE `balance_sheets_".$user."` SET `previous_year` = ".($prev_asset[0]['sum_debit'] - $prev_asset[0]['sum_credit'])." WHERE `id` = ".$prev_asset['Transaction']['category_id'];
-                        
+
+                    foreach ($prev_asset_data as $prev_asset):
+                        $prev_assetquery = "UPDATE `balance_sheets_" . $user . "` SET `previous_year` = " . ($prev_asset[0]['sum_debit'] - $prev_asset[0]['sum_credit']) . " WHERE `id` = " . $prev_asset['Transaction']['category_id'];
+
                         $cn->query($prev_assetquery);
                     endforeach;
-                    
-                    
+
+
                     //send OE and Liability transactions to temp table
                     $prev_oe_liab_data = $this->Transaction->find('all', array(
-                    'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit','Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
-                    'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date),'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
+                        'fields' => array('SUM(Transaction.debit) AS sum_debit', 'SUM(Transaction.credit) AS sum_credit', 'Transaction.id', 'Transaction.transaction_date', 'Transaction.category_id', 'Transaction.debit', 'Transaction.credit'),
+                        'conditions' => array('Transaction.transaction_date BETWEEN ? AND ?' => array($prev_start_date, $prev_end_date), 'Transaction.head_id' => 3, 'Transaction.head_id' => 5, 'Transaction.deleted' => 0),
                         'group' => array('Transaction.category_id'),
                     ));
-                    
 
-                    foreach($prev_oe_liab_data as $prev_oe_liab):
-                        $prev_oe_liab_query = "UPDATE `balance_sheets_".$user."` SET `previous_year` = ".($prev_oe_liab[0]['sum_credit'] - $prev_oe_liab[0]['sum_debit'])." WHERE `id` = ".$prev_oe_liab['Transaction']['category_id'];
-                        
+
+                    foreach ($prev_oe_liab_data as $prev_oe_liab):
+                        $prev_oe_liab_query = "UPDATE `balance_sheets_" . $user . "` SET `previous_year` = " . ($prev_oe_liab[0]['sum_credit'] - $prev_oe_liab[0]['sum_debit']) . " WHERE `id` = " . $prev_oe_liab['Transaction']['category_id'];
+
                         $cn->query($prev_oe_liab_query);
                     endforeach;
-                    /*end prev year */
-                        
-                   
-                 
-                    
+                    /* end prev year */
                 } else {
                     $message = 'Unable to create temporary balance sheet table';
                     $this->Session->write('emsg', $message);
@@ -3630,14 +3824,14 @@ function aggregateOutboundInvestment() {
 
 
 
-                $bs_query = "SELECT * FROM `balance_sheets_".$user."`"; 
+                $bs_query = "SELECT * FROM `balance_sheets_" . $user . "`";
                 $balance_sheet = $cn->query($bs_query);
-                
-                
-                
+
+
+
                 $this->set('e_date', $e_date);
                 $this->set('pe_date', $pe_date);
-                
+
                 $this->set('statement_date', $statement_date);
                 $this->set('balance_sheet', $balance_sheet);
                 $this->set('user', $user);
@@ -3645,7 +3839,6 @@ function aggregateOutboundInvestment() {
         }
     }
 
-    
     function aggregateIndebtedness() {
         $this->__validateUserType();
 

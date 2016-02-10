@@ -610,8 +610,8 @@ function __dailyReinvestmentInterests(){
                 if(!empty($year)){
            foreach($data as $val){
                
-               $investor_id = $val['Investment']['investor_id'];
-               $jdate_string = $year . "-01-01";
+             $investor_id = $val['Investment']['investor_id'];
+            $jdate_string = $year . "-01-01";
             $ejdate_string = $year . "-01-31";
             $this->InterestAccrual->virtualFields['Jan'] = '(select SUM(interest_accruals.interest_amounts) from interest_accruals INNER JOIN investments ON investments.id = interest_accruals.investment_id '
                     . 'where DATE(interest_date) BETWEEN CAST(\'' . $jdate_string . '\' AS DATE) AND CAST(\'' . $ejdate_string . '\' AS DATE) AND interest_accruals.investor_id ='. $investor_id.' AND investments.status IN ("Rolled_over","Invested","Termination_Requested","Payment_Requested",'
