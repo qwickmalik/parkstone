@@ -16,7 +16,7 @@ echo $this->Html->script('print.js');
             echo $this->Form->create('FundsUnderMgt', array('url' => array('controller' => 'Reports', 'action' => 'fundsUnderMgt')));
             ?>
 
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="background: #eaeaea; padding: 10px 0px 5px 0px;">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="background: #eaeaea; padding: 1'0.00'px '0.00'px 5px '0.00'px;">
 
                 <div class="col-lg-3 col-md-3 col-sm-12" >
                     <?php
@@ -68,7 +68,7 @@ echo $this->Html->script('print.js');
                         echo $this->Session->read('shopName') . '<br />';
                         echo $report_name;
                         ?></p>
-                    <p align='left'>For the period <?php echo isset($year) ? $year : ''; ?></p>
+                    <p align='left'>For the period <?php echo !empty($year) ? $year : ''; ?></p>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <p align="right"><?php echo $this->Session->read('shopAddress') . ', ' . $this->Session->read('shopPosttown') . '<br />' . $this->Session->read('shopPostCity') . ', ' . $this->Session->read('shopPostCount') . '<br />' . $this->Session->read('shopTelephone') . '<br />' . $this->Session->read('shopEmail'); ?></p>
@@ -80,7 +80,7 @@ echo $this->Html->script('print.js');
 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <!--<table border="1" cellspacing="" cellpadding="3" width="100%" align="left" style="border: solid 2px gray;">-->
+                <!--<table border="1" cellspacing="" cellpadding="3" width="1'0.00''0.00'%" align="left" style="border: solid 2px gray;">-->
                 <table class="table table-striped">
                     <tr>
                         <td align="left" valign="top" style="border-bottom: solid 2px Gray;"><b>&nbsp;</b></td>
@@ -104,112 +104,115 @@ echo $this->Html->script('print.js');
                     </tr>
                     <tr>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>New Inv.</b></td>
-                        <td align="left" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($jindata) ? $jindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($findata) ? $findata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($mindata) ? $mindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($apindata) ? $apindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($mayindata) ? $mayindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($junindata) ? $junindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($julindata) ? $julindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($sepindata) ? $sepindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($octindata) ? $octindata : 0) ?></td>            
-                        <td align="right" valign="top"><?php echo (isset($novindata) ? $novindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($decindata) ? $decindata : 0) ?></td>
+                        <td align="left" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($jindata) ? $jindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($findata) ? $findata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($mindata) ? $mindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($apindata) ? $apindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($mayindata) ? $mayindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($junindata) ? $junindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($julindata) ? $julindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($sepindata) ? $sepindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($octindata) ? $octindata : '0.00') ?></td>            
+                        <td align="right" valign="top"><?php echo (!empty($novindata) ? $novindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($decindata) ? $decindata : '0.00') ?></td>
                     </tr>
                     <tr>
 
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Cummulative New Inv.</b></td>
-                        <td align="right" valign="top"><?php echo (isset($cbbf_inv) ? $cbbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cjindata) ? $cjindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cfindata) ? $cfindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cmindata) ? $cmindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($capindata) ? $capindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cmayindata) ? $cmayindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cjunindata) ? $cjunindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cjulindata) ? $cjulindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($caugindata) ? $caugindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($csepindata) ? $csepindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($coctindata) ? $coctindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cnovindata) ? $cnovindata : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($cdecindata) ? $cdecindata : 0) ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cbbf_inv) ? $cbbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjindata) ? $cjindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cfindata) ? $cfindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cmindata) ? $cmindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($capindata) ? $capindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cmayindata) ? $cmayindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjunindata) ? $cjunindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjulindata) ? $cjulindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($caugindata) ? $caugindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($csepindata) ? $csepindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($coctindata) ? $coctindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cnovindata) ? $cnovindata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cdecindata) ? $cdecindata : '0.00') ?></td>
                     </tr>
                     <tr>
 
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Investor Interest Rolled Over</b></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                                                <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_rinterest) ? $bbf_rinterest : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($jroldata) ? $jroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($froldata) ? $froldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($mroldata) ? $mroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($aproldata) ? $aproldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($mayroldata) ? $mayroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($junroldata) ? $junroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($julroldata) ? $julroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($augroldata) ? $augroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($seproldata) ? $seproldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($octroldata) ? $octroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($novroldata) ? $novroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($decroldata) ? $decroldata : '0.00') ?></td>
                     </tr>
                     <tr>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Cumulative Interest Rolled Over</b></td>
-                        <td align="left" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top">xxx</td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
+                        <td align="left" valign="top"><?php echo (!empty($cbbf_rinterest) ? $cbbf_rinterest : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjroldata) ? $cjroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cfroldata) ? $cfroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cmroldata) ? $cmroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($caproldata) ? $caproldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cmayroldata) ? $cmayroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjunroldata) ? $cjunroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cjulroldata) ? $cjulroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($caugroldata) ? $caugroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cseproldata) ? $cseproldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($coctroldata) ? $coctroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cnovroldata) ? $cnovroldata : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($cdecroldata) ? $cdecroldata : '0.00') ?></td>
                     </tr>
                     <tr>
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Principal Repayments</b></td>
-                        <td align="left" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
+                        <td align="left" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo(!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
                     </tr>
                     <tr>
 
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Cumulative Payments</b></td>
-                        <td align="left" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
+                        <td align="left" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
                     </tr>
                     <tr>
 
                         <td align="right" valign="top" style="border-bottom: solid 2px Gray;"><b>Net Funds Under Mgt.</b></td>
-                        <td align="left" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
-                        <td align="right" valign="top"><?php echo (isset($bbf_inv) ? $bbf_inv : 0) ?></td>
+                        <td align="left" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
+                        <td align="right" valign="top"><?php echo (!empty($bbf_inv) ? $bbf_inv : '0.00') ?></td>
                     </tr>
                 </table>
             </div>

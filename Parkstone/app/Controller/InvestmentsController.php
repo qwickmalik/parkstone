@@ -1800,6 +1800,10 @@ class InvestmentsController extends AppController {
             if ($check) {
                 $this->set('total_invested', $this->Session->read('investtemp1.total_invested'));
             }
+            $check = $this->Session->check('investtemp1.total_principal');
+            if ($check) {
+                $this->set('total_principal', $this->Session->read('investtemp1.total_principal'));
+            }
         }
         $check = $this->Session->check('variabless_fixed');
         if ($check) {
@@ -2285,6 +2289,7 @@ class InvestmentsController extends AppController {
 
             $amount_available = $this->request->data['Investment']['cash_athand'] + $this->request->data['Investment']['amount_deposited'];
             $cashinvested = $this->request->data['Investment']['total_invested'];
+            $total_principal = $this->request->data['Investment']['total_principal']; 
             $new_cashinvested = $cashinvested;
             if (isset($this->request->data['fixed_process'])) {
 
@@ -2510,6 +2515,7 @@ class InvestmentsController extends AppController {
 //                        }
                     $new_cashathand = $amount_available - $investment_amount;
                     $new_cashinvested = $cashinvested + $investment_amount;
+                    $total_principal = $total_principal + $investment_amount;
                     $period = $this->request->data['Investment']['investment_period'];
                     $duration = $this->request->data['Investment']['duration'];
                     $year = $duration;
@@ -2869,7 +2875,7 @@ class InvestmentsController extends AppController {
                 $total_cash = $new_cashathand + $new_cashinvested;
                 $description = 'Deposit for investment';
                 //move to summary contract function and store in client ledger
-                $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand,
+                $client_ledger = array('investor_id' => $investor_id, 'available_cash' => $new_cashathand, 'total_principal'=>$total_principal,
                     'invested_amount' => $new_cashinvested);
 
 //                $this->Session->delete('investtemp');
@@ -2883,6 +2889,7 @@ class InvestmentsController extends AppController {
                 $this->Session->write('investtemp1', $this->request->data['Investment']);
                 $this->Session->write('investtemp1.amount_deposited', 0);
                 $this->Session->write('investtemp1.cash_athand', $new_cashathand);
+                $this->Session->write('investtemp1.total_principal', $total_principal);
                 $this->Session->write('investtemp1.total_invested', $new_cashinvested);
                 $message = 'Investment Successfully Processed,Click Next to Save and Print Investment Contract';
                 $this->Session->write('smsg', $message);

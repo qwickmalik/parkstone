@@ -3073,6 +3073,7 @@ class ReportsController extends AppController {
         $coctroldata = 0;
         $cnovroldata = 0;
         $cdecroldata = 0;
+        $cbbf_rinterest = 0;
         if ($this->request->is('post')) {
             if ($this->request->data['FundsUnderMgt']['report_date']['year'] == "" || $this->request->data['FundsUnderMgt']['report_date']['year'] == null) {
                 $message = 'Please indicate year';
@@ -3099,7 +3100,12 @@ class ReportsController extends AppController {
                 'recursive' => -1
             ));
 
-
+            $invpayments = $this->InvestmentPayment->find('all',array(
+                'conditions' => array('InvestmentPayment.event_type' => 'Payment','InvestmentPayment.delete_status' => 'alive'),
+                'fields' => array('SUM(InvestmentPayment.amount -InvestmentPayment.amount)'),
+                'group' => array('Month(InvestmentPayment.payment_date)'),
+                
+            ));
             if ($rollover) {
                 foreach ($rollover as $var) {
                     switch ($var[0]['month']) {
@@ -3240,6 +3246,7 @@ class ReportsController extends AppController {
             $coctroldata = $cseproldata + $octroldata;
             $cnovroldata = $coctroldata + $novroldata;
             $cdecroldata = $cnovroldata + $decroldata;
+            $cbbf_rinterest = $bbf_rinterest;
         }
         $this->set(compact('year', 'cbbf_inv', 'cdecindata', 'cnovindata', 'coctindata', 
                 'csepindata', 'caugindata', 'cjulindata', 'cjunindata', 'cmayindata', 'capindata', 
