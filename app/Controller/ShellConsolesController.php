@@ -92,6 +92,17 @@ function __dailyMatured(){
          $accrued_basefee = $each['Investment']['accrued_basefee'];
             $cash_athand = $ledger_data['ClientLedger']['available_cash'];
             $earned_balance = $each['Investment']['earned_balance'];
+            $interest =  $each['Investment']['interest_accrued'];
+//            $oldt_principal = $ledger_data['ClientLedger']['total_principal'];
+            $oldt_interest = $ledger_data['ClientLedger']['total_interest'];
+            $inv_principal = 0;
+            if(!empty($data['Investment']['rollover_amount'])){
+                $inv_principal = $data['Investment']['rollover_amount'];
+            }else{
+                $inv_principal = $data['Investment']['investment_amount'];
+            }
+//            $total_principal = $oldt_principal + $inv_principal;
+            $total_interest = $oldt_interest + $interest;
             $new_cashathand = $cash_athand + $earned_balance;
 //            $new_cashathand = $new_cashathand - $accrued_basefee;
             $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
@@ -127,7 +138,7 @@ function __dailyMatured(){
 //                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
 //            }
             //Update Ledger data   
-                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
+                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,'total_interest' => $total_invested,
                     'invested_amount' => $total_invested);
                $this->ClientLedger->save($client_ledger);   
                
