@@ -1916,3 +1916,6 @@ CREATE TABLE IF NOT EXISTS `aggregate_outbound_interests` (
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 NEW
 -------------------------------------------------------------------------------------
+12 January, 2016 KWAKU
+----------------------
+ALTER TABLE `client_ledgers` ADD `total_principal` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `total_rollover`, ADD `total_interest` DECIMAL(11,2) NULL DEFAULT '0.00' AFTER `total_principal`;
