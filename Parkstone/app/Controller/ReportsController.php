@@ -3102,7 +3102,7 @@ class ReportsController extends AppController {
 
             $invpayments = $this->InvestmentPayment->find('all',array(
                 'conditions' => array('InvestmentPayment.event_type' => 'Payment','InvestmentPayment.delete_status' => 'alive'),
-                'fields' => array('SUM(InvestmentPayment.amount -InvestmentPayment.amount)'),
+                'fields' => array('SUM(InvestmentPayment.amount -InvestmentPayment.interest)'),
                 'group' => array('Month(InvestmentPayment.payment_date)'),
                 
             ));

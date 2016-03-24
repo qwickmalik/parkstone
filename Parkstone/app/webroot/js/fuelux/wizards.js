@@ -41,6 +41,7 @@ jQuery(document).ready(function($) {
 //        form_data.append(input.name,input.value);
 //    });
 //           form_data.append('investor_photo',fileInput);
+
 var query = form_data;
             $.ajax({
                 type: 'POST',

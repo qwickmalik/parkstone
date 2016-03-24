@@ -1398,7 +1398,7 @@ class ReinvestmentsController extends AppController {
                 case 'Day(s)':
 
                     $date->add(new DateInterval('P' . $duration . 'D'));
-
+                       
                     $date_statemt = new DateTime($first_date);
                     $principal = $investment_amount;
 //                    $statemt_array = array();
@@ -1409,8 +1409,9 @@ class ReinvestmentsController extends AppController {
                     $amount_due = $interest_amount + $investment_amount;
                     $adate = date('Y-m-d');
                     $due_date = $date->format('Y-m-d');
+                  
                     if ($due_date <= $adate) {
-                        $date->sub(new DateInterval('P1D'));
+                          $date->sub(new DateInterval('P1D'));
                         $adate = $due_date;
                     }
                     $to_date = new DateTime($adate);
@@ -1485,14 +1486,15 @@ class ReinvestmentsController extends AppController {
                     $ainv_date = new DateTime($inv_date);
                     $aduration = date_diff($ainv_date, $to_date);
                     $aduration = $aduration->format("%a");
+                    
+                    $ainterest_amount = $interest_amount1 * ($aduration / 365);
+                    $aamount_due = $ainterest_amount + $investment_amount;
                     if ($due_date <= $adate) {
                         $aduration +=1;
                     }
 
 //                    $aYEAR2DAYS = 365 * $aduration;
 
-                    $ainterest_amount = $interest_amount1 * ($aduration / 365);
-                    $aamount_due = $ainterest_amount + $investment_amount;
 //                    for ($n = 1; $n <= $duration; $n++) {
 //                        $date_statemt->add(new DateInterval('P1Y'));
 //
@@ -3381,11 +3383,11 @@ class ReinvestmentsController extends AppController {
                 $amount_available = $reinvest_data['Reinvestment']['earned_balance'];
                 $investment_amount = $this->request->data['Reinvestment']['investment_amount'];
 
-                if ($investment_amount > $amount_available) {
-                    $message = 'Rollover Amount cannot be more than amount due';
-                    $this->Session->write('bmsg', $message);
-                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
-                }
+//                if ($investment_amount > $amount_available) {
+//                    $message = 'Rollover Amount cannot be more than amount due';
+//                    $this->Session->write('bmsg', $message);
+//                    $this->redirect(array('controller' => 'Reinvestments', 'action' => 'rollover', $reinvestment_id, $reinvestor_id));
+//                }
 
 //                elseif ($investment_amount < $amount_available) {
 //                    $message = 'Please record cash returned before rollover';
