@@ -81,7 +81,22 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                                     }
         ?></span></td>
                         </tr>
-                        
+                        <tr>
+                            <td><b align="right">Total Principal</b></td>
+                            <td><span id="xxxxxx"><?php
+                                   if (isset($data['ClientLedger']['total_principal'])) {
+                                        echo $shopCurrency." ".number_format($data['ClientLedger']['total_principal'],2);
+                                    }
+        ?></span></td>
+                        </tr>
+                        <tr>
+                            <td><b align="right">Total Interest</b></td>
+                            <td><span id="xxxxxx"><?php
+                                   if (isset($data['ClientLedger']['total_interest'])) {
+                                        echo $shopCurrency." ".number_format($data['ClientLedger']['total_interest'],2);
+                                    }
+        ?></span></td>
+                        </tr>
                         <tr>
                             <td><b align="right">Approval Date & Time:</b></td>
                             <td><span id="xxxxxx"><?php
@@ -145,27 +160,46 @@ $shopCurrency =""; if ($this->Session->check('shopCurrency')) {
                             $("#InvestmentPaymentPaymentDateYear option[value=" + year + "]").attr('selected', true);
                         </script>
                     </div>
-                    <div class="col-lg-5 col-md-5 col-sm-12" >
-<?php echo "<b style='font-size: 16px;'>Payment Mode:</b>&nbsp;" . $this->Form->input('paymentmode_id', array('required','label' => false, 'empty' => "--Please Select--", 
-    'value' => ($this->Session->check('payinvesttemp.paymentmode_id') == true ? 
-        $this->Session->read('payinvesttemp.paymentmode_id') : '' )));
+              <div class="row">
+     <!--<div class="col-lg-12 col-md-12 col-sm-12">-->                 
+<?php
+echo "<b style='font-size: 14px;float:left'>Cheque Nos.:</b>&nbsp;" . $this->Form->input('cheque_nos', array('size' => 5,'value' => ($this->Session->check('payinvesttemp.cheque_nos') == true ? 
+                                            $this->Session->read('payinvesttemp.cheque_nos') : '' ), 'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;', 'label' => false));
 ?>
-                        </div>
-              <div class="col-lg-5 col-md-5 col-sm-12" >
-                                    <?php
-                                  echo "<b style='font-size: 16px;'>Instructions:</b>&nbsp;" . $this->Form->input('instruction_id', array('required','label' => false, 'empty' => "--Please Select--"));
-                                    ?>
-                                </div>
+         </div>  
+     </div> 
+                    
                 </td>
 
                        
                 <td align="right" valign="top" width="50%">
-<?php
-echo "<b style='font-size: 16px;'>Amount being Paid:</b>&nbsp;" . $this->Form->input('amount', array('required','size' => 17, 'class' => 'input1','value' => ($this->Session->check('payinvesttemp.amount') == true ? 
-                                            $this->Session->read('payinvesttemp.amount') : '' ) ,'label' => false));
-echo "<b style='font-size: 16px;'>Cheque Nos.:</b>&nbsp;" . $this->Form->input('cheque_nos', array('size' => 5,'value' => ($this->Session->check('payinvesttemp.cheque_nos') == true ? 
-                                            $this->Session->read('payinvesttemp.cheque_nos') : '' ), 'disabled' => true, 'type' => 'textarea', 'style' => 'height: 50px;', 'label' => false));
+              <div class="col-lg-5 col-md-5 col-sm-12" >
+<?php echo "<b style='font-size: 14px;float:left;'>Payment Mode:</b>&nbsp;" . $this->Form->input('paymentmode_id', array('required','label' => false, 'empty' => "--Please Select--", 
+    'value' => ($this->Session->check('payinvesttemp.paymentmode_id') == true ? 
+        $this->Session->read('payinvesttemp.paymentmode_id') : '' )));
+echo "<span style='margin-bottom:10px;'>&nbsp;</span>";
 ?>
+                        </div>
+              <div class="col-lg-5 col-md-5 col-sm-12" >
+                                    <?php
+                                  echo "<b style='font-size: 14px;float:left;'>Instructions:</b>&nbsp;" . $this->Form->input('instruction_id', array('required','label' => false, 'empty' => "--Please Select--"));
+                                  echo "<span style='margin-bottom:10px;'>&nbsp;</span>";
+                                  ?>
+                                </div>
+                    
+                                <div class="col-lg-5 col-md-5 col-sm-12" >
+<?php
+echo "<b style='font-size: 14px;float:left;'>Interest being Paid:</b>&nbsp;" . $this->Form->input('interest_amount', array('required','size' => 17,'disabled' => true, 'class' => 'input1','value' => ($this->Session->check('payinvesttemp.interest_amount') == true ? 
+                                            $this->Session->read('payinvesttemp.interest_amount') : 0 ) ,'label' => false));
+?>
+</div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12" >
+<?php
+echo "<b style='font-size: 16px;float:left'>Principal being Paid:</b>&nbsp;" . $this->Form->input('principal_amount', array('required','size' => 17,'disabled' => true,'class' => 'input1','value' => ($this->Session->check('payinvesttemp.principal_amount') == true ? 
+                                            $this->Session->read('payinvesttemp.principal_amount') : 0 ) ,'label' => false));
+?>
+</div>
+  
                 </td>
             </tr>
             <tr>
@@ -235,10 +269,35 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
                $("#InvestmentPaymentChequeNos").prop('disabled',true);
            } 
         }
+        
+        function checkpayment_instructions(){
+            var payment_instuc = $("#InvestmentPaymentInstructionId").val();
+           
+           if(payment_instuc == '1'){
+               
+               $("#InvestmentPaymentInterestAmount").prop('disabled',false);
+               $("#InvestmentPaymentPrincipalAmount").prop('disabled',true);
+               return false;
+           }
+             if(payment_instuc == '2'){
+               $("#InvestmentPaymentPrincipalAmount").prop('disabled',false);
+               return false;
+           }
+           
+                        if(payment_instuc == '3'){
+               $("#InvestmentPaymentInterestAmount").prop('disabled',false);
+               $("#InvestmentPaymentPrincipalAmount").prop('disabled',true);
+           } 
+        } 
         checkpayment_mode();
+        checkpayment_instructions();
           $("#InvestmentPaymentPaymentmodeId").change(function (){
              
           checkpayment_mode();
+        });
+         $("#InvestmentPaymentInstructionId").change(function (){
+             
+          checkpayment_instructions();
         });
         });
         

@@ -220,6 +220,9 @@ if ($this->Session->check('shopCurrency_investment')) {
 
                                     echo $this->Form->hidden('cash_athand', array('label' => 'Available Cash', 'class' => 'required', 'value' =>
                                         (isset($cash_athand) ? $cash_athand : $ledger_data['ClientLedger']['available_cash'] )));
+                                    
+                                    echo $this->Form->hidden('total_principal', array( 'value' =>
+                                        (isset($total_principal) ? $total_principal : $ledger_data['ClientLedger']['total_principal'] )));
                                     ?> 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12">

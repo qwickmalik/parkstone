@@ -97,9 +97,9 @@ function __dailyMatured(){
             $oldt_interest = $ledger_data['ClientLedger']['total_interest'];
             $inv_principal = 0;
             if(!empty($data['Investment']['rollover_amount'])){
-                $inv_principal = $data['Investment']['rollover_amount'];
+                $inv_principal = $each['Investment']['rollover_amount'];
             }else{
-                $inv_principal = $data['Investment']['investment_amount'];
+                $inv_principal = $each['Investment']['investment_amount'];
             }
 //            $total_principal = $oldt_principal + $inv_principal;
             $total_interest = $oldt_interest + $interest;
@@ -321,11 +321,12 @@ function __dailyInterests(){
                             $tduration = $tduration->format("%a");
                             $tprincipal = $val['topup_amount'];
                              $curr_date = date('Y-m-d');
+                             $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                             if($curr_date > $due_date ){
                             $tduration +=1;
                             }
-                            $interest_amount1 = ($rate / 100) * $tprincipal;
-                            $interest_amountt = $interest_amount1 * ($tduration / 365);
+                            
                             $topup_interestaccrued += $interest_amountt;
                             $topup_principal += $val['topup_amount'];   
                         }
@@ -349,11 +350,12 @@ function __dailyInterests(){
                             $tduration = $tduration->format("%a");
                             $tprincipal = $val['topup_amount'];
                             $curr_date = date('Y-m-d');
+                            
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                             if($curr_date > $due_date ){
                             $tduration +=1;
                             }
-                            $interest_amount1 = ($rate / 100) * $tprincipal;
-                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                             $topup_interestaccrued += $interest_amountt;
                             $topup_principal += $val['topup_amount'];
             
@@ -373,13 +375,14 @@ function __dailyInterests(){
         $ato_date = new DateTime($aend_date);
          $aduration = date_diff($ainv_date, $ato_date);
          $aduration = $aduration->format("%a");
+         
+        $yearly_interest = ($rate / 100) * $principal_amount;
+        $daily_interest = $yearly_interest * ($aduration/365); 
          if($due_date <= $aend_date){
             $aduration = $aduration + 1;
         }
 //         
         $date = date('Y-m-d');
-        $yearly_interest = ($rate / 100) * $principal_amount;
-        $daily_interest = $yearly_interest * ($aduration/365); 
         
 //        $old_accrued_interest = $value['Investment']['interest_accrued'];
         $new_accrued_interest = $daily_interest + $topup_interestaccrued;
@@ -458,11 +461,11 @@ function __dailyReinvestmentInterests(){
                             $tduration = $tduration->format("%a");
                             $tprincipal = $val['topup_amount'];
                              
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                              if($due_date <= $date){
                               $tduration = $tduration + 1;
                             }
-                            $interest_amount1 = ($rate / 100) * $tprincipal;
-                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                             $topup_interestaccrued += $interest_amountt;
                             $topup_principal += $val['topup_amount'];  
                         }
@@ -486,11 +489,11 @@ function __dailyReinvestmentInterests(){
                             $tduration = $tduration->format("%a");
                             $tprincipal = $val['topup_amount'];
                              
+                            $interest_amount1 = ($rate / 100) * $tprincipal;
+                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                              if($due_date <= $date){
                               $tduration = $tduration + 1;
                             }
-                            $interest_amount1 = ($rate / 100) * $tprincipal;
-                            $interest_amountt = $interest_amount1 * ($tduration / 365);
                             $topup_interestaccrued += $interest_amountt;
                             $topup_principal += $val['topup_amount'];
             
@@ -510,12 +513,12 @@ function __dailyReinvestmentInterests(){
          $aduration = date_diff($ainv_date, $ato_date);
          $aduration = $aduration->format("%a");
          
+        $yearly_interest = ($rate / 100) * $principal_amount;
+        $daily_interest = $yearly_interest * ($aduration/365);
          if($due_date <= $aend_date){
             $aduration = $aduration + 1;
         }
         $date = date('Y-m-d');
-        $yearly_interest = ($rate / 100) * $principal_amount;
-        $daily_interest = $yearly_interest * ($aduration/365);
 //        $old_accrued_interest = $value['Investment']['interest_accrued'];
         $new_accrued_interest = $daily_interest + $topup_interestaccrued;
         $new_balanced_earned = $principal_amount + $topup_principal + $new_accrued_interest;
