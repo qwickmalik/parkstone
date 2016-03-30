@@ -66,13 +66,13 @@ $cakeDescription = __d('cake_dev', 'Parkstone Capital Login');
               <div class="input-group">
                 <span class="input-group-addon"><i></i></span>
                 <!--<input type="text" class="form-control" placeholder="Username" />-->
-                <?php echo $this->Form->input('username', array('label' => false, 'name' => 'username', 'placeholder'=>'Username', 'class' => 'form-control')); ?>
+                <?php echo $this->Form->input('username', array('label' => false, 'name' => 'username', 'placeholder'=>'Username', 'class' => 'form-control','autocomplete' => "off")); ?>
               </div>
 
               <div class="input-group">
                 <span class="input-group-addon"><i></i></span>
                 <!--<input type="password" class="form-control" placeholder="Password" />-->
-                <?php echo $this->Form->input('password', array('label' => false, 'name' => 'password', 'placeholder'=>'Password', 'class' => 'form-control')); ?>
+                <?php echo $this->Form->input('password', array('label' => false, 'name' => 'password', 'placeholder'=>'Password', 'class' => 'form-control','autocomplete' => "off")); ?>
               </div>
 
               <!--<input type="submit" class="btn btn-lg btn-success" value="Login to your account" name="submit" id="submit" />-->

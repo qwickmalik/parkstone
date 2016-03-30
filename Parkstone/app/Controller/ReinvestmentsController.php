@@ -1411,7 +1411,7 @@ class ReinvestmentsController extends AppController {
                     $due_date = $date->format('Y-m-d');
                   
                     if ($due_date <= $adate) {
-                          $date->sub(new DateInterval('P1D'));
+//                          $date->sub(new DateInterval('P1D'));
                         $adate = $due_date;
                     }
                     $to_date = new DateTime($adate);
@@ -3422,7 +3422,7 @@ class ReinvestmentsController extends AppController {
                         $adate = date('Y-m-d');
                         $due_date = $date->format('Y-m-d');
                         if ($due_date <= $adate) {
-                            $date->sub(new DateInterval('P1D'));
+//                            $date->sub(new DateInterval('P1D'));
                             $adate = $due_date;
                         }
                         $to_date = new DateTime($adate);
