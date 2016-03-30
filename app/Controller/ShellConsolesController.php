@@ -96,7 +96,7 @@ function __dailyMatured(){
 //            $oldt_principal = $ledger_data['ClientLedger']['total_principal'];
             $oldt_interest = $ledger_data['ClientLedger']['total_interest'];
             $inv_principal = 0;
-            if(!empty($data['Investment']['rollover_amount'])){
+            if(!empty($data['Investment']['rollover_amount']) && $data['Investment']['rollover_amount'] > 0){
                 $inv_principal = $each['Investment']['rollover_amount'];
             }else{
                 $inv_principal = $each['Investment']['investment_amount'];
@@ -591,7 +591,7 @@ function __dailyReinvestmentInterests(){
            
             $basefee_duedate->add(new DateInterval('P1M'));
             $basefee_nextdate = $basefee_duedate->format('Y-m-d');
-               $fee_data = array('investment_id' => $id,'base_fee' => $base_fee,'accrued_fee' => $new_accrued,'fee_date' => $today);
+               $fee_data = array('investment_id' => $id,'base_fee' => $base_fee,'accrued_basefee' => $new_accrued,'fee_date' => $today);
                $new_data = array('accrued_basefee' => $new_accrued,'total_fees' => $new_totalfees,'basefee_duedate' => $basefee_nextdate,'basefee_lastprocess_date' => date('Y-m-d'));
                $this->Investment->id = $id;
                $result = $this->Investment->save($new_data);
