@@ -7838,7 +7838,7 @@ class InvestmentsController extends AppController {
                         $due_date = $date->format('Y-m-d');
                         if ($due_date <= $adate) {
                             $adate = $due_date;
-                            $date->sub(new DateInterval('P1D'));
+//                            $date->sub(new DateInterval('P1D'));
                         }
                         $to_date = new DateTime($adate);
                         $ainv_date = new DateTime($inv_date);
