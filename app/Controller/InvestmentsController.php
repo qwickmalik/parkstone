@@ -6474,8 +6474,15 @@ class InvestmentsController extends AppController {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
             }
 
-            if ($this->request->data['InvestmentPayment']['amount'] == "" || $this->request->data['InvestmentPayment']['amount'] == null || $this->request->data['InvestmentPayment']['amount'] == 0) {
-                $message = 'Amount Not Entered.';
+            if ($this->request->data['InvestmentPayment']['principal_amount'] == "" || $this->request->data['InvestmentPayment']['principal_amount'] == null || $this->request->data['InvestmentPayment']['principal_amount'] == 0) {
+                $message = 'Principal Amount Not Entered.';
+                $this->Session->write('emsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
+            }
+
+             if ($this->request->data['InvestmentPayment']['interest_amount'] == "" || $this->request->data['InvestmentPayment']['interest_amount'] == null 
+                     || $this->request->data['InvestmentPayment']['interest_amount'] == 0) {
+                $message = 'Interest Amount Not Entered.';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
             }
