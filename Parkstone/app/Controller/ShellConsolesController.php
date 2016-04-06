@@ -44,9 +44,11 @@ class ShellConsolesController extends AppController {
         $this->Session->write('smsg', $message);
          $this->redirect(array('controller' => 'Settings', 'action' => 'batchProcesses'));
     }
+    
     public function defaultJobs() {
         $this->autoRender = false;
         $this->__dailyInterests();
+        $this->__processFees();
         $this->__dailyMatured();
         
         $message = 'Daily Inbound Jobs Ran Successfully';
@@ -144,7 +146,7 @@ function __dailyMatured(){
                
                //enter new ledger transaction
                 $ledger_transactions = array( 'client_ledger_id' =>$cledger_id,'credit' => $earned_balance, 'user_id' => 0,
-                    'date' => date('Y-m-d'),'voucher_no' =>$each['Investment']['investment_no'],'management_fee' => $accrued_basefee,
+                    'date' => date('Y-m-d'),'voucher_no' =>$each['Investment']['investment_no'],'management_fee' => $accrued_basefee,'benchmark' => $each['Investment']['custom_rate'],
                     'description' => 'Matured Investment Proceeds for investment no:'.$each['Investment']['investment_no']);
                     $this->LedgerTransaction->create();
                      $this->LedgerTransaction->save($ledger_transactions);
@@ -572,7 +574,7 @@ function __dailyReinvestmentInterests(){
     
     function __processFees(){
        $data = $this->Investment->find('all',array('conditions' => array('Investment.status' => array('Rolled_over','Invested','Termination_Requested'),
-            'Investment.basefee_duedate <=' => date('Y-m-d'),'OR' => array('Investment.basefee_lastprocess_date <' => date('Y-m-d'),'Investment.basefee_lastprocess_date'  => null) 
+            'Investment.basefee_duedate <=' => date('Y-m-d'),'OR' => array('Investment.basefee_lastprocess_date <=' => date('Y-m-d'),'Investment.basefee_lastprocess_date'  => null) 
         ),'recursive' => -1));
        $today = date('Y-m-d');
        if($data){

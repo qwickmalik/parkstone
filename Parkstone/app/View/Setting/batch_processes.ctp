@@ -37,13 +37,13 @@
 		</div>', '/ShellConsoles/backendJobs', array('escape' => false)); ?>
     
     <!-- Panels start here -->
-        <?php echo $this->Html->link('
-		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
-			<div id="innertext">
-				<h3>Process Base Fees</h3>
-				<p>Click to process daily management fees</p>
-			</div>
-		</div>', '/ShellConsoles/miscJobs', array('escape' => false)); ?>
+        <?php // echo $this->Html->link('
+//		<div id="settingsbox">' . $this->Html->image('transaction_names.png', array()) . '
+//			<div id="innertext">
+//				<h3>Process Base Fees</h3>
+//				<p>Click to process daily management fees</p>
+//			</div>
+//		</div>', '/ShellConsoles/miscJobs', array('escape' => false)); ?>
 
 
   <!-- Panels start here -->
