@@ -281,12 +281,13 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
            }
              if(payment_instuc == '2'){
                $("#InvestmentPaymentPrincipalAmount").prop('disabled',false);
+               $("#InvestmentPaymentInterestAmount").prop('disabled',true);
                return false;
            }
            
                         if(payment_instuc == '3'){
                $("#InvestmentPaymentInterestAmount").prop('disabled',false);
-               $("#InvestmentPaymentPrincipalAmount").prop('disabled',true);
+               $("#InvestmentPaymentPrincipalAmount").prop('disabled',false);
            } 
         } 
         checkpayment_mode();
