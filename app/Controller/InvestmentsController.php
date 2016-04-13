@@ -6441,6 +6441,7 @@ class InvestmentsController extends AppController {
             $investorid = $_POST['hid_investorid'];
             $ledgerid = $_POST['hid_ledgerid'];
             $investment_id = $_POST['hid_investid'];
+            $payment_instr = $this->request->data['InvestmentPayment']['instruction_id'];
             $inv_day = $this->request->data['InvestmentPayment']['payment_date']['day'];
             if (!empty($inv_day)) {
                 $inv_month = $this->request->data['InvestmentPayment']['payment_date']['month'];
@@ -6474,12 +6475,14 @@ class InvestmentsController extends AppController {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
             }
 
+            if($payment_instr == 2 ||$payment_instr == 3){
             if ($this->request->data['InvestmentPayment']['principal_amount'] == "" || $this->request->data['InvestmentPayment']['principal_amount'] == null || $this->request->data['InvestmentPayment']['principal_amount'] == 0) {
                 $message = 'Principal Amount Not Entered.';
                 $this->Session->write('emsg', $message);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
             }
-
+            }
+              if($payment_instr == 1 ||$payment_instr == 3){
              if ($this->request->data['InvestmentPayment']['interest_amount'] == "" || $this->request->data['InvestmentPayment']['interest_amount'] == null 
                      || $this->request->data['InvestmentPayment']['interest_amount'] == 0) {
                 $message = 'Interest Amount Not Entered.';
@@ -6487,7 +6490,7 @@ class InvestmentsController extends AppController {
                 $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid));
             }
 
-
+              }
             if (isset($this->request->data['InvestmentPayment']['cheque_nos'])) {
                 if ($this->request->data['InvestmentPayment']['cheque_nos'] != "" || $this->request->data['InvestmentPayment']['cheque_nos'] != null) {
                     $cheque_numbers = $this->request->data['InvestmentPayment']['cheque_nos'];
@@ -6546,7 +6549,7 @@ class InvestmentsController extends AppController {
                 $investor = $ledger_details['ClientLedger']['investor_id'];
                 $investor_name = $ledger_details['Investor']['fullname'];
                 $new_balance = $old_balance - $payment;
-                if ($ledger_details['ClientLedger']['total_interest'] < $interest_amout) {
+                if ($ledger_details['ClientLedger']['total_interest'] < $interest_amount) {
                     $message = 'Payment failed. Interest payment cannot be more than the client\'s total interest';
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid, $investment_id));
@@ -6557,7 +6560,7 @@ class InvestmentsController extends AppController {
                     $this->Session->write('bmsg', $message);
                     $this->redirect(array('controller' => 'Investments', 'action' => 'payInvestor', $investorid, $investment_id));
                 }
-                $new_ledger_interest = $ledger_details['ClientLedger']['total_interest'] - $interest_amout;
+                $new_ledger_interest = $ledger_details['ClientLedger']['total_interest'] - $interest_amount;
                 $new_ledger_principal = $ledger_details['ClientLedger']['total_principal'] - $principal_amount;
 
                 if ($sms_amount > $old_balance) {
@@ -6571,7 +6574,7 @@ class InvestmentsController extends AppController {
 //                    'status' => $payment_status, 'lastpaidout_date' => $payment_date);
                 //Update Ledger data
                 $cledger_id = $ledger_details['ClientLedger']['id'];
-                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_balance, 'total_principal' => $principal_amount, 'total_interest' => $interest_amout);
+                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_balance, 'total_principal' => $principal_amount, 'total_interest' => $interest_amount);
                 $this->ClientLedger->save($client_ledger);
                 $voucher_no = date('mdyhis') . rand(2, 4);
                 $ltid = null;
@@ -6591,7 +6594,7 @@ class InvestmentsController extends AppController {
                     $investment_paymentdetails = array('user_id' => $userid, 'investment_id' => $investment_id,
                         'investor_id' => $investor, 'amount' => $payment, 'instruction_id' => $instructions_id,
                         'payment_mode_id' => $this->request->data['InvestmentPayment']['paymentmode_id'], 'ledger_transaction_id' => $ltid,
-                        'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date, 'event_type' => 'Payment', 'interest' => $interest_amout,
+                        'cheque_nos' => $cheque_numbers, 'payment_date' => $payment_date, 'event_type' => 'Payment', 'interest' => $interest_amount,
                         'receipt_no' => $voucher_no,
                         'event_date' => $payment_date);
 
