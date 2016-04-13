@@ -288,7 +288,12 @@ echo $this->Form->button('Make Payment', array("type" => "submit", "class" => "b
                         if(payment_instuc == '3'){
                $("#InvestmentPaymentInterestAmount").prop('disabled',false);
                $("#InvestmentPaymentPrincipalAmount").prop('disabled',false);
-           } 
+           }
+           if(payment_instuc == ''){
+               
+               $("#InvestmentPaymentInterestAmount").prop('disabled',true);
+               $("#InvestmentPaymentPrincipalAmount").prop('disabled',true);
+           }
         } 
         checkpayment_mode();
         checkpayment_instructions();
