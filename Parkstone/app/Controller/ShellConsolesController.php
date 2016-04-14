@@ -107,7 +107,7 @@ function __dailyMatured(){
             $total_interest = $oldt_interest + $interest;
             $new_cashathand = $cash_athand + $earned_balance;
 //            $new_cashathand = $new_cashathand - $accrued_basefee;
-            $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $each['Investment']['investment_amount'];
+            $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $inv_principal;
            $old_tenure = $each['Investment']['total_tenure'];
            $period = $each['Investment']['investment_period'];
            $new_tenure = 0;
@@ -140,7 +140,7 @@ function __dailyMatured(){
 //                                $ltresult = $this->LedgerTransaction->save($ledger_transactions);
 //            }
             //Update Ledger data   
-                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,'total_interest' => $total_invested,
+                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,'total_interest' => $total_interest,
                     'invested_amount' => $total_invested);
                $this->ClientLedger->save($client_ledger);   
                
