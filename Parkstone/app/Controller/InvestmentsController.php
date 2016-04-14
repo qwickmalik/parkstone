@@ -5992,8 +5992,8 @@ class InvestmentsController extends AppController {
                                 }
                             }
                             $accrued_basefee = $data['Investment']['accrued_basefee'];
-
-                            $update_array = array('id' => $investment_id, 'earned_balance' => round($amount_due,2), 'amount_due' => round($amount_due,2),
+                            
+                            $update_array = array('id' => $investment_id, 'earned_balance' => round($amount_due,2), 'amount_due' => round($amount_due,2),'due_date' => date('Y-m-d'),
                                 'interest_earned' => round($interest_amount,2),'interest_accrued' => round($interest_amount,2),'total_amount_earned' => round($amount_due,2),
                                 'status' => "Termination_Approved", 'accrued_days' => $duration, 'instruction_details' => $instructions);
                             $ltid = null;
