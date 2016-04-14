@@ -5993,8 +5993,8 @@ class InvestmentsController extends AppController {
                             }
                             $accrued_basefee = $data['Investment']['accrued_basefee'];
 
-                            $update_array = array('id' => $investment_id, 'earned_balance' => $amount_due, 'amount_due' => $amount_due,
-                                'interest_earned' => $interest_amount, 'total_amount_earned' => $amount_due, 'duration' => $duration,
+                            $update_array = array('id' => $investment_id, 'earned_balance' => round($amount_due,2), 'amount_due' => round($amount_due,2),
+                                'interest_earned' => round($interest_amount,2),'interest_accrued' => round($interest_amount,2),'total_amount_earned' => round($amount_due,2),
                                 'status' => "Termination_Approved", 'accrued_days' => $duration, 'instruction_details' => $instructions);
                             $ltid = null;
                             if ($ledger_data) {
@@ -6011,7 +6011,7 @@ class InvestmentsController extends AppController {
                                 $new_cashathand = $cash_athand + $amount_due;
 //                                $new_cashathand = $new_cashathand - 
                                         
-                                $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $amount_due;
+                                $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $investment_amount;
 
                                 $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
                                     'invested_amount' => $total_invested);
