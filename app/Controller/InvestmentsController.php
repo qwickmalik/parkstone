@@ -9504,7 +9504,7 @@ class InvestmentsController extends AppController {
                     $accrued_days = $duration;
                     return $accrued_days;
                     break;
-                case 'Termination_Approved':
+//                case 'Termination_Approved':
                 case 'Matured':
                 case 'Cancelled':
                 case 'Paid':
