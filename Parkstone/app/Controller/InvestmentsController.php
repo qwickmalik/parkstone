@@ -6010,10 +6010,12 @@ class InvestmentsController extends AppController {
                                 $cash_athand = $ledger_data['ClientLedger']['available_cash'];
                                 $new_cashathand = $cash_athand + $amount_due;
 //                                $new_cashathand = $new_cashathand - 
-                                        
+                               $oldt_interest = 0;
+                               $oldt_interest = $ledger_data['ClientLedger']['total_interest'];
+                               $newledinterest = $oldt_interest + $interest_amount;
                                 $total_invested = $ledger_data['ClientLedger']['invested_amount'] - $investment_amount;
 
-                                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,
+                                $client_ledger = array('id' => $cledger_id, 'available_cash' => $new_cashathand,'total_interest' => $newledinterest,
                                     'invested_amount' => $total_invested);
                                 $ledger_data = $this->ClientLedger->save($client_ledger);
 
