@@ -2,7 +2,7 @@
 
 
 <?php
-$shopCurrency = "GH$";
+$shopCurrency = "GHc";
 if ($this->Session->check('shopCurrency_investment')) {
     $shopCurrency = $this->Session->read('shopCurrency_investment');
 }
@@ -123,9 +123,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                             <div class="row">
                                 <?php
                                  echo $this->Form->input('inv_dest_product_id', array('required','empty' => '--Please Select--', 'value' => ($this->Session->check('reinvesttemp.inv_dest_product_id') == true ? $this->Session->read('reinvesttemp.inv_dest_product_id') : '' ), 'label' => 'Investment Product*','class' => 'invprods'));
-                                 echo $this->Form->hidden('currency_id',['value' => 
-                                     (isset($reinvestorcashaccounts['Reinvestor']['currency_id']) ? 
-                                     $reinvestorcashaccounts['Reinvestor']['currency_id'] : '' )]);
+                                 echo $this->Form->hidden('currency_id',['value' => (isset($reinvestorcashaccounts['Reinvestor']['currency_id']) ? $reinvestorcashaccounts['Reinvestor']['currency_id'] : '' )]);
                                 ?>
                             
                                 </div>
@@ -233,7 +231,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                     <div class="col-lg-4 col-md-4 col-sm-12">
                         <table width="80%" cellspacing="0" cellpadding="3" border="0">
                             <tr>
-                                <td align="right"><b align="right">Interest Accrued: </b></td>
+                                <td align="right"><b align="right">Interest Expected: </b></td>
                                 <td><span id="xxxxxx"><?php
                                         if (isset($interest)) {
                                             echo $shopCurrency . ' ' . number_format($interest, 2, '.', ',');

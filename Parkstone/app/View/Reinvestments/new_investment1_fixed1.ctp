@@ -7,7 +7,7 @@ echo $this->Html->script('print.js');
 ?>
 
 <?php
-$shopCurrency = "GH$";
+$shopCurrency = "GHc";
 if ($this->Session->check('shopCurrency_investment')) {
     $shopCurrency = $this->Session->read('shopCurrency_investment');
 }
@@ -83,7 +83,7 @@ if ($this->Session->check('shopCurrency_investment')) {
                                     <?php echo "<p><b>Benchmark Rate:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'] : '' );?>
+                                    <?php echo (isset($reinvestments['Reinvestment']['interest_rate']) ? $reinvestments['Reinvestment']['interest_rate'].'%' : '0.00%' );?>
                                 </div>
                             </div>
                             <div class="row">
@@ -104,11 +104,11 @@ if ($this->Session->check('shopCurrency_investment')) {
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <?php echo "<p><b>Interest Accrued:</b></p>";?>
+                                    <?php echo "<p><b>Interest Expected:</b></p>";?>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <?php echo (isset($reinvestments['Reinvestment']['accrued_interest']) ? 
-                                            number_format($reinvestments['Reinvestment']['accrued_interest'], 2, '.', ',')
+                                    <?php echo (isset($reinvestments['Reinvestment']['expected_interest']) ? 
+                                            number_format($reinvestments['Reinvestment']['expected_interest'], 2, '.', ',')
                                              : '' );?>
                                 </div>
                             </div>
