@@ -1444,6 +1444,48 @@ class InvestmentsController extends AppController {
                     $this->Session->delete('ivts');
                 }
                 $cust = $this->Session->write('ivts', $investor);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+            } else {
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+            }
+        } else {
+
+            $investors = $this->Investor->find('all', array('conditions' => array('Investor.id' => $investorID)));
+            $investor = $this->Investor->find('first', array('conditions' => array('Investor.id' => $investorID)));
+            if ($investors) {
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $check = $this->Session->check('ivt');
+                if ($check) {
+                    $this->Session->delete('ivt');
+                }
+                $cust = $this->Session->write('ivts', $investors);
+                $this->Session->write('ivt', $investor);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+            } else {
+
+                $message = 'Sorry, Investor Not Found';
+                $this->Session->write('imsg', $message);
+                $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Indv'));
+            }
+        }
+    }
+function searchinvestor4jointinvestment($investorid = null) {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $investname = $this->request->data['investor_search'];
+            $investor = $this->Investor->find('all', array('conditions' => array('OR' => array(array('Investor.surname LIKE' => "%$investname%"), array('Investor.other_names LIKE' => "%$investname%"), array('Investor.fullname LIKE' => "%$investname%")), 'Investor.approved' => 1)));
+
+            if ($investor) {
+                $check = $this->Session->check('ivts');
+                if ($check) {
+                    $this->Session->delete('ivts');
+                }
+                $cust = $this->Session->write('ivts', $investor);
                 $this->redirect(array('controller' => 'Investments', 'action' => 'newInvestment1Joint'));
             } else {
                 $message = 'Sorry, Investor Not Found';
@@ -1474,7 +1516,6 @@ class InvestmentsController extends AppController {
             }
         }
     }
-
     function searchinvestor4groupinvestment($investorid = null) {
         $this->autoRender = false;
         if ($this->request->is('post') && ($this->request->data['investor_search'] != "" || $this->request->data['investor_search'] != null)) {
