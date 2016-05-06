@@ -10,7 +10,7 @@
             <tr>
                 <td align="left" valign="top" colspan="3" style="background: #eaeaea; border: solid 1px #cccccc; border-bottom: none;"><?php
 //echo $this->Form->create('Order', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Orders', 'action' => 'searchProduct'), "inputDefaults" => array('div' => false))); 
-                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4investment'), "inputDefaults" => array('div' => false)));
+                    echo $this->Form->create('Investment', array('enctype' => 'multipart/form-data', "url" => array('controller' => 'Investments', 'action' => 'searchinvestor4jointinvestment'), "inputDefaults" => array('div' => false)));
                     ?>
                     <table width="100%" align="left" cellspacing="0" cellpadding="0" border="0">
                         <tr>
